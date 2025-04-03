@@ -4,6 +4,7 @@
 #include "Server.h"
 
 int main() {
-	Server server = Server();
+	WSAInitializer wsaInit;
+	Server server;
 	server.run();
 }

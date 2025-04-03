@@ -9,6 +9,8 @@ class Server
 private:
 	Communicator m_communicator;
 public:
+	Server();
+	~Server();
 	void run();
 
 };
