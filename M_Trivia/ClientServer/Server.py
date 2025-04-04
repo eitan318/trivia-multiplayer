@@ -12,12 +12,22 @@ def create_server_socket(ip, port):
 
 def listen():
     server_sock = create_server_socket(IP, PORT)
-    client_socket, addr = server_sock.accept()  # Accept connection
+    client_socket, addr = server_sock.accept()
     print(f"Connection from {addr}")
-    while True:  # Keep server running
-        data = client_socket.recv(5)  # Read 5 bytes
-        print(data)
 
+    while True:
+
+        try:
+            data = client_socket.recv(1024)
+            if not data:
+                break  # Client disconnected
+            print("Received:", data.decode())
+
+            # Echo the data back
+            client_socket.sendall(data)
+        except Exception as error:
+            print("Error:", error)
+            break
     client_socket.close()  # Close client connection
 
 def main():

@@ -19,15 +19,15 @@ def communicate(client_socket):
             message = b"Hello"
             client_socket.sendall(message)
             print(f"Sent: {message.decode()}")
-        except:
-            print("Error: error sending message")
+        except Exception as error:
+            print("Error: " + error)
             break
 
         try:
             response = client_socket.recv(1024)
             print(f"Received: {response.decode()}")
-        except:
-            print("Error: error recieving message from server")
+        except Exception as error:
+            print("Error: " + error)
             break
 
     client_socket.close()
