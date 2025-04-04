@@ -130,14 +130,18 @@
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="IRequestHandler.h" />
-    <ClInclude Include="LoginRequest.hpp" />
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="JsonResponsePacketSerializer.h" />
+    <ClInclude Include="Requests.hpp" />
     <ClInclude Include="LoginRequestHandler.h" />
+    <ClInclude Include="Responses.hpp" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="WSAInitializer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="Helper.cpp" />
+    <ClCompile Include="JsonResponsePacketSerializer.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Server.cpp" />
