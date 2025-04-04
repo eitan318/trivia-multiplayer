@@ -19,8 +19,6 @@ void Server::run()
 	std::string input;
 	do {
 		std::cout << ">>> ";
-		std::cin >> input;
-		std::cout << ">>> ";
 		std::getline(std::cin, input);
 	} while (input != "EXIT");
 
