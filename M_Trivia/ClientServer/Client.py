@@ -2,6 +2,20 @@ import socket
 import time
 
 
+
+def send_msg(client_sock, msg):
+    try:
+        client_sock.sendall((4).to_bytes(1, 'big'))
+        client_sock.sendall(len(msg).to_bytes(4, 'big'))
+        client_sock.sendall(msg.encode())
+        print(f"Sent: {msg}")
+    except Exception as error:
+        print(f"Send error: {error}")
+        return
+
+def send_login_msg(client_sock, username, password):
+    send_msg(client_sock, f'{{username: "{username}", password: "{password}"}}')
+
 def communicate(client_socket):
     try:
         response = client_socket.recv(5)
@@ -11,13 +25,9 @@ def communicate(client_socket):
         return
 
     if response == b"Hello":
-        try:
-            message = "Hello".encode()
-            client_socket.sendall(message)
-            print(f"Sent: {message.decode()}")
-        except Exception as error:
-            print(f"Send error: {error}")
-            return
+        send_login_msg(client_socket, "primo", "123")
+
+    
 
     # Simulate keeping the connection alive
     try:
