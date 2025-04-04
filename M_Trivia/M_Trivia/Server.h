@@ -10,6 +10,8 @@ private:
 	Communicator m_communicator;
 public:
 	void run();
+	Server();
+	~Server();
 
 };
 

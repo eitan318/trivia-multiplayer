@@ -1,5 +1,14 @@
 #include "Server.h"
 
+Server::Server()
+{
+
+}
+
+Server::~Server()
+{
+}
+
 void Server::run()
 {
 	this->m_communicator.bindAndListen();
@@ -9,7 +18,8 @@ void Server::run()
 	std::string input;
 	do {
 		std::cin >> input;
-
+		std::cout << ">>> ";
+		std::getline(std::cin, input);
 	} while (input != "EXIT");
 
 }
