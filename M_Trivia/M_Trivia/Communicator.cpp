@@ -28,7 +28,6 @@ Communicator::~Communicator()
 void Communicator::startHandleRequest()
 {
     while (true) {
-        std::cout << "Waiting for client connection request" << std::endl;
         SOCKET client_socket = accept(this->m_serverSocket, NULL, NULL);
         if (client_socket == INVALID_SOCKET)
             throw std::exception(__FUNCTION__);
@@ -77,8 +76,8 @@ void Communicator::handleNewClient(SOCKET sock)
 {
 	this->m_clients.insert({ sock, new LoginRequestHandler() });
     Helper::sendData(sock, "Hello");
-    int bytesNum = Helper::getIntPartFromSocket(sock, 4);
-    std::string msg = Helper::getStringPartFromSocket(sock, bytesNum);
+    std::string msg = Helper::getStringPartFromSocket(sock, 5);
+    std::cout << "Recieved: " << msg << std::endl;
 
 
 }
