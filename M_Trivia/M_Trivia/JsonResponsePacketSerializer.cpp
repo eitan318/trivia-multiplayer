@@ -38,7 +38,7 @@ std::vector<char> JsonResponsePacketSerializer::serializeResponse(const SignupRe
     return res;
 }
 
-std::vector<char> JsonResponsePacketSerializer::serializeResponse(const LoginResponse& loginResponse)
+std::vector<char> JsonResponsePacketSerializer::JsonResponsePacketSerializer::serializeResponse(const LoginResponse& loginResponse)
 {
     std::vector<char> res;
     res.push_back((char)C_LoginResponse);

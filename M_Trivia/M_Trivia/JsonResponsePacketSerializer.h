@@ -3,11 +3,13 @@
 #include "Responses.hpp"
 #include "json.hpp"
 
+#define MSG_CODE_SIZE 1
+
 class JsonResponsePacketSerializer
 {
 public:
-	std::vector<char> serializeResponse(const ErrorResponse&);
-	std::vector<char> serializeResponse(const SignupResponse&);
-	std::vector<char> serializeResponse(const LoginResponse&);
+	static std::vector<char> serializeResponse(const ErrorResponse&);
+	static std::vector<char> serializeResponse(const SignupResponse&);
+	static std::vector<char> serializeResponse(const LoginResponse&);
 };
 
