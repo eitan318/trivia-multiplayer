@@ -1,6 +1,7 @@
+#pragma once
 #include <string>
 
-enum CODES {
+enum ResponsesCodes {
 	C_LoginResponse = 1,
 	C_SignupResponse = 2,
 	C_ErrorResponse = 5

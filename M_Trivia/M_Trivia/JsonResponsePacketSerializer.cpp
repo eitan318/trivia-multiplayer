@@ -11,7 +11,7 @@ std::vector<char> JsonResponsePacketSerializer::serializeResponse(const ErrorRes
 
     int json_length = json_str.size();
     res.resize(res.size() + sizeof(int));
-    std::memcpy(res.data() + 1, &json_length, sizeof(int));
+    std::memcpy(res.data() + MSG_CODE_SIZE, &json_length, sizeof(int));
 
     res.insert(res.end(), json_str.begin(), json_str.end());
 
@@ -31,14 +31,14 @@ std::vector<char> JsonResponsePacketSerializer::serializeResponse(const SignupRe
 
     int json_length = json_str.size();
     res.resize(res.size() + sizeof(int));
-    std::memcpy(res.data() + 1, &json_length, sizeof(int));
+    std::memcpy(res.data() + MSG_CODE_SIZE, &json_length, sizeof(int));
 
     res.insert(res.end(), json_str.begin(), json_str.end());
 
     return res;
 }
 
-std::vector<char> JsonResponsePacketSerializer::serializeResponse(const LoginResponse& loginResponse)
+std::vector<char> JsonResponsePacketSerializer::JsonResponsePacketSerializer::serializeResponse(const LoginResponse& loginResponse)
 {
     std::vector<char> res;
     res.push_back((char)C_LoginResponse);
@@ -49,7 +49,7 @@ std::vector<char> JsonResponsePacketSerializer::serializeResponse(const LoginRes
 
     int json_length = json_str.size();
     res.resize(res.size() + sizeof(int));
-    std::memcpy(res.data() + 1, &json_length, sizeof(int));
+    std::memcpy(res.data() + MSG_CODE_SIZE, &json_length, sizeof(int));
 
     res.insert(res.end(), json_str.begin(), json_str.end());
 

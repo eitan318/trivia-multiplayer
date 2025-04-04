@@ -3,10 +3,10 @@
 #include "Requests.hpp"
 #include "json.hpp"
 
-using namespace std;
+#define MSG_CODE_SIZE 1
 
 class JsonRequestPacketDeserializer {
 public:
-	LoginRequest deserializeLoginRequest(const vector<char>& buffer);
-	SignupRequest deserializeSignUpRequest(const vector<char>& buffer);
+	static LoginRequest deserializeLoginRequest(const std::vector<char>& buffer);
+	static SignupRequest deserializeSignupRequest(const std::vector<char>& buffer);
 };
