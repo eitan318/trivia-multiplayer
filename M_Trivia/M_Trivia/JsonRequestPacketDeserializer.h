@@ -8,5 +8,5 @@
 class JsonRequestPacketDeserializer {
 public:
 	static LoginRequest deserializeLoginRequest(const std::vector<char>& buffer);
-	static SignupRequest deserializeSignUpRequest(const std::vector<char>& buffer);
+	static SignupRequest deserializeSignupRequest(const std::vector<char>& buffer);
 };

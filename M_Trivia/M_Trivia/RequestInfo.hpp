@@ -2,8 +2,8 @@
 #include <ctime>
 #include <vector>
 
-struct Requestinfo {
-	unsigned int id;
+struct RequestInfo {
+	unsigned int code;
 	time_t receivalTime;
 	std::vector<char> buffer;
 };
