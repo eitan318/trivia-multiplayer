@@ -1,9 +1,9 @@
 #include <string>
 
 enum CODES {
-	C_LoginResponse,
-	C_SignupResponse,
-	C_ErrorResponse
+	C_LoginResponse = 1,
+	C_SignupResponse = 2,
+	C_ErrorResponse = 5
 };
 
 struct LoginResponse {
