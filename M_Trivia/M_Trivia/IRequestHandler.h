@@ -1,8 +1,9 @@
 #pragma once
 #include "RequestInfo.hpp"
+#include "RequestResult.hpp"
 
 class IRequestHandler {
 public:
-	bool isRequestRelevant(const RequestInfo&);
-	void handleRequest(const RequestInfo&);
+	virtual bool isRequestRelevant(const RequestInfo&) = 0;
+	virtual	RequestResult handleRequest(const RequestInfo&) = 0;
 };
