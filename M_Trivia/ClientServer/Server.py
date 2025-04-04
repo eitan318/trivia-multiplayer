@@ -4,14 +4,23 @@ def handle_client(client_socket):
     initial_msg = b"Hello"
     client_socket.sendall(initial_msg)
     print(f"Sent {initial_msg}")
-    try:
-        data = client_socket.recv(5)
-        if not data:
-            print("Client disconnected")
-        print("Received:", data.decode())
-    except Exception as error:
-        print("Error:", error)
-    client_socket.close()  # Close client connection
+    while True:
+        try:
+            code = ord(client_socket.recv(1))  # Convert the byte to an integer
+            
+            if not code:
+                print("Client disconnected")
+                break
+            
+            msg_len = int.from_bytes(client_socket.recv(4), 'big')
+            msg = client_socket.recv(msg_len).decode()
+
+            client_socket.sendall(f"Received: code: {code} len: {msg_len} msg: {msg}".encode())
+            print(f"Sent {initial_msg}")
+        except Exception as error:
+            print("Error:", error)
+
+    client_socket.close()  
 
 def main():
     IP = "127.0.0.1" 
