@@ -41,6 +41,11 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& requestInfo)
 		return requestResult;
 	}
 	default:
+		ErrorResponse errorResponse;
+		errorResponse.message = "Invalid msg code.";
+		requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
+		requestResult.newHandler = new LoginRequestHandler();
+
 		return requestResult;
 	}
 }

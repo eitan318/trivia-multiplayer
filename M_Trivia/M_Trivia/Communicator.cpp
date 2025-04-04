@@ -88,6 +88,7 @@ void Communicator::handleNewClient(SOCKET sock)
         requestInfo.code = Helper::getIntPartFromSocket(sock, 1);
         int msgLen = Helper::getIntPartFromSocket(sock, sizeof(int));
         std::string msgStr = Helper::getStringPartFromSocket(sock, msgLen);
+        std::cout << "Recieved: " << msgStr;
         requestInfo.buffer = std::vector<char>(msgStr.begin(), msgStr.end());
 
         RequestResult requestResult = handler->handleRequest(requestInfo);

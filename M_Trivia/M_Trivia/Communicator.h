@@ -3,6 +3,8 @@
 #include <Windows.h>
 #include <map>
 #include "IRequestHandler.h"
+#include "RequestResult.hpp"
+#include "RequestInfo.hpp"
 #include "LoginRequestHandler.h"
 #include <iostream>
 #include <thread>
