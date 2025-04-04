@@ -6,6 +6,7 @@
 #include "LoginRequestHandler.h"
 #include <iostream>
 #include <thread>
+#include <string>
 
 
 class Communicator {

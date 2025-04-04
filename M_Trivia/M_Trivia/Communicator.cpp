@@ -1,4 +1,5 @@
 #include "Communicator.h"
+#include "Helper.h"
 
 
 Communicator::Communicator()
@@ -7,8 +8,11 @@ Communicator::Communicator()
     // If the server uses UDP, use SOCK_DGRAM & IPPROTO_UDP
     this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
-    if (this->m_serverSocket == INVALID_SOCKET)
-        throw std::exception(__FUNCTION__ " - socket");
+    if (this->m_serverSocket == INVALID_SOCKET) {
+        int errorCode = WSAGetLastError();
+        std::cerr << "socket() failed with error: " << errorCode << std::endl;
+        throw std::runtime_error(std::string(__FUNCTION__) + " - socket() failed with error " + std::to_string(errorCode));
+    }
 }
 
 Communicator::~Communicator()
@@ -53,12 +57,18 @@ void Communicator::bindAndListen()
     sa.sin_addr.s_addr = INADDR_ANY; // "INADDR_ANY" for any available IPs
 
     // Connects between the socket and the configuration (port, etc.)
-    if (bind(this->m_serverSocket, (struct sockaddr*)&sa, sizeof(sa)) == SOCKET_ERROR)
-        throw std::exception(__FUNCTION__ " - bind");
+    if (bind(this->m_serverSocket, (struct sockaddr*)&sa, sizeof(sa)) == SOCKET_ERROR) {
+        int errorCode = WSAGetLastError();
+        std::cerr << "bind() failed with error: " << errorCode << std::endl;
+        throw std::runtime_error(std::string(__FUNCTION__) + " - bind() failed with error " + std::to_string(errorCode));
+    }
 
     // Start listening for incoming requests from clients
-    if (listen(this->m_serverSocket, SOMAXCONN) == SOCKET_ERROR)
-        throw std::exception(__FUNCTION__ " - listen");
+    if (listen(this->m_serverSocket, SOMAXCONN) == SOCKET_ERROR) {
+        int errorCode = WSAGetLastError();
+        std::cerr << "bind() failed with error: " << errorCode << std::endl;
+        throw std::runtime_error(std::string(__FUNCTION__) + " - listen() failed with error " + std::to_string(errorCode));
+    }
 
     std::cout << "Listening on port " << port << std::endl;
 }
@@ -66,4 +76,9 @@ void Communicator::bindAndListen()
 void Communicator::handleNewClient(SOCKET sock)
 {
 	this->m_clients.insert({ sock, new LoginRequestHandler() });
+    Helper::sendData(sock, "Hello");
+    int bytesNum = Helper::getIntPartFromSocket(sock, 4);
+    std::string msg = Helper::getStringPartFromSocket(sock, bytesNum);
+
+
 }
