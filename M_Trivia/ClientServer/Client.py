@@ -1,44 +1,38 @@
 import socket
 
-PORT = 5554
-IP = "127.0.0.1"
-
-def create_client_socket(server_ip, port):
-    # Create a socket and return it
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    return sock
-
 def communicate(client_socket):
     # Connect to the server
-    server_address = (IP, PORT)
-    client_socket.connect(server_address)
-    print(f"Connected to {IP}:{PORT}")
+    response = ""
+    try:
+        response = client_socket.recv(5)
+        print(f"Received: {response}")
+    except Exception as error:
+        print(f"Error: {error}")
 
-    for i in range(5):
+    if response == b"Hello":
         try:
             message = b"Hello"
             client_socket.sendall(message)
             print(f"Sent: {message.decode()}")
         except Exception as error:
-            print("Error: " + error)
-            break
-
-        try:
-            response = client_socket.recv(1024)
-            print(f"Received: {response.decode()}")
-        except Exception as error:
-            print("Error: " + error)
-            break
-
+            print(f"Error: {error}")
+    
+    while True:
+        None
     client_socket.close()
 
 
 def main():
-    #Client Build
-    client_socket = create_client_socket(IP, PORT)
+    port = int(input("Enter port: "))
+    IP = "127.0.0.1"
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_address = (IP, port)
+    try:
+        client_socket.connect(server_address)
+    except Exception as error:
+            print(f"Error: {error}")
+    print(f"Connected to {IP}:{port}")
     communicate(client_socket)
-
-
 
 
 if __name__ == "__main__":
