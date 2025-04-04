@@ -14,7 +14,9 @@ def handle_client(client_socket):
             
             msg_len = int.from_bytes(client_socket.recv(4), 'big')
             msg = client_socket.recv(msg_len).decode()
-            print(f"Received: code: {code} len: {msg_len} msg: {msg}")
+
+            client_socket.sendall(f"Received: code: {code} len: {msg_len} msg: {msg}".encode())
+            print(f"Sent {initial_msg}")
         except Exception as error:
             print("Error:", error)
 

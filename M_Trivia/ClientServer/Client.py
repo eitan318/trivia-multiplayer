@@ -16,6 +16,9 @@ def send_msg(client_sock, msg):
 def send_login_msg(client_sock, username, password):
     send_msg(client_sock, f'{{username: "{username}", password: "{password}"}}')
 
+def send_signup_msg(client_sock, username, password, mail):
+    send_msg(client_sock, f'{{username: "{username}", password: "{password}", mail: "{mail}"}}')
+
 def communicate(client_socket):
     try:
         response = client_socket.recv(5)
@@ -24,10 +27,25 @@ def communicate(client_socket):
         print(f"Receive error: {error}")
         return
 
-    if response == b"Hello":
-        send_login_msg(client_socket, "primo", "123")
-
+    if response != b"Hello":
+        return
     
+    
+    send_login_msg(client_socket, "primo", "123")
+    try:
+        response = client_socket.recv(100)
+        print(f"Received: {response.decode()}")
+    except Exception as error:
+        print(f"Receive error: {error}")
+        return
+    
+    send_signup_msg(client_socket, "primo", "123", "primo@gmail.com")
+    try:
+        response = client_socket.recv(100)
+        print(f"Received: {response.decode()}")
+    except Exception as error:
+        print(f"Receive error: {error}")
+        return
 
     # Simulate keeping the connection alive
     try:
