@@ -1,11 +1,14 @@
 #include "JsonRequestPacketDeserializer.h"
 
-LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const vector<char> buffer)
+#define DATASIZE 1
+
+
+LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const vector<char>& buffer)
 {
     int jsonLength = 0;
-    std::memcpy(&jsonLength, buffer.data() + 1, sizeof(int)); //get the size of the packet into an int variable
+    std::memcpy(&jsonLength, buffer.data() + DATASIZE, sizeof(int)); //get the size of the packet into an int variable
 
-    std::string jsonmsg(buffer.begin() + 5, buffer.begin() + 5 + jsonLength); //get data as string
+    std::string jsonmsg(buffer.begin() + DATASIZE + sizeof(int), buffer.begin() + DATASIZE + sizeof(int) + jsonLength); //get data as string
 
     nlohmann::json j = nlohmann::json::parse(jsonmsg); //parse the data to json
 
@@ -16,11 +19,11 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const vector
 
     return request;
 }
-SignupRequest JsonRequestPacketDeserializer::deserializeSignUpRequest(const vector<char> buffer) {
+SignupRequest JsonRequestPacketDeserializer::deserializeSignUpRequest(const vector<char>& buffer) {
     int jsonLength = 0;
-    std::memcpy(&jsonLength, buffer.data() + 1, sizeof(int)); //get the size of the packet
+    std::memcpy(&jsonLength, buffer.data() + DATASIZE, sizeof(int)); //get the size of the packet
 
-    std::string jsonmsg(buffer.begin() + 5, buffer.begin() + 5 + jsonLength);
+    std::string jsonmsg(buffer.begin() + DATASIZE + sizeof(int), buffer.begin() + DATASIZE + sizeof(int) + jsonLength);
 
     nlohmann::json j = nlohmann::json::parse(jsonmsg);
 

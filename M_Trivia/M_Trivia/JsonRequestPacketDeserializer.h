@@ -7,6 +7,6 @@ using namespace std;
 
 class JsonRequestPacketDeserializer {
 public:
-	LoginRequest deserializeLoginRequest(const vector<char> buffer);
-	SignupRequest deserializeSignUpRequest(const vector<char> buffer);
+	LoginRequest deserializeLoginRequest(const vector<char>& buffer);
+	SignupRequest deserializeSignUpRequest(const vector<char>& buffer);
 };
