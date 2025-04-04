@@ -1,40 +1,49 @@
 import socket
+import time
+
 
 def communicate(client_socket):
-    # Connect to the server
-    response = ""
     try:
         response = client_socket.recv(5)
-        print(f"Received: {response}")
+        print(f"Received: {response.decode()}")
     except Exception as error:
-        print(f"Error: {error}")
+        print(f"Receive error: {error}")
+        return
 
     if response == b"Hello":
         try:
-            message = b"Hello"
+            message = "Hello".encode()
             client_socket.sendall(message)
             print(f"Sent: {message.decode()}")
         except Exception as error:
-            print(f"Error: {error}")
-    
-    while True:
-        None
-    client_socket.close()
+            print(f"Send error: {error}")
+            return
+
+    # Simulate keeping the connection alive
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("Interrupted. Closing connection.")
 
 
 def main():
-    port = int(input("Enter port: "))
     IP = "127.0.0.1"
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        port = int(input("Enter port: "))
+    except ValueError:
+        print("Invalid port.")
+        return
+
     server_address = (IP, port)
     try:
-        client_socket.connect(server_address)
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+            client_socket.connect(server_address)
+            print(f"Connected to {IP}:{port}")
+            communicate(client_socket)
     except Exception as error:
-            print(f"Error: {error}")
-    print(f"Connected to {IP}:{port}")
-    communicate(client_socket)
+        print(f"Connection error: {error}")
 
 
 if __name__ == "__main__":
     main()
-
