@@ -21,7 +21,7 @@ def communicate(client_socket):
 
     # Simulate keeping the connection alive
     try:
-        while True:
+        while input(":") != "EXIT":
             time.sleep(1)
     except KeyboardInterrupt:
         print("Interrupted. Closing connection.")
