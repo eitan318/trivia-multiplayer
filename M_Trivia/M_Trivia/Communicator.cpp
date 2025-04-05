@@ -84,19 +84,26 @@ void Communicator::handleNewClient(SOCKET sock)
 
     while (true) {
         RequestInfo requestInfo;
+        try {
+            requestInfo.code = Helper::getIntFromSocket(sock, 1);
+            int msgLen = Helper::getIntFromSocket(sock, sizeof(int));
+            std::string msgStr = Helper::getStringPartFromSocket(sock, msgLen);
+            std::cout << "Recieved: " << msgStr << std::endl;
+            requestInfo.buffer = std::vector<char>(msgStr.begin(), msgStr.end());
 
-        requestInfo.code = Helper::getIntFromSocket(sock, 1);
-        int msgLen = Helper::getIntFromSocket(sock, sizeof(int));
-        std::string msgStr = Helper::getStringPartFromSocket(sock, msgLen);
-        std::cout << "Recieved: " << msgStr << std::endl;
-        requestInfo.buffer = std::vector<char>(msgStr.begin(), msgStr.end());
+            RequestResult requestResult = handler->handleRequest(requestInfo);
+            if (handler != requestResult.newHandler)
+                delete handler;
+            handler = requestResult.newHandler;
+            this->m_clients.at(sock) = handler;
+            Helper::sendData(sock, requestResult.response);
 
-        RequestResult requestResult = handler->handleRequest(requestInfo);
-        if(handler != requestResult.newHandler)
-            delete handler;
-        handler = requestResult.newHandler;
-        this->m_clients.at(sock) = handler;
-        Helper::sendData(sock, requestResult.response);
+        }
+        catch (std::exception e) {
+            std::cout << "Client probably left";
+            break;
+        }
+        
     }
 
 
