@@ -15,9 +15,10 @@ class Communicator {
 private:
 	std::map<SOCKET, IRequestHandler*> m_clients;
 	SOCKET m_serverSocket;
+	RequestHandlerFactory& m_handlerFactory;
 
 public:
-	Communicator();
+	Communicator(RequestHandlerFactory& handlerFactory);
 	~Communicator();
 	void startHandleRequest();
 	void bindAndListen();

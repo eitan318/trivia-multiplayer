@@ -36,7 +36,14 @@ def communicate(client_socket):
     except Exception as error:
         print(f"Receive error: {error}")
         return
-    send_signup_msg(client_socket, "primo", "123", "primo@gmail.com")
+    send_signup_msg(client_socket, "primo2", "123", "primo2@gmail.com")
+    try:
+        response = client_socket.recv(100)
+        print(f"Received: {response.decode()}")
+    except Exception as error:
+        print(f"Receive error: {error}")
+        return
+    send_login_msg(client_socket, "primo2", "123")  #trying to login again after signing up 
     try:
         response = client_socket.recv(100)
         print(f"Received: {response.decode()}")
