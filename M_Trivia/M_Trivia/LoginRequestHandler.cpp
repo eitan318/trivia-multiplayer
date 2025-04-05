@@ -1,6 +1,6 @@
 #include "LoginRequestHandler.h"
 
-LoginRequestHandler::LoginRequestHandler()
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
 {
 }
 
@@ -16,36 +16,50 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo& requestInfo)
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
-	RequestResult requestResult;
 	switch (requestInfo.code) {
 	case C_LoginRequest:
 	{
-		LoginRequest request = JsonRequestPacketDeserializer::deserializeLoginRequest(requestInfo.buffer);
-		
-		LoginResponse loginResponse;
-		loginResponse.status = 1;
-
-		requestResult.response = JsonResponsePacketSerializer::serializeResponse(loginResponse);
-		requestResult.newHandler = new LoginRequestHandler();
-		return requestResult;
+		return login(requestInfo);
 	}
 	case C_SignupRequest:
 	{
-		SignupRequest request = JsonRequestPacketDeserializer::deserializeSignupRequest(requestInfo.buffer);
-
-		SignupResponse signupResponse;
-		signupResponse.status = 1;
-
-		requestResult.response = JsonResponsePacketSerializer::serializeResponse(signupResponse);
-		requestResult.newHandler = new LoginRequestHandler();
-		return requestResult;
+		return signup(requestInfo);
 	}
 	default:
 		ErrorResponse errorResponse;
 		errorResponse.message = "Invalid msg code.";
+
+		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
-		requestResult.newHandler = new LoginRequestHandler();
+		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
 
 		return requestResult;
 	}
+}
+
+RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo)
+{
+	LoginRequest request = JsonRequestPacketDeserializer::deserializeLoginRequest(requestInfo.buffer);
+
+	LoginResponse loginResponse;
+	loginResponse.status = this->m_handlerFactory.getLoginManager().login(request.username, request.password);
+
+	RequestResult requestResult;
+	requestResult.response = JsonResponsePacketSerializer::serializeResponse(loginResponse);
+	requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+	return requestResult;
+}
+
+RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo)
+{
+	SignupRequest request = JsonRequestPacketDeserializer::deserializeSignupRequest(requestInfo.buffer);
+
+	SignupResponse signupResponse;
+	signupResponse.status = this->m_handlerFactory.getLoginManager()
+		.signup(request.username, request.password, request.email);
+	
+	RequestResult requestResult;
+	requestResult.response = JsonResponsePacketSerializer::serializeResponse(signupResponse);
+	requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+	return requestResult;
 }

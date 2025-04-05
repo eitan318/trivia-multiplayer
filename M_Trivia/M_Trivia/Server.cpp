@@ -1,8 +1,8 @@
 #include "Server.h"
 
-Server::Server()
+Server::Server() : m_communicator(this->m_handlerFactory) , m_database(new SqliteDatabase())
 {
-
+	this->m_handlerFactory = RequestHandlerFactory();
 }
 
 Server::~Server()

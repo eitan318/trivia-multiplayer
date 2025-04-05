@@ -1,5 +1,6 @@
 #include "LoginManager.h"
 
+
 int LoginManager::signup(const std::string username, const std::string password, const std::string email) 
 {
 	return this->m_database->addNewUser(username, password, email);
@@ -31,3 +32,4 @@ void LoginManager::logout(const std::string username)
 		}
 	}
 }
+
