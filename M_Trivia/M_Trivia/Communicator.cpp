@@ -103,7 +103,7 @@ void Communicator::handleNewClient(SOCKET sock)
             std::cout << "Client probably left";
             break;
         }
-        
+        delete handler;
     }
 
 
