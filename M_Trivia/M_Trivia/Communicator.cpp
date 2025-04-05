@@ -2,7 +2,7 @@
 #include "Helper.h"
 
 
-Communicator::Communicator()
+Communicator::Communicator(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
 {
     // This server uses TCP. Hence, SOCK_STREAM & IPPROTO_TCP
     // If the server uses UDP, use SOCK_DGRAM & IPPROTO_UDP
@@ -74,7 +74,7 @@ void Communicator::bindAndListen()
 
 void Communicator::handleNewClient(SOCKET sock)
 {
-    IRequestHandler* handler = new LoginRequestHandler();
+    IRequestHandler* handler = new LoginRequestHandler(this->m_handlerFactory);
 	this->m_clients.insert({ sock, handler});
 
     Helper::sendData(sock, "Hello");
