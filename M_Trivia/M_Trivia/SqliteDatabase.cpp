@@ -11,7 +11,7 @@ SqliteDatabase::~SqliteDatabase()
 
 bool SqliteDatabase::open()
 {
-	std::string dbFileName = "galleryDB.sqlite";
+	std::string dbFileName = "trivia_db.sqlite";
 
 	int file_exist = _access(dbFileName.c_str(), 0);
 	int res = sqlite3_open(dbFileName.c_str(), &db);
