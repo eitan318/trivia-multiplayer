@@ -18,12 +18,10 @@ enum MessageType : byte
 class Helper
 {
 public:
-	static int getMessageTypeCode(SOCKET sc);
-	static int getIntPartFromSocket(SOCKET sc, int bytesNum);
+	static int getIntFromSocket(SOCKET sc, int bytesNum);
 	static std::string getStringPartFromSocket(SOCKET sc, int bytesNum);
-	static void sendData(SOCKET sc, std::string message);
-	static void send_update_message_to_client(SOCKET sc, const std::string& file_content, const std::string& second_username, const std::string& all_users);
-	static std::string getPaddedNumber(int num, int digits);
+	static void sendData(SOCKET sc, const std::vector<char>& data);
+	static void sendData(SOCKET sc, const std::string& message);
 
 private:
 	static char* getPartFromSocket(SOCKET sc, int bytesNum);

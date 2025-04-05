@@ -5,10 +5,8 @@ import time
 
 def send_msg(client_sock, msg, code):
     try:
-        client_sock.sendall((code).to_bytes(1, 'big'))
-        client_sock.sendall(len(msg).to_bytes(4, 'big'))
-        client_sock.sendall(msg.encode())
-        print(f"Sent: {msg}")
+        data = (code).to_bytes(1, 'big') + len(msg).to_bytes(4, 'big') + msg.encode()
+        client_sock.sendall(data)
     except Exception as error:
         print(f"Send error: {error}")
         return
@@ -30,7 +28,7 @@ def communicate(client_socket):
     if response != b"Hello":
         return
     
-    client_socket.sendall("Hello".encode())
+    client_socket.sendall(b"Hello")
     send_login_msg(client_socket, "primo", "123")
     try:
         response = client_socket.recv(100)
@@ -38,13 +36,13 @@ def communicate(client_socket):
     except Exception as error:
         print(f"Receive error: {error}")
         return
-    #send_signup_msg(client_socket, "primo", "123", "primo@gmail.com")
-    #try:
-        #response = client_socket.recv(100)
-        #print(f"Received: {response.decode()}")
-    #except Exception as error:
-        #print(f"Receive error: {error}")
-        #return
+    send_signup_msg(client_socket, "primo", "123", "primo@gmail.com")
+    try:
+        response = client_socket.recv(100)
+        print(f"Received: {response.decode()}")
+    except Exception as error:
+        print(f"Receive error: {error}")
+        return
 
     # Simulate keeping the connection alive
     try:
