@@ -74,10 +74,30 @@ void Communicator::bindAndListen()
 
 void Communicator::handleNewClient(SOCKET sock)
 {
-	this->m_clients.insert({ sock, new LoginRequestHandler() });
+    IRequestHandler* handler = new LoginRequestHandler();
+	this->m_clients.insert({ sock, handler});
+
     Helper::sendData(sock, "Hello");
+
     std::string msg = Helper::getStringPartFromSocket(sock, 5);
     std::cout << "Recieved: " << msg << std::endl;
+
+    while (true) {
+        RequestInfo requestInfo;
+
+        requestInfo.code = Helper::getIntFromSocket(sock, 1);
+        int msgLen = Helper::getIntFromSocket(sock, sizeof(int));
+        std::string msgStr = Helper::getStringPartFromSocket(sock, msgLen);
+        std::cout << "Recieved: " << msgStr << std::endl;
+        requestInfo.buffer = std::vector<char>(msgStr.begin(), msgStr.end());
+
+        RequestResult requestResult = handler->handleRequest(requestInfo);
+        if(handler != requestResult.newHandler)
+            delete handler;
+        handler = requestResult.newHandler;
+        this->m_clients.at(sock) = handler;
+        Helper::sendData(sock, requestResult.response);
+    }
 
 
 }

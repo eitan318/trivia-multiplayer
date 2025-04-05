@@ -6,62 +6,37 @@
 
 using std::string;
 
-// recieves the type code of the message from socket (3 bytes)
-// and returns the code. if no message found in the socket returns 0 (which means the client disconnected)
-int Helper::getMessageTypeCode(SOCKET sc)
+
+int Helper::getIntFromSocket(SOCKET sc, int bytesNum)
 {
-	char* s = getPartFromSocket(sc, 3);
-	std::string msg(s);
+	std::vector<char> buffer(bytesNum);
+	int res = recv(sc, buffer.data(), bytesNum, 0);
+	if (res == SOCKET_ERROR)
+	{
+		throw std::exception("Error while receiving int from socket");
+	}
 
-	if (msg == "")
-		return 0;
-
-	int res = std::atoi(s);
-	delete s;
-	return  res;
+	int value = 0;
+	for (int i = 0; i < bytesNum; ++i)
+	{
+		value = (value << 8) | (unsigned char)buffer[i];
+	}
+	return value;
 }
 
 
-void Helper::send_update_message_to_client(SOCKET sc, const string& file_content, const string& second_username, const string &all_users)
+std::string Helper::getStringPartFromSocket(SOCKET sc, int bytesNum)
 {
-	//TRACE("all users: %s\n", all_users.c_str())
-	const string code = std::to_string(MT_SERVER_UPDATE);
-	const string current_file_size = getPaddedNumber(file_content.size(), 5);
-	const string username_size = getPaddedNumber(second_username.size(), 2);
-	const string all_users_size = getPaddedNumber(all_users.size(), 5);
-	const string res = code + current_file_size + file_content + username_size + second_username + all_users_size + all_users;
-	//TRACE("message: %s\n", res.c_str());
-	sendData(sc, res);
+	std::vector<char> buffer(bytesNum);
+	int res = recv(sc, buffer.data(), bytesNum, 0);
+	if (res == SOCKET_ERROR)
+	{
+		throw std::exception("Error while receiving from socket");
+	}
+	return std::string(buffer.begin(), buffer.begin() + res);
 }
 
-// recieve data from socket according byteSize
-// returns the data as int
-int Helper::getIntPartFromSocket(SOCKET sc, int bytesNum)
-{
-	char* s = getPartFromSocket(sc, bytesNum, 0);
-	return atoi(s);
-}
 
-// recieve data from socket according byteSize
-// returns the data as string
-string Helper::getStringPartFromSocket(SOCKET sc, int bytesNum)
-{
-	char* s = getPartFromSocket(sc, bytesNum, 0);
-	string res(s);
-	return res;
-}
-
-// return string after padding zeros if necessary
-string Helper::getPaddedNumber(int num, int digits)
-{
-	std::ostringstream ostr;
-	ostr << std::setw(digits) << std::setfill('0') << num;
-	return ostr.str();
-
-}
-
-// recieve data from socket according byteSize
-// this is private function
 char* Helper::getPartFromSocket(SOCKET sc, int bytesNum)
 {
 	return getPartFromSocket(sc, bytesNum, 0);
@@ -89,13 +64,19 @@ char* Helper::getPartFromSocket(SOCKET sc, int bytesNum, int flags)
 	return data;
 }
 
-// send data to socket
-// this is private function
-void Helper::sendData(SOCKET sc, std::string message)
+void Helper::sendData(SOCKET sc, const std::vector<char>& data)
+{
+	if (send(sc, data.data(), data.size(), 0) == SOCKET_ERROR)
+	{
+		throw std::exception("Error while sending message to client");
+	}
+}
+
+void Helper::sendData(SOCKET sc, const std::string& message)
 {
 	const char* data = message.c_str();
 
-	if (send(sc, data, message.size(), 0) == INVALID_SOCKET)
+	if (send(sc, data, message.size(), 0) == SOCKET_ERROR)
 	{
 		throw std::exception("Error while sending message to client");
 	}
