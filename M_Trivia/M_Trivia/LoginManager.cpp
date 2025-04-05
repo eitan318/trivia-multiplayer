@@ -1,13 +1,20 @@
 #include "LoginManager.h"
 
-
+LoginManager::LoginManager(IDatabase& database)
+{
+	this->m_database = &database;
+}
 int LoginManager::signup(const std::string username, const std::string password, const std::string email) 
 {
+	if (this->m_database->doesUserExist(username)) 
+	{
+		return false;
+	}
 	return this->m_database->addNewUser(username, password, email);
 }
 int LoginManager::login(const std::string username, const std::string password)
 {
-	if (!this->m_database->doesUserExist(password)) 
+	if (!this->m_database->doesUserExist(username)) 
 	{
 		return false;
 	}
