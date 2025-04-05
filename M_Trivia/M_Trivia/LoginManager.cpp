@@ -22,5 +22,12 @@ int LoginManager::login(const std::string username, const std::string password)
 }
 void LoginManager::logout(const std::string username)
 {
-	return
+	for (auto loggedUser = this->m_loggedUsers.begin(); loggedUser != this->m_loggedUsers.end(); ++loggedUser) //goes through the vector
+	{
+		if (loggedUser->m_username == username) //if 
+		{
+			this->m_loggedUsers.erase(loggedUser);
+			return; //stops after removing
+		}
+	}
 }
