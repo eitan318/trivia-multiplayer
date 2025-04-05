@@ -14,7 +14,7 @@ int LoginManager::signup(const std::string username, const std::string password,
 }
 int LoginManager::login(const std::string username, const std::string password)
 {
-	if (!this->m_database->doesUserExist(password)) 
+	if (!this->m_database->doesUserExist(username)) 
 	{
 		return false;
 	}
