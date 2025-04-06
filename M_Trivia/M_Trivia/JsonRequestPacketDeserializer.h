@@ -2,6 +2,7 @@
 #include <vector>
 #include "Requests.hpp"
 #include "json.hpp"
+#include <regex>
 
 #define MSG_CODE_SIZE 1
 

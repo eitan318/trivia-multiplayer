@@ -71,10 +71,9 @@ int SqliteDatabase::doesPasswordMatch(const std::string& username, const std::st
 	}
 }
 
-int SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email, const std::string& houseAddres,
-	const std::string& phoneNumber, const std::string& birthDate)
+int SqliteDatabase::addNewUser(const UserRecord& userRecord)
 {
-	const char* query = "INSERT INTO users (username, password, email, house_addres, phone_number, birth_date) VALUES (?,?,?,?,?,?)";
+	const char* query = "INSERT INTO users (username, password, email, house_address, phone_number, birth_date) VALUES (?,?,?,?,?,?)";
 	sqlite3_stmt* stmt;
 
 	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
@@ -82,12 +81,12 @@ int SqliteDatabase::addNewUser(const std::string& username, const std::string& p
 		return false;
 	}
 
-	sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text(stmt, 2, password.c_str(), -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text(stmt, 3, email.c_str(), -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text(stmt, 4, houseAddres.c_str(), -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text(stmt, 5, phoneNumber.c_str(), -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text(stmt, 6, birthDate.c_str(), -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(stmt, 1, userRecord.username.c_str(), -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(stmt, 2, userRecord.password.c_str(), -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(stmt, 3, userRecord.email.c_str(), -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(stmt, 4, userRecord.houseAddress.c_str(), -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(stmt, 5, userRecord.phoneNumber.c_str(), -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(stmt, 6, userRecord.birthDate.c_str(), -1, SQLITE_TRANSIENT);
 
 	if (sqlite3_step(stmt) == SQLITE_DONE) {
 		sqlite3_finalize(stmt);
@@ -95,7 +94,7 @@ int SqliteDatabase::addNewUser(const std::string& username, const std::string& p
 	}
 	else {
 		sqlite3_finalize(stmt);
-		throw std::runtime_error(std::string("Error: ") + username);
+		throw std::runtime_error(std::string("Error: ") + userRecord.username);
 	}
 }
 
@@ -110,7 +109,7 @@ bool SqliteDatabase::createUsersTable() {
             username TEXT PRIMARY KEY,
             password TEXT NOT NULL,
             email TEXT,
-			house_addres TEXT,
+			house_address TEXT,
 			phone_number TEXT,
 			birth_date TEXT
         )

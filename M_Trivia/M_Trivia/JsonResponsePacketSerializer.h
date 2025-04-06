@@ -3,6 +3,7 @@
 #include "Responses.hpp"
 #include "json.hpp"
 
+
 #define MSG_CODE_SIZE 1
 
 class JsonResponsePacketSerializer

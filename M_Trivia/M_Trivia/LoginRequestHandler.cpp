@@ -52,12 +52,22 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo)
 
 RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo)
 {
-	SignupRequest request = JsonRequestPacketDeserializer::deserializeSignupRequest(requestInfo.buffer);
+	SignupRequest request;
+	try {
+		request = JsonRequestPacketDeserializer::deserializeSignupRequest(requestInfo.buffer);
+	}
+	catch (const std::runtime_error& e) {
+		RequestResult res;
+		ErrorResponse errResponse;
+		errResponse.message = e.what();
+		res.response = JsonResponsePacketSerializer::serializeResponse(errResponse);
+		res.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+		return res;
+	}
 
-	SignupResponse signupResponse;
-	signupResponse.status = this->m_handlerFactory.getLoginManager()
-		.signup(request.username, request.password, request.email);
 	
+	SignupResponse signupResponse;
+	signupResponse.status = this->m_handlerFactory.getLoginManager().signup(request.userRecord);
 	RequestResult requestResult;
 	requestResult.response = JsonResponsePacketSerializer::serializeResponse(signupResponse);
 	requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
