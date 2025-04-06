@@ -71,9 +71,10 @@ int SqliteDatabase::doesPasswordMatch(const std::string& username, const std::st
 	}
 }
 
-int SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email)
+int SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email, const std::string& houseAddres,
+	const std::string& phoneNumber, const std::string& birthDate)
 {
-	const char* query = "INSERT INTO users (username, password, email) VALUES (?,?,?)";
+	const char* query = "INSERT INTO users (username, password, email, house_addres, phone_number, birth_date) VALUES (?,?,?,?,?,?)";
 	sqlite3_stmt* stmt;
 
 	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
@@ -84,6 +85,9 @@ int SqliteDatabase::addNewUser(const std::string& username, const std::string& p
 	sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text(stmt, 2, password.c_str(), -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text(stmt, 3, email.c_str(), -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(stmt, 4, houseAddres.c_str(), -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(stmt, 5, phoneNumber.c_str(), -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(stmt, 6, birthDate.c_str(), -1, SQLITE_TRANSIENT);
 
 	if (sqlite3_step(stmt) == SQLITE_DONE) {
 		sqlite3_finalize(stmt);
@@ -105,7 +109,10 @@ bool SqliteDatabase::createUsersTable() {
         CREATE TABLE Users (
             username TEXT PRIMARY KEY,
             password TEXT NOT NULL,
-            email TEXT
+            email TEXT,
+			house_addres TEXT,
+			phone_number TEXT,
+			birth_date TEXT
         )
     )";
 	sqlite3_stmt* stmt;
