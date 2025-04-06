@@ -14,7 +14,7 @@ public:
 	bool close();
 	int doesUserExist(const std::string&);
 	int doesPasswordMatch(const std::string&, const std::string&);
-	int addNewUser(const std::string&, const std::string&, const std::string&);
+	int addNewUser(const UserRecord&);
 private:
 	bool createInitialDB();
 	bool createUsersTable();

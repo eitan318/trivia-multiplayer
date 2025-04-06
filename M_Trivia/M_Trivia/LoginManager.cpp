@@ -4,13 +4,13 @@ LoginManager::LoginManager(IDatabase& database)
 {
 	this->m_database = &database;
 }
-int LoginManager::signup(const std::string username, const std::string password, const std::string email) 
+int LoginManager::signup(const UserRecord& userRecord) 
 {
-	if (this->m_database->doesUserExist(username)) 
+	if (this->m_database->doesUserExist(userRecord.username)) 
 	{
 		return false;
 	}
-	return this->m_database->addNewUser(username, password, email);
+	return this->m_database->addNewUser(userRecord);
 }
 int LoginManager::login(const std::string username, const std::string password)
 {

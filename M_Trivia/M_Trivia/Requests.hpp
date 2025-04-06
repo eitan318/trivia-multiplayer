@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "UserRecord.hpp"
 
 enum RequestsCodes {
 	C_LoginRequest = 1,
@@ -12,7 +13,5 @@ struct LoginRequest {
 };
 
 struct SignupRequest {
-	std::string username;
-	std::string password;
-	std::string email;
+	UserRecord userRecord;
 };
