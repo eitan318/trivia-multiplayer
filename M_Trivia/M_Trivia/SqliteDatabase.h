@@ -3,6 +3,10 @@
 #include "sqlite3.h"
 #include <io.h>
 #include <iostream>
+#include "MyException.h"
+#include "ApiClient.h"
+#include "json.hpp"
+
 
 class SqliteDatabase : public IDatabase
 {
@@ -20,6 +24,9 @@ private:
 	SqliteDatabase& operator=(const SqliteDatabase&) = delete;
 	bool createInitialDB();
 	bool createUsersTable();
+	bool createQuestionsTable();
+	bool addQuestions(int amount);
+
 	static SqliteDatabase* _instance;
 	sqlite3* db;
 };
