@@ -6,9 +6,9 @@ class RoomManager {
 private:
 	std::map<int, Room> m_rooms;
 public:
-	void createRoom(LoggedUser player, RoomData roomData);
+	void createRoom(LoggedUser& player, RoomData& roomData);
 	void deleteRoom(int ID);
-	bool getRoomState(int Id);
+	bool getRoomState(int ID);
 	std::vector<RoomData> getRooms();
 	Room& getRoom(int ID);
 };

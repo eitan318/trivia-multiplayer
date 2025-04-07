@@ -2,6 +2,7 @@
 #include "LoginManager.h"
 #include "LoginRequestHandler.h"
 #include "IDatabase.h"
+#include "RoomManager.h"
 
 
 class LoginRequestHandler;
@@ -12,7 +13,9 @@ public:
 	static RequestHandlerFactory& getInstance(IDatabase& database);
 	LoginRequestHandler* createLoginRequestHandler();
 	LoginManager& getLoginManager();
+	RoomManager& getRoomManger();
 private:
+	RoomManager& m_roomManager;
 	IDatabase* m_database;
 	LoginManager& m_loginManager;
 	RequestHandlerFactory(IDatabase& database);

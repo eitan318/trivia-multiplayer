@@ -21,3 +21,8 @@ LoginManager& RequestHandlerFactory::getLoginManager()
 {
 	return this->m_loginManager;
 }
+
+RoomManager& RequestHandlerFactory::getRoomManger()
+{
+	return this->m_roomManager;
+}

@@ -8,7 +8,11 @@ private:
 	RoomData m_metadata;
 	std::vector<LoggedUser> m_users;
 public:
+	Room(RoomData& roomdata, LoggedUser& user);
+	~Room();
 	void addUser(LoggedUser& loggeduser);
 	void removeUser(LoggedUser& loggeduser);
 	std::vector<std::string> getAllUsers();
+	RoomData getRoomData();
+	void setRoomData(RoomData& roomdata);
 };
