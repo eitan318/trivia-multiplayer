@@ -8,5 +8,5 @@ struct RoomData {
 	unsigned int maxPlayers;
 	unsigned int numOfQuestionsInGame;
 	unsigned int timePerQuestion;
-	//RoomStatus status;
+	bool status;
 };
