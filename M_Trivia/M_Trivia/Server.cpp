@@ -11,6 +11,12 @@ Server::~Server()
 	delete this->m_database;
 }
 
+Server& Server::getInstance()
+{
+	static Server instance;
+	return instance;
+}
+
 void Server::run()
 {
 	//this->m_database = new SqliteDatabase();

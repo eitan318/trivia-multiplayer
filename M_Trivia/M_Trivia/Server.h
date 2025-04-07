@@ -13,9 +13,12 @@ private:
 	Communicator& m_communicator;
 	IDatabase* m_database;
 	RequestHandlerFactory& m_handlerFactory;
-public:
 	Server();
 	~Server();
+	Server(const Server&) = delete;
+	Server& operator=(const Server&) = delete;
+public:
+	static Server& getInstance();
 	void run();
 };
 
