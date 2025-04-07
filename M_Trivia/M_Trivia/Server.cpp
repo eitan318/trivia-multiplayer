@@ -4,11 +4,12 @@ Server::Server()
 	: m_database(SqliteDatabase::getInstance()),
 	m_handlerFactory(RequestHandlerFactory::getInstance(*m_database)),
 	m_communicator(Communicator::getInstance(m_handlerFactory))
-{}
+{
+}
 
 Server::~Server()
 {
-	delete this->m_database;
+	// Do NOT delete m_database since it's a singleton.
 }
 
 Server& Server::getInstance()
@@ -19,10 +20,9 @@ Server& Server::getInstance()
 
 void Server::run()
 {
-	//this->m_database = new SqliteDatabase();
-	this->m_database->open();
-	this->m_communicator.bindAndListen();
-	std::thread t_connector = std::thread(&Communicator::startHandleRequest, &this->m_communicator);
+	m_database->open();
+	m_communicator.bindAndListen();
+	std::thread t_connector(&Communicator::startHandleRequest, &m_communicator);
 	t_connector.detach();
 
 	std::cout << "Write to server:" << std::endl;
@@ -31,5 +31,4 @@ void Server::run()
 		std::cout << ">>> ";
 		std::getline(std::cin, input);
 	} while (input != "EXIT");
-
 }
