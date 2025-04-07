@@ -1,7 +1,7 @@
 #include "Server.h"
 
 Server::Server()
-	: m_database(new SqliteDatabase()),
+	: m_database(SqliteDatabase::getInstance()),
 	m_handlerFactory(*m_database),
 	m_communicator(m_handlerFactory)
 {}
