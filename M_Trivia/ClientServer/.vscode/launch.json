@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug Server",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/server.py",
+        "console": "integratedTerminal"
+      },
+      {
+        "name": "Debug Client",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/client.py",
+        "console": "integratedTerminal"
+      }
+    ],
+    "compounds": [
+      {
+        "name": "Debug Both",
+        "configurations": ["Debug Server", "Debug Client"]
+      }
+    ]
+  }
+  
