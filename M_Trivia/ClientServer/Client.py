@@ -1,21 +1,31 @@
 import socket
 import time
-
-
+import json
 
 def send_msg(client_sock, msg, code):
     try:
-        data = (code).to_bytes(1, 'big') + len(msg).to_bytes(4, 'big') + msg.encode()
+        data = code.to_bytes(1, 'big') + len(msg).to_bytes(4, 'big') + msg.encode('utf-8')
         client_sock.sendall(data)
     except Exception as error:
         print(f"Send error: {error}")
-        return
 
 def send_login_msg(client_sock, username, password):
-    send_msg(client_sock, f'{{"username": "{username}", "password": "{password}"}}', 1)
+    msg = json.dumps({
+        "username": username,
+        "password": password
+    })
+    send_msg(client_sock, msg, 1)
 
-def send_signup_msg(client_sock, username, password, mail):
-    send_msg(client_sock, f'{{"username": "{username}", "password": "{password}", "email": "{mail}"}}', 2)
+def send_signup_msg(client_sock, username, password, mail, house_addr, phone_number, birth_date):
+    msg = json.dumps({
+        "username": username,
+        "password": password,
+        "email": mail,
+        "house_address": house_addr,
+        "phone_number": phone_number,
+        "birth_date": birth_date
+    })
+    send_msg(client_sock, msg, 2)
 
 def communicate(client_socket):
     try:
@@ -29,21 +39,21 @@ def communicate(client_socket):
         return
     
     client_socket.sendall(b"Hello")
-    send_login_msg(client_socket, "primo", "123")
+    send_login_msg(client_socket, "primo2", "12345678Ab#")
     try:
         response = client_socket.recv(100)
         print(f"Received: {response.decode()}")
     except Exception as error:
         print(f"Receive error: {error}")
         return
-    send_signup_msg(client_socket, "primo2", "123", "primo2@gmail.com")
+    send_signup_msg(client_socket, "primo2", "12345678Ab#", "primo2@gmail.com", "brosh, 5, Netania", "054-2877748", "23/11/2008")
     try:
         response = client_socket.recv(100)
         print(f"Received: {response.decode()}")
     except Exception as error:
         print(f"Receive error: {error}")
         return
-    send_login_msg(client_socket, "primo2", "123")  #trying to login again after signing up 
+    send_login_msg(client_socket, "primo2", "12345678Ab#")  #trying to login again after signing up 
     try:
         response = client_socket.recv(100)
         print(f"Received: {response.decode()}")

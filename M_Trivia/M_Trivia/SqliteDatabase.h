@@ -16,6 +16,8 @@ public:
 private:
 	~SqliteDatabase();
 	SqliteDatabase() { };
+	SqliteDatabase(const SqliteDatabase&) = delete;
+	SqliteDatabase& operator=(const SqliteDatabase&) = delete;
 	bool createInitialDB();
 	bool createUsersTable();
 	static SqliteDatabase* _instance;

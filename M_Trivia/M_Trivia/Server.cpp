@@ -2,7 +2,7 @@
 
 Server::Server()
 	: m_database(SqliteDatabase::getInstance()),
-	m_handlerFactory(*m_database),
+	m_handlerFactory(RequestHandlerFactory::getInstance(*m_database)),
 	m_communicator(m_handlerFactory)
 {}
 
