@@ -4,7 +4,12 @@ LoginManager::LoginManager(IDatabase& database)
 {
 	this->m_database = &database;
 }
-int LoginManager::signup(const UserRecord& userRecord) 
+LoginManager& LoginManager::getInstance(IDatabase& database)
+{
+	static LoginManager instance(database);
+	return instance;
+}
+int LoginManager::signup(const UserRecord& userRecord)
 {
 	if (this->m_database->doesUserExist(userRecord.username)) 
 	{

@@ -9,8 +9,12 @@ class LoginManager {
 private:
 	IDatabase* m_database;
 	std::vector<LoggedUser> m_loggedUsers;
-public:
 	LoginManager(IDatabase& database);
+	~LoginManager() = default;
+	LoginManager (const LoginManager&) = delete;
+	LoginManager& operator=(const LoginManager&) = delete;
+public:
+	static LoginManager& getInstance(IDatabase& database);
 	int signup(const UserRecord&);
 	int login(const std::string username, const std::string password);
 	void logout(const std::string username);

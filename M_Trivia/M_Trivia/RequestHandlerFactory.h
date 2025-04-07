@@ -14,7 +14,7 @@ public:
 	LoginManager& getLoginManager();
 private:
 	IDatabase* m_database;
-	LoginManager m_loginManager;
+	LoginManager& m_loginManager;
 	RequestHandlerFactory(IDatabase& database);
 	RequestHandlerFactory(const RequestHandlerFactory&) = delete;
 	RequestHandlerFactory& operator=(const RequestHandlerFactory&) = delete;

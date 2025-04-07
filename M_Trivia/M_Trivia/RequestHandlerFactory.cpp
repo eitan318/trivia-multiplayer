@@ -2,7 +2,7 @@
 
 
 RequestHandlerFactory::RequestHandlerFactory(IDatabase& database)
-	: m_database(&database), m_loginManager(database)
+	: m_database(&database), m_loginManager(LoginManager::getInstance(database))
 {}
 
 
