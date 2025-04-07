@@ -10,7 +10,7 @@
 class Server
 {
 private:
-	Communicator m_communicator;
+	Communicator& m_communicator;
 	IDatabase* m_database;
 	RequestHandlerFactory& m_handlerFactory;
 public:
