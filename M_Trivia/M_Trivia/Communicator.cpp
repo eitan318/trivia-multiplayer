@@ -25,6 +25,12 @@ Communicator::~Communicator()
     }
 }
 
+Communicator& Communicator::getInstance(RequestHandlerFactory& handlerFactory)
+{
+    static Communicator instance(handlerFactory);
+    return instance;
+}
+
 void Communicator::startHandleRequest()
 {
     while (true) {

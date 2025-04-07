@@ -72,6 +72,9 @@
     <ClInclude Include="LoggedUser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UserRecord.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Helper.cpp">
@@ -95,9 +98,6 @@
     <ClCompile Include="JsonResponsePacketSerializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IRequestHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="JsonRequestPacketDeserializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -108,6 +108,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LoginManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestHandlerFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

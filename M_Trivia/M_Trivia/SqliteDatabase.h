@@ -7,17 +7,20 @@
 class SqliteDatabase : public IDatabase
 {
 public:
-	SqliteDatabase();
-	~SqliteDatabase();
-
+	static SqliteDatabase* getInstance();
 	bool open();
 	bool close();
 	int doesUserExist(const std::string&);
 	int doesPasswordMatch(const std::string&, const std::string&);
 	int addNewUser(const UserRecord&);
 private:
+	~SqliteDatabase();
+	SqliteDatabase() { };
+	SqliteDatabase(const SqliteDatabase&) = delete;
+	SqliteDatabase& operator=(const SqliteDatabase&) = delete;
 	bool createInitialDB();
 	bool createUsersTable();
+	static SqliteDatabase* _instance;
 	sqlite3* db;
 };
 

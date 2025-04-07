@@ -8,11 +8,14 @@ class LoginRequestHandler;
 
 
 class RequestHandlerFactory {
-private:
-	IDatabase* m_database;
-	LoginManager m_loginManager;	
 public:
-	RequestHandlerFactory(IDatabase& database);
+	static RequestHandlerFactory& getInstance(IDatabase& database);
 	LoginRequestHandler* createLoginRequestHandler();
 	LoginManager& getLoginManager();
+private:
+	IDatabase* m_database;
+	LoginManager& m_loginManager;
+	RequestHandlerFactory(IDatabase& database);
+	RequestHandlerFactory(const RequestHandlerFactory&) = delete;
+	RequestHandlerFactory& operator=(const RequestHandlerFactory&) = delete;
 };

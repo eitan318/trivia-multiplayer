@@ -1,12 +1,22 @@
 #include "SqliteDatabase.h"
+
+SqliteDatabase* SqliteDatabase::_instance = nullptr;
 	
-SqliteDatabase::SqliteDatabase()
-{
-}
 
 SqliteDatabase::~SqliteDatabase()
 {
 	close(); 
+}
+
+SqliteDatabase* SqliteDatabase::getInstance()
+{
+	if (_instance == nullptr) {
+		_instance = new SqliteDatabase();
+	}
+	else {
+		throw std::exception("Cannot instansiate a singleton twice. Eitan");
+	}
+	return _instance;
 }
 
 bool SqliteDatabase::open()
