@@ -1,26 +1,13 @@
-#include "JsonRequestPacketDeserializer.h"
+#pragma once
+#include <regex>
+#include "UserRecord.hpp"
+#include "json.hpp"
+
+struct SignupRequest {
+	UserRecord userRecord;
 
 
-LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const std::vector<char>& buffer)
-{
-    try {
-        nlohmann::json j = nlohmann::json::parse(buffer);
-        LoginRequest request;
-        request.username = j["username"];
-        request.password = j["password"];
-
-        return request;
-    }
-    catch (const nlohmann::json::exception& e) {
-        throw std::runtime_error(std::string("SignupRequest parse error: ") + e.what());
-    }
-
-}
-
-SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const std::vector<char>& buffer) {
-    try {
-        nlohmann::json j = nlohmann::json::parse(buffer);
-
+	friend void from_json(const nlohmann::json& j, SignupRequest& request) {
         const std::string username = j.at("username");
         const std::string password = j.at("password");
         const std::string email = j.at("email");
@@ -63,14 +50,6 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const std:
         }
 
         // All fields passed validation
-        SignupRequest request{
-            UserRecord(username, password, email, address, phone, birthDate)
-        };
-
-        return request;
+        request.userRecord = UserRecord(username, password, email, address, phone, birthDate);
     }
-    catch (const nlohmann::json::exception& e) {
-        throw std::runtime_error(std::string("SignupRequest parse error: ") + e.what());
-    }
-}
-
+};
