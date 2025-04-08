@@ -376,6 +376,44 @@ float SqliteDatabase::getAvgAnswerTime(const std::string& username)
 
 
 
+std::list<BestScoreInfo> SqliteDatabase::getBestScores(int limit)
+{
+	const char* query = R"(
+        SELECT a.username, a.game_id, g.name AS game_name, SUM(a.score) AS total_score
+        FROM answers a
+        JOIN Games g ON a.game_id = g.id
+        GROUP BY a.game_id, a.username
+        ORDER BY total_score DESC
+        LIMIT ?;
+    )";
+
+	sqlite3_stmt* stmt;
+	std::list<BestScoreInfo> results;
+
+	// Prepare the SQL query
+	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+		std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+		throw std::runtime_error("Failed to prepare SQL statement.");
+	}
+
+	sqlite3_bind_int(stmt, 1, limit);
+
+	while (sqlite3_step(stmt) == SQLITE_ROW) {
+		BestScoreInfo bsi;
+		bsi.username = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
+		bsi.game_id = sqlite3_column_int(stmt, 1);
+		bsi.game_name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+		bsi.total_score = sqlite3_column_int(stmt, 3);
+
+		results.push_back(bsi);
+	}
+
+	sqlite3_finalize(stmt);
+
+	return results;
+}
+
+
 
 
 

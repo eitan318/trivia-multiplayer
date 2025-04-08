@@ -7,6 +7,13 @@
 #include "ApiClient.h"
 #include "json.hpp"
 
+struct BestScoreInfo {
+	std::string username;
+	std::string game_name;
+	int total_score;
+	int game_id;
+};
+
 
 class SqliteDatabase : public IDatabase
 {
@@ -32,6 +39,8 @@ private:
 	int getNumOfTotalCorrectAnswers(const std::string& username);
 	int getNumOfPlayerGames(const std::string& username);
 	float getAvgAnswerTime(const std::string& username);
+	std::list<BestScoreInfo> getBestScores(int limit);
+
 
 	static SqliteDatabase* _instance;
 	sqlite3* db;
