@@ -2,6 +2,7 @@
 #include "IDatabase.h"
 #include "sqlite3.h"
 #include <io.h>
+#include <string>
 #include <iostream>
 #include "MyException.h"
 #include "ApiClient.h"
@@ -33,6 +34,7 @@ private:
 	int getNumOfPlayerGames(const std::string& username);
 	double getAvgAnswerTime(const std::string& username);
 	std::list<HighScoreInfo> getBestScores(int limit);
+	std::list<Question> getQuestions(int amount);
 
 
 	static SqliteDatabase* _instance;
