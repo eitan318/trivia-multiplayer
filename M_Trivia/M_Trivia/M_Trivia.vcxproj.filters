@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Exceptions">
+      <UniqueIdentifier>{70db67de-644c-48eb-b84f-8a9d34e67937}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h">
@@ -84,6 +87,9 @@
     <ClInclude Include="RoomManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ApiClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Helper.cpp">
@@ -126,6 +132,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RoomManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MyException.h">
+      <Filter>Header Files\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="ApiClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
