@@ -3,13 +3,9 @@
 #include <list>
 #include "UserRecord.hpp"
 #include "Question.hpp"
+#include "HighScoreinfo.hpp"
 
-struct HighScoreInfo {
-	std::string username;
-	std::string game_name;
-	int total_score;
-	int game_id;
-};
+
 
 
 class IDatabase {

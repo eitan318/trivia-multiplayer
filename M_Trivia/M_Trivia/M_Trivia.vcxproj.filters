@@ -96,6 +96,12 @@
     <ClInclude Include="PlayerStatistics.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Question.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HighScoreInfo.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Helper.cpp">
