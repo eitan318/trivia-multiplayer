@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include "json.hpp"
+
 
 struct PersonalStatistics {
     std::string username;
@@ -14,3 +16,15 @@ struct PersonalStatistics {
         totalAnswers(totalAns), avgAnswerTime(avgTime) {
     }
 };
+
+
+// Define to_json for PersonalStatistics
+inline void to_json(nlohmann::json& j, const PersonalStatistics& personalStatistics) {
+    j = nlohmann::json{
+        {"username", personalStatistics.username},
+        {"avg_answer_time", personalStatistics.avgAnswerTime},
+        {"games_played", personalStatistics.gamesPlayed},
+        {"total_answers", personalStatistics.totalAnswers},
+        {"total_correct_answers", personalStatistics.totalCorrectAnswers}
+    };
+}
