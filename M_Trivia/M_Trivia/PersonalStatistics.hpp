@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-struct PlayerStatistics {
+struct PersonalStatistics {
     std::string username;
     int totalCorrectAnswers;
     int gamesPlayed;
@@ -9,7 +9,7 @@ struct PlayerStatistics {
     double avgAnswerTime;
 
     // Constructor to initialize all members
-    PlayerStatistics(const std::string& user, int totalCorrect, int games, int totalAns, double avgTime)
+    PersonalStatistics(const std::string& user, int totalCorrect, int games, int totalAns, double avgTime)
         : username(user), totalCorrectAnswers(totalCorrect), gamesPlayed(games),
         totalAnswers(totalAns), avgAnswerTime(avgTime) {
     }

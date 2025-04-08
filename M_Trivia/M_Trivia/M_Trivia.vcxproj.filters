@@ -93,7 +93,7 @@
     <ClInclude Include="StatisticsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerStatistics.hpp">
+    <ClInclude Include="PersonalStatistics.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Question.hpp">

@@ -1,6 +1,6 @@
 #pragma once
 #include "IDatabase.h"
-#include "PlayerStatistics.hpp"
+#include "PersonalStatistics.hpp"
 #include <list>
 
 
@@ -16,6 +16,6 @@ private:
 public:
 	static StatisticsManager& getInstance(IDatabase& database);
 	std::list<HighScoreInfo> getBestScores(int limit);
-	PlayerStatistics getPlayerStatistics(const std::string& username);
+	PersonalStatistics getPlayerStatistics(const std::string& username);
 };
 

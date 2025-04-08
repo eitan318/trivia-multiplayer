@@ -138,7 +138,7 @@
     <ClInclude Include="LoggedUser.h" />
     <ClInclude Include="LoginManager.h" />
     <ClInclude Include="Question.hpp" />
-    <ClInclude Include="PlayerStatistics.hpp" />
+    <ClInclude Include="PersonalStatistics.hpp" />
     <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="RequestInfo.hpp" />
     <ClInclude Include="RequestResult.hpp" />

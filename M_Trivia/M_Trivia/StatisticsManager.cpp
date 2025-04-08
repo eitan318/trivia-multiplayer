@@ -11,9 +11,9 @@ std::list<HighScoreInfo> StatisticsManager::getBestScores(int limit)
     return this->m_db->getBestScores(limit);
 }
 
-PlayerStatistics StatisticsManager::getPlayerStatistics(const std::string& username)
+PersonalStatistics StatisticsManager::getPlayerStatistics(const std::string& username)
 {
-    return PlayerStatistics(
+    return PersonalStatistics(
         username,
         this->m_db->getNumOfTotalCorrectAnswers(username),
         this->m_db->getNumOfTotalAnswers(username),
