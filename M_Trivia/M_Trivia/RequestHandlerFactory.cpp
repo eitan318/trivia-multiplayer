@@ -20,12 +20,17 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 	return new LoginRequestHandler(*this);
 }
 
-LoginManager& RequestHandlerFactory::getLoginManager()
+LoginManager& RequestHandlerFactory::getLoginManager() const
 {
 	return this->m_loginManager;
 }
 
-RoomManager& RequestHandlerFactory::getRoomManger()
+RoomManager& RequestHandlerFactory::getRoomManger() const
 {
 	return this->m_roomManager;
+}
+
+StatisticsManager& RequestHandlerFactory::getStatusticsManger() const
+{
+	return this->m_statisticsManager;
 }
