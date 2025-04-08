@@ -90,6 +90,12 @@
     <ClInclude Include="ApiClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="StatisticsManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStatistics.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Helper.cpp">
@@ -138,6 +144,9 @@
       <Filter>Header Files\Exceptions</Filter>
     </ClCompile>
     <ClCompile Include="ApiClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StatisticsManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -137,6 +137,7 @@
     <ClInclude Include="LoggedUser.h" />
     <ClInclude Include="LoginManager.h" />
     <ClInclude Include="Question.hpp" />
+    <ClInclude Include="PlayerStatistics.hpp" />
     <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="RequestInfo.hpp" />
     <ClInclude Include="RequestResult.hpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDatabase.h" />
     <ClInclude Include="ApiClient.h" />
+    <ClInclude Include="StatisticsManager.h" />
     <ClInclude Include="UserRecord.hpp" />
     <ClInclude Include="WSAInitializer.h" />
   </ItemGroup>
@@ -169,6 +171,7 @@
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDatabase.cpp" />
     <ClCompile Include="ApiClient.cpp" />
+    <ClCompile Include="StatisticsManager.cpp" />
     <ClCompile Include="WSAInitializer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -14,7 +14,7 @@ public:
 	static RoomManager& getInstance();
 	void createRoom(LoggedUser& player, RoomData& roomData);
 	void deleteRoom(int ID);
-	bool getRoomState(int ID);
+	bool getRoomState(int ID) const;
 	std::vector<RoomData> getRooms();
 	Room& getRoom(int ID);
 };
