@@ -4,6 +4,7 @@
 RequestHandlerFactory::RequestHandlerFactory(IDatabase& database)
 	: m_database(&database),
 	m_loginManager(LoginManager::getInstance(database)),
+	m_statisticsManager(StatisticsManager::getInstance(database)),
 	m_roomManager(RoomManager::getInstance())
 {}
 

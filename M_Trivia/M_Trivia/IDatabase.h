@@ -24,7 +24,7 @@ public:
 	virtual int getNumOfTotalAnswers(const std::string& username) = 0;
 	virtual int getNumOfTotalCorrectAnswers(const std::string& username) = 0;
 	virtual int getNumOfPlayerGames(const std::string& username) = 0;
-	virtual double getAvgAnswerTime(const std::string& username) = 0;
+	virtual float getAvgAnswerTime(const std::string& username) = 0;
 	virtual std::list<HighScoreInfo> getBestScores(int limit) = 0;
 
 };

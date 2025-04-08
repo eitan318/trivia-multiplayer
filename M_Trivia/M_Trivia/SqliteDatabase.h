@@ -32,7 +32,7 @@ private:
 	int getNumOfTotalAnswers(const std::string& username);
 	int getNumOfTotalCorrectAnswers(const std::string& username);
 	int getNumOfPlayerGames(const std::string& username);
-	double getAvgAnswerTime(const std::string& username);
+	float getAvgAnswerTime(const std::string& username);
 	std::list<HighScoreInfo> getBestScores(int limit);
 	std::list<Question> getQuestions(int amount);
 

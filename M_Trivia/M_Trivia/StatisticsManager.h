@@ -9,7 +9,7 @@ class StatisticsManager
 {
 private:
 	IDatabase* m_db;
-	StatisticsManager(IDatabase& database);
+	StatisticsManager(IDatabase& database) : m_db(&database) {};
 	~StatisticsManager() = default;
 	StatisticsManager(const StatisticsManager&) = delete;
 	StatisticsManager& operator=(const StatisticsManager&) = delete;
