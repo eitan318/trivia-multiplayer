@@ -142,6 +142,9 @@
     <ClInclude Include="Requests.hpp" />
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="Responses.hpp" />
+    <ClInclude Include="Room.h" />
+    <ClInclude Include="RoomData.h" />
+    <ClInclude Include="RoomManager.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDatabase.h" />
@@ -159,6 +162,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyException.h" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
+    <ClCompile Include="Room.cpp" />
+    <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDatabase.cpp" />
