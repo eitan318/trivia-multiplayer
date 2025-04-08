@@ -376,7 +376,7 @@ float SqliteDatabase::getAvgAnswerTime(const std::string& username)
 
 
 
-std::list<BestScoreInfo> SqliteDatabase::getBestScores(int limit)
+std::vector<BestScoreInfo> SqliteDatabase::getBestScores(int limit)
 {
 	const char* query = R"(
         SELECT a.username, a.game_id, g.name AS game_name, SUM(a.score) AS total_score
@@ -388,7 +388,7 @@ std::list<BestScoreInfo> SqliteDatabase::getBestScores(int limit)
     )";
 
 	sqlite3_stmt* stmt;
-	std::list<BestScoreInfo> results;
+	std::vector<BestScoreInfo> results;
 
 	// Prepare the SQL query
 	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
@@ -413,9 +413,40 @@ std::list<BestScoreInfo> SqliteDatabase::getBestScores(int limit)
 	return results;
 }
 
+std::list<Question> SqliteDatabase::getQuestions(int amount)
+{
+	const char* query = R"(
+    SELECT difficulty, category, question, answer, incorrect_answer_1,
+    incorrect_answer_2, incorrect_answer_3 FROM questions LIMIT ?)";
 
+	sqlite3_stmt* stmt;
 
+	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+		throw MyException(std::string("Failed to prepare statement: ") + sqlite3_errmsg(db));
+	}
 
+	sqlite3_bind_int(stmt, 1, amount);
+
+	std::list<Question> questions;
+	while (sqlite3_step(stmt) == SQLITE_ROW) {
+		// Create the Question object using data from the database
+		Question q(
+			std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0))),  // difficulty
+			sqlite3_column_int(stmt, 1),  // category
+			std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2))),  // question
+			std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3))),  // correct_answer
+			std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4))),  // incorrect_answer_1
+			std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5))),  // incorrect_answer_2
+			std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6)))   // incorrect_answer_3
+		);
+
+		questions.push_back(q);
+	}
+
+	sqlite3_finalize(stmt);
+
+	return questions;
+}
 
 
 
