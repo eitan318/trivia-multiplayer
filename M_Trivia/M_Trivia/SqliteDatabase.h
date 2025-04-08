@@ -25,7 +25,13 @@ private:
 	bool createInitialDB();
 	bool createUsersTable();
 	bool createQuestionsTable();
+	bool createAnswersTable();
+	bool createGamesTable();
 	bool addQuestions(int amount);
+	int getNumOfTotalAnswers(const std::string& username);
+	int getNumOfTotalCorrectAnswers(const std::string& username);
+	int getNumOfPlayerGames(const std::string& username);
+	float getAvgAnswerTime(const std::string& username);
 
 	static SqliteDatabase* _instance;
 	sqlite3* db;

@@ -110,7 +110,7 @@ int SqliteDatabase::addNewUser(const UserRecord& userRecord)
 
 bool SqliteDatabase::createInitialDB()
 {
-	return createUsersTable() && createQuestionsTable() && addQuestions(50);
+	return createUsersTable() && createQuestionsTable() && addQuestions(50) && createAnswersTable() && createGamesTable();
 }
 
 bool SqliteDatabase::createUsersTable() {
@@ -158,6 +158,59 @@ bool SqliteDatabase::createQuestionsTable()
 	return success;
 
 }
+
+
+
+
+bool SqliteDatabase::createGamesTable()
+{
+	const char* query = R"(
+        CREATE TABLE Games (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL
+        )
+    )";
+	sqlite3_stmt* stmt;
+	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+		throw MyException(std::string("Failed to prepare statement: ") + sqlite3_errmsg(db));
+	}
+
+	bool success = sqlite3_step(stmt) == SQLITE_DONE;
+	sqlite3_finalize(stmt);
+	return success;
+}
+
+
+bool SqliteDatabase::createAnswersTable()
+{
+	const char* query = R"(
+    CREATE TABLE answers (
+        username TEXT NOT NULL,
+        question_id INTEGER NOT NULL,
+        game_id INTEGER NOT NULL,
+        correct INTEGER NOT NULL, -- 1 for true, 0 for false
+        score INTEGER NOT NULL,
+        answer_time REAL NOT NULL, -- Floating-point value for answer time
+        PRIMARY KEY (username, game_id, question_id), -- Composite primary key
+        FOREIGN KEY (question_id) REFERENCES Questions(id),
+        FOREIGN KEY (username) REFERENCES Users(username),
+        FOREIGN KEY (game_id) REFERENCES Games(id)
+    )
+)";
+
+
+	sqlite3_stmt* stmt;
+	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+		throw MyException(std::string("Failed to prepare statement: ") + sqlite3_errmsg(db));
+	}
+
+	bool success = sqlite3_step(stmt) == SQLITE_DONE;
+	sqlite3_finalize(stmt);
+	return success;
+}
+
+
+
 
 
 bool SqliteDatabase::addQuestions(int amount)
@@ -228,6 +281,99 @@ bool SqliteDatabase::addQuestions(int amount)
 	sqlite3_finalize(stmt);
 	return true;
 }
+
+
+
+
+int SqliteDatabase::getNumOfTotalAnswers(const std::string& username)
+{
+	const char* query = "SELECT COUNT(*) FROM answers WHERE username = ?";
+	sqlite3_stmt* stmt;
+
+	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+		std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+		throw std::runtime_error("Failed to prepare SQL statement.");
+	}
+
+	sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
+
+	int numOfTotalAnswers = 0;
+	if (sqlite3_step(stmt) == SQLITE_ROW) {
+		numOfTotalAnswers = sqlite3_column_int(stmt, 0);
+	}
+
+	sqlite3_finalize(stmt);
+	return numOfTotalAnswers;
+}
+
+
+int SqliteDatabase::getNumOfTotalCorrectAnswers(const std::string& username)
+{
+	const char* query = "SELECT COUNT(*) FROM answers WHERE username = ? AND correct = 1";
+	sqlite3_stmt* stmt;
+
+	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+		std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+		throw std::runtime_error("Failed to prepare SQL statement.");
+	}
+
+	sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
+
+	int numOfCorrectAnswers = 0;
+	if (sqlite3_step(stmt) == SQLITE_ROW) {
+		numOfCorrectAnswers = sqlite3_column_int(stmt, 0);
+	}
+
+	sqlite3_finalize(stmt);
+	return numOfCorrectAnswers;
+}
+
+
+int SqliteDatabase::getNumOfPlayerGames(const std::string& username)
+{
+	const char* query = "SELECT COUNT(DISTINCT game_id) FROM answers WHERE username = ?";
+	sqlite3_stmt* stmt;
+
+	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+		std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+		throw std::runtime_error("Failed to prepare SQL statement.");
+	}
+
+	sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
+
+	int games = 0;
+	if (sqlite3_step(stmt) == SQLITE_ROW) {
+		games = sqlite3_column_int(stmt, 0);
+	}
+
+	sqlite3_finalize(stmt);
+	return games;
+}
+
+float SqliteDatabase::getAvgAnswerTime(const std::string& username)
+{
+	const char* query = "SELECT AVG(answer_time) FROM answers WHERE username = ?";
+	sqlite3_stmt* stmt;
+
+	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+		std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+		throw std::runtime_error("Failed to prepare SQL statement.");
+	}
+
+	sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
+
+	double avgAnswerTime = 0.0f; // Default value
+	if (sqlite3_step(stmt) == SQLITE_ROW) {
+		if (sqlite3_column_type(stmt, 0) != SQLITE_NULL) {
+			avgAnswerTime = sqlite3_column_double(stmt, 0);
+		}
+	}
+
+	sqlite3_finalize(stmt);
+	return avgAnswerTime;
+}
+
+
 
 
 
