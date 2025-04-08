@@ -9,6 +9,7 @@ private:
 	std::vector<LoggedUser> m_users;
 public:
 	Room(RoomData& roomdata, LoggedUser& user);
+	Room();
 	~Room();
 	void addUser(LoggedUser& loggeduser);
 	void removeUser(LoggedUser& loggeduser);

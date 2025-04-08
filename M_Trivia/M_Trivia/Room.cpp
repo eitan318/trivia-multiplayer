@@ -5,6 +5,8 @@ Room::Room(RoomData& roomdata, LoggedUser& user)
 	this->m_metadata = roomdata;
 	this->m_users.push_back(user);
 }
+Room::Room() {
+}
 Room::~Room() {
 }
 
@@ -30,6 +32,7 @@ std::vector<std::string> Room::getAllUsers()
 	{
 		userslist.push_back(user.m_username);
 	}
+	return userslist;
 }
 RoomData Room::getRoomData() 
 {

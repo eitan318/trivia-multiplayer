@@ -2,8 +2,11 @@
 
 
 RequestHandlerFactory::RequestHandlerFactory(IDatabase& database)
-	: m_database(&database), m_loginManager(LoginManager::getInstance(database))
+	: m_database(&database),
+	m_loginManager(LoginManager::getInstance(database)),
+	m_roomManager(RoomManager::getInstance())
 {}
+
 
 
 RequestHandlerFactory& RequestHandlerFactory::getInstance(IDatabase& database)

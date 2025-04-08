@@ -1,8 +1,23 @@
 #include "RoomManager.h"
 
+RoomManager& RoomManager::getInstance()
+{
+    static RoomManager instance; 
+    return instance;
+}
+
+RoomManager::RoomManager()
+{
+
+}
+RoomManager::~RoomManager()
+{
+
+}
+
+
 void RoomManager::createRoom(LoggedUser& player, RoomData& roomData)
 {
-    Room* newroom = new Room(roomData, player);
     int roomid = 0;
     for (const auto& pair : this->m_rooms)
     {
@@ -10,7 +25,7 @@ void RoomManager::createRoom(LoggedUser& player, RoomData& roomData)
             roomid = pair.first + 1;
     }
 
-    this->m_rooms[roomid] = *newroom;
+    this->m_rooms[roomid] = Room(roomData, player);
 }
 void RoomManager::deleteRoom(int ID)
 {
@@ -32,6 +47,7 @@ std::vector<RoomData> RoomManager::getRooms()
 	{
 		roomsvec.push_back(room.second.getRoomData());
 	}
+    return roomsvec;
 }
 Room& RoomManager::getRoom(int ID)
 {
@@ -40,4 +56,5 @@ Room& RoomManager::getRoom(int ID)
     {
         return it->second;
     }
+    //exeption
 }
