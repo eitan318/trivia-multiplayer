@@ -16,6 +16,9 @@
     <Filter Include="Header Files\Exceptions">
       <UniqueIdentifier>{70db67de-644c-48eb-b84f-8a9d34e67937}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Responses">
+      <UniqueIdentifier>{f6689a49-ccba-4613-99b0-d24a103ad235}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h">
@@ -37,9 +40,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WSAInitializer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Responses.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="JsonResponsePacketSerializer.h">
@@ -93,7 +93,7 @@
     <ClInclude Include="StatisticsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerStatistics.hpp">
+    <ClInclude Include="PersonalStatistics.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Question.hpp">
@@ -101,6 +101,39 @@
     </ClInclude>
     <ClInclude Include="HighScoreInfo.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateRoomResponse.hpp">
+      <Filter>Header Files\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="GetHighScoreResponse.hpp">
+      <Filter>Header Files\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="GetPersonalStatsResponse.hpp">
+      <Filter>Header Files\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="GetPlayersInRoomResponse.hpp">
+      <Filter>Header Files\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="GetRoomsResponse.hpp">
+      <Filter>Header Files\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="Response.hpp">
+      <Filter>Header Files\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="Responses.hpp">
+      <Filter>Header Files\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="SignupResponse.hpp">
+      <Filter>Header Files\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="LogoutResponse.hpp">
+      <Filter>Header Files\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginResponse.hpp">
+      <Filter>Header Files\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorResponse.hpp">
+      <Filter>Header Files\Responses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -120,9 +153,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Communicator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="JsonResponsePacketSerializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="JsonRequestPacketDeserializer.cpp">
@@ -154,6 +184,9 @@
     </ClCompile>
     <ClCompile Include="StatisticsManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JoinRoomResponse.hpp">
+      <Filter>Header Files\Responses</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
