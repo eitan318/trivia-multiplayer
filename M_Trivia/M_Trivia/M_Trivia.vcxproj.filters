@@ -1,211 +1,207 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Header Files\Exceptions">
-      <UniqueIdentifier>{70db67de-644c-48eb-b84f-8a9d34e67937}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Requests">
-      <UniqueIdentifier>{18f8d84f-6715-46dc-b4cd-222aff211906}</UniqueIdentifier>
-    <Filter Include="Header Files\Responses">
-      <UniqueIdentifier>{f6689a49-ccba-4613-99b0-d24a103ad235}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Communicator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Helper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IRequestHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LoginRequestHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Server.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WSAInitializer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="JsonResponsePacketSerializer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="json.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="JsonRequestPacketDeserializer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RequestInfo.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RequestResult.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IDatabase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SqliteDatabase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sqlite3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LoginManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RequestHandlerFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LoggedUser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UserRecord.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RoomData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Room.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RoomManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ApiClient.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StatisticsManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PersonalStatistics.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Question.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HighScoreInfo.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LoginRequest.hpp">
-      <Filter>Header Files\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="CreateRoomRequest.hpp">
-      <Filter>Header Files\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="GetPlayersInRoomRequest.hpp">
-      <Filter>Header Files\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="JoinRoomRequest.hpp">
-      <Filter>Header Files\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="Requests.hpp">
-      <Filter>Header Files\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="SignupRequest.hpp">
-      <Filter>Header Files\Requests</Filter>
-    <ClInclude Include="CreateRoomResponse.hpp">
-      <Filter>Header Files\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="GetHighScoreResponse.hpp">
-      <Filter>Header Files\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="GetPersonalStatsResponse.hpp">
-      <Filter>Header Files\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="GetPlayersInRoomResponse.hpp">
-      <Filter>Header Files\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="GetRoomsResponse.hpp">
-      <Filter>Header Files\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="Response.hpp">
-      <Filter>Header Files\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="Responses.hpp">
-      <Filter>Header Files\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="SignupResponse.hpp">
-      <Filter>Header Files\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="LogoutResponse.hpp">
-      <Filter>Header Files\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="LoginResponse.hpp">
-      <Filter>Header Files\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="ErrorResponse.hpp">
-      <Filter>Header Files\Responses</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Helper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WSAInitializer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LoginRequestHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Server.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Communicator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="JsonResponsePacketSerializer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="JsonRequestPacketDeserializer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SqliteDatabase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sqlite3.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LoginManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RequestHandlerFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Room.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RoomManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MyException.h">
-      <Filter>Header Files\Exceptions</Filter>
-    </ClCompile>
-    <ClCompile Include="ApiClient.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StatisticsManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Headers\Exceptions</Filter>
     </ClCompile>
     <ClCompile Include="JoinRoomResponse.hpp">
-      <Filter>Header Files\Responses</Filter>
+      <Filter>Headers\Responses</Filter>
     </ClCompile>
+    <ClCompile Include="ApiClient.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Communicator.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Helper.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginRequestHandler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestHandlerFactory.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Server.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="sqlite3.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SqliteDatabase.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="StatisticsManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="WSAInitializer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CreateRoomRequest.hpp">
+      <Filter>Headers\Requests</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateRoomResponse.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="GetHighScoreResponse.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="GetPersonalStatsResponse.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="GetPlayersInRoomRequest.hpp">
+      <Filter>Headers\Requests</Filter>
+    </ClInclude>
+    <ClInclude Include="GetPlayersInRoomResponse.hpp">
+      <Filter>Headers\Requests</Filter>
+    </ClInclude>
+    <ClInclude Include="GetRoomsResponse.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="JoinRoomRequest.hpp">
+      <Filter>Headers\Requests</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginResponse.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="LogoutResponse.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="Response.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="Responses.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginRequest.hpp">
+      <Filter>Headers\Requests</Filter>
+    </ClInclude>
+    <ClInclude Include="Requests.hpp">
+      <Filter>Headers\Requests</Filter>
+    </ClInclude>
+    <ClInclude Include="SignupRequest.hpp">
+      <Filter>Headers\Requests</Filter>
+    </ClInclude>
+    <ClInclude Include="SignupResponse.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="ApiClient.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Communicator.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helper.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="HighScoreInfo.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggedUser.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginManager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PersonalStatistics.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Question.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestInfo.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestResult.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomManager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomData.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Server.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="StatisticsManager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UserRecord.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="WSAInitializer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorResponse.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginRequestHandler.h">
+      <Filter>Headers\RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestHandlerFactory.h">
+      <Filter>Headers\RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="IRequestHandler.h">
+      <Filter>Headers\RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="SqliteDatabase.h">
+      <Filter>Headers\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="IDatabase.h">
+      <Filter>Headers\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="sqlite3.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonRequestPacketDeserializer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonResponsePacketSerializer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{157f85bc-32a5-4e37-86b9-21595b3f5142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Exceptions">
+      <UniqueIdentifier>{329c988a-6124-4bdd-a625-25834b246730}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Responses">
+      <UniqueIdentifier>{657137e1-0233-4c25-88b9-403657cc5236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Requests">
+      <UniqueIdentifier>{ed9b5a83-7b05-4247-b928-6bd92f6f9ab0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\RequestHandlers">
+      <UniqueIdentifier>{e5b86cdc-037a-4dd7-b630-0249849c3556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Database">
+      <UniqueIdentifier>{c296c418-2067-4c50-b550-f5ed75bd6bcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{8589bacd-2888-478e-9c20-c8dc1fd05b67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
