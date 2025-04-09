@@ -16,6 +16,8 @@
     <Filter Include="Header Files\Exceptions">
       <UniqueIdentifier>{70db67de-644c-48eb-b84f-8a9d34e67937}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Requests">
+      <UniqueIdentifier>{18f8d84f-6715-46dc-b4cd-222aff211906}</UniqueIdentifier>
     <Filter Include="Header Files\Responses">
       <UniqueIdentifier>{f6689a49-ccba-4613-99b0-d24a103ad235}</UniqueIdentifier>
     </Filter>
@@ -28,9 +30,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IRequestHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Requests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LoginRequestHandler.h">
@@ -102,6 +101,23 @@
     <ClInclude Include="HighScoreInfo.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LoginRequest.hpp">
+      <Filter>Header Files\Requests</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateRoomRequest.hpp">
+      <Filter>Header Files\Requests</Filter>
+    </ClInclude>
+    <ClInclude Include="GetPlayersInRoomRequest.hpp">
+      <Filter>Header Files\Requests</Filter>
+    </ClInclude>
+    <ClInclude Include="JoinRoomRequest.hpp">
+      <Filter>Header Files\Requests</Filter>
+    </ClInclude>
+    <ClInclude Include="Requests.hpp">
+      <Filter>Header Files\Requests</Filter>
+    </ClInclude>
+    <ClInclude Include="SignupRequest.hpp">
+      <Filter>Header Files\Requests</Filter>
     <ClInclude Include="CreateRoomResponse.hpp">
       <Filter>Header Files\Responses</Filter>
     </ClInclude>
@@ -153,6 +169,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Communicator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonResponsePacketSerializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="JsonRequestPacketDeserializer.cpp">

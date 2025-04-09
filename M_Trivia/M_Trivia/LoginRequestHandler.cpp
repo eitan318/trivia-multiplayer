@@ -39,7 +39,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& requestInfo)
 
 RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo)
 {
-	LoginRequest request = JsonRequestPacketDeserializer::deserializeLoginRequest(requestInfo.buffer);
+	LoginRequest request = JsonRequestPacketDeserializer<LoginRequest>::deserializeRequest(requestInfo.buffer);
 
 	LoginResponse loginResponse;
 	loginResponse.status = this->m_handlerFactory.getLoginManager().login(request.username, request.password);
@@ -54,7 +54,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo)
 {
 	SignupRequest request;
 	try {
-		request = JsonRequestPacketDeserializer::deserializeSignupRequest(requestInfo.buffer);
+		request = JsonRequestPacketDeserializer<SignupRequest>::deserializeRequest(requestInfo.buffer);
 	}
 	catch (const std::runtime_error& e) {
 		RequestResult res;
