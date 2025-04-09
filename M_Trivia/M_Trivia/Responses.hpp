@@ -1,20 +1,27 @@
 #pragma once
-#include <string>
+#include "CreateRoomResponse.hpp"
+#include "ErrorResponse.hpp"
+#include "GetHighScoreResponse.hpp"
+#include "GetPersonalStatsResponse.hpp"
+#include "GetPlayersInRoomResponse.hpp"
+#include "GetRoomsResponse.hpp"
+#include "JoinRoomResponse.hpp"
+#include "LoginResponse.hpp"
+#include "LogoutResponse.hpp"
+#include "SignupResponse.hpp"
 
-enum ResponsesCodes {
-	C_LoginResponse = 1,
-	C_SignupResponse = 2,
-	C_ErrorResponse = 5
-};
 
-struct LoginResponse {
-	unsigned int status;
-};
 
-struct SignupResponse {
-	unsigned int status;
-};
 
-struct ErrorResponse {
-	std::string message;
-};
+
+
+
+
+
+
+
+
+
+
+
+
