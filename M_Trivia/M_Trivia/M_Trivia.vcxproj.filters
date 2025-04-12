@@ -49,6 +49,12 @@
     <ClCompile Include="WSAInitializer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="SignupResponseStatus.h">
+      <Filter>Headers\enum</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginResponseStatus.h">
+      <Filter>Headers\enum</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CreateRoomRequest.hpp">
@@ -64,9 +70,6 @@
       <Filter>Headers\Responses</Filter>
     </ClInclude>
     <ClInclude Include="GetPlayersInRoomRequest.hpp">
-      <Filter>Headers\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="GetPlayersInRoomResponse.hpp">
       <Filter>Headers\Requests</Filter>
     </ClInclude>
     <ClInclude Include="GetRoomsResponse.hpp">
@@ -114,9 +117,6 @@
     <ClInclude Include="LoggedUser.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="LoginManager.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="PersonalStatistics.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -132,16 +132,10 @@
     <ClInclude Include="RequestResult.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="RoomManager.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="RoomData.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Server.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="StatisticsManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="UserRecord.hpp">
@@ -180,6 +174,18 @@
     <ClInclude Include="json.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="GetPlayersInRoomResponse.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginManager.h">
+      <Filter>Headers\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomManager.h">
+      <Filter>Headers\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="StatisticsManager.h">
+      <Filter>Headers\Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
@@ -202,6 +208,12 @@
     </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{8589bacd-2888-478e-9c20-c8dc1fd05b67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Managers">
+      <UniqueIdentifier>{769cfbba-ca76-4844-8572-9ee08682f30e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\enum">
+      <UniqueIdentifier>{d20d4376-e32f-4636-9eb4-fec99c015f15}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

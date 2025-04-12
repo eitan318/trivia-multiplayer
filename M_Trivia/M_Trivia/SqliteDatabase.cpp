@@ -87,8 +87,7 @@ int SqliteDatabase::addNewUser(const UserRecord& userRecord)
 	sqlite3_stmt* stmt;
 
 	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
-		std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
-		return false;
+		throw MyException(std::string("Failed to prepare statement: ") + sqlite3_errmsg(db));
 	}
 
 	sqlite3_bind_text(stmt, 1, userRecord.username.c_str(), -1, SQLITE_TRANSIENT);
@@ -100,7 +99,6 @@ int SqliteDatabase::addNewUser(const UserRecord& userRecord)
 
 	if (sqlite3_step(stmt) == SQLITE_DONE) {
 		sqlite3_finalize(stmt);
-		return true;
 	}
 	else {
 		sqlite3_finalize(stmt);

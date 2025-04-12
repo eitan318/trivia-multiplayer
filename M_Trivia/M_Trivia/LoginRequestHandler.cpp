@@ -40,21 +40,40 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& requestInfo)
 RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo)
 {
 	LoginRequest request = JsonRequestPacketDeserializer<LoginRequest>::deserializeRequest(requestInfo.buffer);
+	try {
+		LoginResponse loginResponse;
+		loginResponse.status = static_cast<int>(this->m_handlerFactory.getLoginManager().login(request.username, request.password));
 
-	LoginResponse loginResponse;
-	loginResponse.status = this->m_handlerFactory.getLoginManager().login(request.username, request.password);
+		RequestResult requestResult;
+		requestResult.response = JsonResponsePacketSerializer::serializeResponse(loginResponse);
+		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+		return requestResult;
+	}
+	catch (std::exception e) {
+		ErrorResponse errorResponse;
+		errorResponse.message = e.what();
 
-	RequestResult requestResult;
-	requestResult.response = JsonResponsePacketSerializer::serializeResponse(loginResponse);
-	requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
-	return requestResult;
+		RequestResult requestResult;
+		requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
+		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+		return requestResult;
+	}
+
+
 }
 
 RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo)
 {
-	SignupRequest request;
 	try {
+
+		SignupRequest request;
 		request = JsonRequestPacketDeserializer<SignupRequest>::deserializeRequest(requestInfo.buffer);
+		SignupResponse signupResponse;
+		signupResponse.status = static_cast<int>(this->m_handlerFactory.getLoginManager().signup(request.userRecord));
+		RequestResult requestResult;
+		requestResult.response = JsonResponsePacketSerializer::serializeResponse(signupResponse);
+		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+		return requestResult;
 	}
 	catch (const std::runtime_error& e) {
 		RequestResult res;
@@ -66,10 +85,5 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo)
 	}
 
 	
-	SignupResponse signupResponse;
-	signupResponse.status = this->m_handlerFactory.getLoginManager().signup(request.userRecord);
-	RequestResult requestResult;
-	requestResult.response = JsonResponsePacketSerializer::serializeResponse(signupResponse);
-	requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
-	return requestResult;
+
 }

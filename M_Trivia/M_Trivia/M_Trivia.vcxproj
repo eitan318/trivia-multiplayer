@@ -178,12 +178,14 @@
     <ClCompile Include="JoinRoomResponse.hpp" />
     <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
+    <ClCompile Include="LoginResponseStatus.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyException.h" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="Server.cpp" />
+    <ClCompile Include="SignupResponseStatus.h" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDatabase.cpp" />
     <ClCompile Include="ApiClient.cpp" />

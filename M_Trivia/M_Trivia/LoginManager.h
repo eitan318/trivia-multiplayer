@@ -1,8 +1,12 @@
 #pragma once
 #include "IDataBase.h"
 #include "LoggedUser.h"
+#include "SignupResponseStatus.h"
+#include "LoginResponseStatus.h"
 #include <vector>
 #include "UserRecord.hpp"
+#include <regex>
+
 
 
 class LoginManager {
@@ -15,7 +19,7 @@ private:
 	LoginManager& operator=(const LoginManager&) = delete;
 public:
 	static LoginManager& getInstance(IDatabase& database);
-	int signup(const UserRecord&);
-	int login(const std::string username, const std::string password);
+	SignupResponseStatus signup(const UserRecord&);
+	LoginResponseStatus login(const std::string username, const std::string password);
 	void logout(const std::string username);
 };

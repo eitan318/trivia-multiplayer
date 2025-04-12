@@ -2,6 +2,7 @@
 #include "json.hpp"
 #include "Response.hpp"
 
+
 class LoginResponse : public Response {
 public:
 	unsigned int status;
