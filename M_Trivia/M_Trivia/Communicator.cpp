@@ -83,25 +83,21 @@ void Communicator::handleNewClient(SOCKET sock)
     IRequestHandler* handler = new LoginRequestHandler(this->m_handlerFactory);
 	this->m_clients.insert({ sock, handler});
 
-    Helper::sendData(sock, "Hello");
 
-    std::string msg = Helper::getStringPartFromSocket(sock, 5);
-    std::cout << "Recieved: " << msg << std::endl;
 
     while (true) {
         RequestInfo requestInfo;
         int msgLen;
         std::string msgStr;
 
-        try {
-            requestInfo.code = Helper::getIntFromSocket(sock, 1);
-            msgLen = Helper::getIntFromSocket(sock, sizeof(int));
-            msgStr = Helper::getStringPartFromSocket(sock, msgLen);
-        }
-        catch (std::exception e) {
-            std::cout << "Client probably left";
+        requestInfo.code = Helper::getIntFromSocket(sock, 1);
+        if (requestInfo.code == 0) {
+            std::cout << "Client probably left" << std::endl;
             break;
         }
+        msgLen = Helper::getIntFromSocket(sock, sizeof(int));
+        msgStr = Helper::getStringPartFromSocket(sock, msgLen);
+  
 
         std::cout << "Recieved: " << msgStr << std::endl;
         requestInfo.buffer = std::vector<char>(msgStr.begin(), msgStr.end());
@@ -114,6 +110,4 @@ void Communicator::handleNewClient(SOCKET sock)
         Helper::sendData(sock, requestResult.response);
     }
     delete handler;
-
-
 }
