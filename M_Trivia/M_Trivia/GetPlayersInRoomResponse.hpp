@@ -11,7 +11,7 @@ public:
 
     nlohmann::json getJson() const {
         return nlohmann::json  {
-            {"players", players},
+            {"Players", players},
         };
     }
 };

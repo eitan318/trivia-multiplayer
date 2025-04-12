@@ -8,7 +8,7 @@ struct LoginRequest {
 
 
 	friend void from_json(const nlohmann::json& j, LoginRequest& request) {
-		j.at("username").get_to(request.username);
-		j.at("password").get_to(request.password);
+		j.at("Username").get_to(request.username);
+		j.at("Password").get_to(request.password);
 	}
 };

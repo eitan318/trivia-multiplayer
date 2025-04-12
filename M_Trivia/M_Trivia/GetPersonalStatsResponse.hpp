@@ -17,8 +17,8 @@ public:
 
     nlohmann::json getJson() const override {
         return nlohmann::json{
-            {"status", status},
-            {"statistics", statistics} // Uses the to_json for PersonalStatistics
+            {"Status", status},
+            {"Statistics", statistics} // Uses the to_json for PersonalStatistics
         };
     }
 };

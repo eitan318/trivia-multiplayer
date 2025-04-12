@@ -14,8 +14,8 @@ public:
 
     nlohmann::json getJson() const {
         return nlohmann::json {
-            {"status", status},
-            {"statistics", statistics},
+            {"Status", status},
+            {"Statistics", statistics},
         };
     }
 };

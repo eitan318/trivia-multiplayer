@@ -12,7 +12,7 @@ public:
 
     nlohmann::json getJson() const{
         return nlohmann::json {
-            {"message", message},
+            {"Message", message},
         };
     }
 };

@@ -10,9 +10,9 @@ struct CreateRoomRequest {
 
 
 	friend void from_json(const nlohmann::json& j, CreateRoomRequest& request) {
-		j.at("answer_timeout").get_to(request.answerTimeout);
-		j.at("max_users").get_to(request.maxUsers);
-		j.at("question_count").get_to(request.questionCount);
-		j.at("room_name").get_to(request.roomName);
+		j.at("AnswerTimeout").get_to(request.answerTimeout);
+		j.at("MaxUsers").get_to(request.maxUsers);
+		j.at("QuestionCount").get_to(request.questionCount);
+		j.at("RoomName").get_to(request.roomName);
 	}
 };
