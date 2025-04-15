@@ -21,7 +21,6 @@ Server& Server::getInstance()
 void Server::run()
 {
 	m_database->open();
-
 	m_communicator.bindAndListen();
 	std::thread t_connector(&Communicator::startHandleRequest, &m_communicator);
 	t_connector.detach();

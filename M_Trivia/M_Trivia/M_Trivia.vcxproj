@@ -130,8 +130,13 @@
   <ItemGroup>
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="CreateRoomRequest.hpp" />
+    <ClInclude Include="EmailSender.hpp" />
+    <ClInclude Include="NoDataResponse.hpp" />
+    <ClInclude Include="RegexValidator.h" />
+    <ClInclude Include="ResetPasswordRequest.hpp" />
+    <ClInclude Include="SendPasswordResetCodeRequest.hpp" />
+    <ClInclude Include="SendPasswordResetCodeResponse.hpp" />
     <ClInclude Include="GetPlayersInRoomRequest.hpp" />
-    <ClInclude Include="CreateRoomResponse.hpp" />
     <ClInclude Include="ErrorResponse.hpp" />
     <ClInclude Include="GetHighScoreResponse.hpp" />
     <ClInclude Include="GetPersonalStatsResponse.hpp" />
@@ -148,8 +153,6 @@
     <ClInclude Include="LoggedUser.h" />
     <ClInclude Include="LoginManager.h" />
     <ClInclude Include="LoginRequest.hpp" />
-    <ClInclude Include="LoginResponse.hpp" />
-    <ClInclude Include="LogoutResponse.hpp" />
     <ClInclude Include="Question.hpp" />
     <ClInclude Include="PersonalStatistics.hpp" />
     <ClInclude Include="RequestHandlerFactory.h" />
@@ -164,7 +167,6 @@
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="SignupRequest.hpp" />
-    <ClInclude Include="SignupResponse.hpp" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDatabase.h" />
     <ClInclude Include="ApiClient.h" />
@@ -175,15 +177,17 @@
   <ItemGroup>
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="Helper.cpp" />
-    <ClCompile Include="JoinRoomResponse.hpp" />
     <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="LoginResponseStatus.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyException.h" />
+    <ClCompile Include="RegexValidator.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
+    <ClCompile Include="ResetPasswordResponseStatus.h" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RoomManager.cpp" />
+    <ClCompile Include="SendEmailCodeResponseStatus.h" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="SignupResponseStatus.h" />
     <ClCompile Include="sqlite3.c" />

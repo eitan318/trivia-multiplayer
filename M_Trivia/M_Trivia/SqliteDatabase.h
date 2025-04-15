@@ -18,6 +18,15 @@ public:
 	int doesUserExist(const std::string&);
 	int doesPasswordMatch(const std::string&, const std::string&);
 	int addNewUser(const UserRecord&);
+	int getNumOfTotalAnswers(const std::string& username);
+	int getNumOfTotalCorrectAnswers(const std::string& username);
+	int getNumOfPlayerGames(const std::string& username);
+	float getAvgAnswerTime(const std::string& username);
+	bool emailExists(const std::string& email);
+	UserRecord getUserRecord(const std::string& email);
+	std::list<HighScoreInfo> getBestScores(int limit);
+	std::list<Question> getQuestions(int amount);
+    void updatePassword(const std::string& username, const std::string& newPassword);
 private:
 	~SqliteDatabase();
 	SqliteDatabase() { };
@@ -29,13 +38,6 @@ private:
 	bool createAnswersTable();
 	bool createGamesTable();
 	bool addQuestions(int amount);
-	int getNumOfTotalAnswers(const std::string& username);
-	int getNumOfTotalCorrectAnswers(const std::string& username);
-	int getNumOfPlayerGames(const std::string& username);
-	float getAvgAnswerTime(const std::string& username);
-	std::list<HighScoreInfo> getBestScores(int limit);
-	std::list<Question> getQuestions(int amount);
-
 
 	static SqliteDatabase* _instance;
 	sqlite3* db;

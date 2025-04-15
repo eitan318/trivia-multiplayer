@@ -5,6 +5,7 @@
 template <typename T>
 class JsonRequestPacketDeserializer {
 public:
+    JsonRequestPacketDeserializer() = delete;
     // Template method to deserialize the request
     static T deserializeRequest(const std::vector<char>& buffer) {
         try {

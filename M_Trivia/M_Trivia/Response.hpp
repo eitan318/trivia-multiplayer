@@ -1,17 +1,16 @@
 #pragma once 
 #include "json.hpp"
 
+
 enum ResponsesCodes {
 	C_ErrorResponse = 0,
-	C_LoginResponse = 1,
-	C_SignupResponse = 2,
-	C_LogoutResponse = 3,
-	C_GetRoomsResponse = 4,
-	C_GetPlayersInRoomResponse = 5,
-	C_GetHighScoreResponse = 6,
-	C_GetPersonalStatsResponse = 7,
-	C_JoinRoomResponse = 8,
-	C_CreateRoomResponse = 9
+	C_NoDataResponse = 1,
+	C_GetRoomsResponse = 2,
+	C_GetPlayersInRoomResponse = 3,
+	C_GetHighScoreResponse = 4,
+	C_GetPersonalStatsResponse = 5,
+	C_SendPasswordResetCodeResponse = 6,
+
 };
 
 

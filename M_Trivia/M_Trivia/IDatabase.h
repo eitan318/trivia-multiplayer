@@ -21,6 +21,9 @@ public:
 	virtual int getNumOfTotalCorrectAnswers(const std::string& username) = 0;
 	virtual int getNumOfPlayerGames(const std::string& username) = 0;
 	virtual float getAvgAnswerTime(const std::string& username) = 0;
+	virtual bool emailExists(const std::string& email) = 0;
+	virtual UserRecord getUserRecord(const std::string& email) = 0;
 	virtual std::list<HighScoreInfo> getBestScores(int limit) = 0;
+	virtual void updatePassword(const std::string& username, const std::string& newPassword) = 0;
 
 };

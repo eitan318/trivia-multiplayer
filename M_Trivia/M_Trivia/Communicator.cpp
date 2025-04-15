@@ -53,7 +53,7 @@ void Communicator::startHandleRequest()
 
 void Communicator::bindAndListen()
 {
-    const int port = 5554;
+    const int port = PORT;
 
     struct sockaddr_in sa = { 0 };
 

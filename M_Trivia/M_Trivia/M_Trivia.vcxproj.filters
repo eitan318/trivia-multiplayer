@@ -4,9 +4,6 @@
     <ClCompile Include="MyException.h">
       <Filter>Headers\Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="JoinRoomResponse.hpp">
-      <Filter>Headers\Responses</Filter>
-    </ClCompile>
     <ClCompile Include="ApiClient.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -55,13 +52,19 @@
     <ClCompile Include="LoginResponseStatus.h">
       <Filter>Headers\enum</Filter>
     </ClCompile>
+    <ClCompile Include="SendEmailCodeResponseStatus.h">
+      <Filter>Headers\enum</Filter>
+    </ClCompile>
+    <ClCompile Include="RegexValidator.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ResetPasswordResponseStatus.h">
+      <Filter>Headers\enum</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CreateRoomRequest.hpp">
       <Filter>Headers\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="CreateRoomResponse.hpp">
-      <Filter>Headers\Responses</Filter>
     </ClInclude>
     <ClInclude Include="GetHighScoreResponse.hpp">
       <Filter>Headers\Responses</Filter>
@@ -78,12 +81,6 @@
     <ClInclude Include="JoinRoomRequest.hpp">
       <Filter>Headers\Requests</Filter>
     </ClInclude>
-    <ClInclude Include="LoginResponse.hpp">
-      <Filter>Headers\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="LogoutResponse.hpp">
-      <Filter>Headers\Responses</Filter>
-    </ClInclude>
     <ClInclude Include="Response.hpp">
       <Filter>Headers\Responses</Filter>
     </ClInclude>
@@ -98,9 +95,6 @@
     </ClInclude>
     <ClInclude Include="SignupRequest.hpp">
       <Filter>Headers\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="SignupResponse.hpp">
-      <Filter>Headers\Responses</Filter>
     </ClInclude>
     <ClInclude Include="ApiClient.h">
       <Filter>Headers</Filter>
@@ -165,12 +159,6 @@
     <ClInclude Include="sqlite3.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="JsonRequestPacketDeserializer.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="JsonResponsePacketSerializer.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="json.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -185,6 +173,30 @@
     </ClInclude>
     <ClInclude Include="StatisticsManager.h">
       <Filter>Headers\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SendPasswordResetCodeRequest.hpp">
+      <Filter>Headers\Requests</Filter>
+    </ClInclude>
+    <ClInclude Include="SendPasswordResetCodeResponse.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonRequestPacketDeserializer.h">
+      <Filter>Headers\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonResponsePacketSerializer.h">
+      <Filter>Headers\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="RegexValidator.h">
+      <Filter>Headers\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="EmailSender.hpp">
+      <Filter>Headers\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="ResetPasswordRequest.hpp">
+      <Filter>Headers\Requests</Filter>
+    </ClInclude>
+    <ClInclude Include="NoDataResponse.hpp">
+      <Filter>Headers\Responses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +226,9 @@
     </Filter>
     <Filter Include="Headers\enum">
       <UniqueIdentifier>{d20d4376-e32f-4636-9eb4-fec99c015f15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Services">
+      <UniqueIdentifier>{e90db122-3e6e-4c58-90d6-b03ae2bedd6e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

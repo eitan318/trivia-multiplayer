@@ -373,6 +373,32 @@ float SqliteDatabase::getAvgAnswerTime(const std::string& username)
 
 
 
+UserRecord SqliteDatabase::getUserRecord(const std::string& email)
+{
+	const char* query = R"(SELECT username, password, email, phone_number, house_address, birth_date
+		FROM users WHERE email = ?)";
+	sqlite3_stmt* stmt;
+
+	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+		throw std::runtime_error(std::string("Failed to prepare SQL statement.") + sqlite3_errmsg(db));
+	}
+
+	sqlite3_bind_text(stmt, 1, email.c_str(), -1, SQLITE_TRANSIENT);
+	if (sqlite3_step(stmt) == SQLITE_ROW) {
+		UserRecord userRecord;
+		userRecord.username = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
+		userRecord.password = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+		userRecord.email = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+		userRecord.phoneNumber = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+		userRecord.houseAddress = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+		userRecord.birthDate = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+		return userRecord;
+	}
+	throw std::runtime_error("Failed to  execute statement");
+}
+
+
+
 
 std::list<HighScoreInfo> SqliteDatabase::getBestScores(int limit)
 {
@@ -445,6 +471,49 @@ std::list<Question> SqliteDatabase::getQuestions(int amount)
 
 	return questions;
 }
+
+void SqliteDatabase::updatePassword(const std::string& username, const std::string& newPassword)
+{
+	const char* query = R"(UPDATE users SET password = ? WHERE username = ?)";
+
+	sqlite3_stmt* stmt;
+
+	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+		throw MyException(std::string("Failed to prepare statement: ") + sqlite3_errmsg(db));
+	}
+
+	try {
+		sqlite3_bind_text(stmt, 1, newPassword.c_str(), -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(stmt, 2, username.c_str(), -1, SQLITE_TRANSIENT);
+
+		if (sqlite3_step(stmt) != SQLITE_DONE) {
+			throw MyException(std::string("Failed to execute update: ") + sqlite3_errmsg(db));
+		}
+
+		sqlite3_finalize(stmt);
+	}
+	catch (...) {
+		sqlite3_finalize(stmt);
+		throw; // Re-throw the exception to propagate error.
+	}
+}
+
+
+bool SqliteDatabase::emailExists(const std::string& email)
+{
+	const char* query = "SELECT * FROM users WHERE email = ?";
+	sqlite3_stmt* stmt;
+
+	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+		throw MyException(std::string("Failed to execute update: ") + sqlite3_errmsg(db));
+	}
+
+	sqlite3_bind_text(stmt, 1, email.c_str(), -1, SQLITE_TRANSIENT);
+	bool res = sqlite3_step(stmt) == SQLITE_ROW;
+	sqlite3_finalize(stmt);
+	return res;
+}
+
 
 
 

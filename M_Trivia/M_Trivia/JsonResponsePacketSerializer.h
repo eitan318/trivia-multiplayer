@@ -9,6 +9,8 @@
 class JsonResponsePacketSerializer
 {
 public:
+    JsonResponsePacketSerializer() = delete;
+
     static std::vector<char> serializeResponse(const Response& response)
     {
         std::vector<char> res;
