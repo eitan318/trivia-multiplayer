@@ -4,7 +4,7 @@
 #include <curl/curl.h>
 
 
-#define GMAIL_PASSWORD "tean dxqd tnlv mnde"
+#define GMAIL_PASSWORD "kzse tous xxvt wabs"
 #define SMTP_SERVER "smtp://smtp.gmail.com:587"
 
 // Define the upload_status struct
@@ -23,7 +23,7 @@ public:
 
         std::string from_addr = "<" + from + ">";
         std::string to_addr = "<" + to + ">";
-        std::string from_mail = "Sender Person " + from_addr;
+        std::string from_mail = "Trivia Game Authenticator " + from_addr;
         std::string to_mail = "Recieveer " + to_addr;
 
         std::string payload_str =

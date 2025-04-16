@@ -30,7 +30,7 @@ SendEmailCodeResponseStatus LoginManager::sendEmailCode(const std::string email,
 	if (!this->m_database->emailExists(email)) 
 		return SendEmailCodeResponseStatus::UnknowenEmail;
 
-	EmailSender::sendEmail("eitanforschool08@gmail.com", email,
+	EmailSender::sendEmail("servicehandler055@gmail.com", email,
 		"Reset Password Code", "Code: " + std::to_string(code));
 
 	return SendEmailCodeResponseStatus::Success;
