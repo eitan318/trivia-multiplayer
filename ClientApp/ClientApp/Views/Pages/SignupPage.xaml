@@ -55,9 +55,9 @@
                     Style="{StaticResource MaterialDesignOutlinedButton}"/>
             
             <TextBlock Text="{Binding ErrorMessage}"
-                       Foreground="Red"
-                       TextAlignment="Center"
-                       Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
+                   Foreground="Red"
+                   TextAlignment="Center"
+                   Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
         </StackPanel>
     </Grid>
 </Page>

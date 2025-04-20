@@ -17,7 +17,6 @@
                 <ResourceDictionary Source="Controls/HyperLink.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"/>
             <converters:EyeIconConverter x:Key="EyeIconConverter"/>
             <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
