@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,38 +129,76 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h" />
+    <ClInclude Include="CreateRoomRequest.hpp" />
+    <ClInclude Include="CreateRoomResponseStatus.h" />
+    <ClInclude Include="EmailSender.hpp" />
+    <ClInclude Include="GetHighScoreRequest.hpp" />
+    <ClInclude Include="JoinRoomResponseStatus.h" />
+    <ClInclude Include="MenuRequestHandler.h" />
+    <ClInclude Include="NoDataResponse.hpp" />
+    <ClInclude Include="RegexValidator.h" />
+    <ClInclude Include="ResetPasswordRequest.hpp" />
+    <ClInclude Include="SendPasswordResetCodeRequest.hpp" />
+    <ClInclude Include="SendPasswordResetCodeResponse.hpp" />
+    <ClInclude Include="GetPlayersInRoomRequest.hpp" />
+    <ClInclude Include="ErrorResponse.hpp" />
+    <ClInclude Include="GetHighScoreResponse.hpp" />
+    <ClInclude Include="GetPersonalStatisticsResponse.hpp" />
+    <ClInclude Include="GetPlayersInRoomResponse.hpp" />
+    <ClInclude Include="GetRoomsResponse.hpp" />
     <ClInclude Include="Helper.h" />
+    <ClInclude Include="HighScoreInfo.hpp" />
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="IRequestHandler.h" />
+    <ClInclude Include="JoinRoomRequest.hpp" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonRequestPacketDeserializer.h" />
     <ClInclude Include="JsonResponsePacketSerializer.h" />
     <ClInclude Include="LoggedUser.h" />
     <ClInclude Include="LoginManager.h" />
+    <ClInclude Include="LoginRequest.hpp" />
+    <ClInclude Include="Question.hpp" />
+    <ClInclude Include="PersonalStatistics.hpp" />
     <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="RequestInfo.hpp" />
     <ClInclude Include="RequestResult.hpp" />
     <ClInclude Include="Requests.hpp" />
     <ClInclude Include="LoginRequestHandler.h" />
+    <ClInclude Include="Response.hpp" />
     <ClInclude Include="Responses.hpp" />
+    <ClInclude Include="Room.h" />
+    <ClInclude Include="RoomData.h" />
+    <ClInclude Include="RoomManager.h" />
     <ClInclude Include="Server.h" />
+    <ClInclude Include="SignupRequest.hpp" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDatabase.h" />
+    <ClInclude Include="ApiClient.h" />
+    <ClInclude Include="StatisticsManager.h" />
     <ClInclude Include="UserRecord.hpp" />
     <ClInclude Include="WSAInitializer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="Helper.cpp" />
-    <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
-    <ClCompile Include="JsonResponsePacketSerializer.cpp" />
     <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
+    <ClCompile Include="LoginResponseStatus.h" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MenuRequestHandler.cpp" />
+    <ClCompile Include="MyException.h" />
+    <ClCompile Include="RegexValidator.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
+    <ClCompile Include="ResetPasswordResponseStatus.h" />
+    <ClCompile Include="Room.cpp" />
+    <ClCompile Include="RoomManager.cpp" />
+    <ClCompile Include="SendEmailCodeResponseStatus.h" />
     <ClCompile Include="Server.cpp" />
+    <ClCompile Include="SignupResponseStatus.h" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDatabase.cpp" />
+    <ClCompile Include="ApiClient.cpp" />
+    <ClCompile Include="StatisticsManager.cpp" />
     <ClCompile Include="WSAInitializer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

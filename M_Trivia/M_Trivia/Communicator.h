@@ -11,6 +11,9 @@
 #include <string>
 
 
+#define PORT 5554
+
+
 class Communicator {
 private:
 	std::map<SOCKET, IRequestHandler*> m_clients;

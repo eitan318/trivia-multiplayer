@@ -1,13 +1,21 @@
-#pragma once
-#include <vector>
-#include "Requests.hpp"
 #include "json.hpp"
-#include <regex>
+#include <vector>
+#include <stdexcept>
 
-#define MSG_CODE_SIZE 1
-
+template <typename T>
 class JsonRequestPacketDeserializer {
 public:
-	static LoginRequest deserializeLoginRequest(const std::vector<char>& buffer);
-	static SignupRequest deserializeSignupRequest(const std::vector<char>& buffer);
+    JsonRequestPacketDeserializer() = delete;
+    // Template method to deserialize the request
+    static T deserializeRequest(const std::vector<char>& buffer) {
+        try {
+            nlohmann::json j = nlohmann::json::parse(buffer);
+            T request;
+            j.get_to(request);  // Calls from_json if it exists
+            return request;
+        }
+        catch (const nlohmann::json::exception& e) {
+            throw std::runtime_error(std::string("Request parse error: ") + e.what());
+        }
+    }
 };
