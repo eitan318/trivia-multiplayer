@@ -9,6 +9,19 @@
       Title="JoinRoomPage">
 
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2.5*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <ComboBox Grid.Column="1" Text="{Binding RoomName}" />
+        <StackPanel Grid.Row="1" Grid.Column="1" >
+            <Button Content="Refresh" Margin="8"/>
+            <Button Content="Join" Margin="8"/>
+        </StackPanel>
     </Grid>
 </local:NavigablePage>
