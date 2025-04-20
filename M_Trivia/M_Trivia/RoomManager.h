@@ -1,5 +1,6 @@
 #pragma once
 #include "Room.h"
+#include "MyException.h"
 #include <map>
 
 class RoomManager {

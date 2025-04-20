@@ -8,7 +8,7 @@ LoginRequestHandler::~LoginRequestHandler()
 {
 }
 
-bool LoginRequestHandler::isRequestRelevant(const RequestInfo& requestInfo)
+bool LoginRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
 {
 	return requestInfo.code == C_LoginRequest || requestInfo.code == C_ResetPasswordRequest
 		|| requestInfo.code == C_SignupRequest || requestInfo.code == C_SendPasswordResetCodeRequest;
@@ -50,11 +50,18 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo)
 	LoginRequest request = JsonRequestPacketDeserializer<LoginRequest>::deserializeRequest(requestInfo.buffer);
 	try {
 		NoDataResponse loginResponse;
-		loginResponse.status = static_cast<int>(this->m_handlerFactory.getLoginManager().login(request.username, request.password));
-
+		LoginResponseStatus status = (this->m_handlerFactory.getLoginManager().login(request.username, request.password));
+		loginResponse.status = static_cast<int>(status);
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(loginResponse);
-		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+		LoggedUser user;
+		user.m_username = request.username;
+		if (status != LoginResponseStatus::Success) {
+			requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+		}
+		else {
+			requestResult.newHandler = new MenuRequestHandler(user,this->m_handlerFactory);
+		}
 		return requestResult;
 	}
 	catch (std::exception e) {

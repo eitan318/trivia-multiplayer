@@ -56,5 +56,5 @@ Room& RoomManager::getRoom(int ID)
     {
         return it->second;
     }
-    //exeption
+    throw MyException("Room not exist");
 }

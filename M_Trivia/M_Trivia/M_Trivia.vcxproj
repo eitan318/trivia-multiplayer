@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -131,6 +131,8 @@
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="CreateRoomRequest.hpp" />
     <ClInclude Include="EmailSender.hpp" />
+    <ClInclude Include="JoinRoomResponseStatus.h" />
+    <ClInclude Include="MenuRequestHandler.h" />
     <ClInclude Include="NoDataResponse.hpp" />
     <ClInclude Include="RegexValidator.h" />
     <ClInclude Include="ResetPasswordRequest.hpp" />
@@ -181,6 +183,7 @@
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="LoginResponseStatus.h" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MenuRequestHandler.cpp" />
     <ClCompile Include="MyException.h" />
     <ClCompile Include="RegexValidator.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
