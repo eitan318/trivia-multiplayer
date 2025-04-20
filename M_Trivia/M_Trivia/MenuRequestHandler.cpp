@@ -42,35 +42,34 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info)
 
 RequestResult MenuRequestHandler::signout(const RequestInfo& info)
 {
-    signoutRequest request = JsonRequestPacketDeserializer<GetPlayersInRoomRequest>::deserializeRequest(requestInfo.buffer);
+    //signoutRequest request = JsonRequestPacketDeserializer<GetPlayersInRoomRequest>::deserializeRequest(requestInfo.buffer);
 
-    GetPlayersInRoomResponse gpirResponse;
-    int id = request.roomId;
-    RoomManager& roomManager = m_handlerFactory.getRoomManger();
-    Room room = roomManager.getRoom(id);
-    std::vector<std::string> players = room.getAllUsers();
-    gpirResponse.players = players;
+    NoDataResponse signOutResponse;
+    LoginManager& manager = this->m_handlerFactory.getLoginManager();
+    manager.logout(this->m_user.getUsername());
 
     RequestResult requestResult;
-    requestResult.response = JsonResponsePacketSerializer::serializeResponse(gpirResponse);
+    requestResult.response = JsonResponsePacketSerializer::serializeResponse(signOutResponse);
     requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
     return requestResult;
-    return {};
 }
 
 RequestResult MenuRequestHandler::getRooms(const RequestInfo& requestInfo)
 {
-    getroomrequest request = JsonRequestPacketDeserializer<LoginRequest>::deserializeRequest(requestInfo.buffer);
+    //CreateRoomRequest request =
+     //   JsonRequestPacketDeserializer<CreateRoomRequest>::deserializeRequest(requestInfo.buffer);
 
-    LoginResponse loginResponse;
-    loginResponse.status = this->m_handlerFactory.getLoginManager().login(request.username, request.password);
+    GetRoomsResponse getRoomsResponse;
+    RoomManager& roomManager = m_handlerFactory.getRoomManger();
+    std::vector<RoomData> rooms = roomManager.getRooms();
+    getRoomsResponse.rooms = rooms;
+    getRoomsResponse.status = 0;//leshanot
 
     RequestResult requestResult;
-    requestResult.response = JsonResponsePacketSerializer::serializeResponse(loginResponse);
-    requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+    requestResult.response = JsonResponsePacketSerializer::serializeResponse(getRoomsResponse);
+    requestResult.newHandler = new MenuRequestHandler(this->m_user,this->m_handlerFactory);
     return requestResult;
 }
-
 
 RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInfo)
 {
@@ -93,14 +92,30 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInf
 
 RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& requestInfo)
 {
-    //GetPersonalStatisticsRequest
-        return {};
+    //signoutRequest request = JsonRequestPacketDeserializer<GetPlayersInRoomRequest>::deserializeRequest(requestInfo.buffer);
+    StatisticsManager& statsManager = this->m_handlerFactory.getStatisticsManger();
+    GetPersonalStatisticsResponse personalStatsResponse(statsManager.getPlayerStatistics(this->m_user.getUsername()));
+
+
+    RequestResult requestResult;
+    requestResult.response = JsonResponsePacketSerializer::serializeResponse(personalStatsResponse);
+    requestResult.newHandler = new MenuRequestHandler(this->m_user,this->m_handlerFactory);
+    return requestResult;
 }
 
-RequestResult MenuRequestHandler::getHighScore(const RequestInfo& info)
+RequestResult MenuRequestHandler::getHighScore(const RequestInfo& requestInfo)
 {
-    // TODO: Implement this function
-    return {};
+    GetHighScoreRequest request = 
+        JsonRequestPacketDeserializer<GetHighScoreRequest>::deserializeRequest(requestInfo.buffer);
+
+    GetHighScoreResponse highScoreResponse;
+    StatisticsManager& statsManager = this->m_handlerFactory.getStatisticsManger();
+    highScoreResponse.statistics = statsManager.getBestScores(request.topPlayersLimit);
+
+    RequestResult requestResult;
+    requestResult.response = JsonResponsePacketSerializer::serializeResponse(highScoreResponse);
+    requestResult.newHandler = new MenuRequestHandler(this->m_user,this->m_handlerFactory);
+    return requestResult;
 }
 
 RequestResult MenuRequestHandler::joinRoom(const RequestInfo& requestInfo)
@@ -125,8 +140,23 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& requestInfo)
     return requestResult;
 }
 
-RequestResult MenuRequestHandler::createRoom(const RequestInfo& info)
+RequestResult MenuRequestHandler::createRoom(const RequestInfo& requestInfo)
 {
-    // TODO: Implement this function
-    return {};
+    CreateRoomRequest request =
+        JsonRequestPacketDeserializer<CreateRoomRequest>::deserializeRequest(requestInfo.buffer);
+
+    NoDataResponse createRoomResponse;
+    RoomManager& roomManager = m_handlerFactory.getRoomManger();
+    RoomData data;
+    data.maxPlayers = request.maxUsers;
+    data.numOfQuestionsInGame = request.questionCount;
+    data.name = request.roomName;
+    data.timePerQuestion = request.answerTimeout;
+    roomManager.createRoom(this->m_user, data);
+    createRoomResponse.status = (int)CreateRoomResponseStatus::Success;
+
+    RequestResult requestResult;
+    requestResult.response = JsonResponsePacketSerializer::serializeResponse(createRoomResponse);
+    requestResult.newHandler = new MenuRequestHandler(this->m_user,this->m_handlerFactory);
+    return requestResult;
 }

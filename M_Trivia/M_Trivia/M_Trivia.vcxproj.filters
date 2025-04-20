@@ -72,7 +72,7 @@
     <ClInclude Include="GetHighScoreResponse.hpp">
       <Filter>Headers\Responses</Filter>
     </ClInclude>
-    <ClInclude Include="GetPersonalStatsResponse.hpp">
+    <ClInclude Include="GetPersonalStatisticsResponse.hpp">
       <Filter>Headers\Responses</Filter>
     </ClInclude>
     <ClInclude Include="GetPlayersInRoomRequest.hpp">
@@ -203,6 +203,13 @@
     </ClInclude>
     <ClInclude Include="MenuRequestHandler.h">
       <Filter>Headers\RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="JoinRoomResponseStatus.h" />
+    <ClInclude Include="CreateRoomResponseStatus.h">
+      <Filter>Headers\enum</Filter>
+    </ClInclude>
+    <ClInclude Include="GetHighScoreRequest.hpp">
+      <Filter>Headers\Requests</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

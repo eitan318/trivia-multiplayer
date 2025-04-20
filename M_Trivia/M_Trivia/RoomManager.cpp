@@ -18,7 +18,8 @@ RoomManager::~RoomManager()
 
 void RoomManager::createRoom(LoggedUser& player, RoomData& roomData)
 {
-    int roomid = 0;
+    int roomid = ids++;
+    roomData.id = roomid;
     for (const auto& pair : this->m_rooms)
     {
         if (pair.first >= roomid)

@@ -31,7 +31,7 @@ RoomManager& RequestHandlerFactory::getRoomManger() const
 	return this->m_roomManager;
 }
 
-StatisticsManager& RequestHandlerFactory::getStatusticsManger() const
+StatisticsManager& RequestHandlerFactory::getStatisticsManger() const
 {
 	return this->m_statisticsManager;
 }

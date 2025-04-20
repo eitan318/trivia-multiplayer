@@ -5,6 +5,7 @@
 
 class RoomManager {
 private:
+	static unsigned int ids;
 	std::map<int, Room> m_rooms;
 	RoomManager();
 	~RoomManager();

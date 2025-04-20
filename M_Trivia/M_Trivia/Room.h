@@ -5,6 +5,7 @@
 
 class Room {
 private:
+	static unsigned int id;
 	RoomData m_metadata;
 	std::vector<LoggedUser> m_users;
 public:

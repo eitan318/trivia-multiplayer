@@ -1,9 +1,10 @@
 #pragma once
-#pragma once
 #include "LoggedUser.h"
 #include "Requests.hpp"
 #include "RequestHandlerFactory.h"
 #include "JoinRoomResponseStatus.h"
+#include "CreateRoomResponseStatus.h"
+#include "Responses.hpp"
 
 class MenuRequestHandler : public IRequestHandler {
 private:
