@@ -1,5 +1,6 @@
 #pragma once
 #include "IRequestHandler.h"
+#include "MenuRequestHandler.h"
 #include "Requests.hpp"
 #include "JsonResponsePacketSerializer.h"
 #include "JsonRequestPacketDeserializer.h"
@@ -17,7 +18,7 @@ class LoginRequestHandler : public IRequestHandler {
 public:
 	LoginRequestHandler(RequestHandlerFactory& handlerFactory);
 	~LoginRequestHandler();
-	bool isRequestRelevant(const RequestInfo&);
+	bool isRequestRelevant(const RequestInfo&) const;
 	RequestResult handleRequest(const RequestInfo&);
 private:
 	RequestHandlerFactory& m_handlerFactory;

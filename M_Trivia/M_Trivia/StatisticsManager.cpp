@@ -6,7 +6,7 @@ StatisticsManager& StatisticsManager::getInstance(IDatabase& database)
     return instance;
 }
 
-std::list<HighScoreInfo> StatisticsManager::getBestScores(int limit)
+std::vector<HighScoreInfo> StatisticsManager::getBestScores(int limit)
 {
     return this->m_db->getBestScores(limit);
 }

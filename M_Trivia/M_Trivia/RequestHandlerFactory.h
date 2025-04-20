@@ -15,7 +15,7 @@ public:
 	LoginRequestHandler* createLoginRequestHandler();
 	LoginManager& getLoginManager() const;
 	RoomManager& getRoomManger() const;
-	StatisticsManager& getStatusticsManger() const;
+	StatisticsManager& getStatisticsManger() const;
 private:
 	RoomManager& m_roomManager;
 	IDatabase* m_database;

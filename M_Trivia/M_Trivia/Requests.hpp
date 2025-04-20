@@ -6,6 +6,7 @@
 #include "SignupRequest.hpp"
 #include "SendPasswordResetCodeRequest.hpp"
 #include "ResetPasswordRequest.hpp"
+#include "GetHighScoreRequest.hpp"
 
 
 enum RequestsCodes {
@@ -15,7 +16,8 @@ enum RequestsCodes {
 	C_GetPlayersInRoomRequest = 4,
 	C_JoinRoomRequest = 5,
 	C_SendPasswordResetCodeRequest = 6,
-	C_ResetPasswordRequest = 7
+	C_ResetPasswordRequest = 7,
+	C_GetHighScoreRequest = 8
 };
 
 

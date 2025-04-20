@@ -9,7 +9,11 @@ void to_json(nlohmann::json& j, const PersonalStatistics& personalStatistics);
 class GetPersonalStatisticsResponse : public Response {
 public:
     unsigned int status;
-    std::vector<PersonalStatistics> statistics;
+    PersonalStatistics statistics;
+
+    GetPersonalStatisticsResponse(const PersonalStatistics& personalStats) : statistics(personalStats) {
+
+    }
 
     unsigned int getCode() const override { // Marking as override if Response has a virtual function
         return C_GetPersonalStatsResponse;

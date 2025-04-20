@@ -1,7 +1,7 @@
 #pragma once
 #include "IDatabase.h"
 #include "PersonalStatistics.hpp"
-#include <list>
+#include <vector>
 
 
 
@@ -15,7 +15,7 @@ private:
 	StatisticsManager& operator=(const StatisticsManager&) = delete;
 public:
 	static StatisticsManager& getInstance(IDatabase& database);
-	std::list<HighScoreInfo> getBestScores(int limit);
+	std::vector<HighScoreInfo> getBestScores(int limit);
 	PersonalStatistics getPlayerStatistics(const std::string& username);
 };
 

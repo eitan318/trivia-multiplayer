@@ -1,5 +1,5 @@
 #pragma once
-#include <iostream>
+#include <string>
 
 struct LoggedUser {
 	std::string m_username;

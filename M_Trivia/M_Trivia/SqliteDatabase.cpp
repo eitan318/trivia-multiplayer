@@ -400,7 +400,7 @@ UserRecord SqliteDatabase::getUserRecord(const std::string& email)
 
 
 
-std::list<HighScoreInfo> SqliteDatabase::getBestScores(int limit)
+std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit)
 {
 	const char* query = R"(
         SELECT a.username, a.game_id, g.name AS game_name, SUM(a.score) AS total_score
@@ -412,7 +412,7 @@ std::list<HighScoreInfo> SqliteDatabase::getBestScores(int limit)
     )";
 
 	sqlite3_stmt* stmt;
-	std::list<HighScoreInfo> results;
+	std::vector<HighScoreInfo> results;
 
 	// Prepare the SQL query
 	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {

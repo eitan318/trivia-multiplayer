@@ -1,5 +1,7 @@
 #include "RoomManager.h"
 
+unsigned int RoomManager::ids = 0;
+
 RoomManager& RoomManager::getInstance()
 {
     static RoomManager instance; 
@@ -18,7 +20,8 @@ RoomManager::~RoomManager()
 
 void RoomManager::createRoom(LoggedUser& player, RoomData& roomData)
 {
-    int roomid = 0;
+    int roomid = ids++;
+    roomData.id = roomid;
     for (const auto& pair : this->m_rooms)
     {
         if (pair.first >= roomid)
@@ -56,5 +59,5 @@ Room& RoomManager::getRoom(int ID)
     {
         return it->second;
     }
-    //exeption
+    throw MyException("Room not exist");
 }

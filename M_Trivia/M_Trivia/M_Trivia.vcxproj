@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -130,7 +130,11 @@
   <ItemGroup>
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="CreateRoomRequest.hpp" />
+    <ClInclude Include="CreateRoomResponseStatus.h" />
     <ClInclude Include="EmailSender.hpp" />
+    <ClInclude Include="GetHighScoreRequest.hpp" />
+    <ClInclude Include="JoinRoomResponseStatus.h" />
+    <ClInclude Include="MenuRequestHandler.h" />
     <ClInclude Include="NoDataResponse.hpp" />
     <ClInclude Include="RegexValidator.h" />
     <ClInclude Include="ResetPasswordRequest.hpp" />
@@ -139,7 +143,7 @@
     <ClInclude Include="GetPlayersInRoomRequest.hpp" />
     <ClInclude Include="ErrorResponse.hpp" />
     <ClInclude Include="GetHighScoreResponse.hpp" />
-    <ClInclude Include="GetPersonalStatsResponse.hpp" />
+    <ClInclude Include="GetPersonalStatisticsResponse.hpp" />
     <ClInclude Include="GetPlayersInRoomResponse.hpp" />
     <ClInclude Include="GetRoomsResponse.hpp" />
     <ClInclude Include="Helper.h" />
@@ -181,6 +185,7 @@
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="LoginResponseStatus.h" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MenuRequestHandler.cpp" />
     <ClCompile Include="MyException.h" />
     <ClCompile Include="RegexValidator.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
