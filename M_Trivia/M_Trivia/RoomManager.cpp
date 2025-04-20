@@ -1,5 +1,7 @@
 #include "RoomManager.h"
 
+unsigned int RoomManager::ids = 0;
+
 RoomManager& RoomManager::getInstance()
 {
     static RoomManager instance; 

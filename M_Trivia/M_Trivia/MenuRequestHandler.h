@@ -6,6 +6,9 @@
 #include "CreateRoomResponseStatus.h"
 #include "Responses.hpp"
 
+class RequestHandlerFactory;
+
+
 class MenuRequestHandler : public IRequestHandler {
 private:
 	LoggedUser& m_user;
