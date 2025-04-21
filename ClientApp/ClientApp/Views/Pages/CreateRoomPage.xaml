@@ -25,7 +25,8 @@
             <TextBox 
                 materialDesign:HintAssist.Hint="Room name" 
                 Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
-                Text="{Binding RoomName}"
+                Text="{Binding RoomName, UpdateSourceTrigger=PropertyChanged}"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                 Width="80"
                 Margin="0,0,10,0"/>
 
@@ -34,23 +35,33 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+                Style="{StaticResource MaterialDesignFloatingHintNumericUpDown}"
                 Value="{Binding MaxPlayers}"
+                Maximum="50"
+                Minimum="1"
                 Margin="0,0,10,0"/>
 
             <materialDesign:NumericUpDown
                 materialDesign:HintAssist.Hint="Question count" 
+                materialDesign:HintAssist.HelperText="{Binding QuestionCountError, Mode=TwoWay}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+                Style="{StaticResource MaterialDesignFloatingHintNumericUpDown}"
+                Maximum="50"
+                Minimum="1"
                 Value="{Binding QuestionsCount}"
-                Margin="0,0,10,0"/>
+                Margin="0,0,10,0">
+            </materialDesign:NumericUpDown>
 
             <materialDesign:NumericUpDown
                 materialDesign:HintAssist.Hint="Question timeout" 
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+                Style="{StaticResource MaterialDesignFloatingHintNumericUpDown}"
                 Value="{Binding QuestionTimeout}"
+                Minimum="1"
                 Margin="0,0,10,0"/>
         </StackPanel>
 

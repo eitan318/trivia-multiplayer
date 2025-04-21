@@ -20,21 +20,21 @@ namespace ClientApp.ViewModels.ForgotPassword
         public string NewPassword
         {
             get => _newPassword;
-            set => SetProperty(ref _newPassword, value);
+            set { _newPassword = value; OnPropertyChanged(); }
         }
 
         private string _confirmPassword;
         public string ConfirmPassword
         {
             get => _confirmPassword;
-            set => SetProperty(ref _confirmPassword, value);
+            set { _confirmPassword = value; OnPropertyChanged(); }
         }
 
         private string _errorMessage;
         public string ErrorMessage
         {
             get => _errorMessage;
-            set => SetProperty(ref _errorMessage, value);
+            set { _errorMessage = value; OnPropertyChanged(); }
         }
 
         public string Username { get; set; }

@@ -144,16 +144,21 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& requestInfo)
 {
     CreateRoomRequest request =
         JsonRequestPacketDeserializer<CreateRoomRequest>::deserializeRequest(requestInfo.buffer);
-
     NoDataResponse createRoomResponse;
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
-    RoomData data;
-    data.maxPlayers = request.maxUsers;
-    data.numOfQuestionsInGame = request.questionCount;
-    data.name = request.roomName;
-    data.timePerQuestion = request.answerTimeout;
-    roomManager.createRoom(this->m_user, data);
-    createRoomResponse.status = (int)CreateRoomResponseStatus::Success;
+ 
+    if ( request.questionCount > roomManager.getTotalQuestionsCount()) {
+        createRoomResponse.status = (int)CreateRoomResponseStatus::TooMuchQuestions;
+    }
+    else {
+        RoomData data;
+        data.maxPlayers = request.maxUsers;
+        data.numOfQuestionsInGame = request.questionCount;
+        data.name = request.roomName;
+        data.timePerQuestion = request.answerTimeout;
+        roomManager.createRoom(this->m_user, data);
+        createRoomResponse.status = (int)CreateRoomResponseStatus::Success;
+    }
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(createRoomResponse);

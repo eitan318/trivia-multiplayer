@@ -1,4 +1,5 @@
 ﻿using ClientApp.Commands;
+using ClientApp.Enums;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
@@ -40,46 +41,62 @@ namespace ClientApp.ViewModels
         public string Password
         {
             get => _password;
-            set => SetProperty(ref _password, value);
+            set { _password = value; OnPropertyChanged(); }
         }
 
         public string Username
         {
             get => _username;
-            set => SetProperty(ref _username, value);
+            set { _username = value; OnPropertyChanged(); }
         }
 
         public string Email
         {
             get => _email;
-            set => SetProperty(ref _email, value);
+            set { _email = value; OnPropertyChanged(); }
         }
 
 
         public string PhoneNumber
         {
             get => _phoneNumber;
-            set => SetProperty(ref _phoneNumber, value);
+            set { _phoneNumber = value; OnPropertyChanged(); }
         }
 
         public string HouseAddress
         {
             get => _houseAddress;
-            set => SetProperty(ref _houseAddress, value);
+            set { _houseAddress = value; OnPropertyChanged(); }
         }
 
         public string BirthDate
         {
             get => _birthDate;
-            set => SetProperty(ref _birthDate, value);
+            set { _birthDate = value; OnPropertyChanged(); }
         }
+
+
+        private string _passwordErrorMessage;
+        public string PasswordErrorMessage
+        {
+            get => _passwordErrorMessage;
+            set { _passwordErrorMessage = value; OnPropertyChanged(); }
+        }
+
+        private string _usernameErrorMessage;
+        public string UsernameErrorMessage
+        {
+            get => _usernameErrorMessage;
+            set { _usernameErrorMessage = value; OnPropertyChanged(); }
+        }
+
 
 
         private string _errorMessage;
         public string ErrorMessage
         {
             get => _errorMessage;
-            set => SetProperty(ref _errorMessage, value);
+            set { _errorMessage = value; OnPropertyChanged(); }
         }
 
         public ICommand SignupCommand { get; }
@@ -102,11 +119,23 @@ namespace ClientApp.ViewModels
 
         private async void PerformLogin()
         {
-            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+            ErrorMessage = "";
+            UsernameErrorMessage = "";
+            PasswordErrorMessage = "";
+            bool perform = true;
+            if (string.IsNullOrWhiteSpace(Username))
             {
-                ErrorMessage = "Username and Password cannot be empty.";
-                return;
+                UsernameErrorMessage = "Cannot be empty";
+                perform = false;
             }
+            if (string.IsNullOrWhiteSpace(Password))
+            {
+                PasswordErrorMessage = "Cannot be empty";
+                perform = false;
+            }
+
+            if (!perform)
+                return;
 
             try
             {
@@ -125,18 +154,18 @@ namespace ClientApp.ViewModels
                 else
                 {
                     NoDataResponse loginResponse = JsonResponseDeserialize.DeserializeResponse<NoDataResponse>(responseInfo);
-                    string[] errMsg = {
-                        "",
-                         "username does not exist",
-                         "password doesnt match username"
-                    };
-
-
-                    ErrorMessage = errMsg[loginResponse.Status];
-
-                    if (loginResponse.Status == 0)
+                    switch (loginResponse.Status)
                     {
-                        MyNavigationService.Navigate(new MenuPage());
+                        case (byte)LoginResponseStatus.Success:
+                            MyNavigationService.Navigate(new MenuPage());
+                            break;
+                        case (byte)LoginResponseStatus.UnknowenUsername:
+                            UsernameErrorMessage = "username does not exist";
+                            break;
+                        case (byte)LoginResponseStatus.PasswordDoesntMatch:
+                            PasswordErrorMessage = "password doesnt match username";
+                            break;
+
                     }
 
                 }

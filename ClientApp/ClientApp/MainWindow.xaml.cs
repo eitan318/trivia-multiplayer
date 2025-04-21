@@ -20,7 +20,7 @@ namespace ClientApp
         public MainWindow()
         {
             InitializeComponent();
-            initialPage = new MenuPage();
+            initialPage = new LoginPage();
             SocketService.Initialize("127.0.0.1", 5554);
             MyNavigationService.Initialize(MainFrame);
 
