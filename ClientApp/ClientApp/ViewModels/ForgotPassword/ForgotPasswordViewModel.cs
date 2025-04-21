@@ -21,7 +21,7 @@
         public object CurrentStep
         {
             get => _currentStep;
-            private set => SetProperty(ref _currentStep, value);
+            private set { _currentStep = value; OnPropertyChanged(); }
         }
 
         public EmailStepViewModel EmailStep { get; }

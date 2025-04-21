@@ -29,6 +29,7 @@ public:
 	std::vector<HighScoreInfo> getBestScores(int limit);
 	std::list<Question> getQuestions(int amount);
     void updatePassword(const std::string& username, const std::string& newPassword);
+	unsigned int getQuestionsCount();
 private:
 	~SqliteDatabase();
 	SqliteDatabase() { };

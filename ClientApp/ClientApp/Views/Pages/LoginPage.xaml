@@ -9,6 +9,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="LoginPage">
 
+
     <Grid Background="{DynamicResource MaterialDesignPaper}">
 
 
@@ -28,22 +29,38 @@
                            FontWeight="Bold" 
                            TextAlignment="Center" 
                            Margin="0,0,0,20"
-                           Foreground="{DynamicResource MaterialDesignBody}" />
+                           Foreground="{DynamicResource MaterialDesignBody}" >
+
+                </TextBlock>
+
 
                 <!-- Username TextBox -->
                 <TextBox
-                     Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 
-                     x:Name="UsernameTB"
-                     materialDesign:HintAssist.Hint="Username" 
-                     Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
-                     Margin="0,10" />
+                    Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 
+                    x:Name="UsernameTB"
+                    materialDesign:HintAssist.Hint="Username" 
+                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                    Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"/>
+                <TextBlock Text="{Binding UsernameErrorMessage}" 
+                   Foreground="Red" 
+                   Visibility="{Binding UsernameErrorMessage}"
+                  />
 
-                <!-- PasswordBox -->
+                <!-- PasswordBoxWithToggle -->
                 <controls:PasswordBoxWithToggle
-                    Margin="0,10"
                     PasswordText="{Binding Password, Mode=TwoWay}"
                     Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
-                    materialDesign:HintAssist.Hint="Password"/>
+                    InnerPasswordBoxStyle="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                    InnerTextBoxStyle="{StaticResource MaterialDesignFloatingHintTextBox}"
+                    materialDesign:HintAssist.Hint="Password">
+                </controls:PasswordBoxWithToggle>
+                <TextBlock Text="{Binding PasswordErrorMessage}" 
+                    Foreground="Red" 
+                    Visibility="{Binding PasswordErrorMessage}"
+                    />
+
+                <Grid Height="20"/>
+
 
                 <!-- Forgot password Button -->
                 <TextBlock>
@@ -64,7 +81,10 @@
                 <TextBlock Text="{Binding ErrorMessage}" 
                            Foreground="Red" 
                            TextAlignment="Center"
-                           Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
+                           Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}">
+                    
+
+                </TextBlock>
             </StackPanel>
         </materialDesign:Card>
     </Grid>

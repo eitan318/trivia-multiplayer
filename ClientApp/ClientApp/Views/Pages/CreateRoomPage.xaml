@@ -4,11 +4,85 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ClientApp.Views.Pages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:controls="clr-namespace:ClientApp.Controls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CreateRoomPage">
 
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Page.Resources>
+
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="4*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0">
+            <TextBox 
+                materialDesign:HintAssist.Hint="Room name" 
+                Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+                Text="{Binding RoomName, UpdateSourceTrigger=PropertyChanged}"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                Width="80"
+                Margin="0,0,10,0"/>
+
+            <materialDesign:NumericUpDown
+                materialDesign:HintAssist.Hint="Players" 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+                Style="{StaticResource MaterialDesignFloatingHintNumericUpDown}"
+                Value="{Binding MaxPlayers}"
+                Maximum="50"
+                Minimum="1"
+                Margin="0,0,10,0"/>
+
+            <materialDesign:NumericUpDown
+                materialDesign:HintAssist.Hint="Question count" 
+                materialDesign:HintAssist.HelperText="{Binding QuestionCountError, Mode=TwoWay}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+                Style="{StaticResource MaterialDesignFloatingHintNumericUpDown}"
+                Maximum="50"
+                Minimum="1"
+                Value="{Binding QuestionsCount}"
+                Margin="0,0,10,0">
+            </materialDesign:NumericUpDown>
+
+            <materialDesign:NumericUpDown
+                materialDesign:HintAssist.Hint="Question timeout" 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+                Style="{StaticResource MaterialDesignFloatingHintNumericUpDown}"
+                Value="{Binding QuestionTimeout}"
+                Minimum="1"
+                Margin="0,0,10,0"/>
+        </StackPanel>
+
+        <Button Content="Create Room" 
+                Command="{Binding CreateRoomCommand}" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center" 
+                Grid.Row="1" />
+
+        <ItemsControl ItemsSource="{Binding Players}" Grid.Row="2"
+                      Visibility="{Binding IsPlayerGridVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="6" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <controls:PlayerUserControl />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </local:NavigablePage>

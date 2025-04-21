@@ -18,7 +18,7 @@ namespace ClientApp.ViewModels.ForgotPassword
         public string ErrorMessage
         {
             get => _errorMessage;
-            set => SetProperty(ref _errorMessage, value);
+            set { _errorMessage = value; OnPropertyChanged(); }
         }
 
         public ObservableCollection<CodeBox> CodeBoxes { get; set; }
@@ -69,7 +69,7 @@ namespace ClientApp.ViewModels.ForgotPassword
         public string Value
         {
             get => _value;
-            set => SetProperty(ref _value, value);
+            set { _value = value; OnPropertyChanged(); }
         }
     }
 }

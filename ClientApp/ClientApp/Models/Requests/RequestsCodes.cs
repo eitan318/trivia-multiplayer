@@ -14,6 +14,8 @@ namespace ClientApp.Models.Requests
         GetRoomsRequest = 4,
         HighScoresRequest = 5,
         ForgotPasswordRequest = 6,
-        ResetPasswordRequest = 7
+        ResetPasswordRequest = 7,
+        GetPlayersRequest = 8,
+        CreateRoomRequest = 9
     }
 }

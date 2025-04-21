@@ -26,5 +26,6 @@ public:
 	virtual UserRecord getUserRecord(const std::string& email) = 0;
 	virtual std::vector<HighScoreInfo> getBestScores(int limit) = 0;
 	virtual void updatePassword(const std::string& username, const std::string& newPassword) = 0;
+	virtual unsigned int getQuestionsCount() = 0;
 
 };

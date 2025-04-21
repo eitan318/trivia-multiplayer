@@ -1,5 +1,4 @@
-﻿using ClientApp.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ClientApp.Views.Pages
+namespace ClientApp.Controls
 {
     /// <summary>
-    /// Interaction logic for CreateRoomPage.xaml
+    /// Interaction logic for PlayerUserControl.xaml
     /// </summary>
-    public partial class CreateRoomPage : NavigablePage
+    public partial class PlayerUserControl : UserControl
     {
-        public CreateRoomPage(Page parent) : base(parent)
+        public PlayerUserControl()
         {
             InitializeComponent();
-            DataContext = CreateRoomPageViewModel.Instance();
         }
     }
 }
