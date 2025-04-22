@@ -18,10 +18,10 @@ namespace ClientApp.ViewModels
     class CreateRoomPageViewModel : BaseViewModel
     {
         private string _roomName;
-        private uint _questionTimeout;
+        private uint _questionTimeout = 1; //Min val from xaml
         private bool _isPlayerGridVisible;
-        private uint _maxPlayers;
-        private uint _questionsCount;
+        private uint _maxPlayers = 1; //Min val from xaml
+        private uint _questionsCount = 1; //Min val from xaml
         private string _questionCountError;
 
         /// <summary>

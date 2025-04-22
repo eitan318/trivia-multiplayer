@@ -9,6 +9,12 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="LoginPage">
 
+    <!--<Page.Resources>
+        <Style x:Key="HelperStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Red"/>
+        </Style>
+    </Page.Resources>-->
+
 
     <Grid Background="{DynamicResource MaterialDesignPaper}">
 
@@ -39,6 +45,7 @@
                     Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 
                     x:Name="UsernameTB"
                     materialDesign:HintAssist.Hint="Username" 
+                    materialDesign:HintAssist.HelperText="{Binding UsernameErrorMessage}"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                     Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"/>
                 <TextBlock Text="{Binding UsernameErrorMessage}" 
