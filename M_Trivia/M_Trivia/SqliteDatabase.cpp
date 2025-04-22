@@ -3,11 +3,6 @@
 SqliteDatabase* SqliteDatabase::_instance = nullptr;
 	
 
-SqliteDatabase::~SqliteDatabase()
-{
-	close(); 
-}
-
 SqliteDatabase* SqliteDatabase::getInstance()
 {
 	if (_instance == nullptr) {
@@ -17,6 +12,12 @@ SqliteDatabase* SqliteDatabase::getInstance()
 		throw std::exception("Cannot instansiate a singleton twice. Eitan");
 	}
 	return _instance;
+}
+
+void SqliteDatabase::deleteInstance()
+{
+	delete _instance;
+	_instance = nullptr;
 }
 
 bool SqliteDatabase::open()

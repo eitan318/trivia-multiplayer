@@ -15,6 +15,7 @@ class SqliteDatabase : public IDatabase
 {
 public:
 	static SqliteDatabase* getInstance();
+	static void deleteInstance();
 	bool open();
 	bool close();
 	int doesUserExist(const std::string&);
@@ -31,7 +32,7 @@ public:
     void updatePassword(const std::string& username, const std::string& newPassword);
 	unsigned int getQuestionsCount();
 private:
-	~SqliteDatabase();
+	~SqliteDatabase() { close(); };
 	SqliteDatabase() { };
 	SqliteDatabase(const SqliteDatabase&) = delete;
 	SqliteDatabase& operator=(const SqliteDatabase&) = delete;
