@@ -8,6 +8,7 @@ namespace ClientApp.Models.Responses
 {
     class JoinRoomResponse
     {
-        public uint RoomId { get; set; }
+        public ResponsesCodes GetCode() => ResponsesCodes.JoinRoomResponse;
+
     }
 }

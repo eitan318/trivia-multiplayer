@@ -2,6 +2,8 @@
 using ClientApp.Models;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
+using ClientApp.Services;
+using ClientApp.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +52,8 @@ namespace ClientApp.ViewModels
         {
             //GetRoomsRequest roomsRequest = new GetRoomsRequest();
             //roomsRequest.GetCode();
-            GetRoomResponse roomResponse = new GetRoomResponse();
+            GetRoomsRequest request = new GetRoomsRequest();
+            GetRoomResponse roomResponse = request.GetCode();
             this.Rooms = roomResponse.Rooms;
             RoomNames = Rooms.Select(r => r.name).ToList();
 
@@ -66,10 +69,30 @@ namespace ClientApp.ViewModels
                 return;
             }
             RoomData selected = Rooms.FirstOrDefault(r => r.name == SelectedRoom);
-            JoinRoomResponse response = new JoinRoomResponse();
-            response.RoomId = selected.id;
-            
-        }
+            JoinRoomRequest request = new JoinRoomRequest(selected.id);
+
+            ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(request);
+            if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+            {
+                ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
+                ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
+            }
+            else
+            {
+                NoDataResponse joinroomresponse = JsonResponseDeserialize.DeserializeResponse<NoDataResponse>(responseInfo);
+                string[] errMsg = {
+                        "",
+                         "username does not exist",
+                         "password doesnt match username"
+                    };
+                ErrorMessage = errMsg[joinroomresponse.Status];
+                if (joinroomresponse.Status == 0)
+                {
+                    //navigate to room page
+                }
+            }
+
+        }   
     }
     
 }
