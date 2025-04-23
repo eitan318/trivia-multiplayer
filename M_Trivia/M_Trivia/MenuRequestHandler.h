@@ -1,11 +1,17 @@
 #pragma once
 #include "LoggedUser.h"
-#include "Requests.hpp"
+#include "RequestsCodes.hpp"
 #include "RequestHandlerFactory.h"
 #include "JoinRoomResponseStatus.h"
+#include "JoinRoomRequest.hpp"
+#include "CreateRoomRequest.hpp"
+#include "GetPlayersInRoomRequest.hpp"
+#include "GetHighScoreRequest.hpp"
 #include "CreateRoomResponseStatus.h"
-#include "Responses.hpp"
-
+#include "GetRoomsResponse.hpp"
+#include "GetPlayersInRoomResponse.hpp"
+#include "GetPersonalStatisticsResponse.hpp"
+#include "GetHighScoreResponse.hpp"
 class RequestHandlerFactory;
 
 /**

@@ -87,13 +87,10 @@
     <ClInclude Include="Response.hpp">
       <Filter>Headers\Responses</Filter>
     </ClInclude>
-    <ClInclude Include="Responses.hpp">
-      <Filter>Headers\Responses</Filter>
-    </ClInclude>
     <ClInclude Include="LoginRequest.hpp">
       <Filter>Headers\Requests</Filter>
     </ClInclude>
-    <ClInclude Include="Requests.hpp">
+    <ClInclude Include="RequestsCodes.hpp">
       <Filter>Headers\Requests</Filter>
     </ClInclude>
     <ClInclude Include="SignupRequest.hpp">
@@ -124,9 +121,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Server.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="UserRecord.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="WSAInitializer.h">
@@ -202,14 +196,17 @@
     <ClInclude Include="json.hpp">
       <Filter>libs</Filter>
     </ClInclude>
-    <ClInclude Include="LoggedUser.h">
-      <Filter>Headers\Model</Filter>
-    </ClInclude>
     <ClInclude Include="Question.hpp">
       <Filter>Headers\Model</Filter>
     </ClInclude>
     <ClInclude Include="RoomData.h">
       <Filter>Headers\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="UserRecord.hpp">
+      <Filter>Headers\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggedUser.h">
+      <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

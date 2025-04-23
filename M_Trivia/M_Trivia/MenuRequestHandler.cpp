@@ -5,39 +5,28 @@ m_handlerFactory(handlerFactory)
 {
 }
 
-bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info) const
+bool MenuRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
 {
-    return info.code == C_CreateRoomRequest &&
-        info.code == C_GetPlayersInRoomRequest &&
-        info.code == C_JoinRoomRequest;
+    switch (static_cast<RequestsCodes>(requestInfo.code)) {
+    case RequestsCodes::CreateRoomRequest:
+    case RequestsCodes::GetPlayersInRoomRequest:
+    case RequestsCodes::JoinRoomRequest:
+        return true;
+    default:
+        return false;
+    }
 }
 
-RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info) const
+RequestResult MenuRequestHandler::handleRequest(const RequestInfo& requestInfo) const
 {
-    switch (info.code) {
-    case C_CreateRoomRequest:
-    {
-        return this->createRoom(info);
+    switch (static_cast<RequestsCodes>(requestInfo.code)) {
+    case RequestsCodes::CreateRoomRequest:
+        return this->createRoom(requestInfo);
+    case RequestsCodes::GetPlayersInRoomRequest:
+        return this->getPlayersInRoom(requestInfo);
+    case RequestsCodes::JoinRoomRequest:
+        return this->joinRoom(requestInfo);
     }
-    case C_GetPlayersInRoomRequest:
-    {
-        return this->getPlayersInRoom(info);
-    }
-    case C_JoinRoomRequest:
-    {
-        return this->joinRoom(info);
-    }
-    default:
-        ErrorResponse errorResponse;
-        errorResponse.message = "Invalid msg code.";
-
-        RequestResult requestResult;
-        requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
-        requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
-
-        return requestResult;
-    }
-    return {};
 }
 
 RequestResult MenuRequestHandler::signout(const RequestInfo& info) const

@@ -4,17 +4,6 @@
 #include <string>
 
 
-
-enum MessageType : byte
-{
-	MT_CLIENT_LOG_IN = 200,
-	MT_CLIENT_UPDATE = 204,
-	MT_CLIENT_FINISH = 207,
-	MT_CLIENT_EXIT = 208,
-	MT_SERVER_UPDATE = 101,
-};
-
-
 class Helper
 {
 public:

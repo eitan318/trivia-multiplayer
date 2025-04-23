@@ -10,39 +10,30 @@ LoginRequestHandler::~LoginRequestHandler()
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
 {
-	return requestInfo.code == C_LoginRequest || requestInfo.code == C_ResetPasswordRequest
-		|| requestInfo.code == C_SignupRequest || requestInfo.code == C_SendPasswordResetCodeRequest;
+	switch (static_cast<RequestsCodes>(requestInfo.code)) {
+	case RequestsCodes::LoginRequest:
+	case RequestsCodes::SignupRequest:
+	case RequestsCodes::SendPasswordResetCodeRequest:
+	case RequestsCodes::ResetPasswordRequest:
+		return true;
+	default:
+		return false;
+	}
 }
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo& requestInfo) const
 {
-	switch (requestInfo.code) {
-	case C_LoginRequest:
-	{
+	switch (static_cast<RequestsCodes>(requestInfo.code)) {
+	case RequestsCodes::LoginRequest:
 		return login(requestInfo);
-	}
-	case C_SignupRequest:
-	{
+	case RequestsCodes::SignupRequest:
 		return signup(requestInfo);
-	}
-	case C_SendPasswordResetCodeRequest:
-	{
+	case RequestsCodes::SendPasswordResetCodeRequest:
 		return sendPasswordResetEmail(requestInfo);
-	}
-	case C_ResetPasswordRequest:
-	{
+	case RequestsCodes::ResetPasswordRequest:
 		return resetPassword(requestInfo);
 	}
-	default:
-		ErrorResponse errorResponse;
-		errorResponse.message = "Invalid msg code.";
-
-		RequestResult requestResult;
-		requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
-		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
-
-		return requestResult;
-	}
+	return {};
 }
 
 RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const

@@ -1,13 +1,19 @@
 #pragma once
 #include "IRequestHandler.h"
 #include "MenuRequestHandler.h"
-#include "Requests.hpp"
+#include "RequestsCodes.hpp"
+#include "LoginRequest.hpp"
+#include "SignupRequest.hpp"
+#include "ResetPasswordRequest.hpp"
+#include "SendPasswordResetCodeRequest.hpp"
 #include "JsonResponsePacketSerializer.h"
 #include "JsonRequestPacketDeserializer.h"
-#include "Responses.hpp"
 #include "RequestHandlerFactory.h"
 #include <random>
 #include <cmath>
+#include "ErrorResponse.hpp"
+#include "NoDataResponse.hpp"
+#include "SendPasswordResetCodeResponse.hpp"
 
 #define CODE_DIGITS 6
 

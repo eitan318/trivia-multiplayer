@@ -16,20 +16,18 @@ public:
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.
 	 */
-    unsigned int getCode() const { return C_GetHighScoreResponse; }
+    unsigned char getCode() const { return C_GetHighScoreResponse; }
 
-	unsigned int status;
 	std::vector<HighScoreInfo> statistics;
 
     /**
 	 * @brief Converts the response to a JSON object.
 	 * @return A JSON representation of the response.
 	 */
-    nlohmann::json getJson() const {
-        return nlohmann::json {
-            {"Status", status},
-            {"Statistics", statistics},
-        };
+    nlohmann::json getJson() const override {
+        nlohmann::json j = baseJson();
+        j["Statistics"] = statistics; 
+        return j;
     }
 };
 

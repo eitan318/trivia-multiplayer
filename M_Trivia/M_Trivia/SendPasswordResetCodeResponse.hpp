@@ -5,7 +5,6 @@
 
 class SendPasswordResetCodeResponse : public Response{
 public:
-    unsigned int status;
     unsigned int emailCode;
     std::string username;
 
@@ -15,7 +14,7 @@ public:
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.
 	 */
-    unsigned int getCode() const { return C_SendPasswordResetCodeRequest; }
+    unsigned char getCode() const { return C_SendPasswordResetCodeResponse; }
 
     /**
 	 * @brief Converts the response to a JSON object.

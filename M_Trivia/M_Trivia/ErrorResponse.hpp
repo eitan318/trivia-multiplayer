@@ -14,17 +14,13 @@ public:
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.
 	 */
-    unsigned int getCode() const { return C_ErrorResponse; }
+    unsigned char getCode() const { return C_ErrorResponse; }
 
 	std::string message;
 
-    /**
-     * @brief Converts the response to a JSON object.
-     * @return A JSON representation of the response.
-     */ 
-    nlohmann::json getJson() const{
-        return nlohmann::json {
-            {"Message", message},
-        };
+    nlohmann::json getJson() const override {
+        nlohmann::json j = baseJson();
+        j["Message"] = message; 
+        return j;
     }
 };

@@ -100,7 +100,19 @@ void Communicator::handleNewClient(SOCKET sock)
         std::cout << "Recieved: " << msgStr << std::endl;
         requestInfo.buffer = std::vector<char>(msgStr.begin(), msgStr.end());
         RequestResult requestResult;
-        requestResult = handler->handleRequest(requestInfo);
+
+        if (handler->isRequestRelevant(requestInfo)) {
+            requestResult = handler->handleRequest(requestInfo);
+        }
+        else{
+			ErrorResponse errorResponse;
+			errorResponse.message = "Invalid msg code.";
+
+			RequestResult requestResult;
+			requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
+            requestResult.newHandler = handler;
+        }
+
         if (handler != requestResult.newHandler)
             delete handler;
         handler = requestResult.newHandler;
