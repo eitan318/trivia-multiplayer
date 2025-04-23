@@ -16,6 +16,16 @@ enum ResponsesCodes {
 
 class Response {
 public:
+
+	/**
+	 * @brief Gets the response code for this response.
+	 * @return The response code as an unsigned integer.
+	 */
 	virtual unsigned int getCode() const = 0;
+
+	/**
+	 * @brief Converts the response to a JSON object.
+	 * @return A JSON representation of the response.
+	 */
 	virtual  nlohmann::json getJson() const = 0;
 };
