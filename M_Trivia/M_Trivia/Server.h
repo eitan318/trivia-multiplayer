@@ -22,5 +22,5 @@ private:
 
 public:
 	static Server& getInstance();
-	void run();
+	void run() const;
 };

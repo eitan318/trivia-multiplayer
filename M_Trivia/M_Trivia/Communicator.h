@@ -27,7 +27,7 @@ private:
 public:
 	static Communicator& getInstance(RequestHandlerFactory& handlerFactory);
 	void startHandleRequest();
-	void bindAndListen();
+	void bindAndListen() const;
 	void handleNewClient(SOCKET);
 
 };

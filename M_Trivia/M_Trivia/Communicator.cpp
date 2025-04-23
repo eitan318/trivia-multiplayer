@@ -51,7 +51,7 @@ void Communicator::startHandleRequest()
     }
 }
 
-void Communicator::bindAndListen()
+void Communicator::bindAndListen() const
 {
     const int port = PORT;
 
@@ -82,8 +82,6 @@ void Communicator::handleNewClient(SOCKET sock)
 {
     IRequestHandler* handler = new LoginRequestHandler(this->m_handlerFactory);
 	this->m_clients.insert({ sock, handler});
-
-
 
     while (true) {
         RequestInfo requestInfo;
