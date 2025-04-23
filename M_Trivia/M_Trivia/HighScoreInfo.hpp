@@ -17,11 +17,6 @@ struct HighScoreInfo {
  * @brief Converts a HighScoreInfo object into a JSON object.
  *
  * This function serializes the provided `HighScoreInfo` struct into a JSON object.
- * The fields in the struct are mapped to the respective JSON keys:
- * - "game_name" `highScoreInfo.game_name`
- * - "player_username"  `highScoreInfo.username`
- * - "total_score"  `highScoreInfo.total_score`
- *
  * @param j The JSON object to which the data will be written.
  * @param highScoreInfo The HighScoreInfo object that contains the data to be serialized.
  */
