@@ -3,38 +3,59 @@
 #include <string>
 #include <curl/curl.h>
 
+#define GMAIL_PASSWORD "kzse tous xxvt wabs" /**< Placeholder for Gmail app password. */
+#define SMTP_SERVER "smtp://smtp.gmail.com:587" /**< Gmail SMTP server URL. */
 
-#define GMAIL_PASSWORD "kzse tous xxvt wabs"
-#define SMTP_SERVER "smtp://smtp.gmail.com:587"
-
-// Define the upload_status struct
+/**
+ * @struct upload_status
+ * @brief Tracks the state of email content upload.
+ */
 struct upload_status {
-    size_t bytes_read;
+    size_t bytes_read; /**< Number of bytes read from the email payload. */
 } typedef upload_status;
 
-
+/**
+ * @class EmailSender
+ * @brief Handles sending emails via Gmail's SMTP server using libcurl.
+ *
+ * This class provides a static function to send emails. It uses libcurl to establish a connection
+ * with the Gmail SMTP server and handle email transmission. Note that the class cannot be instantiated.
+ */
 class EmailSender {
 private:
+    /**
+     * @brief Deleted constructor to prevent instantiation.
+     */
     EmailSender() = delete;
 
 public:
+    /**
+     * @brief Sends an email using Gmail's SMTP server.
+     *
+     * This function establishes a connection to the Gmail SMTP server and sends an email
+     * from the specified sender to the specified recipient.
+     *
+     * @param from Sender's email address.
+     * @param to Recipient's email address.
+     * @param subject The subject of the email.
+     * @param body The body content of the email.
+     * @throws std::runtime_error if email transmission fails.
+     */
     static void sendEmail(const std::string& from, const std::string& to, const std::string& subject, const std::string& body)
     {
-
         std::string from_addr = "<" + from + ">";
         std::string to_addr = "<" + to + ">";
         std::string from_mail = "Trivia Game Authenticator " + from_addr;
-        std::string to_mail = "Recieveer " + to_addr;
+        std::string to_mail = "Receiver " + to_addr;
 
         std::string payload_str =
             "To: " + to_mail + "\r\n"
             "From: " + from_mail + "\r\n"
             "Subject: " + subject + "\r\n"
-            "\r\n" 
+            "\r\n"
             + body + "\r\n";
 
         payload_text = payload_str.c_str();
-
 
         CURL* curl;
         CURLcode res = CURLE_OK;
@@ -49,46 +70,38 @@ public:
             curl_easy_setopt(curl, CURLOPT_PASSWORD, GMAIL_PASSWORD);
             curl_easy_setopt(curl, CURLOPT_MAIL_FROM, from_addr.c_str());
 
-            // Add recipients
             recipients = curl_slist_append(recipients, to_addr.c_str());
             curl_easy_setopt(curl, CURLOPT_MAIL_RCPT, recipients);
 
-            // Payload setup
             curl_easy_setopt(curl, CURLOPT_READFUNCTION, payload_source);
             curl_easy_setopt(curl, CURLOPT_READDATA, &upload_ctx);
-            curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L); 
+            curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
 
-            // Enable debugging
-            //curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-
-
-            /* Send the message */
             res = curl_easy_perform(curl);
 
-            /* Check for errors */
             if (res != CURLE_OK) {
                 throw std::runtime_error(std::string("curl_easy_perform() failed: ") + curl_easy_strerror(res));
             }
 
-            /* Free the list of recipients */
             curl_slist_free_all(recipients);
-
-            /* curl does not send the QUIT command until you call cleanup, so you
-             * should be able to reuse this connection for additional messages
-             * (setting CURLOPT_MAIL_FROM and CURLOPT_MAIL_RCPT as required, and
-             * calling curl_easy_perform() again. It may not be a good idea to keep
-             * the connection open for a long time though (more than a few minutes may
-             * result in the server timing out the connection), and you do want to
-             * clean up in the end.
-             */
             curl_easy_cleanup(curl);
         }
     }
 
-
 private:
-    static inline const char* payload_text = nullptr;
+    static inline const char* payload_text = nullptr; /**< Pointer to the email payload text. */
 
+    /**
+     * @brief Reads email content and provides it to libcurl.
+     *
+     * This callback function is called by libcurl to fetch chunks of the email content during upload.
+     *
+     * @param ptr Pointer to the buffer to fill with email content.
+     * @param size Size of each data element.
+     * @param nmemb Number of elements.
+     * @param userp Pointer to the upload_status structure for tracking progress.
+     * @return Number of bytes actually written to the buffer.
+     */
     static size_t payload_source(char* ptr, size_t size, size_t nmemb, void* userp)
     {
         struct upload_status* upload_ctx = (struct upload_status*)userp;
