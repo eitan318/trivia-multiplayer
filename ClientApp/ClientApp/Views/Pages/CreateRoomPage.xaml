@@ -36,7 +36,7 @@
                 VerticalAlignment="Center"
                 Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
                 Style="{StaticResource MaterialDesignFloatingHintNumericUpDown}"
-                Value="{Binding MaxPlayers}"
+                Value="{Binding MaxPlayers, UpdateSourceTrigger=PropertyChanged}"
                 Maximum="50"
                 Minimum="1"
                 Margin="0,0,10,0"/>
@@ -50,9 +50,14 @@
                 Style="{StaticResource MaterialDesignFloatingHintNumericUpDown}"
                 Maximum="50"
                 Minimum="1"
-                Value="{Binding QuestionsCount}"
+                Value="{Binding QuestionsCount, UpdateSourceTrigger=PropertyChanged}"
                 Margin="0,0,10,0">
             </materialDesign:NumericUpDown>
+            
+            
+
+            
+            
 
             <materialDesign:NumericUpDown
                 materialDesign:HintAssist.Hint="Question timeout" 
@@ -60,7 +65,7 @@
                 VerticalAlignment="Center"
                 Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
                 Style="{StaticResource MaterialDesignFloatingHintNumericUpDown}"
-                Value="{Binding QuestionTimeout}"
+                Value="{Binding QuestionTimeout, UpdateSourceTrigger=PropertyChanged}"
                 Minimum="1"
                 Margin="0,0,10,0"/>
         </StackPanel>
