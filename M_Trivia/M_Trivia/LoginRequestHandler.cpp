@@ -14,7 +14,7 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) cons
 		|| requestInfo.code == C_SignupRequest || requestInfo.code == C_SendPasswordResetCodeRequest;
 }
 
-RequestResult LoginRequestHandler::handleRequest(const RequestInfo& requestInfo)
+RequestResult LoginRequestHandler::handleRequest(const RequestInfo& requestInfo) const
 {
 	switch (requestInfo.code) {
 	case C_LoginRequest:
@@ -45,7 +45,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& requestInfo)
 	}
 }
 
-RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo)
+RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const
 {
 	LoginRequest request = JsonRequestPacketDeserializer<LoginRequest>::deserializeRequest(requestInfo.buffer);
 	try {
@@ -77,7 +77,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo)
 
 }
 
-RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo)
+RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo) const
 {
 	try {
 
@@ -104,7 +104,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo)
 }
 
 
-unsigned int  LoginRequestHandler::generateRandomCode(unsigned int digsOfCode) {
+unsigned int  LoginRequestHandler::generateRandomCode(unsigned int digsOfCode) const {
 	if (digsOfCode == 0) {
 		throw std::invalid_argument("Number of digits must be greater than 0");
 	}
@@ -120,7 +120,7 @@ unsigned int  LoginRequestHandler::generateRandomCode(unsigned int digsOfCode) {
 }
 
 
-RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& requestInfo)
+RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& requestInfo) const
 {
 	try {
 		SendPasswordResetCodeRequest request;
@@ -150,7 +150,7 @@ RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& req
 
 
 
-RequestResult LoginRequestHandler::resetPassword(const RequestInfo& requestInfo)
+RequestResult LoginRequestHandler::resetPassword(const RequestInfo& requestInfo) const
 {
 	try {
 		ResetPasswordRequest request;

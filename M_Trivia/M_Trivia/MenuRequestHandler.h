@@ -13,15 +13,15 @@ class MenuRequestHandler : public IRequestHandler {
 private:
 	LoggedUser& m_user;
 	RequestHandlerFactory& m_handlerFactory;
-	RequestResult signout(const RequestInfo& requestInfo);
-	RequestResult getRooms(const RequestInfo& requestInfo);
-	RequestResult getPlayersInRoom(const RequestInfo& requestInfo);
-	RequestResult getPersonalStats(const RequestInfo& requestInfo);
-	RequestResult getHighScore(const RequestInfo& requestInfo);
-	RequestResult joinRoom(const RequestInfo& requestInfo);
-	RequestResult createRoom(const RequestInfo& requestInfo);
+	RequestResult signout(const RequestInfo& requestInfo) const;
+	RequestResult getRooms(const RequestInfo& requestInfo) const;
+	RequestResult getPlayersInRoom(const RequestInfo& requestInfo) const;
+	RequestResult getPersonalStats(const RequestInfo& requestInfo) const;
+	RequestResult getHighScore(const RequestInfo& requestInfo) const;
+	RequestResult joinRoom(const RequestInfo& requestInfo) const;
+	RequestResult createRoom(const RequestInfo& requestInfo) const;
 public:
 	MenuRequestHandler(LoggedUser& user, RequestHandlerFactory& handlerFactory);
 	bool isRequestRelevant(const RequestInfo& requestInfo) const;
-	RequestResult handleRequest(const RequestInfo& requestInfo);
+	RequestResult handleRequest(const RequestInfo& requestInfo) const;
 };
