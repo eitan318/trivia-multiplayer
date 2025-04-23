@@ -26,8 +26,6 @@ struct SignupRequest {
         const std::string phone = j.at("PhoneNumber");
         const std::string birthDate = j.at("BirthDate");
 
-        
-
         // All fields passed validation
         request.userRecord = UserRecord(username, password, email, address, phone, birthDate);
     }
