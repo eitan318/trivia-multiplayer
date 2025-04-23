@@ -14,6 +14,9 @@ using System.Windows.Input;
 
 namespace ClientApp.ViewModels
 {
+    /// <summary>
+    /// ViewModel for JoinRoom
+    /// </summary>
     public class JoinRoomViewModel : BaseViewModel
     {
         private Page ownerPage;
@@ -27,6 +30,9 @@ namespace ClientApp.ViewModels
             }
         }
         private string _selectedRoom;
+        /// <summary>
+        /// Gets or sets the name of the selected room.
+        /// </summary>
         public string SelectedRoom
         {
             get => _selectedRoom;
@@ -35,10 +41,19 @@ namespace ClientApp.ViewModels
         private List<RoomData> Rooms
         {  get; set; }
 
+        /// <summary>
+        /// Private constructor for the JoinRoomViewModel.
+        /// </summary>
+        /// <param name="owner">The page that owns this view model.</param>
         private JoinRoomViewModel(Page owner)
         {
             this.ownerPage = owner;
         }
+        /// <summary>
+        /// Creates or retrieves a singleton instance of JoinRoomViewModel.
+        /// </summary>
+        /// <param name="owner">The page that owns this view model.</param>
+        /// <returns>An instance of JoinRoomViewModel.</returns>
         public static JoinRoomViewModel Instance(Page owner)
         {
             return GetInstance(() => new JoinRoomViewModel(owner));
@@ -48,6 +63,9 @@ namespace ClientApp.ViewModels
         public ICommand JoinCommand { get; }
 
 
+        /// <summary>
+        /// Updates the list of available rooms.
+        /// </summary>
         public void updateList()
         {
             //GetRoomsRequest roomsRequest = new GetRoomsRequest();
@@ -58,10 +76,18 @@ namespace ClientApp.ViewModels
             RoomNames = Rooms.Select(r => r.name).ToList();
 
         }
+
+        /// <summary>
+        /// Refreshes the room list by updating it.
+        /// </summary>
         public void refresh()
         {
             this.updateList();
         }
+
+        /// <summary>
+        /// Attempts to join the selected room.
+        /// </summary>
         public void joinRoom()
         {
             if (string.IsNullOrEmpty(SelectedRoom))
