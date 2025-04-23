@@ -1,19 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClientApp.Models.Requests
 {
+    /// <summary>
+    /// Represents a request to reset a user's password.
+    /// </summary>
     class ResetPasswordRequest : IRequest
     {
-        public ResetPasswordRequest(string newPassword, string username) {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ResetPasswordRequest"/> class.
+        /// </summary>
+        /// <param name="newPassword">The new password to set for the user.</param>
+        /// <param name="username">The username of the user whose password is being reset.</param>
+        public ResetPasswordRequest(string newPassword, string username)
+        {
             this.NewPassword = newPassword;
             this.Username = username;
         }
+
         public RequestsCodes GetCode() => RequestsCodes.ResetPasswordRequest;
+
         public string Username { get; set; }
-        public string NewPassword {  get; set; }
+
+        public string NewPassword { get; set; }
     }
 }

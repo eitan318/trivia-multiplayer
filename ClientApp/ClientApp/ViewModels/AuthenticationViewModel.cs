@@ -16,107 +16,75 @@ using System.Windows.Input;
 
 namespace ClientApp.ViewModels
 {
+    /// <summary>
+    /// ViewModel for handling user authentication operations including login, signup, and navigation.
+    /// </summary>
     class AuthenticationViewModel : BaseViewModel
     {
         private AuthenticationViewModel()
         {
+            // Initialize commands for different actions
             SignupCommand = new RelayCommand(PerformSignup);
             NavigateToLoginCommand = new RelayCommand(NavigateToLogin);
             LoginCommand = new RelayCommand(PerformLogin);
             NavigateToSignupCommand = new RelayCommand(NavigateToSignup);
             NavigateToForgotPasswordCommand = new RelayCommand(NavigateToForgotPassword);
         }
+
+        /// <summary>
+        /// Provides a singleton instance of the <see cref="AuthenticationViewModel"/>.
+        /// </summary>
         public static AuthenticationViewModel Instance()
         {
             return GetInstance(() => new AuthenticationViewModel());
-        }
-        
 
+        }
         private string _password;
         private string _username;
         private string _email;
         private string _houseAddress;
         private string _phoneNumber;
         private string _birthDate;
-        public string Password
-        {
-            get => _password;
-            set { _password = value; OnPropertyChanged(); }
-        }
-
-        public string Username
-        {
-            get => _username;
-            set { _username = value; OnPropertyChanged(); }
-        }
-
-        public string Email
-        {
-            get => _email;
-            set { _email = value; OnPropertyChanged(); }
-        }
-
-
-        public string PhoneNumber
-        {
-            get => _phoneNumber;
-            set { _phoneNumber = value; OnPropertyChanged(); }
-        }
-
-        public string HouseAddress
-        {
-            get => _houseAddress;
-            set { _houseAddress = value; OnPropertyChanged(); }
-        }
-
-        public string BirthDate
-        {
-            get => _birthDate;
-            set { _birthDate = value; OnPropertyChanged(); }
-        }
-
-
         private string _passwordErrorMessage;
-        public string PasswordErrorMessage
-        {
-            get => _passwordErrorMessage;
-            set { _passwordErrorMessage = value; OnPropertyChanged(); }
-        }
-
         private string _usernameErrorMessage;
-        public string UsernameErrorMessage
-        {
-            get => _usernameErrorMessage;
-            set { _usernameErrorMessage = value; OnPropertyChanged(); }
-        }
-
-
-
         private string _errorMessage;
-        public string ErrorMessage
-        {
-            get => _errorMessage;
-            set { _errorMessage = value; OnPropertyChanged(); }
-        }
 
+        // Properties for username, password, email, etc., with change notification
+        public string Password { get => _password; set { _password = value; OnPropertyChanged(); } }
+        public string Username { get => _username; set { _username = value; OnPropertyChanged(); } }
+        public string Email { get => _email; set { _email = value; OnPropertyChanged(); } }
+        public string PhoneNumber { get => _phoneNumber; set { _phoneNumber = value; OnPropertyChanged(); } }
+        public string HouseAddress { get => _houseAddress; set { _houseAddress = value; OnPropertyChanged(); } }
+        public string BirthDate { get => _birthDate; set { _birthDate = value; OnPropertyChanged(); } }
+
+        // Error message properties
+        public string PasswordErrorMessage { get => _passwordErrorMessage; set { _passwordErrorMessage = value; OnPropertyChanged(); } }
+        public string UsernameErrorMessage { get => _usernameErrorMessage; set { _usernameErrorMessage = value; OnPropertyChanged(); } }
+        public string ErrorMessage { get => _errorMessage; set { _errorMessage = value; OnPropertyChanged(); } }
+
+        // Commands for different actions
         public ICommand SignupCommand { get; }
         public ICommand LoginCommand { get; }
         public ICommand NavigateToForgotPasswordCommand { get; }
         public ICommand NavigateToLoginCommand { get; }
         public ICommand NavigateToSignupCommand { get; }
 
-
-
+        // Method to navigate to the signup page
         private void NavigateToSignup()
         {
             MyNavigationService.Navigate(new SignupPage());
         }
 
+        // Method to navigate to the forgot password page
         private void NavigateToForgotPassword()
         {
             MyNavigationService.Navigate(new ForgotPasswordPage(new LoginPage()));
         }
 
+        /// <summary>
+        /// Attempts to log in the user by validating the username and password.
+        /// If successful, navigates to the menu page. If there is an error, shows the error messages.
+        /// </summary>
         private async void PerformLogin()
         {
             ErrorMessage = "";
@@ -139,6 +107,7 @@ namespace ClientApp.ViewModels
 
             try
             {
+                // Prepare the login request and send it
                 LoginRequest loginRequest = new LoginRequest
                 {
                     Password = Password,
@@ -146,6 +115,8 @@ namespace ClientApp.ViewModels
                 };
 
                 ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(loginRequest);
+
+                // Handle server error response
                 if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
                 {
                     ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
@@ -163,26 +134,27 @@ namespace ClientApp.ViewModels
                             UsernameErrorMessage = "username does not exist";
                             break;
                         case (byte)LoginResponseStatus.PasswordDoesntMatch:
-                            PasswordErrorMessage = "password doesnt match username";
+                            PasswordErrorMessage = "password doesn't match username";
                             break;
-
                     }
-
                 }
             }
             catch (Exception ex)
             {
-                ErrorMessage = $"Login failed(sent from client side): {ex.Message}";
+                ErrorMessage = $"Login failed (sent from client side): {ex.Message}";
             }
         }
 
-
-
+        // Method to navigate to the login page
         private void NavigateToLogin()
         {
             MyNavigationService.Navigate(new LoginPage());
         }
 
+        /// <summary>
+        /// Attempts to sign up the user by validating the input fields and sending the signup request.
+        /// If the signup is successful, navigates to the login page. If there are errors, displays error messages.
+        /// </summary>
         private async void PerformSignup()
         {
             if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
@@ -193,6 +165,7 @@ namespace ClientApp.ViewModels
 
             try
             {
+                // Prepare the signup request and send it
                 SignupRequest signupRequest = new SignupRequest
                 {
                     Password = Password,
@@ -203,9 +176,9 @@ namespace ClientApp.ViewModels
                     BirthDate = BirthDate,
                 };
 
-
                 ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(signupRequest);
 
+                // Handle server error response
                 if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
                 {
                     ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
@@ -232,15 +205,11 @@ namespace ClientApp.ViewModels
                         MyNavigationService.Navigate(new LoginPage());
                     }
                 }
-
-
-                    
             }
             catch (Exception ex)
             {
-                ErrorMessage = $"Signup failed(sent from client side): {ex.Message}";
+                ErrorMessage = $"Signup failed (sent from client side): {ex.Message}";
             }
         }
-
     }
 }

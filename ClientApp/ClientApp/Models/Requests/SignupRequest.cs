@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Models.Requests
 {
+    /// <summary>
+    /// Represents a request for signing up
+    /// /// </summary>
     public struct SignupRequest : IRequest
     {
         public SignupRequest(string username, string password, 

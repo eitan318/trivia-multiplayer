@@ -11,17 +11,21 @@
       Title="CreateRoomPage">
 
     <Page.Resources>
+        <!-- Converter to toggle visibility based on a boolean value -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Page.Resources>
 
     <Grid>
+        <!-- Define rows for the layout -->
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
 
+        <!-- Input fields section -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0">
+            <!-- TextBox for entering the room name -->
             <TextBox 
                 materialDesign:HintAssist.Hint="Room name" 
                 Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
@@ -30,6 +34,7 @@
                 Width="80"
                 Margin="0,0,10,0"/>
 
+            <!-- NumericUpDown for specifying the number of players -->
             <materialDesign:NumericUpDown
                 materialDesign:HintAssist.Hint="Players" 
                 HorizontalAlignment="Center"
@@ -41,6 +46,7 @@
                 Minimum="1"
                 Margin="0,0,10,0"/>
 
+            <!-- NumericUpDown for specifying the question count -->
             <materialDesign:NumericUpDown
                 materialDesign:HintAssist.Hint="Question count" 
                 materialDesign:HintAssist.HelperText="{Binding QuestionCountError, Mode=TwoWay}"
@@ -53,12 +59,8 @@
                 Value="{Binding QuestionsCount, UpdateSourceTrigger=PropertyChanged}"
                 Margin="0,0,10,0">
             </materialDesign:NumericUpDown>
-            
-            
 
-            
-            
-
+            <!-- NumericUpDown for specifying the question timeout -->
             <materialDesign:NumericUpDown
                 materialDesign:HintAssist.Hint="Question timeout" 
                 HorizontalAlignment="Center"
@@ -70,19 +72,24 @@
                 Margin="0,0,10,0"/>
         </StackPanel>
 
+        <!-- Button for creating the room -->
         <Button Content="Create Room" 
                 Command="{Binding CreateRoomCommand}" 
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Grid.Row="1" />
 
+        <!-- List of players displayed in a grid -->
         <ItemsControl ItemsSource="{Binding Players}" Grid.Row="2"
                       Visibility="{Binding IsPlayerGridVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <!-- Define the layout for player items -->
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="6" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
+
+            <!-- Define the template for each player item -->
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <controls:PlayerUserControl />
