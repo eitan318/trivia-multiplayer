@@ -9,8 +9,26 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Services
 {
+    /// <summary>
+    /// Provides serialization functionality for client requests into JSON format.
+    /// </summary>
     class JsonRequestSerializer
     {
+        /// <summary>
+        /// Serializes a request object into a byte array for transmission.
+        /// The serialized format includes:
+        /// 1. A single byte representing the request code.
+        /// 2. Four bytes (big-endian) representing the length of the JSON data.
+        /// 3. The JSON representation of the request.
+        /// </summary>
+        /// <param name="request">The request object implementing <see cref="IRequest"/> to be serialized.</param>
+        /// <returns>A byte array containing the serialized request data.</returns>
+        /// <remarks>
+        /// - The JSON payload is encoded using UTF-8.
+        /// - The length prefix ensures the server can correctly read the JSON payload.
+        /// - The request code identifies the type of request.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException">Thrown if the <paramref name="request"/> is null.</exception>
         static public byte[] SerializeRequest(IRequest request)
         {
             string json = JsonConvert.SerializeObject(request);
