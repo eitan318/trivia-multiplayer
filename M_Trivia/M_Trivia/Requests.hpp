@@ -9,7 +9,7 @@
 #include "GetHighScoreRequest.hpp"
 
 
-enum RequestsCodes {
+enum RequestsCodes{
 	C_LoginRequest = 1,
 	C_SignupRequest = 2,
 	C_CreateRoomRequest = 3,

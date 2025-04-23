@@ -111,13 +111,7 @@
     <ClInclude Include="HighScoreInfo.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="LoggedUser.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="PersonalStatistics.hpp">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Question.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Room.h">
@@ -127,9 +121,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="RequestResult.hpp">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="RoomData.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Server.h">
@@ -160,9 +151,6 @@
       <Filter>Headers\Database</Filter>
     </ClInclude>
     <ClInclude Include="sqlite3.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="json.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="GetPlayersInRoomResponse.hpp">
@@ -211,6 +199,18 @@
     <ClInclude Include="GetHighScoreRequest.hpp">
       <Filter>Headers\Requests</Filter>
     </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggedUser.h">
+      <Filter>Headers\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Question.hpp">
+      <Filter>Headers\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomData.h">
+      <Filter>Headers\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
@@ -242,6 +242,12 @@
     </Filter>
     <Filter Include="Headers\Services">
       <UniqueIdentifier>{e90db122-3e6e-4c58-90d6-b03ae2bedd6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs">
+      <UniqueIdentifier>{db41d9cd-9067-4d7b-bfb2-f6fed77b1a37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Model">
+      <UniqueIdentifier>{688382f4-cced-499d-8de5-534025945f22}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

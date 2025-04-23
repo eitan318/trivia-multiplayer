@@ -9,6 +9,8 @@ public:
     unsigned int emailCode;
     std::string username;
 
+
+
     /**
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.

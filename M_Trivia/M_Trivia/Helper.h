@@ -18,13 +18,60 @@ enum MessageType : byte
 class Helper
 {
 public:
+	/**
+	 * @brief Reads an integer from a socket.
+	 * @param sc The socket to read from.
+	 * @param bytesNum The number of bytes to read.
+	 * @return The integer value read from the socket.
+	 * @throws std::exception if there is an error while reading from the socket.
+	 */
 	static int getIntFromSocket(SOCKET sc, int bytesNum);
+	
+	/**
+	 * @brief Reads a string from a socket.
+	 * @param sc The socket to read from.
+	 * @param bytesNum The number of bytes to read.
+	 * @return The string read from the socket.
+	 * @throws std::exception if there is an error while reading from the socket.
+	 */
 	static std::string getStringPartFromSocket(SOCKET sc, int bytesNum);
+	
+	/**
+	 * @brief Sends binary data through a socket.
+	 * @param sc The socket to send data to.
+	 * @param data A vector containing the data to send.
+	 * @throws std::exception if there is an error while sending data.
+	 */
 	static void sendData(SOCKET sc, const std::vector<char>& data);
+	
+	/**
+	 * @brief Sends a string through a socket.
+	 * @param sc The socket to send data to.
+	 * @param message The string message to send.
+	 * @throws std::exception if there is an error while sending data.
+	 */
 	static void sendData(SOCKET sc, const std::string& message);
 
 private:
+	/**
+	 * @brief Reads raw data from a socket.
+	 * @param sc The socket to read from.
+	 * @param bytesNum The number of bytes to read.
+	 * @return A pointer to the raw data read from the socket.
+	 *         The caller is responsible for deallocating the memory.
+	 * @throws std::exception if there is an error while reading from the socket.
+	 */
 	static char* getPartFromSocket(SOCKET sc, int bytesNum);
+	
+	/**
+	 * @brief Reads raw data from a socket with specific flags.
+	 * @param sc The socket to read from.
+	 * @param bytesNum The number of bytes to read.
+	 * @param flags Additional flags for the `recv` function.
+	 * @return A pointer to the raw data read from the socket.
+	 *         The caller is responsible for deallocating the memory.
+	 * @throws std::exception if there is an error while reading from the socket.
+	 */
 	static char* getPartFromSocket(SOCKET sc, int bytesNum, int flags);
 
 };

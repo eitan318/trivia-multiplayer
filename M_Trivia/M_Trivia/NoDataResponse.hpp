@@ -2,6 +2,10 @@
 #include "json.hpp"
 #include "Response.hpp"
 
+/**
+ * @class NoDataResponse
+ * @brief Represents a response containing Status only and no data
+ */
 class NoDataResponse : public Response {
 public:
     unsigned int status;

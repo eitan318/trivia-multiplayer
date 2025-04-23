@@ -2,7 +2,7 @@
 #include "json.hpp"
 
 
-enum ResponsesCodes {
+enum ResponsesCodes : byte{
 	C_ErrorResponse = 0,
 	C_NoDataResponse = 1,
 	C_GetRoomsResponse = 2,
@@ -10,10 +10,12 @@ enum ResponsesCodes {
 	C_GetHighScoreResponse = 4,
 	C_GetPersonalStatsResponse = 5,
 	C_SendPasswordResetCodeResponse = 6,
-
 };
 
-
+/**
+ * @class Response
+ * @brief Represents a general response
+ */
 class Response {
 public:
 
