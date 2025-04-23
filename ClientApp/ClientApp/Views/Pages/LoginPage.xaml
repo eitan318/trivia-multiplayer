@@ -45,7 +45,6 @@
                     Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 
                     x:Name="UsernameTB"
                     materialDesign:HintAssist.Hint="Username" 
-                    materialDesign:HintAssist.HelperText="{Binding UsernameErrorMessage}"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                     Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"/>
                 <TextBlock Text="{Binding UsernameErrorMessage}" 
