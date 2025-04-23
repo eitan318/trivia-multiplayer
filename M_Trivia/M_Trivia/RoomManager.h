@@ -16,7 +16,7 @@ private:
 
 public:
 	static RoomManager& getInstance(IDatabase& database);
-	unsigned int getTotalQuestionsCount();
+	unsigned int getTotalQuestionsCount() const;
 	void createRoom(LoggedUser& player, RoomData& roomData);
 	void deleteRoom(int ID);
 	bool getRoomState(int ID);

@@ -14,7 +14,7 @@ public:
 	~Room();
 	void addUser(LoggedUser& loggeduser);
 	void removeUser(LoggedUser& loggeduser);
-	std::vector<std::string> getAllUsers();
-	RoomData getRoomData();
+	std::vector<std::string> getAllUsers() const;
+	RoomData getRoomData() const;
 	void setRoomData(RoomData& roomdata);
 };

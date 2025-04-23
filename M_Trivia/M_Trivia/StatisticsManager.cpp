@@ -6,12 +6,12 @@ StatisticsManager& StatisticsManager::getInstance(IDatabase& database)
     return instance;
 }
 
-std::vector<HighScoreInfo> StatisticsManager::getBestScores(int limit)
+std::vector<HighScoreInfo> StatisticsManager::getBestScores(int limit) const
 {
     return this->m_db->getBestScores(limit);
 }
 
-PersonalStatistics StatisticsManager::getPlayerStatistics(const std::string& username)
+PersonalStatistics StatisticsManager::getPlayerStatistics(const std::string& username) const
 {
     return PersonalStatistics(
         username,

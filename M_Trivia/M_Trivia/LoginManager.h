@@ -21,10 +21,10 @@ private:
 	LoginManager& operator=(const LoginManager&) = delete;
 public:
 	static LoginManager& getInstance(IDatabase& database);
-	SignupResponseStatus signup(const UserRecord&);
+	SignupResponseStatus signup(const UserRecord&) const;
 	LoginResponseStatus login(const std::string username, const std::string password);
-	SendEmailCodeResponseStatus sendEmailCode(const std::string email, unsigned int code);
-	ResetPasswordResponseStatus resetPassword(const std::string& username, const std::string& newPassword);
-	std::string getUsername(const std::string& email);
+	SendEmailCodeResponseStatus sendEmailCode(const std::string email, unsigned int code) const;
+	ResetPasswordResponseStatus resetPassword(const std::string& username, const std::string& newPassword) const;
+	std::string getUsername(const std::string& email) const;
 	void logout(const std::string username);
 };

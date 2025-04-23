@@ -15,7 +15,7 @@ private:
 	StatisticsManager& operator=(const StatisticsManager&) = delete;
 public:
 	static StatisticsManager& getInstance(IDatabase& database);
-	std::vector<HighScoreInfo> getBestScores(int limit);
-	PersonalStatistics getPlayerStatistics(const std::string& username);
+	std::vector<HighScoreInfo> getBestScores(int limit) const;
+	PersonalStatistics getPlayerStatistics(const std::string& username) const;
 };
 
