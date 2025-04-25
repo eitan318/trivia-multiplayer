@@ -29,7 +29,7 @@ namespace ClientApp.ViewModels.ForgotPassword
         public string ErrorMessage
         {
             get => _errorMessage;
-            set => SetProperty(ref _errorMessage, value);
+            set { _errorMessage = value; OnPropertyChanged(); }
         }
 
 

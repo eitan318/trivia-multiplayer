@@ -8,19 +8,23 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
 
+        
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
 
-                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
+                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Blue" SecondaryColor="Lime" />
                 <ResourceDictionary Source="Controls/HyperLink.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"/>
             <converters:EyeIconConverter x:Key="EyeIconConverter"/>
             <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+
+            <Style TargetType="TextBlock" x:Key="HelperTextRedStyle">
+                <Setter Property="Foreground" Value="Red" />
+            </Style>
 
         </ResourceDictionary>
     </Application.Resources>

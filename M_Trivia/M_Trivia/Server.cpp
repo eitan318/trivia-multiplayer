@@ -9,7 +9,7 @@ Server::Server()
 
 Server::~Server()
 {
-	// Do NOT delete m_database since it's a singleton.
+	SqliteDatabase::deleteInstance();
 }
 
 Server& Server::getInstance()

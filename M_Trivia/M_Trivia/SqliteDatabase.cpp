@@ -3,11 +3,6 @@
 SqliteDatabase* SqliteDatabase::_instance = nullptr;
 	
 
-SqliteDatabase::~SqliteDatabase()
-{
-	close(); 
-}
-
 SqliteDatabase* SqliteDatabase::getInstance()
 {
 	if (_instance == nullptr) {
@@ -17,6 +12,12 @@ SqliteDatabase* SqliteDatabase::getInstance()
 		throw std::exception("Cannot instansiate a singleton twice. Eitan");
 	}
 	return _instance;
+}
+
+void SqliteDatabase::deleteInstance()
+{
+	delete _instance;
+	_instance = nullptr;
 }
 
 bool SqliteDatabase::open()
@@ -471,6 +472,30 @@ std::list<Question> SqliteDatabase::getQuestions(int amount)
 
 	return questions;
 }
+
+
+unsigned int SqliteDatabase::getQuestionsCount()
+{
+	const char* query = R"(
+    SELECT COUNT(*) FROM questions)";
+
+	sqlite3_stmt* stmt = nullptr;
+
+	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+		throw MyException(std::string("Failed to prepare statement: ") + sqlite3_errmsg(db));
+	}
+
+	std::unique_ptr<sqlite3_stmt, decltype(&sqlite3_finalize)> stmtGuard(stmt, sqlite3_finalize);
+
+	if (sqlite3_step(stmt) != SQLITE_ROW) {
+		throw MyException("Failed to execute query or no result returned.");
+	}
+
+	int count = sqlite3_column_int(stmt, 0);
+
+	return static_cast<unsigned int>(count);
+}
+
 
 void SqliteDatabase::updatePassword(const std::string& username, const std::string& newPassword)
 {

@@ -2,15 +2,20 @@
 
 unsigned int RoomManager::ids = 0;
 
-RoomManager& RoomManager::getInstance()
+RoomManager& RoomManager::getInstance(IDatabase& database)
 {
-    static RoomManager instance; 
+    static RoomManager instance(database); 
     return instance;
 }
 
-RoomManager::RoomManager()
+unsigned int RoomManager::getTotalQuestionsCount()
 {
+    return this->m_database->getQuestionsCount();
+}
 
+RoomManager::RoomManager(IDatabase& database)
+{
+    this->m_database = &database;
 }
 RoomManager::~RoomManager()
 {
