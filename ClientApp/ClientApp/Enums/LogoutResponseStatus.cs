@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientApp.Models.Responses
+namespace ClientApp.Enums
 {
-    class GetPlayersResponse : Response
+    enum LogoutResponseStatus
     {
-        public List<string> Players { get; set; }
+        Success,
     }
 }

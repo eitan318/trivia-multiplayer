@@ -138,16 +138,21 @@ namespace ClientApp.ViewModels
         private async void PerformCreateRoom(object parameter)
         {
             IsPlayerGridVisible = true;
-            CreateRoom();
-            PutPlayers();
+            uint? roomId = await CreateRoom();
+            if (roomId != null)
+            {
+                PutPlayers(roomId.Value);
+            }
+
+
         }
 
         /// <summary>
         /// Sends a request to retrieve and populate the player list for the room.
         /// </summary>
-        private async void PutPlayers()
+        private async void PutPlayers(uint roomId)
         {
-            var getPlayersRequest = new GetPlayersRequest();
+            var getPlayersRequest = new GetPlayersInRoomRequest(roomId);
             ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(getPlayersRequest);
 
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
@@ -156,7 +161,7 @@ namespace ClientApp.ViewModels
                 return;
             }
 
-            var response = JsonResponseDeserialize.DeserializeResponse<GetPlayersResponse>(responseInfo);
+            var response = JsonResponseDeserialize.DeserializeResponse<GetPlayersInRoomResponse>(responseInfo);
             var playerNames = response.Players;
 
             foreach (var playerName in playerNames)
@@ -168,7 +173,7 @@ namespace ClientApp.ViewModels
         /// <summary>
         /// Sends a request to create a room with the specified parameters.
         /// </summary>
-        private async void CreateRoom()
+        private async Task<uint?> CreateRoom()
         {
             var createRoomRequest = new CreateRoomRequest(RoomName, MaxPlayers, QuestionsCount, QuestionTimeout);
             var responseInfo = await RequestsExchangeService.ExchangeRequest(createRoomRequest);
@@ -176,19 +181,21 @@ namespace ClientApp.ViewModels
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
             {
                 // Handle error appropriately.
-                return;
+                return null;
             }
 
-            NoDataResponse createRoomResponse = JsonResponseDeserialize.DeserializeResponse<NoDataResponse>(responseInfo);
+            CreateRoomResponse createRoomResponse = JsonResponseDeserialize.DeserializeResponse<CreateRoomResponse>(responseInfo);
+
 
             switch (createRoomResponse.Status)
             {
                 case (byte)CreateRoomResponseStatus.Success:
-                    break;
+                    return createRoomResponse.RoomId;
                 case (byte)CreateRoomResponseStatus.TooMuchQuestions:
                     this.QuestionCountErrort = "Too much questions";
                     break;
             }
+            return null;
         }
     }
 }

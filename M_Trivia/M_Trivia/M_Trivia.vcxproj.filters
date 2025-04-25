@@ -75,9 +75,6 @@
     <ClInclude Include="GetPersonalStatisticsResponse.hpp">
       <Filter>Headers\Responses</Filter>
     </ClInclude>
-    <ClInclude Include="GetPlayersInRoomRequest.hpp">
-      <Filter>Headers\Requests</Filter>
-    </ClInclude>
     <ClInclude Include="GetRoomsResponse.hpp">
       <Filter>Headers\Responses</Filter>
     </ClInclude>
@@ -180,13 +177,9 @@
     <ClInclude Include="ResetPasswordRequest.hpp">
       <Filter>Headers\Requests</Filter>
     </ClInclude>
-    <ClInclude Include="NoDataResponse.hpp">
-      <Filter>Headers\Responses</Filter>
-    </ClInclude>
     <ClInclude Include="MenuRequestHandler.h">
       <Filter>Headers\RequestHandlers</Filter>
     </ClInclude>
-    <ClInclude Include="JoinRoomResponseStatus.h" />
     <ClInclude Include="CreateRoomResponseStatus.h">
       <Filter>Headers\enum</Filter>
     </ClInclude>
@@ -207,6 +200,30 @@
     </ClInclude>
     <ClInclude Include="LoggedUser.h">
       <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginResponse.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="JoinRoomResponseStatus.h">
+      <Filter>Headers\enum</Filter>
+    </ClInclude>
+    <ClInclude Include="SignupResponse.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="ResetPasswordResponse.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="GetPlayersInRoomRequest.hpp">
+      <Filter>Headers\Requests</Filter>
+    </ClInclude>
+    <ClInclude Include="JoinRoomResponse.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="LogoutResponse.hpp">
+      <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateRoomResponse.hpp">
+      <Filter>Headers\Responses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

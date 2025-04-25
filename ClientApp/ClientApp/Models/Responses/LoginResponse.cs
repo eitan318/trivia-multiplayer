@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Models.Responses
 {
-    class JoinRoomResponse : Response
+    class LoginResponse : Response
     {
-        public ResponsesCodes GetCode() => ResponsesCodes.JoinRoomResponse;
-
+        public ResponsesCodes GetCode() => ResponsesCodes.LoginResponse;
     }
 }

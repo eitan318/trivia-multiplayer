@@ -18,8 +18,14 @@
             <RowDefinition Height="2.5*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ComboBox Grid.Column="1" ItemsSource="{Binding RoomNames}"
-    SelectedItem="{Binding SelectedRoom}" />
+        <ComboBox 
+            Grid.Column="1" 
+            ItemsSource="{Binding Rooms}" 
+            DisplayMemberPath="Name" 
+            SelectedValuePath="Id" 
+            Foreground="{DynamicResource MaterialDesignBody}"
+            SelectedValue="{Binding SelectedRoomId}" />
+
         <StackPanel Grid.Row="1" Grid.Column="1" >
             <Button Content="Refresh" Margin="8" Command="{Binding RefreshCommand}"/>
             <Button Content="Join" Margin="8" Command="{Binding JoinCommand}"/>

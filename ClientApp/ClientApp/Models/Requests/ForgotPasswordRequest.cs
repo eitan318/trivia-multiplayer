@@ -19,7 +19,7 @@ namespace ClientApp.Models.Requests
         public ForgotPasswordRequest(string email) {
             this.Email = email;
         }
-        public RequestsCodes GetCode() => RequestsCodes.ForgotPasswordRequest;
+        public RequestsCodes GetCode() => RequestsCodes.SendPasswordResetCodeRequest;
         public string Email { get; set; }
     }
 }

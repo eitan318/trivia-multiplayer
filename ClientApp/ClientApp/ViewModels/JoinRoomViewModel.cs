@@ -1,4 +1,5 @@
 ﻿using ClientApp.Commands;
+using ClientApp.Enums;
 using ClientApp.Models;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
@@ -20,6 +21,7 @@ namespace ClientApp.ViewModels
             this.ownerPage = owner;
             RefreshCommand = new RelayCommand(async () => await Refresh());
             JoinCommand = new RelayCommand(async () => await JoinRoom());
+            Refresh();
         }
 
         public static JoinRoomViewModel Instance(Page owner)
@@ -30,35 +32,19 @@ namespace ClientApp.ViewModels
         private Page ownerPage;
 
         private List<RoomData> _rooms;
-        private List<string> _roomNames;
-        private string _selectedRoom;
         private string _errorMessage;
+        private int? _selectedRoomId;
 
-        public List<string> RoomNames
-        {
-            get => _roomNames;
-            set => SetProperty(ref _roomNames, value);
-        }
 
-        public string SelectedRoom
-        {
-            get => _selectedRoom;
-            set => SetProperty(ref _selectedRoom, value);
-        }
+        public List<RoomData> Rooms { get => _rooms; set { _rooms = value; OnPropertyChanged(); } }
+        public string ErrorMessage { get => _errorMessage; set { _errorMessage = value; OnPropertyChanged(); } }
 
-        public string ErrorMessage
-        {
-            get => _errorMessage;
-            set => SetProperty(ref _errorMessage, value);
-        }
 
         public ICommand RefreshCommand { get; }
         public ICommand JoinCommand { get; }
 
-        /// <summary>
-        /// Updates the list of available rooms from the server.
-        /// </summary>
-        public async Task UpdateList()
+
+        public async Task Refresh()
         {
             try
             {
@@ -73,8 +59,7 @@ namespace ClientApp.ViewModels
                 }
 
                 var roomResponse = JsonResponseDeserialize.DeserializeResponse<GetRoomResponse>(responseInfo);
-                _rooms = roomResponse.Rooms;
-                RoomNames = _rooms.Select(r => r.name).ToList();
+                Rooms = roomResponse.Rooms;
             }
             catch (Exception ex)
             {
@@ -82,20 +67,16 @@ namespace ClientApp.ViewModels
             }
         }
 
-        public async Task Refresh()
-        {
-            await UpdateList();
-        }
 
         public async Task JoinRoom()
         {
-            if (string.IsNullOrEmpty(SelectedRoom))
+            if (_selectedRoomId == null)
             {
                 ErrorMessage = "Please select a room to join.";
                 return;
             }
 
-            var selected = _rooms?.FirstOrDefault(r => r.name == SelectedRoom);
+            var selected = Rooms?.FirstOrDefault(r => r.Id == _selectedRoomId);
             if (selected == null)
             {
                 ErrorMessage = "Selected room no longer exists.";
@@ -114,18 +95,15 @@ namespace ClientApp.ViewModels
                 }
                 else
                 {
-                    var joinResponse = JsonResponseDeserialize.DeserializeResponse<NoDataResponse>(responseInfo);
-                    string[] errMsg =
+                    JoinRoomResponse joinResponse = JsonResponseDeserialize.DeserializeResponse<JoinRoomResponse>(responseInfo);
+                    switch (joinResponse.Status)
                     {
-                        "",
-                        "Room doesn't exist",
-                    };
-
-                    ErrorMessage = errMsg.ElementAtOrDefault(joinResponse.Status) ?? "Unknown error";
-
-                    if (joinResponse.Status == 0)
-                    {
-                        // TODO: Navigate to room page
+                        case (byte)JoinRoomRequestStatus.Success:
+                            // TODO: Navigate to room page
+                            break;
+                        case (byte)JoinRoomRequestStatus.UnknownRoom:
+                            ErrorMessage = "Room doesn't exist";
+                            break;
                     }
                 }
             }
@@ -134,5 +112,6 @@ namespace ClientApp.ViewModels
                 ErrorMessage = $"Failed to join room: {ex.Message}";
             }
         }
+
     }
 }
