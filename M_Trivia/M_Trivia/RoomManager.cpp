@@ -24,7 +24,7 @@ RoomManager::~RoomManager()
 }
 
 
-void RoomManager::createRoom(const LoggedUser& player, RoomData& roomData)
+unsigned int RoomManager::createRoom(const LoggedUser& player, RoomData& roomData)
 {
     int roomid = ids++;
     roomData.id = roomid;
@@ -35,6 +35,7 @@ void RoomManager::createRoom(const LoggedUser& player, RoomData& roomData)
     }
 
     this->m_rooms[roomid] = Room(roomData, player);
+    return roomid;
 }
 
 void RoomManager::deleteRoom(int ID)

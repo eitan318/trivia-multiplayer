@@ -47,7 +47,7 @@ public:
      * @param player The user creating the room.
      * @param roomData The data defining the room's properties.
      */
-    void createRoom(const LoggedUser& player, RoomData& roomData);
+    unsigned int createRoom(const LoggedUser& player, RoomData& roomData);
 
     /**
      * @brief Deletes an existing room by its ID.

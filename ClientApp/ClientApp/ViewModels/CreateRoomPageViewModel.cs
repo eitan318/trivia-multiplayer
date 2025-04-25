@@ -9,6 +9,7 @@ using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
 using ClientApp.Enums;
+using ClientApp.Views.Pages;
 
 namespace ClientApp.ViewModels
 {
@@ -19,7 +20,7 @@ namespace ClientApp.ViewModels
     {
         private string _roomName;
         private uint _questionTimeout = 1; //Min val from xaml
-        private bool _isPlayerGridVisible;
+
         private uint _maxPlayers = 1; //Min val from xaml
         private uint _questionsCount = 1; //Min val from xaml
         private string _questionCountError;
@@ -69,19 +70,8 @@ namespace ClientApp.ViewModels
             set { _questionCountError = value; OnPropertyChanged(); }
         }
 
-        /// <summary>
-        /// Indicates whether the player grid is visible.
-        /// </summary>
-        public bool IsPlayerGridVisible
-        {
-            get => _isPlayerGridVisible;
-            set { _isPlayerGridVisible = value; OnPropertyChanged(); }
-        }
 
-        /// <summary>
-        /// Collection of players currently in the room.
-        /// </summary>
-        public ObservableCollection<Player> Players { get; set; } = new ObservableCollection<Player>();
+
 
         /// <summary>
         /// Command to create a new room.
@@ -94,7 +84,6 @@ namespace ClientApp.ViewModels
         private CreateRoomPageViewModel()
         {
             CreateRoomCommand = new RelayCommand(PerformCreateRoom, CanCreateRoom);
-            IsPlayerGridVisible = false;
 
             PropertyChanged += (sender, args) =>
             {
@@ -137,38 +126,15 @@ namespace ClientApp.ViewModels
         /// <param name="parameter">Unused parameter.</param>
         private async void PerformCreateRoom(object parameter)
         {
-            IsPlayerGridVisible = true;
             uint? roomId = await CreateRoom();
             if (roomId != null)
             {
-                PutPlayers(roomId.Value);
+                MyNavigationService.Navigate(new RoomPage(roomId.Value));
             }
 
 
         }
 
-        /// <summary>
-        /// Sends a request to retrieve and populate the player list for the room.
-        /// </summary>
-        private async void PutPlayers(uint roomId)
-        {
-            var getPlayersRequest = new GetPlayersInRoomRequest(roomId);
-            ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(getPlayersRequest);
-
-            if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
-            {
-                // Handle error appropriately.
-                return;
-            }
-
-            var response = JsonResponseDeserialize.DeserializeResponse<GetPlayersInRoomResponse>(responseInfo);
-            var playerNames = response.Players;
-
-            foreach (var playerName in playerNames)
-            {
-                Players.Add(new Player { Username = playerName });
-            }
-        }
 
         /// <summary>
         /// Sends a request to create a room with the specified parameters.

@@ -78,7 +78,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInf
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(getPlayersInRoomResponse);
-    requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+    requestResult.newHandler = new MenuRequestHandler(this->m_user, this->m_handlerFactory);
     return requestResult;
 }
 
@@ -119,7 +119,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& requestInfo) const
     int id = request.roomId;
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
     try {
-        Room room = roomManager.getRoom(id);
+        Room& room = roomManager.getRoom(id);
         room.addUser(m_user);
         joinRoomResponse.status = (int)JoinRoomResponseStatus::Success;
     }
@@ -148,7 +148,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& requestInfo) con
         data.numOfQuestionsInGame = request.questionCount;
         data.name = request.roomName;
         data.timePerQuestion = request.answerTimeout;
-        roomManager.createRoom(this->m_user, data);
+        createRoomResponse.roomId = roomManager.createRoom(this->m_user, data);
         createRoomResponse.status = (int)CreateRoomResponseStatus::Success;
     }
 
