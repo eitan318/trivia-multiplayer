@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ClientApp.ViewModels;
 
 namespace ClientApp.Views.Pages
 {
@@ -23,6 +24,8 @@ namespace ClientApp.Views.Pages
         public JoinRoomPage(Page parent) : base(parent)
         {
             InitializeComponent();
+            DataContext = JoinRoomViewModel.Instance(this);
+            
         }
     }
 }

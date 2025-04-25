@@ -18,10 +18,11 @@
             <RowDefinition Height="2.5*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ComboBox Grid.Column="1" Text="{Binding RoomName}" />
+        <ComboBox Grid.Column="1" ItemsSource="{Binding RoomNames}"
+    SelectedItem="{Binding SelectedRoom}" />
         <StackPanel Grid.Row="1" Grid.Column="1" >
-            <Button Content="Refresh" Margin="8"/>
-            <Button Content="Join" Margin="8"/>
+            <Button Content="Refresh" Margin="8" Command="{Binding RefreshCommand}"/>
+            <Button Content="Join" Margin="8" Command="{Binding JoinCommand}"/>
         </StackPanel>
     </Grid>
 </local:NavigablePage>

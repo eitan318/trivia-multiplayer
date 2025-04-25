@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +16,7 @@ namespace ClientApp.Models.Requests
         ForgotPasswordRequest = 6,
         ResetPasswordRequest = 7,
         GetPlayersRequest = 8,
-        CreateRoomRequest = 9
+        CreateRoomRequest = 9,
+        JoinRoomRequest = 10
     }
 }

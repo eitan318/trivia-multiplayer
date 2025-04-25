@@ -15,6 +15,7 @@ namespace ClientApp.Models.Responses
         GetHighScoreResponse = 4,
         GetPersonalStatsResponse = 5,
         SendPasswordResetCodeResponse = 6,
+        JoinRoomResponse = 7
 
     }
 }
