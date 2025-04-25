@@ -162,10 +162,9 @@
     <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="RequestInfo.hpp" />
     <ClInclude Include="RequestResult.hpp" />
-    <ClInclude Include="Requests.hpp" />
+    <ClInclude Include="RequestsCodes.hpp" />
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="Response.hpp" />
-    <ClInclude Include="Responses.hpp" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="RoomData.h" />
     <ClInclude Include="RoomManager.h" />

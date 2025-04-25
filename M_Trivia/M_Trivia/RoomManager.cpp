@@ -8,7 +8,7 @@ RoomManager& RoomManager::getInstance(IDatabase& database)
     return instance;
 }
 
-unsigned int RoomManager::getTotalQuestionsCount()
+unsigned int RoomManager::getTotalQuestionsCount() const
 {
     return this->m_database->getQuestionsCount();
 }
@@ -35,10 +35,12 @@ void RoomManager::createRoom(LoggedUser& player, RoomData& roomData)
 
     this->m_rooms[roomid] = Room(roomData, player);
 }
+
 void RoomManager::deleteRoom(int ID)
 {
     this->m_rooms.erase(this->m_rooms.find(ID));
 }
+
 bool RoomManager::getRoomState(int ID)
 {
     auto it = this->m_rooms.find(ID);
@@ -48,6 +50,7 @@ bool RoomManager::getRoomState(int ID)
     }
     return false;
 }
+
 std::vector<RoomData> RoomManager::getRooms()
 {
 	std::vector<RoomData> roomsvec;
@@ -57,6 +60,7 @@ std::vector<RoomData> RoomManager::getRooms()
 	}
     return roomsvec;
 }
+
 Room& RoomManager::getRoom(int ID)
 {
     auto it = this->m_rooms.find(ID);

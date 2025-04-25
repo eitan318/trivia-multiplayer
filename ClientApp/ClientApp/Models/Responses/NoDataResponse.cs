@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Models.Responses
 {
-    class NoDataResponse
+    class NoDataResponse : Response
     {
 
         //public NoDataResponse(int status) { 
         //    this.Status = status;
         //}
-        public int Status { get; set; }
     }
 }

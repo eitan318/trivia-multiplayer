@@ -10,42 +10,33 @@ LoginRequestHandler::~LoginRequestHandler()
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
 {
-	return requestInfo.code == C_LoginRequest || requestInfo.code == C_ResetPasswordRequest
-		|| requestInfo.code == C_SignupRequest || requestInfo.code == C_SendPasswordResetCodeRequest;
+	switch (static_cast<RequestsCodes>(requestInfo.code)) {
+	case RequestsCodes::LoginRequest:
+	case RequestsCodes::SignupRequest:
+	case RequestsCodes::SendPasswordResetCodeRequest:
+	case RequestsCodes::ResetPasswordRequest:
+		return true;
+	default:
+		return false;
+	}
 }
 
-RequestResult LoginRequestHandler::handleRequest(const RequestInfo& requestInfo)
+RequestResult LoginRequestHandler::handleRequest(const RequestInfo& requestInfo) const
 {
-	switch (requestInfo.code) {
-	case C_LoginRequest:
-	{
+	switch (static_cast<RequestsCodes>(requestInfo.code)) {
+	case RequestsCodes::LoginRequest:
 		return login(requestInfo);
-	}
-	case C_SignupRequest:
-	{
+	case RequestsCodes::SignupRequest:
 		return signup(requestInfo);
-	}
-	case C_SendPasswordResetCodeRequest:
-	{
+	case RequestsCodes::SendPasswordResetCodeRequest:
 		return sendPasswordResetEmail(requestInfo);
-	}
-	case C_ResetPasswordRequest:
-	{
+	case RequestsCodes::ResetPasswordRequest:
 		return resetPassword(requestInfo);
 	}
-	default:
-		ErrorResponse errorResponse;
-		errorResponse.message = "Invalid msg code.";
-
-		RequestResult requestResult;
-		requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
-		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
-
-		return requestResult;
-	}
+	return {};
 }
 
-RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo)
+RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const
 {
 	LoginRequest request = JsonRequestPacketDeserializer<LoginRequest>::deserializeRequest(requestInfo.buffer);
 	try {
@@ -77,7 +68,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo)
 
 }
 
-RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo)
+RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo) const
 {
 	try {
 
@@ -104,7 +95,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo)
 }
 
 
-unsigned int  LoginRequestHandler::generateRandomCode(unsigned int digsOfCode) {
+unsigned int  LoginRequestHandler::generateRandomCode(unsigned int digsOfCode) const {
 	if (digsOfCode == 0) {
 		throw std::invalid_argument("Number of digits must be greater than 0");
 	}
@@ -120,7 +111,7 @@ unsigned int  LoginRequestHandler::generateRandomCode(unsigned int digsOfCode) {
 }
 
 
-RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& requestInfo)
+RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& requestInfo) const
 {
 	try {
 		SendPasswordResetCodeRequest request;
@@ -150,7 +141,7 @@ RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& req
 
 
 
-RequestResult LoginRequestHandler::resetPassword(const RequestInfo& requestInfo)
+RequestResult LoginRequestHandler::resetPassword(const RequestInfo& requestInfo) const
 {
 	try {
 		ResetPasswordRequest request;

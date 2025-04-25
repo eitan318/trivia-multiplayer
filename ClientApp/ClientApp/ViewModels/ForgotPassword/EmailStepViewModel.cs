@@ -11,20 +11,37 @@ using ClientApp.Models.Responses;
 
 namespace ClientApp.ViewModels.ForgotPassword
 {
+    /// <summary>
+    /// ViewModel for the email input step in the forgot password process. Handles the user's input of their email address
+    /// and processes the request to initiate the password recovery process.
+    /// </summary>
     class EmailStepViewModel : BaseViewModel
     {
+        /// <summary>
+        /// The parent ViewModel that controls the overall flow of the forgot password process.
+        /// </summary>
         private readonly ForgotPasswordViewModel _parent;
 
+        /// <summary>
+        /// Initializes the ViewModel, setting up the command for submitting the email.
+        /// </summary>
+        /// <param name="parent">The parent ViewModel that controls the overall flow of the forgot password process.</param>
         public EmailStepViewModel(ForgotPasswordViewModel parent)
         {
             _parent = parent;
             SubmitEmailCommand = new RelayCommand(SubmitEmail);
         }
 
+        /// <summary>
+        /// The email address entered by the user for the password recovery process.
+        /// </summary>
         public string Email { get; set; }
+
         public ICommand SubmitEmailCommand { get; }
 
-
+        /// <summary>
+        /// Error message to display if there is an issue with the email input or response.
+        /// </summary>
         private string _errorMessage;
         public string ErrorMessage
         {
@@ -32,27 +49,40 @@ namespace ClientApp.ViewModels.ForgotPassword
             set { _errorMessage = value; OnPropertyChanged(); }
         }
 
-
+        /// <summary>
+        /// Submits the entered email address to initiate the password recovery process. 
+        /// If the email is valid, the process moves to the next step; otherwise, an error message is displayed.
+        /// </summary>
         private async void SubmitEmail()
         {
-            if (string.IsNullOrEmpty(Email)) {
+            // Ensure email is not empty
+            if (string.IsNullOrEmpty(Email))
+            {
                 ErrorMessage = "Email field cannot be empty";
                 return;
             }
+
+            // Create request for password reset with the entered email
             ForgotPasswordRequest request = new ForgotPasswordRequest(Email);
             ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(request);
-            if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse) {
+
+            // Handle potential error response
+            if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+            {
                 ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
                 ErrorMessage = errorResponse.Message;
                 return;
             }
+
+            // Process the response and move to the next step
             ForgotPasswordResponse response = JsonResponseDeserialize.DeserializeResponse<ForgotPasswordResponse>(responseInfo);
-            if(response.Status == 0)
+            if (response.Status == 0)
             {
                 _parent.GoToCodeStep(response.EmailCode, response.Username);
             }
             else
             {
+                // Map response status to an error message
                 string[] errMsg =
                 {
                     "",
@@ -60,9 +90,7 @@ namespace ClientApp.ViewModels.ForgotPassword
                     "Invalid Email Format",
                 };
                 ErrorMessage = errMsg[response.Status];
-
             }
-
         }
     }
 }

@@ -22,7 +22,7 @@ LoginResponseStatus LoginManager::login(const std::string username, const std::s
 	return LoginResponseStatus::Success;
 }
 
-SendEmailCodeResponseStatus LoginManager::sendEmailCode(const std::string email, unsigned int code)
+SendEmailCodeResponseStatus LoginManager::sendEmailCode(const std::string email, unsigned int code) const
 {
 	if (!RegexValidator::validEmail(email))
 		return SendEmailCodeResponseStatus::InvalidEmail;
@@ -36,7 +36,7 @@ SendEmailCodeResponseStatus LoginManager::sendEmailCode(const std::string email,
 	return SendEmailCodeResponseStatus::Success;
 }
 
-ResetPasswordResponseStatus LoginManager::resetPassword(const std::string& username, const std::string& newPassword)
+ResetPasswordResponseStatus LoginManager::resetPassword(const std::string& username, const std::string& newPassword) const
 {
 	if (!RegexValidator::validUsername)
 		return ResetPasswordResponseStatus::InvalidUsername;
@@ -53,12 +53,12 @@ ResetPasswordResponseStatus LoginManager::resetPassword(const std::string& usern
 	
 }
 
-std::string LoginManager::getUsername(const std::string& email)
+std::string LoginManager::getUsername(const std::string& email) const
 {
 	return this->m_database->getUserRecord(email).username;
 }
 
-SignupResponseStatus LoginManager::signup(const UserRecord& userRecord)
+SignupResponseStatus LoginManager::signup(const UserRecord& userRecord) const
 {
 	if (!RegexValidator::validPassword(userRecord.password))
 		return SignupResponseStatus::InvalidPassword;

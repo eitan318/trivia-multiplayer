@@ -10,7 +10,7 @@ Room::Room() {
 Room::~Room() {
 }
 
-void Room::addUser(LoggedUser& loggeduser) 
+void Room::addUser(LoggedUser& loggeduser)
 {
 	this->m_users.push_back(loggeduser);
 }
@@ -25,7 +25,7 @@ void Room::removeUser(LoggedUser& loggeduser)
 		}
 	}
 }
-std::vector<std::string> Room::getAllUsers()
+std::vector<std::string> Room::getAllUsers() const
 {
 	std::vector<std::string> userslist;
 	for (const auto user : this->m_users) 
@@ -34,10 +34,11 @@ std::vector<std::string> Room::getAllUsers()
 	}
 	return userslist;
 }
-RoomData Room::getRoomData() 
+RoomData Room::getRoomData() const
 {
 	return this->m_metadata;
 }
+
 void Room::setRoomData(RoomData& roomdata)
 {
 	this->m_metadata = roomdata;

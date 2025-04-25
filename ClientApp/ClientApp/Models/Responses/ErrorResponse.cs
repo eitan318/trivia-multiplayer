@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Models.Responses
 {
-    class ErrorResponse
+    class ErrorResponse : Response
     {
         //public ErrorResponse(string message) { 
         //    this.Message = message;

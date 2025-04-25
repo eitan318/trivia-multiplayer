@@ -5,42 +5,31 @@ m_handlerFactory(handlerFactory)
 {
 }
 
-bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info) const
+bool MenuRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
 {
-    return info.code == C_CreateRoomRequest &&
-        info.code == C_GetPlayersInRoomRequest &&
-        info.code == C_JoinRoomRequest;
-}
-
-RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info)
-{
-    switch (info.code) {
-    case C_CreateRoomRequest:
-    {
-        return this->createRoom(info);
-    }
-    case C_GetPlayersInRoomRequest:
-    {
-        return this->getPlayersInRoom(info);
-    }
-    case C_JoinRoomRequest:
-    {
-        return this->joinRoom(info);
-    }
+    switch (static_cast<RequestsCodes>(requestInfo.code)) {
+    case RequestsCodes::CreateRoomRequest:
+    case RequestsCodes::GetPlayersInRoomRequest:
+    case RequestsCodes::JoinRoomRequest:
+        return true;
     default:
-        ErrorResponse errorResponse;
-        errorResponse.message = "Invalid msg code.";
-
-        RequestResult requestResult;
-        requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
-        requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
-
-        return requestResult;
+        return false;
     }
-    return {};
 }
 
-RequestResult MenuRequestHandler::signout(const RequestInfo& info)
+RequestResult MenuRequestHandler::handleRequest(const RequestInfo& requestInfo) const
+{
+    switch (static_cast<RequestsCodes>(requestInfo.code)) {
+    case RequestsCodes::CreateRoomRequest:
+        return this->createRoom(requestInfo);
+    case RequestsCodes::GetPlayersInRoomRequest:
+        return this->getPlayersInRoom(requestInfo);
+    case RequestsCodes::JoinRoomRequest:
+        return this->joinRoom(requestInfo);
+    }
+}
+
+RequestResult MenuRequestHandler::signout(const RequestInfo& info) const
 {
     //signoutRequest request = JsonRequestPacketDeserializer<GetPlayersInRoomRequest>::deserializeRequest(requestInfo.buffer);
 
@@ -54,7 +43,7 @@ RequestResult MenuRequestHandler::signout(const RequestInfo& info)
     return requestResult;
 }
 
-RequestResult MenuRequestHandler::getRooms(const RequestInfo& requestInfo)
+RequestResult MenuRequestHandler::getRooms(const RequestInfo& requestInfo) const
 {
     //CreateRoomRequest request =
      //   JsonRequestPacketDeserializer<CreateRoomRequest>::deserializeRequest(requestInfo.buffer);
@@ -71,7 +60,7 @@ RequestResult MenuRequestHandler::getRooms(const RequestInfo& requestInfo)
     return requestResult;
 }
 
-RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInfo)
+RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInfo) const
 {
     GetPlayersInRoomRequest request = 
         JsonRequestPacketDeserializer<GetPlayersInRoomRequest>::deserializeRequest(requestInfo.buffer);
@@ -90,7 +79,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInf
     return requestResult;
 }
 
-RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& requestInfo)
+RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& requestInfo) const
 {
     //signoutRequest request = JsonRequestPacketDeserializer<GetPlayersInRoomRequest>::deserializeRequest(requestInfo.buffer);
     StatisticsManager& statsManager = this->m_handlerFactory.getStatisticsManger();
@@ -103,7 +92,7 @@ RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& requestInf
     return requestResult;
 }
 
-RequestResult MenuRequestHandler::getHighScore(const RequestInfo& requestInfo)
+RequestResult MenuRequestHandler::getHighScore(const RequestInfo& requestInfo) const
 {
     GetHighScoreRequest request = 
         JsonRequestPacketDeserializer<GetHighScoreRequest>::deserializeRequest(requestInfo.buffer);
@@ -118,7 +107,7 @@ RequestResult MenuRequestHandler::getHighScore(const RequestInfo& requestInfo)
     return requestResult;
 }
 
-RequestResult MenuRequestHandler::joinRoom(const RequestInfo& requestInfo)
+RequestResult MenuRequestHandler::joinRoom(const RequestInfo& requestInfo) const
 {
     JoinRoomRequest request = 
         JsonRequestPacketDeserializer<JoinRoomRequest>::deserializeRequest(requestInfo.buffer);
@@ -140,7 +129,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& requestInfo)
     return requestResult;
 }
 
-RequestResult MenuRequestHandler::createRoom(const RequestInfo& requestInfo)
+RequestResult MenuRequestHandler::createRoom(const RequestInfo& requestInfo) const
 {
     CreateRoomRequest request =
         JsonRequestPacketDeserializer<CreateRoomRequest>::deserializeRequest(requestInfo.buffer);

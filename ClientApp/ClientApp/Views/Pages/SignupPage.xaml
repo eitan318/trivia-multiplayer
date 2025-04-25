@@ -11,15 +11,20 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="SignupPage">
 
-    <Grid >
+    <!-- Main layout for the Signup page -->
+    <Grid>
+        <!-- Centered stack panel for input fields and buttons -->
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+
+            <!-- Page header -->
             <TextBlock Text="Let's Get Started!" 
-                     FontSize="20" 
-                     FontWeight="Bold" 
-                     TextAlignment="Center" 
-                     Margin="0,0,0,20"
-                     Foreground="{DynamicResource MaterialDesignBody}" />
-            
+                       FontSize="20" 
+                       FontWeight="Bold" 
+                       TextAlignment="Center" 
+                       Margin="0,0,0,20"
+                       Foreground="{DynamicResource MaterialDesignBody}" />
+
+            <!-- Username input -->
             <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 
                      x:Name="UsernameTB" 
                      materialDesign:HintAssist.Hint="Username"
@@ -27,7 +32,7 @@
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"/>
 
-            <!-- PasswordBox -->
+            <!-- Password input with toggle visibility functionality -->
             <controls:PasswordBoxWithToggle
                     Margin="0,10"
                     PasswordText="{Binding Password, Mode=TwoWay}"
@@ -36,37 +41,44 @@
                     Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
                     materialDesign:HintAssist.Hint="Password"/>
 
+            <!-- Email input -->
             <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" 
                      materialDesign:HintAssist.Hint="Email" Margin="0,10" 
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"/>
-            
+
+            <!-- Phone number input -->
             <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}" 
                      materialDesign:HintAssist.Hint="PhoneNumber" Margin="0,10"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"/>
-            
+
+            <!-- House address input -->
             <TextBox Text="{Binding HouseAddress, UpdateSourceTrigger=PropertyChanged}" 
                      materialDesign:HintAssist.Hint="HouseAddress" Margin="0,10"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"/>
-            
+
+            <!-- Birthdate input -->
             <TextBox Text="{Binding BirthDate, UpdateSourceTrigger=PropertyChanged}" 
                      materialDesign:HintAssist.Hint="BirthDate" Margin="0,10"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"/>
-  
+
+            <!-- Signup button bound to the Signup command -->
             <Button Content="Signup" Margin="0,20" Padding="10,5" 
                     Command="{Binding SignupCommand}" />
-            
+
+            <!-- Navigate to Login button -->
             <Button Content="Login" Margin="0,20" Padding="10,5" 
                     Command="{Binding NavigateToLoginCommand}" 
                     Style="{StaticResource MaterialDesignOutlinedButton}"/>
-            
+
+            <!-- Error message display -->
             <TextBlock Text="{Binding ErrorMessage}"
-                   Foreground="Red"
-                   TextAlignment="Center"
-                   Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
+                       Foreground="Red"
+                       TextAlignment="Center"
+                       Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
         </StackPanel>
     </Grid>
 </Page>

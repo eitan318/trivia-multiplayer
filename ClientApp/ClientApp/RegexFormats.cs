@@ -11,7 +11,7 @@ namespace ClientApp
     {
         public static readonly string Password = "must be 8+ chars, include upper/lower letters, digit, special char.";
         public static readonly string Email = "Use: Street, Apt, City";
-        public static readonly string PhoneNumber = "0X-XXXXXXX";
+        public static readonly string PhoneNumber = "0X(X)-XXXXXXX";
         public static readonly string Date = " DD.MM.YYYY or DD/MM/YYYY";
 
     }

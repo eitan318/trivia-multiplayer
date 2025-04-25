@@ -1,20 +1,27 @@
 ﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClientApp.Models.Requests
 {
+    /// <summary>
+    /// Represents a request for logging in a user.
+    /// </summary>
     public struct LoginRequest : IRequest
     {
-        public LoginRequest(string username, string password) {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoginRequest"/> struct.
+        /// </summary>
+        /// <param name="username">The username of the user trying to log in.</param>
+        /// <param name="password">The password of the user trying to log in.</param>
+        public LoginRequest(string username, string password)
+        {
             this.Username = username;
             this.Password = password;
         }
+
         public RequestsCodes GetCode() => RequestsCodes.LoginRequest;
+
         public string Username { get; set; }
+
         public string Password { get; set; }
     }
 }

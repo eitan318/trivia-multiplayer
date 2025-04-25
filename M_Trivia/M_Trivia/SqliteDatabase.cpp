@@ -46,7 +46,7 @@ bool SqliteDatabase::close()
 }
 
 
-int SqliteDatabase::doesUserExist(const std::string& username)
+int SqliteDatabase::doesUserExist(const std::string& username) const
 {
 	const char* query = "SELECT * FROM users WHERE username = ?";
 	sqlite3_stmt* stmt;
@@ -60,7 +60,7 @@ int SqliteDatabase::doesUserExist(const std::string& username)
 	return sqlite3_step(stmt) == SQLITE_ROW;
 }
 
-int SqliteDatabase::doesPasswordMatch(const std::string& username, const std::string& password)
+int SqliteDatabase::doesPasswordMatch(const std::string& username, const std::string& password) const
 {
 	const char* query = "SELECT password FROM users WHERE username = ?";
 	sqlite3_stmt* stmt;
@@ -82,7 +82,7 @@ int SqliteDatabase::doesPasswordMatch(const std::string& username, const std::st
 	}
 }
 
-int SqliteDatabase::addNewUser(const UserRecord& userRecord)
+int SqliteDatabase::addNewUser(const UserRecord& userRecord) const
 {
 	const char* query = "INSERT INTO users (username, password, email, house_address, phone_number, birth_date) VALUES (?,?,?,?,?,?)";
 	sqlite3_stmt* stmt;
@@ -107,12 +107,12 @@ int SqliteDatabase::addNewUser(const UserRecord& userRecord)
 	}
 }
 
-bool SqliteDatabase::createInitialDB()
+bool SqliteDatabase::createInitialDB() const
 {
 	return createUsersTable() && createQuestionsTable() && addQuestions(50) && createAnswersTable() && createGamesTable();
 }
 
-bool SqliteDatabase::createUsersTable() {
+bool SqliteDatabase::createUsersTable() const{
 	const char* query = R"(
         CREATE TABLE Users (
             username TEXT PRIMARY KEY,
@@ -133,7 +133,7 @@ bool SqliteDatabase::createUsersTable() {
 	return success;
 }
 
-bool SqliteDatabase::createQuestionsTable()
+bool SqliteDatabase::createQuestionsTable() const
 {
 	const char* query = R"(
         CREATE TABLE Questions (
@@ -158,10 +158,7 @@ bool SqliteDatabase::createQuestionsTable()
 
 }
 
-
-
-
-bool SqliteDatabase::createGamesTable()
+bool SqliteDatabase::createGamesTable() const
 {
 	const char* query = R"(
         CREATE TABLE Games (
@@ -179,8 +176,7 @@ bool SqliteDatabase::createGamesTable()
 	return success;
 }
 
-
-bool SqliteDatabase::createAnswersTable()
+bool SqliteDatabase::createAnswersTable() const
 {
 	const char* query = R"(
     CREATE TABLE answers (
@@ -208,11 +204,7 @@ bool SqliteDatabase::createAnswersTable()
 	return success;
 }
 
-
-
-
-
-bool SqliteDatabase::addQuestions(int amount)
+bool SqliteDatabase::addQuestions(int amount) const
 {
 	std::string url = ApiClient::generateTriviaQuestionsUrl(45, 9, "multiple");
 	std::string questionsJsonStr = ApiClient::getQuestionsJson(url.c_str()); // Fetch questions JSON
@@ -281,10 +273,7 @@ bool SqliteDatabase::addQuestions(int amount)
 	return true;
 }
 
-
-
-
-int SqliteDatabase::getNumOfTotalAnswers(const std::string& username)
+int SqliteDatabase::getNumOfTotalAnswers(const std::string& username) const
 {
 	const char* query = "SELECT COUNT(*) FROM answers WHERE username = ?";
 	sqlite3_stmt* stmt;
@@ -306,7 +295,7 @@ int SqliteDatabase::getNumOfTotalAnswers(const std::string& username)
 }
 
 
-int SqliteDatabase::getNumOfTotalCorrectAnswers(const std::string& username)
+int SqliteDatabase::getNumOfTotalCorrectAnswers(const std::string& username) const
 {
 	const char* query = "SELECT COUNT(*) FROM answers WHERE username = ? AND correct = 1";
 	sqlite3_stmt* stmt;
@@ -328,7 +317,7 @@ int SqliteDatabase::getNumOfTotalCorrectAnswers(const std::string& username)
 }
 
 
-int SqliteDatabase::getNumOfPlayerGames(const std::string& username)
+int SqliteDatabase::getNumOfPlayerGames(const std::string& username) const
 {
 	const char* query = "SELECT COUNT(DISTINCT game_id) FROM answers WHERE username = ?";
 	sqlite3_stmt* stmt;
@@ -349,7 +338,7 @@ int SqliteDatabase::getNumOfPlayerGames(const std::string& username)
 	return games;
 }
 
-float SqliteDatabase::getAvgAnswerTime(const std::string& username)
+float SqliteDatabase::getAvgAnswerTime(const std::string& username) const
 {
 	const char* query = "SELECT AVG(answer_time) FROM answers WHERE username = ?";
 	sqlite3_stmt* stmt;
@@ -373,8 +362,8 @@ float SqliteDatabase::getAvgAnswerTime(const std::string& username)
 }
 
 
-
-UserRecord SqliteDatabase::getUserRecord(const std::string& email)
+  
+UserRecord SqliteDatabase::getUserRecord(const std::string& email) const
 {
 	const char* query = R"(SELECT username, password, email, phone_number, house_address, birth_date
 		FROM users WHERE email = ?)";
@@ -399,9 +388,7 @@ UserRecord SqliteDatabase::getUserRecord(const std::string& email)
 }
 
 
-
-
-std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit)
+std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit) const
 {
 	const char* query = R"(
         SELECT a.username, a.game_id, g.name AS game_name, SUM(a.score) AS total_score
@@ -438,7 +425,7 @@ std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit)
 	return results;
 }
 
-std::list<Question> SqliteDatabase::getQuestions(int amount)
+std::list<Question> SqliteDatabase::getQuestions(int amount) const
 {
 	const char* query = R"(
     SELECT difficulty, category, question, answer, incorrect_answer_1,
@@ -474,7 +461,7 @@ std::list<Question> SqliteDatabase::getQuestions(int amount)
 }
 
 
-unsigned int SqliteDatabase::getQuestionsCount()
+unsigned int SqliteDatabase::getQuestionsCount() const
 {
 	const char* query = R"(
     SELECT COUNT(*) FROM questions)";
@@ -496,8 +483,8 @@ unsigned int SqliteDatabase::getQuestionsCount()
 	return static_cast<unsigned int>(count);
 }
 
-
-void SqliteDatabase::updatePassword(const std::string& username, const std::string& newPassword)
+ 
+void SqliteDatabase::updatePassword(const std::string& username, const std::string& newPassword) const
 {
 	const char* query = R"(UPDATE users SET password = ? WHERE username = ?)";
 
@@ -524,7 +511,7 @@ void SqliteDatabase::updatePassword(const std::string& username, const std::stri
 }
 
 
-bool SqliteDatabase::emailExists(const std::string& email)
+bool SqliteDatabase::emailExists(const std::string& email) const
 {
 	const char* query = "SELECT * FROM users WHERE email = ?";
 	sqlite3_stmt* stmt;

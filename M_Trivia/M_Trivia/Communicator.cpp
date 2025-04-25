@@ -51,7 +51,7 @@ void Communicator::startHandleRequest()
     }
 }
 
-void Communicator::bindAndListen()
+void Communicator::bindAndListen() const
 {
     const int port = PORT;
 
@@ -83,8 +83,6 @@ void Communicator::handleNewClient(SOCKET sock)
     IRequestHandler* handler = new LoginRequestHandler(this->m_handlerFactory);
 	this->m_clients.insert({ sock, handler});
 
-
-
     while (true) {
         RequestInfo requestInfo;
         int msgLen;
@@ -102,7 +100,19 @@ void Communicator::handleNewClient(SOCKET sock)
         std::cout << "Recieved: " << msgStr << std::endl;
         requestInfo.buffer = std::vector<char>(msgStr.begin(), msgStr.end());
         RequestResult requestResult;
-        requestResult = handler->handleRequest(requestInfo);
+
+        if (handler->isRequestRelevant(requestInfo)) {
+            requestResult = handler->handleRequest(requestInfo);
+        }
+        else{
+			ErrorResponse errorResponse;
+			errorResponse.message = "Invalid msg code.";
+
+			RequestResult requestResult;
+			requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
+            requestResult.newHandler = handler;
+        }
+
         if (handler != requestResult.newHandler)
             delete handler;
         handler = requestResult.newHandler;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Models.Responses
 {
-    class ForgotPasswordResponse
+    class ForgotPasswordResponse : Response
     {
         //public ForgotPasswordResponse(int status, string emailCode, string username) {
         //    this.Status = status;
@@ -14,7 +14,6 @@ namespace ClientApp.Models.Responses
         //    this.Username = username;
 
         //}
-        public int Status { get; set; }
         public string EmailCode { get; set; }
         public string Username { get; set; }
     }

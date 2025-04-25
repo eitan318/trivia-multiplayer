@@ -1,21 +1,57 @@
-#pragma once 
+#pragma once
 #include "json.hpp"
 
-
-enum ResponsesCodes {
-	C_ErrorResponse = 0,
-	C_NoDataResponse = 1,
-	C_GetRoomsResponse = 2,
-	C_GetPlayersInRoomResponse = 3,
-	C_GetHighScoreResponse = 4,
-	C_GetPersonalStatsResponse = 5,
-	C_SendPasswordResetCodeResponse = 6,
-
+/**
+ * @enum ResponsesCodes
+ * @brief Enumerates the response codes for different response types.
+ */
+enum ResponsesCodes : byte {
+    C_ErrorResponse = 0,
+    C_NoDataResponse = 1,
+    C_GetRoomsResponse = 2,
+    C_GetPlayersInRoomResponse = 3,
+    C_GetHighScoreResponse = 4,
+    C_GetPersonalStatsResponse = 5,
+    C_SendPasswordResetCodeResponse = 6,
 };
 
-
+/**
+ * @class Response
+ * @brief Represents a general response.
+ */
 class Response {
 public:
-	virtual unsigned int getCode() const = 0;
-	virtual  nlohmann::json getJson() const = 0;
+    unsigned int status;
+
+    /**
+     * @brief Default constructor for Response.
+     */
+    Response(unsigned int status) : status(status) {}
+
+    Response() = default; //Remove when creating response constructors
+
+    /**
+     * @brief Gets the response code for this response.
+     * @return The response code as an unsigned integer.
+     */
+    virtual byte getCode() const = 0;
+
+    /**
+     * @brief Converts the common fields of the response to a JSON object.
+     * @return A JSON representation of the common response fields.
+     */
+    virtual nlohmann::json baseJson() const {
+        return nlohmann::json{
+            {"Status", status}
+        };
+    }
+
+    /**
+     * @brief Converts the response to a JSON object.
+     * Derived classes should call `baseJson` to include common fields.
+     * @return A JSON representation of the response.
+     */
+    virtual nlohmann::json getJson() const = 0;
+
+    virtual ~Response() = default;
 };

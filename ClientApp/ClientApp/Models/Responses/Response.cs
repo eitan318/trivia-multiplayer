@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Models.Responses
 {
-    class GetPlayersResponse : Response
+    abstract class Response
     {
-        public List<string> Players { get; set; }
+        public uint Status {  get; set; }
     }
 }

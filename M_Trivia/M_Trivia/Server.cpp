@@ -18,10 +18,11 @@ Server& Server::getInstance()
 	return instance;
 }
 
-void Server::run()
+void Server::run() const
 {
 	m_database->open();
 	m_communicator.bindAndListen();
+
 	std::thread t_connector(&Communicator::startHandleRequest, &m_communicator);
 	t_connector.detach();
 
