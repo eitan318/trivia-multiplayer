@@ -32,7 +32,7 @@ public:
      */
     Response(unsigned int status) : status(status) {}
 
-    Response() = default; //Remove when creating response constructors
+    Response() = delete;
 
     /**
      * @brief Gets the response code for this response.

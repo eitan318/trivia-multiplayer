@@ -3,26 +3,34 @@
 #include "Response.hpp"
 
 /**
- * @class CreateRoomResponse 
+ * @class CreateRoomResponse
  * @brief Represents a response containing Status only and no data
  */
 class CreateRoomResponse : public Response {
+private:
+    unsigned int roomId;
+
 public:
-	unsigned int roomId;
+    CreateRoomResponse() = delete;
 
-	/**
-	 * @brief Gets the response code for this response.
-	 * @return The response code as an unsigned integer.
-	 */
-	unsigned char getCode() const { return C_CreateRoomResponse; }
+    CreateRoomResponse(unsigned int status, unsigned int roomId)
+        : Response(status), roomId(roomId) {
+    }
 
-	/**
-	 * @brief Converts the response to a JSON object.
-	 * @return A JSON representation of the response.
-	 */
-	nlohmann::json getJson() const override {
-		nlohmann::json j = baseJson();
-		j["RoomId"] = roomId; 
-		return j;
-	}
+    /**
+     * @brief Gets the response code for this response.
+     * @return The response code as an unsigned integer.
+     */
+    unsigned char getCode() const { return C_CreateRoomResponse; }
+
+    /**
+     * @brief Converts the response to a JSON object.
+     * @return A JSON representation of the response.
+     */
+    nlohmann::json getJson() const override {
+        nlohmann::json j = baseJson();  // Assuming baseJson is defined in the base class
+        j["RoomId"] = roomId;
+        return j;
+    }
+
 };

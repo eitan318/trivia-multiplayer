@@ -8,7 +8,9 @@
  */
 class JoinRoomResponse : public Response {
 public:
-
+	JoinRoomResponse(unsigned int status) : Response(status) {
+		
+	}
 
 	/**
 	 * @brief Gets the response code for this response.

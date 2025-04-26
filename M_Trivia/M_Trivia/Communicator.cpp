@@ -105,8 +105,7 @@ void Communicator::handleNewClient(SOCKET sock)
             requestResult = handler->handleRequest(requestInfo);
         }
         else{
-			ErrorResponse errorResponse;
-			errorResponse.message = "Invalid msg code.";
+			ErrorResponse errorResponse("Invalid msg code.");
 
 			RequestResult requestResult;
 			requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);

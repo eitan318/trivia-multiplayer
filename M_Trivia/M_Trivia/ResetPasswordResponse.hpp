@@ -8,6 +8,9 @@
  */
 class ResetPasswordResponse : public Response {
 public:
+	ResetPasswordResponse(unsigned int status) : Response(status) {
+
+	}
 	/**
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.

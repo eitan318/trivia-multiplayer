@@ -9,6 +9,9 @@
  */
 class SignupResponse : public Response {
 public:
+	SignupResponse(unsigned int status) : Response(status) {
+
+	}
 
 
 	/**

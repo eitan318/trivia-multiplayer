@@ -4,11 +4,15 @@
 
 
 class SendPasswordResetCodeResponse : public Response{
-public:
-    unsigned int emailCode;
+private:
+  unsigned int emailCode;
     std::string username;
+public:
+    SendPasswordResetCodeResponse() = delete;
+    SendPasswordResetCodeResponse(unsigned int status, unsigned int emailCode, const std::string& username)
+        : Response(status), emailCode(emailCode), username(username) {
 
-
+    }
 
     /**
 	 * @brief Gets the response code for this response.

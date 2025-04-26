@@ -11,8 +11,13 @@ void to_json(nlohmann::json& j, const RoomData& roomData);
  * @brief class represents a response containing the rooms
  */
 class GetRoomsResponse : public Response{
+private:
+    std::vector<RoomData> rooms;
 public:
-	std::vector<RoomData> rooms;
+    GetRoomsResponse() = delete;
+    GetRoomsResponse(unsigned int status, const std::vector<RoomData>& rooms) : Response(status), rooms(rooms) {
+
+    }
 
     /**
      * @brief Gets the response code for this response.

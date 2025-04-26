@@ -8,7 +8,9 @@
  */
 class LoginResponse : public Response {
 public:
+	LoginResponse(unsigned int status) : Response(status) {
 
+	}
 
 	/**
 	 * @brief Gets the response code for this response.

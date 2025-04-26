@@ -7,9 +7,15 @@
  * @brief Represents a response containing a list of players in a room.
  */
 class GetPlayersInRoomResponse : public Response {
-public:
+private:
     /// A list of player names in the room.
     std::vector<std::string> players;
+
+public:
+    GetPlayersInRoomResponse() = delete;
+    GetPlayersInRoomResponse(unsigned int status, const std::vector<std::string>& players) : Response(status), players(players) {
+
+    }
 
     /**
      * @brief Gets the response code for this response.

@@ -40,9 +40,9 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const
 {
 	LoginRequest request = JsonRequestPacketDeserializer<LoginRequest>::deserializeRequest(requestInfo.buffer);
 	try {
-		LoginResponse loginResponse;
+
 		LoginResponseStatus status = (this->m_handlerFactory.getLoginManager().login(request.getUsername(), request.getPassword()));
-		loginResponse.status = static_cast<int>(status);
+		LoginResponse loginResponse(static_cast<int>(status));
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(loginResponse);
 		LoggedUser user;
@@ -56,8 +56,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const
 		return requestResult;
 	}
 	catch (std::exception e) {
-		ErrorResponse errorResponse;
-		errorResponse.message = e.what();
+		ErrorResponse errorResponse(e.what());
 
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
@@ -73,8 +72,8 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo) const
 	try {
 
 		SignupRequest request = JsonRequestPacketDeserializer<SignupRequest>::deserializeRequest(requestInfo.buffer);
-		SignupResponse signupResponse;
-		signupResponse.status = static_cast<int>(this->m_handlerFactory.getLoginManager().signup(request.getUserRecord()));
+		int status = static_cast<int>(this->m_handlerFactory.getLoginManager().signup(request.getUserRecord()));
+		SignupResponse signupResponse(status);
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(signupResponse);
 		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
@@ -82,8 +81,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo) const
 	}
 	catch (const std::runtime_error& e) {
 		RequestResult res;
-		ErrorResponse errResponse;
-		errResponse.message = e.what();
+		ErrorResponse errResponse(e.what());
 		res.response = JsonResponsePacketSerializer::serializeResponse(errResponse);
 		res.newHandler = new LoginRequestHandler(this->m_handlerFactory);
 		return res;
@@ -115,10 +113,12 @@ RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& req
 	try {
 		SendPasswordResetCodeRequest request = JsonRequestPacketDeserializer<SendPasswordResetCodeRequest>::deserializeRequest(requestInfo.buffer);
 		unsigned int randomCode = generateRandomCode(CODE_DIGITS);
-		SendPasswordResetCodeResponse response;
-		response.status = static_cast<int>(this->m_handlerFactory.getLoginManager().sendEmailCode(request.getEmail(), randomCode));
-		response.emailCode = randomCode;
-		response.username = this->m_handlerFactory.getLoginManager().getUsername(request.getEmail());
+		unsigned int status = static_cast<int>(this->m_handlerFactory.getLoginManager().sendEmailCode(request.getEmail(), randomCode));
+		SendPasswordResetCodeResponse response(
+			status,
+			randomCode,
+			this->m_handlerFactory.getLoginManager().getUsername(request.getEmail())
+		);
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(response);
 		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
@@ -126,8 +126,7 @@ RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& req
 	}
 	catch (const std::runtime_error& e) {
 		RequestResult res;
-		ErrorResponse errResponse;
-		errResponse.message = e.what();
+		ErrorResponse errResponse(e.what());
 		res.response = JsonResponsePacketSerializer::serializeResponse(errResponse);
 		res.newHandler = new LoginRequestHandler(this->m_handlerFactory);
 		return res;
@@ -143,9 +142,10 @@ RequestResult LoginRequestHandler::resetPassword(const RequestInfo& requestInfo)
 {
 	try {
 		ResetPasswordRequest resetPasswordResponse = JsonRequestPacketDeserializer<ResetPasswordRequest>::deserializeRequest(requestInfo.buffer);
-		ResetPasswordResponse response;
-		response.status = static_cast<int>(this->m_handlerFactory.getLoginManager().
+
+		int status = static_cast<int>(this->m_handlerFactory.getLoginManager().
 			resetPassword(resetPasswordResponse.getUsername(), resetPasswordResponse.getNewPassword()));
+		ResetPasswordResponse response(status);
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(response);
 		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
@@ -153,8 +153,7 @@ RequestResult LoginRequestHandler::resetPassword(const RequestInfo& requestInfo)
 	}
 	catch (const std::runtime_error& e) {
 		RequestResult res;
-		ErrorResponse errResponse;
-		errResponse.message = e.what();
+		ErrorResponse errResponse(e.what());
 		res.response = JsonResponsePacketSerializer::serializeResponse(errResponse);
 		res.newHandler = new LoginRequestHandler(this->m_handlerFactory);
 		return res;

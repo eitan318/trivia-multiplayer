@@ -8,7 +8,15 @@
  * @brief Represents a response containing an error message
  */
 struct ErrorResponse : public Response{
+private:
+    std::string message;
+
 public:
+    ErrorResponse() = delete;
+
+    ErrorResponse(const std::string& message) : Response(0), message(message) {
+
+    }
 
     /**
 	 * @brief Gets the response code for this response.
@@ -16,7 +24,7 @@ public:
 	 */
     unsigned char getCode() const { return C_ErrorResponse; }
 
-	std::string message;
+
 
     nlohmann::json getJson() const override {
         nlohmann::json j = baseJson();
