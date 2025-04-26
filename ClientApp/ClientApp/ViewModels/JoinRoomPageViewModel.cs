@@ -50,7 +50,7 @@ public class JoinRoomViewModel : BaseViewModel
                 return;
             }
 
-            var roomResponse = JsonResponseDeserialize.DeserializeResponse<GetRoomResponse>(responseInfo);
+            var roomResponse = JsonResponseDeserialize.DeserializeResponse<GetRoomsResponse>(responseInfo);
             Rooms = roomResponse.Rooms;
         }
         catch (Exception ex)

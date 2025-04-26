@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Models.Requests
 {
-    public enum RequestsCodes
+    enum RequestsCodes
     {
         LoginRequest = 1,
         SignupRequest = 2,

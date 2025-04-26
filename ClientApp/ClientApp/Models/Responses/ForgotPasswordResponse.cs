@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +9,14 @@ namespace ClientApp.Models.Responses
 {
     class ForgotPasswordResponse : Response
     {
-        //public ForgotPasswordResponse(int status, string emailCode, string username) {
-        //    this.Status = status;
-        //    this.EmailCode = emailCode;
-        //    this.Username = username;
+        [JsonConstructor]
+        private ForgotPasswordResponse(uint status, string emailCode, string username) : base(status)
+        {
+            this.EmailCode = emailCode;
+            this.Username = username;
 
-        //}
-        public string EmailCode { get; set; }
-        public string Username { get; set; }
+        }
+        public string EmailCode { get; }
+        public string Username { get; }
     }
 }

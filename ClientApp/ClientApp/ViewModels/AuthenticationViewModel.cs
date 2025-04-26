@@ -108,12 +108,7 @@ namespace ClientApp.ViewModels
             try
             {
                 // Prepare the login request and send it
-                LoginRequest loginRequest = new LoginRequest
-                {
-                    Password = Password,
-                    Username = Username,
-                };
-
+                LoginRequest loginRequest = new LoginRequest(Username, Password);
                 ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(loginRequest);
 
                 // Handle server error response
@@ -166,15 +161,7 @@ namespace ClientApp.ViewModels
             try
             {
                 // Prepare the signup request and send it
-                SignupRequest signupRequest = new SignupRequest
-                {
-                    Password = Password,
-                    Username = Username,
-                    Email = Email,
-                    PhoneNumber = PhoneNumber,
-                    HouseAddress = HouseAddress,
-                    BirthDate = BirthDate,
-                };
+                SignupRequest signupRequest = new SignupRequest(Username, Password, Email, PhoneNumber, HouseAddress, BirthDate);
 
                 ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(signupRequest);
 

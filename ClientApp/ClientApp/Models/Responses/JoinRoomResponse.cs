@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace ClientApp.Models.Responses
 {
     class JoinRoomResponse : Response
     {
+        [JsonConstructor]
+        private JoinRoomResponse(uint status) : base(status) { }
         public ResponsesCodes GetCode() => ResponsesCodes.JoinRoomResponse;
 
     }

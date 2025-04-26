@@ -69,7 +69,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInf
         JsonRequestPacketDeserializer<GetPlayersInRoomRequest>::deserializeRequest(requestInfo.buffer);
 
     GetPlayersInRoomResponse getPlayersInRoomResponse;
-    int id = request.roomId;
+    int id = request.getRoomId();
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
 
     Room room = roomManager.getRoom(id);
@@ -102,7 +102,7 @@ RequestResult MenuRequestHandler::getHighScore(const RequestInfo& requestInfo) c
 
     GetHighScoreResponse highScoreResponse;
     StatisticsManager& statsManager = this->m_handlerFactory.getStatisticsManger();
-    highScoreResponse.statistics = statsManager.getBestScores(request.topPlayersLimit);
+    highScoreResponse.statistics = statsManager.getBestScores(request.getTopPlayersLimit());
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(highScoreResponse);
@@ -116,7 +116,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& requestInfo) const
         JsonRequestPacketDeserializer<JoinRoomRequest>::deserializeRequest(requestInfo.buffer);
 
     JoinRoomResponse joinRoomResponse;
-    int id = request.roomId;
+    int id = request.getRoomId();
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
     try {
         Room& room = roomManager.getRoom(id);
@@ -139,15 +139,15 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& requestInfo) con
     CreateRoomResponse createRoomResponse;
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
  
-    if ( request.questionCount > roomManager.getTotalQuestionsCount()) {
+    if ( request.getQuestionCount() > roomManager.getTotalQuestionsCount()) {
         createRoomResponse.status = (int)CreateRoomResponseStatus::TooMuchQuestions;
     }
     else {
         RoomData data;
-        data.maxPlayers = request.maxUsers;
-        data.numOfQuestionsInGame = request.questionCount;
-        data.name = request.roomName;
-        data.timePerQuestion = request.answerTimeout;
+        data.maxPlayers = request.getMaxUsers();
+        data.numOfQuestionsInGame = request.getQuestionCount();
+        data.name = request.getRoomName();
+        data.timePerQuestion = request.getAnswerTimeout();
         createRoomResponse.roomId = roomManager.createRoom(this->m_user, data);
         createRoomResponse.status = (int)CreateRoomResponseStatus::Success;
     }

@@ -41,12 +41,12 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const
 	LoginRequest request = JsonRequestPacketDeserializer<LoginRequest>::deserializeRequest(requestInfo.buffer);
 	try {
 		LoginResponse loginResponse;
-		LoginResponseStatus status = (this->m_handlerFactory.getLoginManager().login(request.username, request.password));
+		LoginResponseStatus status = (this->m_handlerFactory.getLoginManager().login(request.getUsername(), request.getPassword()));
 		loginResponse.status = static_cast<int>(status);
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(loginResponse);
 		LoggedUser user;
-		user.m_username = request.username;
+		user.m_username = request.getUsername();
 		if (status != LoginResponseStatus::Success) {
 			requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
 		}
@@ -72,10 +72,9 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo) const
 {
 	try {
 
-		SignupRequest request;
-		request = JsonRequestPacketDeserializer<SignupRequest>::deserializeRequest(requestInfo.buffer);
+		SignupRequest request = JsonRequestPacketDeserializer<SignupRequest>::deserializeRequest(requestInfo.buffer);
 		SignupResponse signupResponse;
-		signupResponse.status = static_cast<int>(this->m_handlerFactory.getLoginManager().signup(request.userRecord));
+		signupResponse.status = static_cast<int>(this->m_handlerFactory.getLoginManager().signup(request.getUserRecord()));
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(signupResponse);
 		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
@@ -114,13 +113,12 @@ unsigned int  LoginRequestHandler::generateRandomCode(unsigned int digsOfCode) c
 RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& requestInfo) const
 {
 	try {
-		SendPasswordResetCodeRequest request;
-		request = JsonRequestPacketDeserializer<SendPasswordResetCodeRequest>::deserializeRequest(requestInfo.buffer);
+		SendPasswordResetCodeRequest request = JsonRequestPacketDeserializer<SendPasswordResetCodeRequest>::deserializeRequest(requestInfo.buffer);
 		unsigned int randomCode = generateRandomCode(CODE_DIGITS);
 		SendPasswordResetCodeResponse response;
-		response.status = static_cast<int>(this->m_handlerFactory.getLoginManager().sendEmailCode(request.email, randomCode));
+		response.status = static_cast<int>(this->m_handlerFactory.getLoginManager().sendEmailCode(request.getEmail(), randomCode));
 		response.emailCode = randomCode;
-		response.username = this->m_handlerFactory.getLoginManager().getUsername(request.email);
+		response.username = this->m_handlerFactory.getLoginManager().getUsername(request.getEmail());
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(response);
 		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
@@ -144,10 +142,10 @@ RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& req
 RequestResult LoginRequestHandler::resetPassword(const RequestInfo& requestInfo) const
 {
 	try {
-		ResetPasswordRequest resetPasswordResponse;
-		resetPasswordResponse = JsonRequestPacketDeserializer<ResetPasswordRequest>::deserializeRequest(requestInfo.buffer);
+		ResetPasswordRequest resetPasswordResponse = JsonRequestPacketDeserializer<ResetPasswordRequest>::deserializeRequest(requestInfo.buffer);
 		ResetPasswordResponse response;
-		response.status = static_cast<int>(this->m_handlerFactory.getLoginManager().resetPassword(resetPasswordResponse.username, resetPasswordResponse.newPassword));
+		response.status = static_cast<int>(this->m_handlerFactory.getLoginManager().
+			resetPassword(resetPasswordResponse.getUsername(), resetPasswordResponse.getNewPassword()));
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(response);
 		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);

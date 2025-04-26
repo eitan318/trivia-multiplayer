@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace ClientApp.Models.Responses
 {
     class SignupResponse : Response
     {
+        [JsonConstructor]
+        private SignupResponse(uint status) : base(status) { }
         public ResponsesCodes GetCode() => ResponsesCodes.SignupResponse;
     }
 }

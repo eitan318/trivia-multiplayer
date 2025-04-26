@@ -12,8 +12,7 @@ namespace ClientApp.Models.Requests
     /// /// </summary>
     class GetPlayersInRoomRequest : IRequest
     {
-        [JsonProperty]
-        private uint roomId;
+        public uint roomId { get; }
 
         public GetPlayersInRoomRequest(uint roomId)
         {

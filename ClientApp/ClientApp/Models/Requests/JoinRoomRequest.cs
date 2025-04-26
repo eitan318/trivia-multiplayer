@@ -9,11 +9,10 @@ namespace ClientApp.Models.Requests
 {
     class JoinRoomRequest : IRequest
     {
-        [JsonProperty]
-        private uint roomId;
+        public uint RoomId { get; }
         public JoinRoomRequest (uint roomid)
         {
-            roomId = roomid;
+            RoomId = roomid;
         }
         public RequestsCodes GetCode() => RequestsCodes.JoinRoomRequest;
     }

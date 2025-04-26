@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,11 @@ namespace ClientApp.Models.Responses
 {
     class GetPlayersInRoomResponse : Response
     {
-        public List<string> Players { get; set; }
+        [JsonConstructor]
+        private GetPlayersInRoomResponse(uint status, List<string> players) : base(status)
+        {
+            this.Players = players;
+        }
+        public List<string> Players { get; }
     }
 }

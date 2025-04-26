@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace ClientApp.Models.Requests
 {
@@ -16,17 +17,17 @@ namespace ClientApp.Models.Requests
         /// <param name="answerTimeout">The timeout in seconds for answering each question.</param>
         public CreateRoomRequest(string roomName, uint maxUsers, uint questionCount, uint answerTimeout)
         {
-            RoomName = roomName;
-            MaxUsers = maxUsers;
-            QuestionCount = questionCount;
-            AnswerTimeout = answerTimeout;
+            this.RoomName = roomName;
+            this.MaxUsers = maxUsers;
+            this.QuestionCount = questionCount;
+            this.AnswerTimeout = answerTimeout;
         }
 
         public RequestsCodes GetCode() => RequestsCodes.CreateRoomRequest;
 
-        public string RoomName { get; set; }
-        public uint MaxUsers { get; set; }
-        public uint QuestionCount { get; set; }
-        public uint AnswerTimeout { get; set; }
+        public string RoomName { get; }
+        public uint MaxUsers { get; }
+        public uint QuestionCount { get; }
+        public uint AnswerTimeout { get; }
     }
 }
