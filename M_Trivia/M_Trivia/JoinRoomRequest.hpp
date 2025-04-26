@@ -16,6 +16,6 @@ struct JoinRoomRequest {
 	  * @param request The JoinRoomRequest object to populate.
 	  */
 	friend void from_json(const nlohmann::json& j, JoinRoomRequest& request) {
-		j.at("RoomId").get_to(request.roomId);
+		j.at("roomId").get_to(request.roomId);
 	}
 };

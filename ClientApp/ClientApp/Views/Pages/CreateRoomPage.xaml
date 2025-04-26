@@ -10,17 +10,12 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CreateRoomPage">
 
-    <Page.Resources>
-        <!-- Converter to toggle visibility based on a boolean value -->
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    </Page.Resources>
 
     <Grid>
         <!-- Define rows for the layout -->
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
 
         <!-- Input fields section -->
@@ -79,22 +74,6 @@
                 VerticalAlignment="Center" 
                 Grid.Row="1" />
 
-        <!-- List of players displayed in a grid -->
-        <ItemsControl ItemsSource="{Binding Players}" Grid.Row="2"
-                      Visibility="{Binding IsPlayerGridVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <!-- Define the layout for player items -->
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="6" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-
-            <!-- Define the template for each player item -->
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <controls:PlayerUserControl />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        
     </Grid>
 </local:NavigablePage>

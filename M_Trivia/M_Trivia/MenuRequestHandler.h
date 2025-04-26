@@ -12,6 +12,8 @@
 #include "GetPlayersInRoomResponse.hpp"
 #include "GetPersonalStatisticsResponse.hpp"
 #include "GetHighScoreResponse.hpp"
+#include "CreateRoomResponse.hpp"
+
 class RequestHandlerFactory;
 
 /**
@@ -24,7 +26,7 @@ class RequestHandlerFactory;
  */
 class MenuRequestHandler : public IRequestHandler {
 private:
-	LoggedUser& m_user;
+	LoggedUser m_user;
 	RequestHandlerFactory& m_handlerFactory;
 
 	/**
@@ -82,7 +84,7 @@ public:
  * @param user The currently logged-in user.
  * @param handlerFactory The factory for creating other request handlers.
  */
-	MenuRequestHandler(LoggedUser& user, RequestHandlerFactory& handlerFactory);
+	MenuRequestHandler(const LoggedUser& user, RequestHandlerFactory& handlerFactory);
 
 	/**
 		* @brief Checks if a given request is relevant for this handler.

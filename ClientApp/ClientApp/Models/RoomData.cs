@@ -8,13 +8,12 @@ namespace ClientApp.Models
 {
     public struct RoomData
     {
-        private uint id;
-        public string name;
-        public uint maxPlayers;
-        public uint numOfQuestionsInGame;
-        public uint timePerQuestion;
-        public bool status;
+        public uint Id { get; set; }
+        public string Name { get; set; }
+        public uint MaxPlayers { get; set; }
+        public uint NumOfQuestionsInGame { get; set; }
+        public uint TimePerQuestion { get; set; }
+        public bool Status { get; set; }
+    }
 
-        public uint Id { get => id; set => id = value; }
-    };
 }

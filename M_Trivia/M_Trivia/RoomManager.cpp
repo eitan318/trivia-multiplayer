@@ -16,6 +16,7 @@ unsigned int RoomManager::getTotalQuestionsCount() const
 RoomManager::RoomManager(IDatabase& database)
 {
     this->m_database = &database;
+    this->m_rooms = std::map<int, Room>();
 }
 RoomManager::~RoomManager()
 {
@@ -23,7 +24,7 @@ RoomManager::~RoomManager()
 }
 
 
-void RoomManager::createRoom(LoggedUser& player, RoomData& roomData)
+unsigned int RoomManager::createRoom(const LoggedUser& player, RoomData& roomData)
 {
     int roomid = ids++;
     roomData.id = roomid;
@@ -34,6 +35,7 @@ void RoomManager::createRoom(LoggedUser& player, RoomData& roomData)
     }
 
     this->m_rooms[roomid] = Room(roomData, player);
+    return roomid;
 }
 
 void RoomManager::deleteRoom(int ID)

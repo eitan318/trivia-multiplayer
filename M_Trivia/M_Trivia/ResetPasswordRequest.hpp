@@ -3,7 +3,7 @@
 #include "json.hpp"
 
 /**
- * @class JoinRoomReques
+ * @class ResetPasswordRequest
  * @brief Represents a request to join to reset a user's password.
  */
 struct ResetPasswordRequest  {

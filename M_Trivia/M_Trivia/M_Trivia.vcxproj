@@ -130,17 +130,21 @@
   <ItemGroup>
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="CreateRoomRequest.hpp" />
+    <ClInclude Include="CreateRoomResponse.hpp" />
     <ClInclude Include="CreateRoomResponseStatus.h" />
     <ClInclude Include="EmailSender.hpp" />
     <ClInclude Include="GetHighScoreRequest.hpp" />
+    <ClInclude Include="GetPlayersInRoomRequest.hpp" />
+    <ClInclude Include="JoinRoomResponse.hpp" />
     <ClInclude Include="JoinRoomResponseStatus.h" />
+    <ClInclude Include="LoginResponse.hpp" />
+    <ClInclude Include="LogoutResponse.hpp" />
     <ClInclude Include="MenuRequestHandler.h" />
-    <ClInclude Include="NoDataResponse.hpp" />
     <ClInclude Include="RegexValidator.h" />
     <ClInclude Include="ResetPasswordRequest.hpp" />
+    <ClInclude Include="ResetPasswordResponse.hpp" />
     <ClInclude Include="SendPasswordResetCodeRequest.hpp" />
     <ClInclude Include="SendPasswordResetCodeResponse.hpp" />
-    <ClInclude Include="GetPlayersInRoomRequest.hpp" />
     <ClInclude Include="ErrorResponse.hpp" />
     <ClInclude Include="GetHighScoreResponse.hpp" />
     <ClInclude Include="GetPersonalStatisticsResponse.hpp" />
@@ -170,6 +174,7 @@
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="SignupRequest.hpp" />
+    <ClInclude Include="SignupResponse.hpp" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDatabase.h" />
     <ClInclude Include="ApiClient.h" />

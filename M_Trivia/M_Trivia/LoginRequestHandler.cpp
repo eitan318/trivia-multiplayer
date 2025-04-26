@@ -40,7 +40,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const
 {
 	LoginRequest request = JsonRequestPacketDeserializer<LoginRequest>::deserializeRequest(requestInfo.buffer);
 	try {
-		NoDataResponse loginResponse;
+		LoginResponse loginResponse;
 		LoginResponseStatus status = (this->m_handlerFactory.getLoginManager().login(request.username, request.password));
 		loginResponse.status = static_cast<int>(status);
 		RequestResult requestResult;
@@ -74,7 +74,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo) const
 
 		SignupRequest request;
 		request = JsonRequestPacketDeserializer<SignupRequest>::deserializeRequest(requestInfo.buffer);
-		NoDataResponse signupResponse;
+		SignupResponse signupResponse;
 		signupResponse.status = static_cast<int>(this->m_handlerFactory.getLoginManager().signup(request.userRecord));
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(signupResponse);
@@ -144,10 +144,10 @@ RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& req
 RequestResult LoginRequestHandler::resetPassword(const RequestInfo& requestInfo) const
 {
 	try {
-		ResetPasswordRequest request;
-		request = JsonRequestPacketDeserializer<ResetPasswordRequest>::deserializeRequest(requestInfo.buffer);
-		NoDataResponse response;
-		response.status = static_cast<int>(this->m_handlerFactory.getLoginManager().resetPassword(request.username, request.newPassword));
+		ResetPasswordRequest resetPasswordResponse;
+		resetPasswordResponse = JsonRequestPacketDeserializer<ResetPasswordRequest>::deserializeRequest(requestInfo.buffer);
+		ResetPasswordResponse response;
+		response.status = static_cast<int>(this->m_handlerFactory.getLoginManager().resetPassword(resetPasswordResponse.username, resetPasswordResponse.newPassword));
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(response);
 		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);

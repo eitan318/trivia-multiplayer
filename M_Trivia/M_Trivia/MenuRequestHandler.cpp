@@ -1,6 +1,6 @@
 #include "MenuRequestHandler.h"
 
-MenuRequestHandler::MenuRequestHandler(LoggedUser& user, RequestHandlerFactory& handlerFactory) : m_user(user),
+MenuRequestHandler::MenuRequestHandler(const LoggedUser& user, RequestHandlerFactory& handlerFactory) : m_user(user),
 m_handlerFactory(handlerFactory)
 {
 }
@@ -11,6 +11,7 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
     case RequestsCodes::CreateRoomRequest:
     case RequestsCodes::GetPlayersInRoomRequest:
     case RequestsCodes::JoinRoomRequest:
+    case RequestsCodes::GetRoomsRequest:
         return true;
     default:
         return false;
@@ -24,6 +25,8 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& requestInfo) 
         return this->createRoom(requestInfo);
     case RequestsCodes::GetPlayersInRoomRequest:
         return this->getPlayersInRoom(requestInfo);
+    case RequestsCodes::GetRoomsRequest:
+        return this->getRooms(requestInfo);
     case RequestsCodes::JoinRoomRequest:
         return this->joinRoom(requestInfo);
     }
@@ -33,7 +36,7 @@ RequestResult MenuRequestHandler::signout(const RequestInfo& info) const
 {
     //signoutRequest request = JsonRequestPacketDeserializer<GetPlayersInRoomRequest>::deserializeRequest(requestInfo.buffer);
 
-    NoDataResponse signOutResponse;
+    LogoutResponse signOutResponse;
     LoginManager& manager = this->m_handlerFactory.getLoginManager();
     manager.logout(this->m_user.getUsername());
 
@@ -65,17 +68,17 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInf
     GetPlayersInRoomRequest request = 
         JsonRequestPacketDeserializer<GetPlayersInRoomRequest>::deserializeRequest(requestInfo.buffer);
 
-    GetPlayersInRoomResponse gpirResponse;
+    GetPlayersInRoomResponse getPlayersInRoomResponse;
     int id = request.roomId;
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
 
     Room room = roomManager.getRoom(id);
     std::vector<std::string> players = room.getAllUsers();
-    gpirResponse.players = players;
+    getPlayersInRoomResponse.players = players;
 
     RequestResult requestResult;
-    requestResult.response = JsonResponsePacketSerializer::serializeResponse(gpirResponse);
-    requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+    requestResult.response = JsonResponsePacketSerializer::serializeResponse(getPlayersInRoomResponse);
+    requestResult.newHandler = new MenuRequestHandler(this->m_user, this->m_handlerFactory);
     return requestResult;
 }
 
@@ -112,11 +115,11 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& requestInfo) const
     JoinRoomRequest request = 
         JsonRequestPacketDeserializer<JoinRoomRequest>::deserializeRequest(requestInfo.buffer);
 
-    NoDataResponse joinRoomResponse;
+    JoinRoomResponse joinRoomResponse;
     int id = request.roomId;
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
     try {
-        Room room = roomManager.getRoom(id);
+        Room& room = roomManager.getRoom(id);
         room.addUser(m_user);
         joinRoomResponse.status = (int)JoinRoomResponseStatus::Success;
     }
@@ -133,7 +136,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& requestInfo) con
 {
     CreateRoomRequest request =
         JsonRequestPacketDeserializer<CreateRoomRequest>::deserializeRequest(requestInfo.buffer);
-    NoDataResponse createRoomResponse;
+    CreateRoomResponse createRoomResponse;
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
  
     if ( request.questionCount > roomManager.getTotalQuestionsCount()) {
@@ -145,7 +148,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& requestInfo) con
         data.numOfQuestionsInGame = request.questionCount;
         data.name = request.roomName;
         data.timePerQuestion = request.answerTimeout;
-        roomManager.createRoom(this->m_user, data);
+        createRoomResponse.roomId = roomManager.createRoom(this->m_user, data);
         createRoomResponse.status = (int)CreateRoomResponseStatus::Success;
     }
 

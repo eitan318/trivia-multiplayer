@@ -124,7 +124,7 @@ namespace ClientApp.ViewModels
                 }
                 else
                 {
-                    NoDataResponse loginResponse = JsonResponseDeserialize.DeserializeResponse<NoDataResponse>(responseInfo);
+                    LoginResponse loginResponse = JsonResponseDeserialize.DeserializeResponse<LoginResponse>(responseInfo);
                     switch (loginResponse.Status)
                     {
                         case (byte)LoginResponseStatus.Success:
@@ -186,23 +186,41 @@ namespace ClientApp.ViewModels
                 }
                 else
                 {
-                    NoDataResponse signupResponse = JsonResponseDeserialize.DeserializeResponse<NoDataResponse>(responseInfo);
-
-                    string[] errMsg = {
-                        "",
-                        "Known username.",
-                        "Invalid password: " + RegexFormats.Password,
-                        "Invalid email format.",
-                        "Invalid address format. " + RegexFormats.Email,
-                        "Invalid phone number. Expected format: " + RegexFormats.PhoneNumber,
-                        "Invalid birth date format. Expected: " + RegexFormats.Date,
-                    };
-
-                    ErrorMessage = errMsg[signupResponse.Status];
-
-                    if (signupResponse.Status == 0)
+                    SignupResponse signupResponse = JsonResponseDeserialize.DeserializeResponse<SignupResponse>(responseInfo);
+                    switch ((SignupResponseStatus)signupResponse.Status)
                     {
-                        MyNavigationService.Navigate(new LoginPage());
+                        case SignupResponseStatus.Success:
+                            // Navigate to the login page upon successful signup
+                            MyNavigationService.Navigate(new LoginPage());
+                            break;
+
+                        case SignupResponseStatus.KnowenUsername:
+                            ErrorMessage = "Known username.";
+                            break;
+
+                        case SignupResponseStatus.InvalidPassword:
+                            ErrorMessage = $"Invalid password: {RegexFormats.Password}";
+                            break;
+
+                        case SignupResponseStatus.InvalidEmailFormat:
+                            ErrorMessage = "Invalid email format.";
+                            break;
+
+                        case SignupResponseStatus.InvalidHousAddress:
+                            ErrorMessage = $"Invalid address format. {RegexFormats.Email}";
+                            break;
+
+                        case SignupResponseStatus.InvalidPhoneNumber:
+                            ErrorMessage = $"Invalid phone number. Expected format: {RegexFormats.PhoneNumber}";
+                            break;
+
+                        case SignupResponseStatus.InvalidBirthDate:
+                            ErrorMessage = $"Invalid birth date format. Expected: {RegexFormats.Date}";
+                            break;
+
+                        default:
+                            ErrorMessage = "An unknown error occurred.";
+                            break;
                     }
                 }
             }

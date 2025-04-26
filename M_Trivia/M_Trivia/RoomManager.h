@@ -43,11 +43,11 @@ public:
     unsigned int getTotalQuestionsCount() const;
 
     /**
-     * @brief Creates a new room.
+     * @brief Creates a new room. I set the id in room data
      * @param player The user creating the room.
      * @param roomData The data defining the room's properties.
      */
-    void createRoom(LoggedUser& player, RoomData& roomData);
+    unsigned int createRoom(const LoggedUser& player, RoomData& roomData);
 
     /**
      * @brief Deletes an existing room by its ID.

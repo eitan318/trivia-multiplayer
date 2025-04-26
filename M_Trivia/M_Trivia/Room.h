@@ -19,7 +19,7 @@ public:
      * @param roomdata The metadata associated with the room.
      * @param user The initial user to add to the room.
      */
-    Room(RoomData& roomdata, LoggedUser& user);
+    Room(const RoomData& roomdata, const LoggedUser& user);
 
     /**
      * @brief Default constructor for creating an empty Room.
@@ -35,13 +35,13 @@ public:
      * @brief Adds a user to the room.
      * @param loggeduser The user to be added to the room.
      */
-    void addUser(LoggedUser& loggeduser);
+    void addUser(const LoggedUser& loggeduser);
 
     /**
      * @brief Removes a user from the room.
      * @param loggeduser The user to be removed from the room.
      */
-    void removeUser(LoggedUser& loggeduser);
+    void removeUser(const LoggedUser& loggeduser);
 
     /**
      * @brief Retrieves the usernames of all users in the room.
@@ -59,5 +59,5 @@ public:
      * @brief Updates the metadata of the room.
      * @param roomdata The new RoomData object to set as the room's metadata.
      */
-    void setRoomData(RoomData& roomdata);
+    void setRoomData(const RoomData& roomdata);
 };

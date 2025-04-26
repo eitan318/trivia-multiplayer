@@ -1,4 +1,5 @@
 ﻿using ClientApp.Commands;
+using ClientApp.Enums;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
@@ -88,25 +89,32 @@ namespace ClientApp.ViewModels.ForgotPassword
             }
 
             // Handle successful response
-            NoDataResponse response = JsonResponseDeserialize.DeserializeResponse<NoDataResponse>(responseInfo);
-            if (response.Status == 0)
+            ResetPasswordResponse response = JsonResponseDeserialize.DeserializeResponse<ResetPasswordResponse>(responseInfo);
+
+            switch ((ResetPasswordResponseStatus) response.Status)
             {
-                // Navigate to the login page upon successful password reset
-                MyNavigationService.Navigate(new LoginPage());
-                return;
+                case ResetPasswordResponseStatus.Success:
+                    // Navigate to the login page upon successful password reset
+                    MyNavigationService.Navigate(new LoginPage());
+                    break;
+
+                case ResetPasswordResponseStatus.UnknowenUsername:
+                    this.ErrorMessage = $"Unknown username: {request.Username}";
+                    break;
+
+                case ResetPasswordResponseStatus.InvalidPassword:
+                    this.ErrorMessage = $"Invalid password format. {RegexFormats.Password}";
+                    break;
+
+                case ResetPasswordResponseStatus.InvalidUsername:
+                    this.ErrorMessage = $"Invalid username: {request.Username}";
+                    break;
+
+                default:
+                    this.ErrorMessage = "An unknown error occurred.";
+                    break;
             }
-            else
-            {
-                // Map error statuses to corresponding error messages
-                string[] errMsgs =
-                {
-                    "",
-                    "Unknown username: " + request.Username,
-                    "Invalid password format. " + RegexFormats.Password,
-                    "Invalid username: " + request.Username
-                };
-                this.ErrorMessage = errMsgs[response.Status];
-            }
-        }
+
+}
     }
 }

@@ -10,6 +10,7 @@ using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Views;
 using ClientApp.ViewModels.ClientApp.ViewModels;
+using ClientApp.Enums;
 
 namespace ClientApp.ViewModels
 {
@@ -105,15 +106,13 @@ namespace ClientApp.ViewModels
             }
             else
             {
-                NoDataResponse logoutResponse = JsonResponseDeserialize.DeserializeResponse<NoDataResponse>(responseInfo);
+                LogoutResponse logoutResponse = JsonResponseDeserialize.DeserializeResponse<LogoutResponse>(responseInfo);
 
-                if (logoutResponse.Status == 0)
+                switch (logoutResponse.Status)
                 {
-                    MyNavigationService.Navigate(new LoginPage());
-                }
-                else
-                {
-                    // Handle other status cases (if needed)
+                    case (byte)LogoutResponseStatus.Success:
+                        MyNavigationService.Navigate(new LoginPage());
+                        break;
                 }
             }
         }

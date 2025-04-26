@@ -12,8 +12,12 @@
 #include <random>
 #include <cmath>
 #include "ErrorResponse.hpp"
-#include "NoDataResponse.hpp"
+#include "LoginResponse.hpp"
+#include "SignupResponse.hpp"
+#include "ResetPasswordResponse.hpp"
 #include "SendPasswordResetCodeResponse.hpp"
+#include "JoinRoomResponse.hpp"
+#include "LogoutResponse.hpp"
 
 #define CODE_DIGITS 6
 

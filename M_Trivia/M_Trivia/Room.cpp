@@ -1,8 +1,9 @@
 #include "Room.h"
 
-Room::Room(RoomData& roomdata, LoggedUser& user) 
+Room::Room(const RoomData& roomdata, const LoggedUser& user) 
 {
 	this->m_metadata = roomdata;
+	this->m_users = std::vector<LoggedUser>();
 	this->m_users.push_back(user);
 }
 Room::Room() {
@@ -10,11 +11,11 @@ Room::Room() {
 Room::~Room() {
 }
 
-void Room::addUser(LoggedUser& loggeduser)
+void Room::addUser(const LoggedUser& loggeduser)
 {
 	this->m_users.push_back(loggeduser);
 }
-void Room::removeUser(LoggedUser& loggeduser)
+void Room::removeUser(const LoggedUser& loggeduser)
 {
 	for (auto player = this->m_users.begin(); player != this->m_users.end(); ++player) 
 	{
@@ -39,7 +40,7 @@ RoomData Room::getRoomData() const
 	return this->m_metadata;
 }
 
-void Room::setRoomData(RoomData& roomdata)
+void Room::setRoomData(const RoomData& roomdata)
 {
 	this->m_metadata = roomdata;
 }

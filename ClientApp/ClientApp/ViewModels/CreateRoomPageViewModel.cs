@@ -9,6 +9,7 @@ using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
 using ClientApp.Enums;
+using ClientApp.Views.Pages;
 
 namespace ClientApp.ViewModels
 {
@@ -19,7 +20,7 @@ namespace ClientApp.ViewModels
     {
         private string _roomName;
         private uint _questionTimeout = 1; //Min val from xaml
-        private bool _isPlayerGridVisible;
+
         private uint _maxPlayers = 1; //Min val from xaml
         private uint _questionsCount = 1; //Min val from xaml
         private string _questionCountError;
@@ -69,19 +70,8 @@ namespace ClientApp.ViewModels
             set { _questionCountError = value; OnPropertyChanged(); }
         }
 
-        /// <summary>
-        /// Indicates whether the player grid is visible.
-        /// </summary>
-        public bool IsPlayerGridVisible
-        {
-            get => _isPlayerGridVisible;
-            set { _isPlayerGridVisible = value; OnPropertyChanged(); }
-        }
 
-        /// <summary>
-        /// Collection of players currently in the room.
-        /// </summary>
-        public ObservableCollection<Player> Players { get; set; } = new ObservableCollection<Player>();
+
 
         /// <summary>
         /// Command to create a new room.
@@ -94,7 +84,6 @@ namespace ClientApp.ViewModels
         private CreateRoomPageViewModel()
         {
             CreateRoomCommand = new RelayCommand(PerformCreateRoom, CanCreateRoom);
-            IsPlayerGridVisible = false;
 
             PropertyChanged += (sender, args) =>
             {
@@ -137,38 +126,20 @@ namespace ClientApp.ViewModels
         /// <param name="parameter">Unused parameter.</param>
         private async void PerformCreateRoom(object parameter)
         {
-            IsPlayerGridVisible = true;
-            CreateRoom();
-            PutPlayers();
-        }
-
-        /// <summary>
-        /// Sends a request to retrieve and populate the player list for the room.
-        /// </summary>
-        private async void PutPlayers()
-        {
-            var getPlayersRequest = new GetPlayersRequest();
-            ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(getPlayersRequest);
-
-            if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+            uint? roomId = await CreateRoom();
+            if (roomId != null)
             {
-                // Handle error appropriately.
-                return;
+                MyNavigationService.Navigate(new RoomPage(roomId.Value));
             }
 
-            var response = JsonResponseDeserialize.DeserializeResponse<GetPlayersResponse>(responseInfo);
-            var playerNames = response.Players;
 
-            foreach (var playerName in playerNames)
-            {
-                Players.Add(new Player { Username = playerName });
-            }
         }
+
 
         /// <summary>
         /// Sends a request to create a room with the specified parameters.
         /// </summary>
-        private async void CreateRoom()
+        private async Task<uint?> CreateRoom()
         {
             var createRoomRequest = new CreateRoomRequest(RoomName, MaxPlayers, QuestionsCount, QuestionTimeout);
             var responseInfo = await RequestsExchangeService.ExchangeRequest(createRoomRequest);
@@ -176,19 +147,21 @@ namespace ClientApp.ViewModels
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
             {
                 // Handle error appropriately.
-                return;
+                return null;
             }
 
-            NoDataResponse createRoomResponse = JsonResponseDeserialize.DeserializeResponse<NoDataResponse>(responseInfo);
+            CreateRoomResponse createRoomResponse = JsonResponseDeserialize.DeserializeResponse<CreateRoomResponse>(responseInfo);
+
 
             switch (createRoomResponse.Status)
             {
                 case (byte)CreateRoomResponseStatus.Success:
-                    break;
+                    return createRoomResponse.RoomId;
                 case (byte)CreateRoomResponseStatus.TooMuchQuestions:
                     this.QuestionCountErrort = "Too much questions";
                     break;
             }
+            return null;
         }
     }
 }

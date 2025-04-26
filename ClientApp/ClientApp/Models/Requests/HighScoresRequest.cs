@@ -11,6 +11,6 @@ namespace ClientApp.Models.Requests
     /// /// </summary>
     class HighScoresRequest : IRequest
     {
-        public RequestsCodes GetCode() => RequestsCodes.HighScoresRequest;
+        public RequestsCodes GetCode() => RequestsCodes.GetHighScoresRequest;
     }
 }

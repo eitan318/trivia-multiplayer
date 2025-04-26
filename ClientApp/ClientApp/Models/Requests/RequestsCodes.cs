@@ -11,12 +11,12 @@ namespace ClientApp.Models.Requests
         LoginRequest = 1,
         SignupRequest = 2,
         LogoutRequest = 3,
-        GetRoomsRequest = 4,
-        HighScoresRequest = 5,
-        ForgotPasswordRequest = 6,
-        ResetPasswordRequest = 7,
-        GetPlayersRequest = 8,
-        CreateRoomRequest = 9,
-        JoinRoomRequest = 10
+        CreateRoomRequest = 4,
+        GetPlayersInRoomRequest = 5,
+        JoinRoomRequest = 6,
+        SendPasswordResetCodeRequest = 7,
+        ResetPasswordRequest = 8,
+        GetHighScoresRequest = 9,
+        GetRoomsRequest = 10
     }
 }
