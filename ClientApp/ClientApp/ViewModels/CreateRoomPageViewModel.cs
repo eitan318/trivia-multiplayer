@@ -24,6 +24,7 @@ namespace ClientApp.ViewModels
         private uint _maxPlayers = 1; //Min val from xaml
         private uint _questionsCount = 1; //Min val from xaml
         private string _questionCountError;
+        private string _errorMessage;
 
         /// <summary>
         /// The name of the room to be created.
@@ -64,10 +65,17 @@ namespace ClientApp.ViewModels
         /// <summary>
         /// Error message related to the number of questions.
         /// </summary>
-        public string QuestionCountErrort
+        public string QuestionCountError
         {
             get => _questionCountError;
             set { _questionCountError = value; OnPropertyChanged(); }
+        }
+
+
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set { _errorMessage = value; OnPropertyChanged(); }
         }
 
 
@@ -146,21 +154,21 @@ namespace ClientApp.ViewModels
 
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
             {
-                // Handle error appropriately.
+                ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
+                ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
                 return null;
             }
 
             CreateRoomResponse createRoomResponse = JsonResponseDeserialize.DeserializeResponse<CreateRoomResponse>(responseInfo);
-
-
-            switch (createRoomResponse.Status)
+            if (createRoomResponse.Status == 0)
             {
-                case (byte)CreateRoomResponseStatus.Success:
-                    return createRoomResponse.RoomData;
-                case (byte)CreateRoomResponseStatus.TooMuchQuestions:
-                    this.QuestionCountErrort = "Too much questions";
-                    break;
+                return createRoomResponse.RoomData;
             }
+            else
+            {
+                this.QuestionCountError = createRoomResponse.Errors.QuestionCountError;
+            }
+
             return null;
         }
     }

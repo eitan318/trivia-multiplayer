@@ -171,9 +171,6 @@
     <ClInclude Include="MenuRequestHandler.h">
       <Filter>Headers\RequestHandlers</Filter>
     </ClInclude>
-    <ClInclude Include="CreateRoomResponseStatus.h">
-      <Filter>Headers\enum</Filter>
-    </ClInclude>
     <ClInclude Include="GetHighScoreRequest.hpp">
       <Filter>Headers\Requests</Filter>
     </ClInclude>
@@ -223,6 +220,9 @@
       <Filter>Headers\Model</Filter>
     </ClInclude>
     <ClInclude Include="LoginResponseErrors.hpp">
+      <Filter>Headers\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateRoomResponseErrors.hpp">
       <Filter>Headers\Model</Filter>
     </ClInclude>
   </ItemGroup>

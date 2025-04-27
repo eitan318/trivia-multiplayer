@@ -135,10 +135,12 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& requestInfo) con
         JsonRequestPacketDeserializer<CreateRoomRequest>::deserializeRequest(requestInfo.buffer);
 
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
-    unsigned int status;
+    CreateRoomResponseErrors createRoonResponseErrors;
+    unsigned int totalQuestionCount = roomManager.getTotalQuestionsCount();
+
     RoomData data;
-    if ( request.getQuestionCount() > roomManager.getTotalQuestionsCount()) {
-        status = (int)CreateRoomResponseStatus::TooMuchQuestions;
+    if ( request.getQuestionCount() > totalQuestionCount) {
+        createRoonResponseErrors.questionCountError = "Too many questions, there are only: " + std::to_string(totalQuestionCount);
     }
     else {
         data.maxPlayers = request.getMaxUsers();
@@ -146,10 +148,11 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& requestInfo) con
         data.name = request.getRoomName();
         data.timePerQuestion = request.getAnswerTimeout();
         roomManager.createRoom(this->m_user, data);
-        status = (int)CreateRoomResponseStatus::Success;
     }
 
-    CreateRoomResponse createRoomResponse(status, data);
+    createRoonResponseErrors.statusCode = !createRoonResponseErrors.noErrors();
+
+    CreateRoomResponse createRoomResponse(createRoonResponseErrors, data);
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(createRoomResponse);

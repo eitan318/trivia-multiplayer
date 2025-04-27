@@ -131,7 +131,7 @@
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="CreateRoomRequest.hpp" />
     <ClInclude Include="CreateRoomResponse.hpp" />
-    <ClInclude Include="CreateRoomResponseStatus.h" />
+    <ClInclude Include="CreateRoomResponseErrors.hpp" />
     <ClInclude Include="EmailSender.hpp" />
     <ClInclude Include="GetHighScoreRequest.hpp" />
     <ClInclude Include="GetPlayersInRoomRequest.hpp" />

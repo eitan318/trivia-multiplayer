@@ -1,6 +1,7 @@
 #pragma once
 #include "json.hpp"
 #include "Response.hpp"
+#include "CreateRoomResponseErrors.hpp"
 
 /**
  * @class CreateRoomResponse
@@ -9,12 +10,13 @@
 class CreateRoomResponse : public Response {
 private:
     RoomData roomData;
+    CreateRoomResponseErrors errors;
 
 public:
     CreateRoomResponse() = delete;
 
-    CreateRoomResponse(unsigned int status, const RoomData& roomData)
-        : Response(status), roomData(roomData) {
+    CreateRoomResponse(const CreateRoomResponseErrors& errors , const RoomData& roomData)
+        : Response(errors.statusCode), errors(errors), roomData(roomData) {
     }
 
     /**
@@ -30,6 +32,7 @@ public:
     nlohmann::json getJson() const override {
         nlohmann::json j = baseJson();  // Assuming baseJson is defined in the base class
         j["RoomData"] = roomData;
+        j["Errors"] = errors;
         return j;
     }
 
