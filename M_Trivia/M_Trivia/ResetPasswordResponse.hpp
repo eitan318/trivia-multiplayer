@@ -8,7 +8,9 @@
  */
 class ResetPasswordResponse : public Response {
 public:
-	ResetPasswordResponse(unsigned int status) : Response(status) {
+	ResetPasswordResponseErrors responseErrors;
+	ResetPasswordResponse(const ResetPasswordResponseErrors& resetPasswordResponseErrors) : 
+		Response(resetPasswordResponseErrors.statusCode), responseErrors(resetPasswordResponseErrors){
 
 	}
 	/**
@@ -22,6 +24,8 @@ public:
 	 * @return A JSON representation of the response.
 	 */
 	nlohmann::json getJson() const override {
-		return baseJson();
+		nlohmann::json j = baseJson();
+		j["Errors"] = responseErrors;
+		return j;
 	}
 };

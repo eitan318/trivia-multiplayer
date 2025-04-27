@@ -46,20 +46,11 @@
     <ClCompile Include="WSAInitializer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="SignupResponseStatus.h">
-      <Filter>Headers\enum</Filter>
-    </ClCompile>
-    <ClCompile Include="LoginResponseStatus.h">
-      <Filter>Headers\enum</Filter>
-    </ClCompile>
     <ClCompile Include="SendEmailCodeResponseStatus.h">
       <Filter>Headers\enum</Filter>
     </ClCompile>
     <ClCompile Include="RegexValidator.cpp">
       <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="ResetPasswordResponseStatus.h">
-      <Filter>Headers\enum</Filter>
     </ClCompile>
     <ClCompile Include="MenuRequestHandler.cpp">
       <Filter>Source</Filter>
@@ -123,7 +114,7 @@
     <ClInclude Include="WSAInitializer.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="ErrorResponse.hpp">
+    <ClInclude Include="ServerErrorResponse.hpp">
       <Filter>Headers\Responses</Filter>
     </ClInclude>
     <ClInclude Include="LoginRequestHandler.h">
@@ -224,6 +215,15 @@
     </ClInclude>
     <ClInclude Include="CreateRoomResponse.hpp">
       <Filter>Headers\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="SignupResponseErrors.hpp">
+      <Filter>Headers\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ResetPasswordResponseErrors.hpp">
+      <Filter>Headers\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginResponseErrors.hpp">
+      <Filter>Headers\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

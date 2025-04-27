@@ -44,6 +44,15 @@ namespace ClientApp.ViewModels.ForgotPassword
             set { _errorMessage = value; OnPropertyChanged(); }
         }
 
+        
+
+        private string _newPasswordErrorMessage;
+        public string NewPasswordErrorMessage
+        {
+            get => _newPasswordErrorMessage;
+            set { _newPasswordErrorMessage = value; OnPropertyChanged(); }
+        }
+
         /// <summary>
         /// The username associated with the password reset request.
         /// </summary>
@@ -90,31 +99,17 @@ namespace ClientApp.ViewModels.ForgotPassword
 
             // Handle successful response
             ResetPasswordResponse response = JsonResponseDeserialize.DeserializeResponse<ResetPasswordResponse>(responseInfo);
-
-            switch ((ResetPasswordResponseStatus) response.Status)
+            if(response.Status == 0)
             {
-                case ResetPasswordResponseStatus.Success:
-                    // Navigate to the login page upon successful password reset
-                    MyNavigationService.Navigate(new LoginPage());
-                    break;
-
-                case ResetPasswordResponseStatus.UnknowenUsername:
-                    this.ErrorMessage = $"Unknown username: {request.Username}";
-                    break;
-
-                case ResetPasswordResponseStatus.InvalidPassword:
-                    this.ErrorMessage = $"Invalid password format. {RegexFormats.Password}";
-                    break;
-
-                case ResetPasswordResponseStatus.InvalidUsername:
-                    this.ErrorMessage = $"Invalid username: {request.Username}";
-                    break;
-
-                default:
-                    this.ErrorMessage = "An unknown error occurred.";
-                    break;
+                // Navigate to the login page upon successful password reset
+                MyNavigationService.Navigate(new LoginPage());
+            }
+            else
+            {
+                this.ErrorMessage = response.Errors.GeneralError;
+                this.NewPasswordErrorMessage = response.Errors.NewPasswordError;
             }
 
-}
+        }
     }
 }

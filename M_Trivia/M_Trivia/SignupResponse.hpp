@@ -2,6 +2,7 @@
 #include "json.hpp"
 #include "HighScoreInfo.hpp"
 #include "Response.hpp"
+#include "SignupResponseErrors.hpp"
 #include <vector>
 
 /**
@@ -10,15 +11,15 @@
  */
 class SignupResponse : public Response {
 private:
-    std::vector<bool> regexResult; 
+    SignupResponseErrors signupResponseErrors; 
 public:
     /**
      * @brief Constructor for SignupResponse.
      * @param status The status of the response.
      * @param regexResult A vector of boolean values representing the regex result.
      */
-    SignupResponse(unsigned int status, const std::vector<bool>& regexResult)
-        : Response(status), regexResult(regexResult) {
+    SignupResponse(const SignupResponseErrors& signupResponseErrors)
+        : Response(signupResponseErrors.statusCode), signupResponseErrors(signupResponseErrors) {
     }
 
     /**
@@ -33,7 +34,7 @@ public:
      */
     nlohmann::json getJson() const override {
         nlohmann::json j = baseJson();
-        j["RegexResult"] = regexResult;
+        j["Errors"] = signupResponseErrors;
         return j;
     }
 };

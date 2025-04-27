@@ -7,14 +7,14 @@
  * @class ErrorResponse
  * @brief Represents a response containing an error message
  */
-struct ErrorResponse : public Response{
+struct ServerErrorResponse : public Response{
 private:
     std::string message;
 
 public:
-    ErrorResponse() = delete;
+    ServerErrorResponse() = delete;
 
-    ErrorResponse(const std::string& message) : Response(0), message(message) {
+    ServerErrorResponse(const std::string& message) : Response(0), message(message) {
 
     }
 

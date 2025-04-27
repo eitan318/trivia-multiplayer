@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using ClientApp.Models;
 
 namespace ClientApp.ViewModels
 {
@@ -143,6 +144,13 @@ namespace ClientApp.ViewModels
         // Method to navigate to the signup page
         private void NavigateToSignup()
         {
+            ErrorMessage = "";
+            UsernameErrorMessage = "";
+            PasswordErrorMessage = "";
+            EmailErrorMessage = "";
+            PhoneNumberErrorMessage = "";
+            HouseAddressErrorMessage = "";
+            BirthDateErrorMessage = "";
             MyNavigationService.Navigate(new SignupPage());
         }
 
@@ -185,18 +193,16 @@ namespace ClientApp.ViewModels
                 else
                 {
                     LoginResponse loginResponse = JsonResponseDeserialize.DeserializeResponse<LoginResponse>(responseInfo);
-                    switch (loginResponse.Status)
+                    if(loginResponse.Status == 0)
                     {
-                        case (byte)LoginResponseStatus.Success:
-                            MyNavigationService.Navigate(new MenuPage());
-                            break;
-                        case (byte)LoginResponseStatus.UnknowenUsername:
-                            UsernameErrorMessage = "username does not exist";
-                            break;
-                        case (byte)LoginResponseStatus.PasswordDoesntMatch:
-                            PasswordErrorMessage = "password doesn't match username";
-                            break;
+                        MyNavigationService.Navigate(new MenuPage());
                     }
+                    else
+                    {
+                        UsernameErrorMessage = loginResponse.Errors.UsernameError;
+                        PasswordErrorMessage= loginResponse.Errors.PasswordError;
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -208,21 +214,11 @@ namespace ClientApp.ViewModels
         // Method to navigate to the login page
         private void NavigateToLogin()
         {
+            ErrorMessage = "";
+            UsernameErrorMessage = "";
+            PasswordErrorMessage = "";
             MyNavigationService.Navigate(new LoginPage());
         }
-
-        //private bool SignupFilled()
-        //{
-        //    if (string.IsNullOrWhiteSpace(Username))
-        //    {
-
-        //    }
-        //        !string.IsNullOrWhiteSpace(Password) &&
-        //        !string.IsNullOrWhiteSpace(Email) &&
-        //        !string.IsNullOrWhiteSpace(PhoneNumber) &&
-        //        !string.IsNullOrWhiteSpace(HouseAddress) &&
-        //        !string.IsNullOrWhiteSpace(BirthDate);
-        //}
 
         /// <summary>
         /// Attempts to sign up the user by validating the input fields and sending the signup request.
@@ -303,40 +299,19 @@ namespace ClientApp.ViewModels
                 else
                 {
                     SignupResponse signupResponse = JsonResponseDeserialize.DeserializeResponse<SignupResponse>(responseInfo);
-                    switch ((SignupResponseStatus)signupResponse.Status)
+                    if(signupResponse.Status == 0)
                     {
-                        case SignupResponseStatus.Success:
-                            // Navigate to the login page upon successful signup
-                            MyNavigationService.Navigate(new LoginPage());
-                            break;
-
-                        case SignupResponseStatus.KnowenUsername:
-                            UsernameErrorMessage = "Known username.";
-                            break;
-
-                        case SignupResponseStatus.InvalidPassword:
-                            PasswordErrorMessage = $"Invalid password: {RegexFormats.Password}";
-                            break;
-
-                        case SignupResponseStatus.InvalidEmailFormat:
-                            EmailErrorMessage = "Invalid email format.";
-                            break;
-
-                        case SignupResponseStatus.InvalidHousAddress:
-                            HouseAddressErrorMessage = $"Invalid address format. {RegexFormats.Email}";
-                            break;
-
-                        case SignupResponseStatus.InvalidPhoneNumber:
-                            PhoneNumberErrorMessage = $"Invalid phone number. Expected format: {RegexFormats.PhoneNumber}";
-                            break;
-
-                        case SignupResponseStatus.InvalidBirthDate:
-                            BirthDateErrorMessage = $"Invalid birth date format. Expected: {RegexFormats.Date}";
-                            break;
-
-                        default:
-                            ErrorMessage = "An unknown error occurred.";
-                            break;
+                        // Navigate to the login page upon successful signup
+                        MyNavigationService.Navigate(new LoginPage());
+                    }
+                    else
+                    {
+                        UsernameErrorMessage = signupResponse.Errors.UsernameError;
+                        PasswordErrorMessage = signupResponse.Errors.PasswordError;
+                        EmailErrorMessage = signupResponse.Errors.EmailError;
+                        HouseAddressErrorMessage = signupResponse.Errors.HouseAddressError;
+                        PhoneNumberErrorMessage = signupResponse.Errors.PhoneNumberError;
+                        BirthDateErrorMessage = signupResponse.Errors.BirthDateError;
                     }
                 }
             }

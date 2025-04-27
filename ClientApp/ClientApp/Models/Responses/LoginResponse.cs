@@ -11,7 +11,11 @@ namespace ClientApp.Models.Responses
     class LoginResponse : Response
     {
         [JsonConstructor]
-        public LoginResponse(uint status) : base(status) { }
+        public LoginResponse(uint status, LoginErrors errors) : base(status) {
+            Errors = errors;
+        }
+
+        public LoginErrors Errors { get; }
         public ResponsesCodes GetCode() => ResponsesCodes.LoginResponse;
     }
 }

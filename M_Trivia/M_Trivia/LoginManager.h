@@ -1,14 +1,14 @@
 #pragma once
 #include "IDataBase.h"
 #include "LoggedUser.h"
-#include "SignupResponseStatus.h"
-#include "LoginResponseStatus.h"
 #include "SendEmailCodeResponseStatus.h"
-#include "ResetPasswordResponseStatus.h"
 #include "EmailSender.hpp"
 #include <vector>
 #include "UserRecord.hpp"
 #include "RegexValidator.h"
+#include "SignupResponseErrors.hpp"
+#include "ResetPasswordResponseErrors.hpp"
+#include "LoginResponseErrors.hpp"
 
 /**
  * @brief Manages user authentication, registration, and session handling.
@@ -46,7 +46,7 @@ public:
      * @param userRecord Information about the new user.
      * @return Status indicating the result of the signup operation.
      */
-    std::vector<bool> signup(const UserRecord& userRecord) const;
+    SignupResponseErrors signup(const UserRecord& userRecord) const;
 
     /**
      * @brief Authenticates a user by their username and password.
@@ -54,7 +54,7 @@ public:
      * @param password The user's password.
      * @return Status indicating the result of the login operation.
      */
-    LoginResponseStatus login(const std::string username, const std::string password);
+    LoginResponseErrors login(const std::string username, const std::string password);
 
     /**
      * @brief Sends a password reset code to the user's email.
@@ -70,7 +70,7 @@ public:
      * @param newPassword The new password to set.
      * @return Status indicating the result of the reset operation.
      */
-    ResetPasswordResponseStatus resetPassword(const std::string& username, const std::string& newPassword) const;
+    ResetPasswordResponseErrors resetPassword(const std::string& username, const std::string& newPassword) const;
 
     /**
      * @brief Retrieves the username associated with a given email.
