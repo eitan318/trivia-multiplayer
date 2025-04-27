@@ -10,7 +10,7 @@ namespace ClientApp.Models.Responses
     class GetPlayersInRoomResponse : Response
     {
         [JsonConstructor]
-        private GetPlayersInRoomResponse(uint status, List<string> players) : base(status)
+        public GetPlayersInRoomResponse(uint status, List<string> players) : base(status)
         {
             this.Players = players;
         }

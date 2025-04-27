@@ -126,10 +126,10 @@ namespace ClientApp.ViewModels
         /// <param name="parameter">Unused parameter.</param>
         private async void PerformCreateRoom(object parameter)
         {
-            uint? roomId = await CreateRoom();
-            if (roomId != null)
+            RoomData? roomData = await CreateRoom();
+            if (roomData != null)
             {
-                MyNavigationService.Navigate(new RoomPage(roomId.Value));
+                MyNavigationService.Navigate(new RoomPage(roomData.Value));
             }
 
 
@@ -139,7 +139,7 @@ namespace ClientApp.ViewModels
         /// <summary>
         /// Sends a request to create a room with the specified parameters.
         /// </summary>
-        private async Task<uint?> CreateRoom()
+        private async Task<RoomData?> CreateRoom()
         {
             var createRoomRequest = new CreateRoomRequest(RoomName, MaxPlayers, QuestionsCount, QuestionTimeout);
             var responseInfo = await RequestsExchangeService.ExchangeRequest(createRoomRequest);
@@ -156,7 +156,7 @@ namespace ClientApp.ViewModels
             switch (createRoomResponse.Status)
             {
                 case (byte)CreateRoomResponseStatus.Success:
-                    return createRoomResponse.RoomId;
+                    return createRoomResponse.RoomData;
                 case (byte)CreateRoomResponseStatus.TooMuchQuestions:
                     this.QuestionCountErrort = "Too much questions";
                     break;

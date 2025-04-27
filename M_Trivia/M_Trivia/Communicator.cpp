@@ -117,6 +117,7 @@ void Communicator::handleNewClient(SOCKET sock)
         handler = requestResult.newHandler;
         this->m_clients.at(sock) = handler;
         Helper::sendData(sock, requestResult.response);
+        std::cout << "Sended" << std::string(requestResult.response.begin(), requestResult.response.end()) << std::endl;
     }
     delete handler;
 }

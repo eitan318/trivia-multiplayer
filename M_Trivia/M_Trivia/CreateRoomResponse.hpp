@@ -8,13 +8,13 @@
  */
 class CreateRoomResponse : public Response {
 private:
-    unsigned int roomId;
+    RoomData roomData;
 
 public:
     CreateRoomResponse() = delete;
 
-    CreateRoomResponse(unsigned int status, unsigned int roomId)
-        : Response(status), roomId(roomId) {
+    CreateRoomResponse(unsigned int status, const RoomData& roomData)
+        : Response(status), roomData(roomData) {
     }
 
     /**
@@ -29,7 +29,7 @@ public:
      */
     nlohmann::json getJson() const override {
         nlohmann::json j = baseJson();  // Assuming baseJson is defined in the base class
-        j["RoomId"] = roomId;
+        j["RoomData"] = roomData;
         return j;
     }
 

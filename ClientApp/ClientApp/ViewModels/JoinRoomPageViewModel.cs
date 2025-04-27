@@ -15,7 +15,7 @@ public class JoinRoomViewModel : BaseViewModel
     {
         this.ownerPage = owner;
         RefreshCommand = new RelayCommand(async () => await Refresh());
-        JoinCommand = new RelayCommand(async () => await JoinRoom());
+        JoinCommand = new RelayCommand(async () => await JoinRoom(), CanJoinRoom);
         _ = Refresh(); // Fire and forget
     }
 
@@ -27,11 +27,39 @@ public class JoinRoomViewModel : BaseViewModel
     private Page ownerPage;
     private List<RoomData> _rooms;
     private string _errorMessage;
-    private uint? _selectedRoomId;
+    private RoomData? _selectedRoom;
 
-    public List<RoomData> Rooms { get => _rooms; set { _rooms = value; OnPropertyChanged(); } }
-    public string ErrorMessage { get => _errorMessage; set { _errorMessage = value; OnPropertyChanged(); } }
-    public uint? SelectedRoomId { get => _selectedRoomId; set { _selectedRoomId = value; OnPropertyChanged(); } }
+    public List<RoomData> Rooms
+    {
+        get => _rooms;
+        set
+        {
+            _rooms = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string ErrorMessage
+    {
+        get => _errorMessage;
+        set
+        {
+            _errorMessage = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public RoomData? SelectedRoom
+    {
+        get => _selectedRoom;
+        set
+        {
+            _selectedRoom = value;
+            OnPropertyChanged();
+            // Notify JoinCommand that its state may have changed
+            ((RelayCommand)JoinCommand).RaiseCanExecuteChanged();
+        }
+    }
 
     public ICommand RefreshCommand { get; }
     public ICommand JoinCommand { get; }
@@ -52,6 +80,9 @@ public class JoinRoomViewModel : BaseViewModel
 
             var roomResponse = JsonResponseDeserialize.DeserializeResponse<GetRoomsResponse>(responseInfo);
             Rooms = roomResponse.Rooms;
+
+            // Clear selection after refreshing to ensure consistency
+            SelectedRoom = null;
         }
         catch (Exception ex)
         {
@@ -59,24 +90,22 @@ public class JoinRoomViewModel : BaseViewModel
         }
     }
 
+    private bool CanJoinRoom()
+    {
+        return SelectedRoom != null;
+    }
+
     public async Task JoinRoom()
     {
-        if (SelectedRoomId == null)
+        if (SelectedRoom == null)
         {
             ErrorMessage = "Please select a room to join.";
             return;
         }
 
-        var selectedRoom = Rooms?.FirstOrDefault(r => r.Id == SelectedRoomId);
-        if (selectedRoom == null)
-        {
-            ErrorMessage = "Selected room no longer exists.";
-            return;
-        }
-
         try
         {
-            var selectedRoomId = selectedRoom.Value.Id;
+            var selectedRoomId = SelectedRoom.Value.Id;
             var request = new JoinRoomRequest(selectedRoomId);
             var responseInfo = await RequestsExchangeService.ExchangeRequest(request);
 
@@ -91,7 +120,7 @@ public class JoinRoomViewModel : BaseViewModel
             switch (joinResponse.Status)
             {
                 case (byte)JoinRoomRequestStatus.Success:
-                    MyNavigationService.Navigate(new RoomPage(selectedRoomId));
+                    MyNavigationService.Navigate(new RoomPage(SelectedRoom.Value));
                     break;
                 case (byte)JoinRoomRequestStatus.UnknownRoom:
                     ErrorMessage = "Room doesn't exist.";

@@ -11,7 +11,7 @@ namespace ClientApp.Models.Responses
     class GetRoomsResponse : Response
     {
         [JsonConstructor]
-        private GetRoomsResponse(uint status, List<RoomData> rooms) :base(status)
+        public GetRoomsResponse(uint status, List<RoomData> rooms) :base(status)
         { 
             this.Rooms = rooms;
         }

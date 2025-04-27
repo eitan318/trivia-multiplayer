@@ -10,7 +10,7 @@ namespace ClientApp.Models.Responses
     class ForgotPasswordResponse : Response
     {
         [JsonConstructor]
-        private ForgotPasswordResponse(uint status, string emailCode, string username) : base(status)
+        public ForgotPasswordResponse(uint status, string emailCode, string username) : base(status)
         {
             this.EmailCode = emailCode;
             this.Username = username;

@@ -10,7 +10,7 @@ namespace ClientApp.Models.Responses
     class ResetPasswordResponse : Response
     {
         [JsonConstructor]
-        private ResetPasswordResponse(uint status) : base(status) { }
+        public ResetPasswordResponse(uint status) : base(status) { }
         public ResponsesCodes GetCode() => ResponsesCodes.ResetPasswordResponse;
     }
 }

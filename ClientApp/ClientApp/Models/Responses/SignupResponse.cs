@@ -10,7 +10,7 @@ namespace ClientApp.Models.Responses
     class SignupResponse : Response
     {
         [JsonConstructor]
-        private SignupResponse(uint status) : base(status) { }
+        public SignupResponse(uint status) : base(status) { }
         public ResponsesCodes GetCode() => ResponsesCodes.SignupResponse;
     }
 }
