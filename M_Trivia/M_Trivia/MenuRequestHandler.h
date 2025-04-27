@@ -91,12 +91,12 @@ public:
 		* @param requestInfo The request information.
 		* @return True if the request is relevant, otherwise false.
 		*/
-	bool isRequestRelevant(const RequestInfo& requestInfo) const;
+	bool isRequestRelevant(const RequestInfo& requestInfo) const override;
 	
 	/**
 	 * @brief Handles a request and routes it to the appropriate method.
 	 * @param requestInfo The request information.
 	 * @return A RequestResult containing the serialized response and the next handler.
 	 */
-	RequestResult handleRequest(const RequestInfo& requestInfo) const;
+	RequestResult handleRequest(const RequestInfo& requestInfo) const override;
 };

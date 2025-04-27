@@ -11,6 +11,7 @@ namespace ClientApp.Models.Responses
     {
         [JsonConstructor]
         public SignupResponse(uint status) : base(status) { }
+        public bool[] RegexResult { get; }
         public ResponsesCodes GetCode() => ResponsesCodes.SignupResponse;
     }
 }

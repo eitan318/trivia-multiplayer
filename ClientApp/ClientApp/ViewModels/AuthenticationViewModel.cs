@@ -1,5 +1,5 @@
-﻿using ClientApp.Commands;
-using ClientApp.Enums;
+﻿using ClientApp.Enums;
+using ClientApp.Commands;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
@@ -26,7 +26,7 @@ namespace ClientApp.ViewModels
             // Initialize commands for different actions
             SignupCommand = new RelayCommand(PerformSignup);
             NavigateToLoginCommand = new RelayCommand(NavigateToLogin);
-            LoginCommand = new RelayCommand(PerformLogin);
+            LoginCommand = new RelayCommand(PerformLogin, CanPerformLogin);
             NavigateToSignupCommand = new RelayCommand(NavigateToSignup);
             NavigateToForgotPasswordCommand = new RelayCommand(NavigateToForgotPassword);
         }
@@ -45,21 +45,92 @@ namespace ClientApp.ViewModels
         private string _houseAddress;
         private string _phoneNumber;
         private string _birthDate;
-        private string _passwordErrorMessage;
+
         private string _usernameErrorMessage;
+        private string _passwordErrorMessage;
+        private string _emailErrorMessage;
+        private string _phoneNumberErrorMessage;
+        private string _houseAddressErrorMessage;
+        private string _birthDateErrorMessage;
+
         private string _errorMessage;
 
         // Properties for username, password, email, etc., with change notification
-        public string Password { get => _password; set { _password = value; OnPropertyChanged(); } }
-        public string Username { get => _username; set { _username = value; OnPropertyChanged(); } }
-        public string Email { get => _email; set { _email = value; OnPropertyChanged(); } }
-        public string PhoneNumber { get => _phoneNumber; set { _phoneNumber = value; OnPropertyChanged(); } }
-        public string HouseAddress { get => _houseAddress; set { _houseAddress = value; OnPropertyChanged(); } }
-        public string BirthDate { get => _birthDate; set { _birthDate = value; OnPropertyChanged(); } }
+        public string Username
+        {
+            get => _username;
+            set
+            {
+                _username = value;
+                OnPropertyChanged();
+                ((RelayCommand)LoginCommand).RaiseCanExecuteChanged();
+                ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                _password = value;
+                OnPropertyChanged();
+                ((RelayCommand)LoginCommand).RaiseCanExecuteChanged();
+                ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public string Email
+        {
+            get => _email;
+            set
+            {
+                _email = value;
+                OnPropertyChanged();
+                ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public string PhoneNumber
+        {
+            get => _phoneNumber;
+            set
+            {
+                _phoneNumber = value;
+                OnPropertyChanged();
+                ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public string HouseAddress
+        {
+            get => _houseAddress;
+            set
+            {
+                _houseAddress = value;
+                OnPropertyChanged();
+                ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public string BirthDate
+        {
+            get => _birthDate;
+            set
+            {
+                _birthDate = value;
+                OnPropertyChanged();
+                ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
+            }
+        }
 
         // Error message properties
-        public string PasswordErrorMessage { get => _passwordErrorMessage; set { _passwordErrorMessage = value; OnPropertyChanged(); } }
         public string UsernameErrorMessage { get => _usernameErrorMessage; set { _usernameErrorMessage = value; OnPropertyChanged(); } }
+        public string PasswordErrorMessage { get => _passwordErrorMessage; set { _passwordErrorMessage = value; OnPropertyChanged(); } }
+        public string EmailErrorMessage { get => _emailErrorMessage; set { _emailErrorMessage = value; OnPropertyChanged(); } }
+        public string PhoneNumberErrorMessage { get => _phoneNumberErrorMessage; set { _phoneNumberErrorMessage = value; OnPropertyChanged(); } }
+        public string HouseAddressErrorMessage { get => _houseAddressErrorMessage; set { _houseAddressErrorMessage = value; OnPropertyChanged(); } }
+        public string BirthDateErrorMessage { get => _birthDateErrorMessage; set { _birthDateErrorMessage = value; OnPropertyChanged(); } }
         public string ErrorMessage { get => _errorMessage; set { _errorMessage = value; OnPropertyChanged(); } }
 
         // Commands for different actions
@@ -81,6 +152,14 @@ namespace ClientApp.ViewModels
             MyNavigationService.Navigate(new ForgotPasswordPage(new LoginPage()));
         }
 
+
+
+        private bool CanPerformLogin()
+        {
+            return !string.IsNullOrWhiteSpace(Username) &&
+                !string.IsNullOrWhiteSpace(Password);
+        }
+
         /// <summary>
         /// Attempts to log in the user by validating the username and password.
         /// If successful, navigates to the menu page. If there is an error, shows the error messages.
@@ -90,20 +169,6 @@ namespace ClientApp.ViewModels
             ErrorMessage = "";
             UsernameErrorMessage = "";
             PasswordErrorMessage = "";
-            bool perform = true;
-            if (string.IsNullOrWhiteSpace(Username))
-            {
-                UsernameErrorMessage = "Cannot be empty";
-                perform = false;
-            }
-            if (string.IsNullOrWhiteSpace(Password))
-            {
-                PasswordErrorMessage = "Cannot be empty";
-                perform = false;
-            }
-
-            if (!perform)
-                return;
 
             try
             {
@@ -146,17 +211,81 @@ namespace ClientApp.ViewModels
             MyNavigationService.Navigate(new LoginPage());
         }
 
+        //private bool SignupFilled()
+        //{
+        //    if (string.IsNullOrWhiteSpace(Username))
+        //    {
+
+        //    }
+        //        !string.IsNullOrWhiteSpace(Password) &&
+        //        !string.IsNullOrWhiteSpace(Email) &&
+        //        !string.IsNullOrWhiteSpace(PhoneNumber) &&
+        //        !string.IsNullOrWhiteSpace(HouseAddress) &&
+        //        !string.IsNullOrWhiteSpace(BirthDate);
+        //}
+
         /// <summary>
         /// Attempts to sign up the user by validating the input fields and sending the signup request.
         /// If the signup is successful, navigates to the login page. If there are errors, displays error messages.
         /// </summary>
         private async void PerformSignup()
         {
-            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+            const string cannotBeEmptyString = "Cannot be empty";
+
+            // Reset error messages
+            ErrorMessage = "";
+            UsernameErrorMessage = "";
+            PasswordErrorMessage = "";
+            EmailErrorMessage = "";
+            PhoneNumberErrorMessage = "";
+            HouseAddressErrorMessage = "";
+            BirthDateErrorMessage = "";
+
+            bool perform = true;
+
+            // Validate each field
+            if (string.IsNullOrWhiteSpace(Username))
             {
-                ErrorMessage = "All fields must be filled.";
+                UsernameErrorMessage = cannotBeEmptyString;
+                perform = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(Password))
+            {
+                PasswordErrorMessage = cannotBeEmptyString;
+                perform = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(Email))
+            {
+                EmailErrorMessage = cannotBeEmptyString;
+                perform = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(PhoneNumber))
+            {
+                PhoneNumberErrorMessage = cannotBeEmptyString;
+                perform = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(HouseAddress))
+            {
+                HouseAddressErrorMessage = cannotBeEmptyString;
+                perform = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(BirthDate))
+            {
+                BirthDateErrorMessage = cannotBeEmptyString;
+                perform = false;
+            }
+
+            // If any field is invalid, prevent further action
+            if (!perform)
+            {
                 return;
             }
+
 
             try
             {
@@ -182,27 +311,27 @@ namespace ClientApp.ViewModels
                             break;
 
                         case SignupResponseStatus.KnowenUsername:
-                            ErrorMessage = "Known username.";
+                            UsernameErrorMessage = "Known username.";
                             break;
 
                         case SignupResponseStatus.InvalidPassword:
-                            ErrorMessage = $"Invalid password: {RegexFormats.Password}";
+                            PasswordErrorMessage = $"Invalid password: {RegexFormats.Password}";
                             break;
 
                         case SignupResponseStatus.InvalidEmailFormat:
-                            ErrorMessage = "Invalid email format.";
+                            EmailErrorMessage = "Invalid email format.";
                             break;
 
                         case SignupResponseStatus.InvalidHousAddress:
-                            ErrorMessage = $"Invalid address format. {RegexFormats.Email}";
+                            HouseAddressErrorMessage = $"Invalid address format. {RegexFormats.Email}";
                             break;
 
                         case SignupResponseStatus.InvalidPhoneNumber:
-                            ErrorMessage = $"Invalid phone number. Expected format: {RegexFormats.PhoneNumber}";
+                            PhoneNumberErrorMessage = $"Invalid phone number. Expected format: {RegexFormats.PhoneNumber}";
                             break;
 
                         case SignupResponseStatus.InvalidBirthDate:
-                            ErrorMessage = $"Invalid birth date format. Expected: {RegexFormats.Date}";
+                            BirthDateErrorMessage = $"Invalid birth date format. Expected: {RegexFormats.Date}";
                             break;
 
                         default:

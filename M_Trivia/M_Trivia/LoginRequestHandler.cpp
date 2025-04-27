@@ -72,8 +72,8 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo) const
 	try {
 
 		SignupRequest request = JsonRequestPacketDeserializer<SignupRequest>::deserializeRequest(requestInfo.buffer);
-		int status = static_cast<int>(this->m_handlerFactory.getLoginManager().signup(request.getUserRecord()));
-		SignupResponse signupResponse(status);
+		std::vector<bool> regexResult = this->m_handlerFactory.getLoginManager().signup(request.getUserRecord());
+		SignupResponse signupResponse(0, regexResult);
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(signupResponse);
 		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);

@@ -34,6 +34,8 @@ public:
 
     Response() = delete;
 
+    virtual ~Response() {};
+
     /**
      * @brief Gets the response code for this response.
      * @return The response code as an unsigned integer.

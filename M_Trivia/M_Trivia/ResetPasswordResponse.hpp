@@ -15,7 +15,7 @@ public:
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.
 	 */
-	unsigned char getCode() const { return C_ResetPasswordResponse; }
+	unsigned char getCode() const override { return C_ResetPasswordResponse; }
 
 	/**
 	 * @brief Converts the response to a JSON object.

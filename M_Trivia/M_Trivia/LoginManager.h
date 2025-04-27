@@ -46,7 +46,7 @@ public:
      * @param userRecord Information about the new user.
      * @return Status indicating the result of the signup operation.
      */
-    SignupResponseStatus signup(const UserRecord& userRecord) const;
+    std::vector<bool> signup(const UserRecord& userRecord) const;
 
     /**
      * @brief Authenticates a user by their username and password.

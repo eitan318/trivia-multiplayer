@@ -60,6 +60,10 @@ std::string LoginManager::getUsername(const std::string& email) const
 
 SignupResponseStatus LoginManager::signup(const UserRecord& userRecord) const
 {
+	std::vector<std::string> fieldErrors = std::vector<std::string>();
+	if (this->m_database->doesUserExist(userRecord.username))
+		field;
+
 	if (!RegexValidator::validPassword(userRecord.password))
 		return SignupResponseStatus::InvalidPassword;
 
@@ -75,8 +79,6 @@ SignupResponseStatus LoginManager::signup(const UserRecord& userRecord) const
     if (!RegexValidator::validBirthDate(userRecord.birthDate))
         return SignupResponseStatus::InvalidBirthDate;
   
-	if (this->m_database->doesUserExist(userRecord.username)) 
-		return SignupResponseStatus::KnowenUsername;
 
     this->m_database->addNewUser(userRecord);
     return SignupResponseStatus::Success;

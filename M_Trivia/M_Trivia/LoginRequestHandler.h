@@ -28,8 +28,8 @@ class LoginRequestHandler : public IRequestHandler {
 public:
 	LoginRequestHandler(RequestHandlerFactory& handlerFactory);
 	~LoginRequestHandler();
-	bool isRequestRelevant(const RequestInfo&) const;
-	RequestResult handleRequest(const RequestInfo&) const;
+	bool isRequestRelevant(const RequestInfo&) const override;
+	RequestResult handleRequest(const RequestInfo&) const override;
 private:
 	RequestHandlerFactory& m_handlerFactory;
 	RequestResult login(const RequestInfo&) const;
