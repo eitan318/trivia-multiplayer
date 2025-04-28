@@ -8,18 +8,16 @@
  * @brief Represents a response containing Status only and no data
  */
 class LoginResponse : public Response {
-private:
-	LoginResponseErrors loginResponseErrors;
 public:
-	LoginResponse(const LoginResponseErrors& errors) 
-		: Response(errors.statusCode), loginResponseErrors(errors) {
+	LoginResponse(std::shared_ptr <LoginResponseErrors> errors)
+		: Response(std::move(errors)) {
 	}
 
 	/**
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.
 	 */
-	unsigned char getCode() const override { return C_LoginResponse; }
+	ResponseCodes getCode() const override { return ResponseCodes::C_LoginResponse; }
 
 	/**
 	 * @brief Converts the response to a JSON object.
@@ -27,7 +25,6 @@ public:
 	 */
 	nlohmann::json getJson() const override {
 		nlohmann::json j = baseJson();
-		j["Errors"] = loginResponseErrors;
 		return j;
 	}
 };

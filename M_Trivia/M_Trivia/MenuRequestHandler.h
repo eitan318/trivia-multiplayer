@@ -7,7 +7,6 @@
 #include "CreateRoomRequest.hpp"
 #include "GetPlayersInRoomRequest.hpp"
 #include "GetHighScoreRequest.hpp"
-#include "CreateRoomResponseStatus.h"
 #include "GetRoomsResponse.hpp"
 #include "GetPlayersInRoomResponse.hpp"
 #include "GetPersonalStatisticsResponse.hpp"

@@ -21,7 +21,7 @@ public:
      * @brief Constructor for GetPersonalStatisticsResponse.
      * @param personalStats The personal statistics data.
      */
-    GetPersonalStatisticsResponse(const PersonalStatistics& personalStats, unsigned int status = C_GetPersonalStatsResponse)
+    GetPersonalStatisticsResponse(const PersonalStatistics& personalStats, unsigned int status)
         : Response(status), statistics(personalStats) {
     }
 
@@ -29,8 +29,8 @@ public:
      * @brief Gets the response code for this response.
      * @return The response code as an unsigned integer.
      */
-    unsigned char getCode() const override {
-        return C_GetPersonalStatsResponse;
+    ResponseCodes getCode() const override {
+        return ResponseCodes::C_GetPersonalStatsResponse;
     }
 
     /**

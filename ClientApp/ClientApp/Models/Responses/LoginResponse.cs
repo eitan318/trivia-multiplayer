@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ClientApp.Models.Errors;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,11 @@ namespace ClientApp.Models.Responses
     class LoginResponse : Response
     {
         [JsonConstructor]
-        public LoginResponse(uint status, LoginErrors errors) : base(status) {
+        public LoginResponse(uint status, LoginResponseErrors errors) : base(status) {
             Errors = errors;
         }
 
-        public LoginErrors Errors { get; }
+        public LoginResponseErrors Errors { get; }
         public ResponsesCodes GetCode() => ResponsesCodes.LoginResponse;
     }
 }

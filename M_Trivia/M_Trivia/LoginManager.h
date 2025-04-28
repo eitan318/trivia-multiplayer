@@ -1,7 +1,6 @@
 #pragma once
 #include "IDataBase.h"
 #include "LoggedUser.h"
-#include "SendEmailCodeResponseStatus.h"
 #include "EmailSender.hpp"
 #include <vector>
 #include "UserRecord.hpp"
@@ -9,6 +8,7 @@
 #include "SignupResponseErrors.hpp"
 #include "ResetPasswordResponseErrors.hpp"
 #include "LoginResponseErrors.hpp"
+#include "PasswordCodeResponseErrors.hpp"
 
 /**
  * @brief Manages user authentication, registration, and session handling.
@@ -62,7 +62,7 @@ public:
      * @param code The reset code to be sent.
      * @return Status indicating the result of the email operation.
      */
-    SendEmailCodeResponseStatus sendEmailCode(const std::string email, unsigned int code) const;
+    PasswordCodeResponseErrors sendEmailCode(const std::string email, unsigned int code) const;
 
     /**
      * @brief Resets a user's password.

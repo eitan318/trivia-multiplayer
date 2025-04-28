@@ -38,16 +38,18 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& requestInfo)
 
 RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const
 {
-	LoginRequest request = JsonRequestPacketDeserializer<LoginRequest>::deserializeRequest(requestInfo.buffer);
-	try {
 
-		LoginResponseErrors errors = (this->m_handlerFactory.getLoginManager().login(request.getUsername(), request.getPassword()));
+	try {
+		LoginRequest request = JsonRequestPacketDeserializer<LoginRequest>::deserializeRequest(requestInfo.buffer);
+
+		auto errors = std::make_shared<LoginResponseErrors>(
+			this->m_handlerFactory.getLoginManager().login(request.getUsername(), request.getPassword()));
 		LoginResponse loginResponse(errors);
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(loginResponse);
 		LoggedUser user;
 		user.m_username = request.getUsername();
-		if (errors.statusCode != 0) {
+		if (errors->statusCode != 0) {
 			requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
 		}
 		else {
@@ -72,8 +74,10 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo) const
 	try {
 
 		SignupRequest request = JsonRequestPacketDeserializer<SignupRequest>::deserializeRequest(requestInfo.buffer);
-		SignupResponseErrors signupErrors = this->m_handlerFactory.getLoginManager().signup(request.getUserRecord());
-		SignupResponse signupResponse(signupErrors);
+		auto errors = std::make_shared<SignupResponseErrors>(
+			this->m_handlerFactory.getLoginManager().signup(request.getUserRecord()));
+
+		SignupResponse signupResponse(errors);
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(signupResponse);
 		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
@@ -113,12 +117,20 @@ RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& req
 	try {
 		SendPasswordResetCodeRequest request = JsonRequestPacketDeserializer<SendPasswordResetCodeRequest>::deserializeRequest(requestInfo.buffer);
 		unsigned int randomCode = generateRandomCode(CODE_DIGITS);
-		unsigned int status = static_cast<int>(this->m_handlerFactory.getLoginManager().sendEmailCode(request.getEmail(), randomCode));
-		SendPasswordResetCodeResponse response(
-			status,
+		auto errors = std::make_shared<PasswordCodeResponseErrors>(
+			this->m_handlerFactory.getLoginManager().sendEmailCode(request.getEmail(), randomCode));
+
+		std::string username = errors->statusCode == 0 ?
+			this->m_handlerFactory.getLoginManager().getUsername(request.getEmail()) :
+			"Error occured: No username";
+
+
+		PasswordCodeResponse response(
+			errors,
 			randomCode,
-			this->m_handlerFactory.getLoginManager().getUsername(request.getEmail())
+			username
 		);
+
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(response);
 		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
@@ -143,9 +155,15 @@ RequestResult LoginRequestHandler::resetPassword(const RequestInfo& requestInfo)
 	try {
 		ResetPasswordRequest resetPasswordRequest = JsonRequestPacketDeserializer<ResetPasswordRequest>::deserializeRequest(requestInfo.buffer);
 
-		ResetPasswordResponseErrors resetPasswordResponseStatus = this->m_handlerFactory.getLoginManager().
-			resetPassword(resetPasswordRequest.getUsername(), resetPasswordRequest.getNewPassword());
-		ResetPasswordResponse response(resetPasswordResponseStatus);
+		std::shared_ptr<ResetPasswordResponseErrors> errors =
+			std::make_shared<ResetPasswordResponseErrors>(
+				this->m_handlerFactory.getLoginManager().resetPassword(
+					resetPasswordRequest.getUsername(),
+					resetPasswordRequest.getNewPassword()
+				)
+			);
+
+		ResetPasswordResponse response(errors);
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(response);
 		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);

@@ -80,7 +80,7 @@ RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& requestInf
 {
     //signoutRequest request = JsonRequestPacketDeserializer<GetPlayersInRoomRequest>::deserializeRequest(requestInfo.buffer);
     StatisticsManager& statsManager = this->m_handlerFactory.getStatisticsManger();
-    GetPersonalStatisticsResponse personalStatsResponse(statsManager.getPlayerStatistics(this->m_user.getUsername()));
+    GetPersonalStatisticsResponse personalStatsResponse(0, statsManager.getPlayerStatistics(this->m_user.getUsername()));
 
 
     RequestResult requestResult;
@@ -152,7 +152,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& requestInfo) con
 
     createRoonResponseErrors.statusCode = !createRoonResponseErrors.noErrors();
 
-    CreateRoomResponse createRoomResponse(createRoonResponseErrors, data);
+    CreateRoomResponse createRoomResponse(std::make_shared<CreateRoomResponseErrors>(createRoonResponseErrors), data);
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(createRoomResponse);

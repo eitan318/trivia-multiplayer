@@ -1,21 +1,20 @@
 #pragma once
 #include <string>
 #include "json.hpp"
+#include "IResponseErrors.hpp"
 
-class ResetPasswordResponseErrors {
+class ResetPasswordResponseErrors : public IResponseErrors {
 public:
     // Error fields
     std::string generalError;
     std::string newPasswordError;
-
-    unsigned int statusCode;
 
     /**
      * @brief Checks if all error fields are not set (empty).
      *
      * @return true if all error fields are empty; otherwise, false.
      */
-    bool noErrors() const {
+    bool noErrors() const override{
         return newPasswordError.empty()
             && generalError.empty();
     }
@@ -28,9 +27,13 @@ public:
      * @param signupErrors The SignupErrors object that contains the data to be serialized.
      */
     friend void to_json(nlohmann::json& j, const ResetPasswordResponseErrors& signupErrors) {
-        j = nlohmann::json{
-            {"NewPasswordError", signupErrors.newPasswordError},
-            {"GeneralError", signupErrors.generalError},
+        
+    }
+    nlohmann::json getJson() const override {
+        nlohmann::json j = nlohmann::json{
+            {"NewPasswordError", newPasswordError},
+            {"GeneralError", generalError},
         };
+        return j;
     }
 };

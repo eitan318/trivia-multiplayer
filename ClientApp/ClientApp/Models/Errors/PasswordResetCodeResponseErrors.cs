@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientApp.Enums
+namespace ClientApp.Models.Errors
 {
-    enum LogoutResponseStatus
+    class PasswordResetCodeResponseErrors
     {
-        Success,
+        public string EmailError { get; set; }
     }
 }

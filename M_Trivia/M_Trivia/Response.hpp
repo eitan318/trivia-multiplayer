@@ -1,11 +1,13 @@
 #pragma once
 #include "json.hpp"
+#include "IResponseErrors.hpp"
+#include <memory> // For smart pointers
 
-/**
- * @enum ResponsesCodes
- * @brief Enumerates the response codes for different response types.
- */
-enum ResponsesCodes : byte {
+ /**
+  * @enum ResponsesCodes
+  * @brief Enumerates the response codes for different response types.
+  */
+enum class ResponseCodes : unsigned char{
     C_ErrorResponse = 0,
     C_LoginResponse = 1,
     C_GetRoomsResponse = 2,
@@ -19,34 +21,48 @@ enum ResponsesCodes : byte {
     C_CreateRoomResponse = 10,
 };
 
-/**
- * @class Response
- * @brief Represents a general response.
- */
 class Response {
-public:
+private:
+    std::shared_ptr<IResponseErrors> errors; // Use smart pointer for polymorphism
     unsigned int status;
 
+public:
     /**
-     * @brief Default constructor for Response.
+ * @brief Virtual destructor for the Response class.
+ */
+    virtual ~Response() = default;
+    /**
+     * @brief Constructor for Response.
+     * @param errors The error object containing details of the response.
      */
-    Response(unsigned int status) : status(status) {}
+    explicit Response(std::shared_ptr<IResponseErrors> errors)
+        : errors(std::move(errors)), status(this->errors->statusCode) {
+    }
 
+    /**
+     * @brief Constructor for Response with status only.
+     * @param status The status code of the response.
+     */
+    explicit Response(unsigned int status) : errors(nullptr), status(status) {}
+
+    // Delete default constructor to enforce proper initialization.
     Response() = delete;
 
     /**
      * @brief Gets the response code for this response.
-     * @return The response code as an unsigned integer.
+     * @return The response code as a byte (uint8_t).
      */
-    virtual byte getCode() const = 0;
+    virtual ResponseCodes getCode() const = 0;
 
     /**
      * @brief Converts the common fields of the response to a JSON object.
      * @return A JSON representation of the common response fields.
      */
     virtual nlohmann::json baseJson() const {
+        nlohmann::json errorsJson = errors ? errors->getJson() : nlohmann::json();
         return nlohmann::json{
-            {"Status", status}
+            {"Status", status},
+            {"Errors", errorsJson}
         };
     }
 
@@ -57,5 +73,6 @@ public:
      */
     virtual nlohmann::json getJson() const = 0;
 
-    virtual ~Response() = default;
+
 };
+

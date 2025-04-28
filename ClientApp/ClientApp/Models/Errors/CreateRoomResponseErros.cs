@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientApp.Models
+namespace ClientApp.Models.Errors
 {
-    class CreateRoomErros
+    class CreateRoomResponseErros
     {
         public string GeneralError { get; set; }
         public string QuestionCountError { get; set; }

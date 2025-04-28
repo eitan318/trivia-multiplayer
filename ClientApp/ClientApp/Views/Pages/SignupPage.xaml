@@ -80,15 +80,21 @@
                        Visibility="{Binding HouseAddressErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
 
             <!-- Birthdate input -->
-            <TextBox Text="{Binding BirthDate, UpdateSourceTrigger=PropertyChanged}" 
+            <!--<TextBox Text="{Binding BirthDate, UpdateSourceTrigger=PropertyChanged}" 
                      materialDesign:HintAssist.Hint="BirthDate" Margin="0,10"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"/>
-            <TextBlock Text="{Binding BirthDateErrorMessage}" 
-                       Foreground="Red" 
-                       FontSize="12"
-                       Visibility="{Binding BirthDateErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
+                     Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"/>-->
 
+            <DatePicker Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+            SelectedDate="{Binding BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock Text="{Binding BirthDateErrorMessage}" 
+               Foreground="Red" 
+               FontSize="12"
+               Visibility="{Binding BirthDateErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
+            
+            
+            
             <!-- Signup button bound to the Signup command -->
             <Button Content="Signup" Margin="0,20" Padding="10,5" 
                     Command="{Binding SignupCommand}" />

@@ -28,18 +28,21 @@ LoginResponseErrors LoginManager::login(const std::string username, const std::s
 	return errors;
 }
 
-SendEmailCodeResponseStatus LoginManager::sendEmailCode(const std::string email, unsigned int code) const
+PasswordCodeResponseErrors LoginManager::sendEmailCode(const std::string email, unsigned int code) const
 {
+	PasswordCodeResponseErrors errors;
 	if (!RegexValidator::validEmail(email))
-		return SendEmailCodeResponseStatus::InvalidEmail;
+		errors.emailErrors = std::string() + "Invalid email format, Use: " + RegexValidator::emailRegexDescription.data();
+	else if (!this->m_database->emailExists(email)) 
+		errors.emailErrors = "Email doesnt exist";
 
-	if (!this->m_database->emailExists(email)) 
-		return SendEmailCodeResponseStatus::UnknowenEmail;
+	errors.statusCode = !errors.noErrors();
+	if (errors.statusCode == 0) {
+		EmailSender::sendEmail("servicehandler055@gmail.com", email,
+			"Reset Password Code", "Code: " + std::to_string(code));
+	}
 
-	EmailSender::sendEmail("servicehandler055@gmail.com", email,
-		"Reset Password Code", "Code: " + std::to_string(code));
-
-	return SendEmailCodeResponseStatus::Success;
+	return errors;
 }
 
 ResetPasswordResponseErrors LoginManager::resetPassword(const std::string& username, const std::string& newPassword) const
@@ -73,10 +76,10 @@ SignupResponseErrors LoginManager::signup(const UserRecord& userRecord) const
 {
 	SignupResponseErrors signupErrors;
 
-	if (this->m_database->doesUserExist(userRecord.username))
-		signupErrors.usernameError = "User already exist";
-	else if (!RegexValidator::validUsername(userRecord.username))
+	if (!RegexValidator::validUsername(userRecord.username))
 		signupErrors.usernameError = std::string() + "Invalid format. Use: " + RegexValidator::usernameRegexDescription.data();
+	else if (this->m_database->doesUserExist(userRecord.username))
+		signupErrors.usernameError = "User already exist";
 
 	if (!RegexValidator::validPassword(userRecord.password))
 		signupErrors.passwordError = std::string() + "Password must be " + RegexValidator::passwordRegexDescription.data();
@@ -84,13 +87,13 @@ SignupResponseErrors LoginManager::signup(const UserRecord& userRecord) const
 	if (!RegexValidator::validEmail(userRecord.email))
 		signupErrors.emailError = std::string() + "Invalid format. Use: " + RegexValidator::emailRegexDescription.data();
 
-	if (!RegexValidator::validHouseAddress(userRecord.houseAddress))
+	if (userRecord.houseAddress != "" && !RegexValidator::validHouseAddress(userRecord.houseAddress))
 		signupErrors.houseAddressError = std::string() + "Invalid format. Use: " + RegexValidator::houseAddressRegexDescription.data();
 
-    if (!RegexValidator::validPhoneNumber(userRecord.phoneNumber))
+    if (userRecord.phoneNumber != "" && !RegexValidator::validPhoneNumber(userRecord.phoneNumber))
         signupErrors.phoneNumberError = std::string() + "Invalid format. Use: " + RegexValidator::phoneNumberRegexDescription.data();
 
-	if (!RegexValidator::validBirthDate(userRecord.birthDate))
+	if (userRecord.birthDate != "" && !RegexValidator::validBirthDate(userRecord.birthDate))
 		signupErrors.birthDateError = std::string() + "Invalid format. Use: " + RegexValidator::birthDateRegexDescription.data();
 
 	signupErrors.statusCode = !signupErrors.noErrors();

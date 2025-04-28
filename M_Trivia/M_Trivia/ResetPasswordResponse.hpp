@@ -1,6 +1,7 @@
 #pragma once
 #include "json.hpp"
 #include "Response.hpp"
+#include "ResetPasswordResponseErrors.hpp"
 
 /**
  * @class LoginResponse
@@ -8,16 +9,14 @@
  */
 class ResetPasswordResponse : public Response {
 public:
-	ResetPasswordResponseErrors responseErrors;
-	ResetPasswordResponse(const ResetPasswordResponseErrors& resetPasswordResponseErrors) : 
-		Response(resetPasswordResponseErrors.statusCode), responseErrors(resetPasswordResponseErrors){
-
+	ResetPasswordResponse(std::shared_ptr<ResetPasswordResponseErrors> resetPasswordResponseErrors)
+		: Response(std::move(resetPasswordResponseErrors)) {
 	}
 	/**
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.
 	 */
-	unsigned char getCode() const override { return C_ResetPasswordResponse; }
+	ResponseCodes getCode() const override { return ResponseCodes::C_ResetPasswordResponse; }
 
 	/**
 	 * @brief Converts the response to a JSON object.
@@ -25,7 +24,6 @@ public:
 	 */
 	nlohmann::json getJson() const override {
 		nlohmann::json j = baseJson();
-		j["Errors"] = responseErrors;
 		return j;
 	}
 };

@@ -1,34 +1,29 @@
 #pragma once
 #include <string>
 #include "json.hpp"
+#include "IResponseErrors.hpp"
 
-class CreateRoomResponseErrors {
+class CreateRoomResponseErrors : public IResponseErrors {
 public:
     // Error fields
     std::string questionCountError;
-
-    unsigned int statusCode;
 
     /**
      * @brief Checks if all error fields are not set (empty).
      *
      * @return true if all error fields are empty; otherwise, false.
      */
-    bool noErrors() const {
+    bool noErrors() const override {
         return questionCountError.empty();
-
     }
 
     /**
-     * @brief Converts this object into a JSON object.
-     *
-     * This function serializes the `SignupErrors` object into a JSON object.
-     * @param j The JSON object to which the data will be written.
-     * @param signupErrors The SignupErrors object that contains the data to be serialized.
+     * @brief Converts the response to a JSON object.
+     * @return A JSON representation of the response.
      */
-    friend void to_json(nlohmann::json& j, const CreateRoomResponseErrors& signupErrors) {
-        j = nlohmann::json{
-            {"QuestionCountError", signupErrors.questionCountError},
-        };
+    nlohmann::json getJson() const override {
+        nlohmann::json j;
+        j["QuestionCountError"] = questionCountError;
+        return j;
     }
 };

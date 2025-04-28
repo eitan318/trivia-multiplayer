@@ -46,9 +46,6 @@
     <ClCompile Include="WSAInitializer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="SendEmailCodeResponseStatus.h">
-      <Filter>Headers\enum</Filter>
-    </ClCompile>
     <ClCompile Include="RegexValidator.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -58,31 +55,31 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CreateRoomRequest.hpp">
-      <Filter>Headers\Requests</Filter>
+      <Filter>Headers\Model\Requests</Filter>
     </ClInclude>
     <ClInclude Include="GetHighScoreResponse.hpp">
-      <Filter>Headers\Responses</Filter>
+      <Filter>Headers\Model\Responses</Filter>
     </ClInclude>
     <ClInclude Include="GetPersonalStatisticsResponse.hpp">
-      <Filter>Headers\Responses</Filter>
+      <Filter>Headers\Model\Responses</Filter>
     </ClInclude>
     <ClInclude Include="GetRoomsResponse.hpp">
-      <Filter>Headers\Responses</Filter>
+      <Filter>Headers\Model\Responses</Filter>
     </ClInclude>
     <ClInclude Include="JoinRoomRequest.hpp">
-      <Filter>Headers\Requests</Filter>
+      <Filter>Headers\Model\Requests</Filter>
     </ClInclude>
     <ClInclude Include="Response.hpp">
-      <Filter>Headers\Responses</Filter>
+      <Filter>Headers\Model\Responses</Filter>
     </ClInclude>
     <ClInclude Include="LoginRequest.hpp">
-      <Filter>Headers\Requests</Filter>
+      <Filter>Headers\Model\Requests</Filter>
     </ClInclude>
     <ClInclude Include="RequestsCodes.hpp">
-      <Filter>Headers\Requests</Filter>
+      <Filter>Headers\Model\Requests</Filter>
     </ClInclude>
     <ClInclude Include="SignupRequest.hpp">
-      <Filter>Headers\Requests</Filter>
+      <Filter>Headers\Model\Requests</Filter>
     </ClInclude>
     <ClInclude Include="ApiClient.h">
       <Filter>Headers</Filter>
@@ -115,7 +112,7 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="ServerErrorResponse.hpp">
-      <Filter>Headers\Responses</Filter>
+      <Filter>Headers\Model\Responses</Filter>
     </ClInclude>
     <ClInclude Include="LoginRequestHandler.h">
       <Filter>Headers\RequestHandlers</Filter>
@@ -136,7 +133,7 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="GetPlayersInRoomResponse.hpp">
-      <Filter>Headers\Responses</Filter>
+      <Filter>Headers\Model\Responses</Filter>
     </ClInclude>
     <ClInclude Include="LoginManager.h">
       <Filter>Headers\Managers</Filter>
@@ -148,10 +145,10 @@
       <Filter>Headers\Managers</Filter>
     </ClInclude>
     <ClInclude Include="SendPasswordResetCodeRequest.hpp">
-      <Filter>Headers\Requests</Filter>
+      <Filter>Headers\Model\Requests</Filter>
     </ClInclude>
-    <ClInclude Include="SendPasswordResetCodeResponse.hpp">
-      <Filter>Headers\Responses</Filter>
+    <ClInclude Include="PasswordCodeResponse.hpp">
+      <Filter>Headers\Model\Responses</Filter>
     </ClInclude>
     <ClInclude Include="JsonRequestPacketDeserializer.h">
       <Filter>Headers\Services</Filter>
@@ -166,13 +163,13 @@
       <Filter>Headers\Services</Filter>
     </ClInclude>
     <ClInclude Include="ResetPasswordRequest.hpp">
-      <Filter>Headers\Requests</Filter>
+      <Filter>Headers\Model\Requests</Filter>
     </ClInclude>
     <ClInclude Include="MenuRequestHandler.h">
       <Filter>Headers\RequestHandlers</Filter>
     </ClInclude>
     <ClInclude Include="GetHighScoreRequest.hpp">
-      <Filter>Headers\Requests</Filter>
+      <Filter>Headers\Model\Requests</Filter>
     </ClInclude>
     <ClInclude Include="json.hpp">
       <Filter>libs</Filter>
@@ -190,40 +187,46 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="LoginResponse.hpp">
-      <Filter>Headers\Responses</Filter>
+      <Filter>Headers\Model\Responses</Filter>
     </ClInclude>
     <ClInclude Include="JoinRoomResponseStatus.h">
       <Filter>Headers\enum</Filter>
     </ClInclude>
     <ClInclude Include="SignupResponse.hpp">
-      <Filter>Headers\Responses</Filter>
+      <Filter>Headers\Model\Responses</Filter>
     </ClInclude>
     <ClInclude Include="ResetPasswordResponse.hpp">
-      <Filter>Headers\Responses</Filter>
+      <Filter>Headers\Model\Responses</Filter>
     </ClInclude>
     <ClInclude Include="GetPlayersInRoomRequest.hpp">
-      <Filter>Headers\Requests</Filter>
+      <Filter>Headers\Model\Requests</Filter>
     </ClInclude>
     <ClInclude Include="JoinRoomResponse.hpp">
-      <Filter>Headers\Responses</Filter>
+      <Filter>Headers\Model\Responses</Filter>
     </ClInclude>
     <ClInclude Include="LogoutResponse.hpp">
-      <Filter>Headers\Responses</Filter>
+      <Filter>Headers\Model\Responses</Filter>
     </ClInclude>
     <ClInclude Include="CreateRoomResponse.hpp">
-      <Filter>Headers\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="SignupResponseErrors.hpp">
-      <Filter>Headers\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="ResetPasswordResponseErrors.hpp">
-      <Filter>Headers\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="LoginResponseErrors.hpp">
-      <Filter>Headers\Model</Filter>
+      <Filter>Headers\Model\Responses</Filter>
     </ClInclude>
     <ClInclude Include="CreateRoomResponseErrors.hpp">
-      <Filter>Headers\Model</Filter>
+      <Filter>Headers\Model\ResponseErrors</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginResponseErrors.hpp">
+      <Filter>Headers\Model\ResponseErrors</Filter>
+    </ClInclude>
+    <ClInclude Include="ResetPasswordResponseErrors.hpp">
+      <Filter>Headers\Model\ResponseErrors</Filter>
+    </ClInclude>
+    <ClInclude Include="PasswordCodeResponseErrors.hpp">
+      <Filter>Headers\Model\ResponseErrors</Filter>
+    </ClInclude>
+    <ClInclude Include="SignupResponseErrors.hpp">
+      <Filter>Headers\Model\ResponseErrors</Filter>
+    </ClInclude>
+    <ClInclude Include="IResponseErrors.hpp">
+      <Filter>Headers\Model\ResponseErrors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -232,12 +235,6 @@
     </Filter>
     <Filter Include="Headers\Exceptions">
       <UniqueIdentifier>{329c988a-6124-4bdd-a625-25834b246730}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\Responses">
-      <UniqueIdentifier>{657137e1-0233-4c25-88b9-403657cc5236}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\Requests">
-      <UniqueIdentifier>{ed9b5a83-7b05-4247-b928-6bd92f6f9ab0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\RequestHandlers">
       <UniqueIdentifier>{e5b86cdc-037a-4dd7-b630-0249849c3556}</UniqueIdentifier>
@@ -262,6 +259,15 @@
     </Filter>
     <Filter Include="Headers\Model">
       <UniqueIdentifier>{688382f4-cced-499d-8de5-534025945f22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Model\ResponseErrors">
+      <UniqueIdentifier>{8dd1bb3f-d210-4a9a-8bdd-279c91402cd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Model\Requests">
+      <UniqueIdentifier>{ed9b5a83-7b05-4247-b928-6bd92f6f9ab0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Model\Responses">
+      <UniqueIdentifier>{657137e1-0233-4c25-88b9-403657cc5236}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

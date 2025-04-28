@@ -1,8 +1,9 @@
 #pragma once
 #include <string>
 #include "json.hpp"
+#include "IResponseErrors.hpp"
 
-class SignupResponseErrors {
+class SignupResponseErrors : public IResponseErrors {
 public:
     // Error fields
     std::string usernameError;
@@ -12,15 +13,18 @@ public:
     std::string houseAddressError;
     std::string birthDateError;
 
-
-    unsigned int statusCode;
+    
+    
+    //// Default constructor
+    SignupResponseErrors() = default;
+    SignupResponseErrors(const SignupResponseErrors& other) = default;
 
     /**
      * @brief Checks if all error fields are not set (empty).
      *
      * @return true if all error fields are empty; otherwise, false.
      */
-    bool noErrors() const {
+    bool noErrors() const override{
         return usernameError.empty() &&
             passwordError.empty() &&
             emailError.empty() &&
@@ -30,20 +34,18 @@ public:
     }
 
     /**
-     * @brief Converts this object into a JSON object.
-     *
-     * This function serializes the `SignupErrors` object into a JSON object.
-     * @param j The JSON object to which the data will be written.
-     * @param signupErrors The SignupErrors object that contains the data to be serialized.
+     * @brief Converts the response to a JSON object.
+     * @return A JSON representation of the response.
      */
-    friend void to_json(nlohmann::json& j, const SignupResponseErrors& signupErrors) {
-        j = nlohmann::json{
-            {"UsernameError", signupErrors.usernameError},
-            {"PasswordError", signupErrors.passwordError},
-            {"EmailError", signupErrors.emailError},
-            {"PhoneNumberError", signupErrors.phoneNumberError},
-            {"HouseAddressError", signupErrors.houseAddressError},
-            {"BirthDateError", signupErrors.birthDateError}
+    nlohmann::json getJson() const override {
+        nlohmann::json j = nlohmann::json{
+            {"UsernameError", usernameError},
+            {"PasswordError", passwordError},
+            {"EmailError", emailError},
+            {"PhoneNumberError", phoneNumberError},
+            {"HouseAddressError", houseAddressError},
+            {"BirthDateError", birthDateError}
         };
+        return j;
     }
 };

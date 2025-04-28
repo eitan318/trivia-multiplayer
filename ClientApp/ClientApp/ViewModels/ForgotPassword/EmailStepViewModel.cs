@@ -75,21 +75,14 @@ namespace ClientApp.ViewModels.ForgotPassword
             }
 
             // Process the response and move to the next step
-            ForgotPasswordResponse response = JsonResponseDeserialize.DeserializeResponse<ForgotPasswordResponse>(responseInfo);
+            PasswordResetCodeResponse response = JsonResponseDeserialize.DeserializeResponse<PasswordResetCodeResponse>(responseInfo);
             if (response.Status == 0)
             {
                 _parent.GoToCodeStep(response.EmailCode, response.Username);
             }
             else
             {
-                // Map response status to an error message
-                string[] errMsg =
-                {
-                    "",
-                    "Email does not exist",
-                    "Invalid Email Format",
-                };
-                ErrorMessage = errMsg[response.Status];
+                ErrorMessage = response.Errors.EmailError;
             }
         }
     }

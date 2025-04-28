@@ -22,7 +22,7 @@ public:
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.
 	 */
-    unsigned char getCode() const override { return C_ErrorResponse; }
+    ResponseCodes getCode() const override { return ResponseCodes::C_ErrorResponse; }
 
 
 

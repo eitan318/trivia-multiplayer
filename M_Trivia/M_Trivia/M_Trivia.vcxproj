@@ -135,6 +135,7 @@
     <ClInclude Include="EmailSender.hpp" />
     <ClInclude Include="GetHighScoreRequest.hpp" />
     <ClInclude Include="GetPlayersInRoomRequest.hpp" />
+    <ClInclude Include="IResponseErrors.hpp" />
     <ClInclude Include="JoinRoomResponse.hpp" />
     <ClInclude Include="JoinRoomResponseStatus.h" />
     <ClInclude Include="LoginResponse.hpp" />
@@ -145,8 +146,9 @@
     <ClInclude Include="ResetPasswordResponseErrors.hpp" />
     <ClInclude Include="ResetPasswordRequest.hpp" />
     <ClInclude Include="ResetPasswordResponse.hpp" />
+    <ClInclude Include="PasswordCodeResponseErrors.hpp" />
     <ClInclude Include="SendPasswordResetCodeRequest.hpp" />
-    <ClInclude Include="SendPasswordResetCodeResponse.hpp" />
+    <ClInclude Include="PasswordCodeResponse.hpp" />
     <ClInclude Include="ServerErrorResponse.hpp" />
     <ClInclude Include="GetHighScoreResponse.hpp" />
     <ClInclude Include="GetPersonalStatisticsResponse.hpp" />
@@ -197,7 +199,6 @@
     <ClCompile Include="RequestHandlerFactory.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RoomManager.cpp" />
-    <ClCompile Include="SendEmailCodeResponseStatus.h" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDatabase.cpp" />

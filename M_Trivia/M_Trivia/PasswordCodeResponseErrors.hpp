@@ -3,11 +3,10 @@
 #include "json.hpp"
 #include "IResponseErrors.hpp"
 
-class LoginResponseErrors : public IResponseErrors {
+class PasswordCodeResponseErrors : public IResponseErrors {
 public:
     // Error fields
-    std::string usernameError;
-    std::string passwordError;
+    std::string emailErrors;
 
     /**
      * @brief Checks if all error fields are not set (empty).
@@ -15,14 +14,12 @@ public:
      * @return true if all error fields are empty; otherwise, false.
      */
     bool noErrors() const override {
-        return passwordError.empty()
-            && usernameError.empty();
+        return emailErrors.empty();
     }
 
     nlohmann::json getJson() const override {
         nlohmann::json j = nlohmann::json{
-            {"PasswordError", passwordError},
-            {"UsernameError", usernameError},
+            {"EmailError", emailErrors},
         };
         return j;
     }

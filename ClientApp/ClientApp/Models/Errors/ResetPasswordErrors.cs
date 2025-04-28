@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientApp.Models
+namespace ClientApp.Models.Errors
 {
     class ResetPasswordErrors
     {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientApp.Models
+namespace ClientApp.Models.Errors
 {
-    class LoginErrors
+    class LoginResponseErrors
     {
         public string UsernameError { get; set; }
         public string PasswordError { get; set; }

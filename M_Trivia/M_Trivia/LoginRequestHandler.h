@@ -15,10 +15,11 @@
 #include "LoginResponse.hpp"
 #include "SignupResponse.hpp"
 #include "ResetPasswordResponse.hpp"
-#include "SendPasswordResetCodeResponse.hpp"
+#include "PasswordCodeResponse.hpp"
 #include "JoinRoomResponse.hpp"
 #include "LogoutResponse.hpp"
 #include "ResetPasswordResponseErrors.hpp"
+#include <memory>
 
 #define CODE_DIGITS 6
 

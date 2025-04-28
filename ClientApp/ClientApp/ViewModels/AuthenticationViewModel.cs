@@ -40,12 +40,12 @@ namespace ClientApp.ViewModels
             return GetInstance(() => new AuthenticationViewModel());
 
         }
-        private string _password;
-        private string _username;
-        private string _email;
-        private string _houseAddress;
-        private string _phoneNumber;
-        private string _birthDate;
+        private string _password = "";
+        private string _username = "";
+        private string _email = "";
+        private string _houseAddress = "";
+        private string _phoneNumber = "";
+        private string _birthDate = "";
 
         private string _usernameErrorMessage;
         private string _passwordErrorMessage;
@@ -62,7 +62,7 @@ namespace ClientApp.ViewModels
             get => _username;
             set
             {
-                _username = value;
+                _username = value?.Trim(); // Trim the input
                 OnPropertyChanged();
                 ((RelayCommand)LoginCommand).RaiseCanExecuteChanged();
                 ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
@@ -74,7 +74,7 @@ namespace ClientApp.ViewModels
             get => _password;
             set
             {
-                _password = value;
+                _password = value?.Trim(); // Trim the input
                 OnPropertyChanged();
                 ((RelayCommand)LoginCommand).RaiseCanExecuteChanged();
                 ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
@@ -86,7 +86,7 @@ namespace ClientApp.ViewModels
             get => _email;
             set
             {
-                _email = value;
+                _email = value?.Trim(); // Trim the input
                 OnPropertyChanged();
                 ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
             }
@@ -97,7 +97,7 @@ namespace ClientApp.ViewModels
             get => _phoneNumber;
             set
             {
-                _phoneNumber = value;
+                _phoneNumber = value?.Trim(); // Trim the input
                 OnPropertyChanged();
                 ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
             }
@@ -108,7 +108,7 @@ namespace ClientApp.ViewModels
             get => _houseAddress;
             set
             {
-                _houseAddress = value;
+                _houseAddress = value?.Trim(); // Trim the input
                 OnPropertyChanged();
                 ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
             }
@@ -119,11 +119,12 @@ namespace ClientApp.ViewModels
             get => _birthDate;
             set
             {
-                _birthDate = value;
+                _birthDate = value?.Trim(); // Trim the input
                 OnPropertyChanged();
                 ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
             }
         }
+
 
         // Error message properties
         public string UsernameErrorMessage { get => _usernameErrorMessage; set { _usernameErrorMessage = value; OnPropertyChanged(); } }
@@ -258,23 +259,23 @@ namespace ClientApp.ViewModels
                 perform = false;
             }
 
-            if (string.IsNullOrWhiteSpace(PhoneNumber))
-            {
-                PhoneNumberErrorMessage = cannotBeEmptyString;
-                perform = false;
-            }
+            //if (string.IsNullOrWhiteSpace(PhoneNumber))
+            //{
+            //    PhoneNumberErrorMessage = cannotBeEmptyString;
+            //    perform = false;
+            //}
 
-            if (string.IsNullOrWhiteSpace(HouseAddress))
-            {
-                HouseAddressErrorMessage = cannotBeEmptyString;
-                perform = false;
-            }
+            //if (string.IsNullOrWhiteSpace(HouseAddress))
+            //{
+            //    HouseAddressErrorMessage = cannotBeEmptyString;
+            //    perform = false;
+            //}
 
-            if (string.IsNullOrWhiteSpace(BirthDate))
-            {
-                BirthDateErrorMessage = cannotBeEmptyString;
-                perform = false;
-            }
+            //if (string.IsNullOrWhiteSpace(BirthDate))
+            //{
+            //    BirthDateErrorMessage = cannotBeEmptyString;
+            //    perform = false;
+            //}
 
             // If any field is invalid, prevent further action
             if (!perform)

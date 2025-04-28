@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ClientApp.Models.Errors;
 using Newtonsoft.Json;
 
 namespace ClientApp.Models.Responses

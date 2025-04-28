@@ -1,24 +1,29 @@
 #pragma once
 #include "json.hpp"
 #include "Response.hpp"
+#include "PasswordCodeResponseErrors.hpp"
 
 
-class SendPasswordResetCodeResponse : public Response{
+class PasswordCodeResponse : public Response{
 private:
-  unsigned int emailCode;
+    unsigned int emailCode;
     std::string username;
 public:
-    SendPasswordResetCodeResponse() = delete;
-    SendPasswordResetCodeResponse(unsigned int status, unsigned int emailCode, const std::string& username)
-        : Response(status), emailCode(emailCode), username(username) {
-
+    PasswordCodeResponse() = delete;
+    PasswordCodeResponse(
+        std::shared_ptr<PasswordCodeResponseErrors> errors,
+        unsigned int randomCode,
+        const std::string& username
+    )
+        : Response(std::move(errors)), emailCode(randomCode), username(username) {
     }
+
 
     /**
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.
 	 */
-    unsigned char getCode() const override { return C_SendPasswordResetCodeResponse; }
+    ResponseCodes getCode() const override { return ResponseCodes::C_SendPasswordResetCodeResponse; }
 
     /**
 	 * @brief Converts the response to a JSON object.

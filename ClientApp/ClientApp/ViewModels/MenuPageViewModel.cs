@@ -108,11 +108,13 @@ namespace ClientApp.ViewModels
             {
                 LogoutResponse logoutResponse = JsonResponseDeserialize.DeserializeResponse<LogoutResponse>(responseInfo);
 
-                switch (logoutResponse.Status)
+                if(logoutResponse.Status == 0)
                 {
-                    case (byte)LogoutResponseStatus.Success:
-                        MyNavigationService.Navigate(new LoginPage());
-                        break;
+
+                }
+                else
+                {
+
                 }
             }
         }
