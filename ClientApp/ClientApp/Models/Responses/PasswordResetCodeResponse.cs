@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ClientApp.Models.Errors;
+using ClientApp.Models.ResponseErrors;
 
 namespace ClientApp.Models.Responses
 {

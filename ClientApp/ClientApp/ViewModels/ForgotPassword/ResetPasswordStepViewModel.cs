@@ -1,5 +1,4 @@
 ﻿using ClientApp.Commands;
-using ClientApp.Enums;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
@@ -78,15 +77,18 @@ namespace ClientApp.ViewModels.ForgotPassword
         /// </summary>
         private async void OnResetPassword()
         {
+            string trimmedNewPassword = NewPassword?.Trim();
+            string trimmedConfirmPassword = ConfirmPassword?.Trim();
+
             // Ensure the new password and confirmation password match
-            if (NewPassword != ConfirmPassword)
+            if (trimmedNewPassword != trimmedConfirmPassword)
             {
                 ErrorMessage = "Need to be the same";
                 return;
             }
 
             // Create the request with the new password and username
-            ResetPasswordRequest request = new ResetPasswordRequest(NewPassword, Username);
+            ResetPasswordRequest request = new ResetPasswordRequest(trimmedNewPassword, Username);
             ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(request);
 
             // Handle server error response

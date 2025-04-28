@@ -86,6 +86,8 @@ SignupResponseErrors LoginManager::signup(const UserRecord& userRecord) const
 
 	if (!RegexValidator::validEmail(userRecord.email))
 		signupErrors.emailError = std::string() + "Invalid format. Use: " + RegexValidator::emailRegexDescription.data();
+	else if (this->m_database->emailExists(userRecord.email))
+		signupErrors.emailError = "User with this email exist.";
 
 	if (userRecord.houseAddress != "" && !RegexValidator::validHouseAddress(userRecord.houseAddress))
 		signupErrors.houseAddressError = std::string() + "Invalid format. Use: " + RegexValidator::houseAddressRegexDescription.data();

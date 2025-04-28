@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientApp.Models.Errors
+namespace ClientApp.Models.ResponseErrors
 {
     class PasswordResetCodeResponseErrors
     {

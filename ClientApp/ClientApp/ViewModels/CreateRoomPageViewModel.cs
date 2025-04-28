@@ -8,7 +8,6 @@ using ClientApp.Models;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
-using ClientApp.Enums;
 using ClientApp.Views.Pages;
 
 namespace ClientApp.ViewModels
@@ -122,7 +121,7 @@ namespace ClientApp.ViewModels
         /// <returns>True if the room can be created, otherwise false.</returns>
         private bool CanCreateRoom(object parameter)
         {
-            return !string.IsNullOrWhiteSpace(RoomName)
+            return !string.IsNullOrWhiteSpace(RoomName?.Trim())
                    && MaxPlayers > 0
                    && QuestionsCount > 0
                    && QuestionTimeout > 0;
@@ -140,7 +139,6 @@ namespace ClientApp.ViewModels
                 MyNavigationService.Navigate(new RoomPage(roomData.Value));
             }
 
-
         }
 
 
@@ -149,7 +147,9 @@ namespace ClientApp.ViewModels
         /// </summary>
         private async Task<RoomData?> CreateRoom()
         {
-            var createRoomRequest = new CreateRoomRequest(RoomName, MaxPlayers, QuestionsCount, QuestionTimeout);
+            string trimmedRoomName = RoomName?.Trim();
+
+            var createRoomRequest = new CreateRoomRequest(trimmedRoomName, MaxPlayers, QuestionsCount, QuestionTimeout);
             var responseInfo = await RequestsExchangeService.ExchangeRequest(createRoomRequest);
 
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)

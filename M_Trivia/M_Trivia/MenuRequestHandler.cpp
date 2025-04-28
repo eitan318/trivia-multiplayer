@@ -112,17 +112,18 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& requestInfo) const
 
     int id = request.getRoomId();
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
-    unsigned int status;
+    JoinRoomResponseErrors errors;
     try {
         Room& room = roomManager.getRoom(id);
         room.addUser(m_user);
-        status = (int)JoinRoomResponseStatus::Success;
     }
     catch (MyException err) {
-        status = (int)JoinRoomResponseStatus::UnknownRoomId;
+        errors.generalError = "Room does not exist.";
     }
+    
+    errors.statusCode = !errors.noErrors();
 
-    JoinRoomResponse joinRoomResponse(status);
+    JoinRoomResponse joinRoomResponse(std::make_shared<JoinRoomResponseErrors>(errors));
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(joinRoomResponse);
     requestResult.newHandler = new MenuRequestHandler(this->m_user,this->m_handlerFactory);

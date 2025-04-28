@@ -1,6 +1,7 @@
 #pragma once
 #include "json.hpp"
 #include "Response.hpp"
+#include "JoinRoomResponseErrors.hpp"
 
 /**
  * @class JoinRoomResponse
@@ -8,7 +9,8 @@
  */
 class JoinRoomResponse : public Response {
 public:
-	JoinRoomResponse(unsigned int status) : Response(status) {
+	JoinRoomResponse(std::shared_ptr <JoinRoomResponseErrors> errors) 
+		: Response(std::move(errors)) {
 		
 	}
 

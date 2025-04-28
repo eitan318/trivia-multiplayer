@@ -14,4 +14,6 @@ public:
     virtual bool noErrors() const = 0;
 
     virtual nlohmann::json getJson() const = 0;
+
+    virtual ~IResponseErrors() {}
 };

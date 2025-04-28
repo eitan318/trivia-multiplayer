@@ -10,7 +10,6 @@ using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Views;
 using ClientApp.ViewModels.ClientApp.ViewModels;
-using ClientApp.Enums;
 
 namespace ClientApp.ViewModels
 {

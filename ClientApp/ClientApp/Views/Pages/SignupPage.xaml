@@ -11,6 +11,8 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="SignupPage">
 
+
+        
     <!-- Main layout for the Signup page -->
     <Grid>
         <!-- Centered stack panel for input fields and buttons -->
@@ -100,9 +102,18 @@
                     Command="{Binding SignupCommand}" />
 
             <!-- Navigate to Login button -->
-            <Button Content="Login" Margin="0,20" Padding="10,5" 
-                    Command="{Binding NavigateToLoginCommand}" 
-                    Style="{StaticResource MaterialDesignOutlinedButton}"/>
+            <TextBlock Text="Login" 
+               Padding="10,5" 
+               Cursor="Hand"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Foreground="{DynamicResource MaterialDesignBody}"
+               Style="{DynamicResource MaterialDesignButtonTextBlock}">
+                <TextBlock.InputBindings>
+                    <MouseBinding Gesture="LeftClick" Command="{Binding NavigateToLoginCommand}" />
+                </TextBlock.InputBindings>
+            </TextBlock>
+
 
             <!-- Error message display -->
             <TextBlock Text="{Binding ErrorMessage}"

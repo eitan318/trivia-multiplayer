@@ -80,11 +80,19 @@
                     Command="{Binding LoginCommand}"/>
 
                 <!-- Sign Up Button -->
-                <Button Content="Sign Up" Padding="10,5" Margin="0,10" 
-                    Command="{Binding NavigateToSignupCommand}" 
-                    Style="{StaticResource MaterialDesignOutlinedButton}"/>
+                <TextBlock Text="Sign Up"                    
+                   Padding="10,5" 
+                   Cursor="Hand"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Foreground="{DynamicResource MaterialDesignBody}"
+                   Style="{DynamicResource MaterialDesignButtonTextBlock}">
+                        <TextBlock.InputBindings>
+                            <MouseBinding Gesture="LeftClick" Command="{Binding NavigateToSignupCommand}"  />
+                        </TextBlock.InputBindings>
+                    </TextBlock>
 
-                <!-- General Error Message -->
+                    <!-- General Error Message -->
                 <TextBlock Text="{Binding ErrorMessage}" 
                            Foreground="Red" 
                            TextAlignment="Center"

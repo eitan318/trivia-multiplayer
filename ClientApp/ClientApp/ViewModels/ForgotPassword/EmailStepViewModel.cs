@@ -55,15 +55,17 @@ namespace ClientApp.ViewModels.ForgotPassword
         /// </summary>
         private async void SubmitEmail()
         {
+            string trimmedEmail = Email?.Trim();
+
             // Ensure email is not empty
-            if (string.IsNullOrEmpty(Email))
+            if (string.IsNullOrEmpty(trimmedEmail))
             {
                 ErrorMessage = "Email field cannot be empty";
                 return;
             }
 
             // Create request for password reset with the entered email
-            ForgotPasswordRequest request = new ForgotPasswordRequest(Email);
+            ForgotPasswordRequest request = new ForgotPasswordRequest(trimmedEmail);
             ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(request);
 
             // Handle potential error response

@@ -228,6 +228,9 @@
     <ClInclude Include="IResponseErrors.hpp">
       <Filter>Headers\Model\ResponseErrors</Filter>
     </ClInclude>
+    <ClInclude Include="JoinRoomResponseErrors.hpp">
+      <Filter>Headers\Model\ResponseErrors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

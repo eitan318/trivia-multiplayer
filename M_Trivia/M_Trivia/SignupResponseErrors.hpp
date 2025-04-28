@@ -13,11 +13,6 @@ public:
     std::string houseAddressError;
     std::string birthDateError;
 
-    
-    
-    //// Default constructor
-    SignupResponseErrors() = default;
-    SignupResponseErrors(const SignupResponseErrors& other) = default;
 
     /**
      * @brief Checks if all error fields are not set (empty).

@@ -1,5 +1,4 @@
-﻿using ClientApp.Enums;
-using ClientApp.Commands;
+﻿using ClientApp.Commands;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
@@ -62,7 +61,7 @@ namespace ClientApp.ViewModels
             get => _username;
             set
             {
-                _username = value?.Trim(); // Trim the input
+                _username = value;
                 OnPropertyChanged();
                 ((RelayCommand)LoginCommand).RaiseCanExecuteChanged();
                 ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
@@ -74,7 +73,7 @@ namespace ClientApp.ViewModels
             get => _password;
             set
             {
-                _password = value?.Trim(); // Trim the input
+                _password = value;
                 OnPropertyChanged();
                 ((RelayCommand)LoginCommand).RaiseCanExecuteChanged();
                 ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
@@ -86,7 +85,7 @@ namespace ClientApp.ViewModels
             get => _email;
             set
             {
-                _email = value?.Trim(); // Trim the input
+                _email = value;
                 OnPropertyChanged();
                 ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
             }
@@ -97,7 +96,7 @@ namespace ClientApp.ViewModels
             get => _phoneNumber;
             set
             {
-                _phoneNumber = value?.Trim(); // Trim the input
+                _phoneNumber = value;
                 OnPropertyChanged();
                 ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
             }
@@ -108,7 +107,7 @@ namespace ClientApp.ViewModels
             get => _houseAddress;
             set
             {
-                _houseAddress = value?.Trim(); // Trim the input
+                _houseAddress = value;
                 OnPropertyChanged();
                 ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
             }
@@ -119,7 +118,7 @@ namespace ClientApp.ViewModels
             get => _birthDate;
             set
             {
-                _birthDate = value?.Trim(); // Trim the input
+                _birthDate = value;
                 OnPropertyChanged();
                 ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
             }
@@ -181,8 +180,12 @@ namespace ClientApp.ViewModels
 
             try
             {
+                // Trim input values
+                string trimmedUsername = Username?.Trim();
+                string trimmedPassword = Password?.Trim();
+
                 // Prepare the login request and send it
-                LoginRequest loginRequest = new LoginRequest(Username, Password);
+                LoginRequest loginRequest = new LoginRequest(trimmedUsername, trimmedPassword);
                 ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(loginRequest);
 
                 // Handle server error response
@@ -240,6 +243,14 @@ namespace ClientApp.ViewModels
 
             bool perform = true;
 
+            // Trim input values
+            string trimmedUsername = Username?.Trim();
+            string trimmedPassword = Password?.Trim();
+            string trimmedEmail = Email?.Trim();
+            string trimmedPhoneNumber = PhoneNumber?.Trim();
+            string trimmedHouseAddress = HouseAddress?.Trim();
+            string trimmedBirthDate = BirthDate?.Trim();
+
             // Validate each field
             if (string.IsNullOrWhiteSpace(Username))
             {
@@ -287,7 +298,14 @@ namespace ClientApp.ViewModels
             try
             {
                 // Prepare the signup request and send it
-                SignupRequest signupRequest = new SignupRequest(Username, Password, Email, PhoneNumber, HouseAddress, BirthDate);
+                SignupRequest signupRequest = new SignupRequest(
+                        trimmedUsername,
+                        trimmedPassword,
+                        trimmedEmail,
+                        trimmedPhoneNumber,
+                        trimmedHouseAddress,
+                        trimmedBirthDate
+                    );
 
                 ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(signupRequest);
 

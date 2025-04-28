@@ -1,5 +1,4 @@
 ﻿using ClientApp.Commands;
-using ClientApp.Enums;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Models;
@@ -117,14 +116,13 @@ public class JoinRoomViewModel : BaseViewModel
             }
 
             var joinResponse = JsonResponseDeserialize.DeserializeResponse<JoinRoomResponse>(responseInfo);
-            switch (joinResponse.Status)
+            if(joinResponse.Status == 0)
             {
-                case (byte)JoinRoomRequestStatus.Success:
-                    MyNavigationService.Navigate(new RoomPage(SelectedRoom.Value));
-                    break;
-                case (byte)JoinRoomRequestStatus.UnknownRoom:
-                    ErrorMessage = "Room doesn't exist.";
-                    break;
+                MyNavigationService.Navigate(new RoomPage(SelectedRoom.Value));
+            }
+            else
+            {
+                ErrorMessage = joinResponse.Errors.GeneralError;
             }
         }
         catch (Exception ex)
