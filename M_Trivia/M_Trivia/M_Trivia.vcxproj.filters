@@ -189,9 +189,6 @@
     <ClInclude Include="LoginResponse.hpp">
       <Filter>Headers\Model\Responses</Filter>
     </ClInclude>
-    <ClInclude Include="JoinRoomResponseStatus.h">
-      <Filter>Headers\enum</Filter>
-    </ClInclude>
     <ClInclude Include="SignupResponse.hpp">
       <Filter>Headers\Model\Responses</Filter>
     </ClInclude>
@@ -250,9 +247,6 @@
     </Filter>
     <Filter Include="Headers\Managers">
       <UniqueIdentifier>{769cfbba-ca76-4844-8572-9ee08682f30e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\enum">
-      <UniqueIdentifier>{d20d4376-e32f-4636-9eb4-fec99c015f15}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headers\Services">
       <UniqueIdentifier>{e90db122-3e6e-4c58-90d6-b03ae2bedd6e}</UniqueIdentifier>

@@ -138,7 +138,6 @@
     <ClInclude Include="IResponseErrors.hpp" />
     <ClInclude Include="JoinRoomResponse.hpp" />
     <ClInclude Include="JoinRoomResponseErrors.hpp" />
-    <ClInclude Include="JoinRoomResponseStatus.h" />
     <ClInclude Include="LoginResponse.hpp" />
     <ClInclude Include="LoginResponseErrors.hpp" />
     <ClInclude Include="LogoutResponse.hpp" />
