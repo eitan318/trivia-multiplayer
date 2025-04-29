@@ -18,21 +18,30 @@
             <RowDefinition Height="2.5*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+
+        <!-- ComboBox with custom DataTemplate -->
         <ComboBox 
             Grid.Column="1" 
             ItemsSource="{Binding Rooms}" 
-            DisplayMemberPath="Name" 
-            SelectedValuePath="Id" 
-            Foreground="{DynamicResource MaterialDesignBody}"
-            SelectedValue="{Binding SelectedRoomId}" />
+            SelectedItem="{Binding SelectedRoom}" 
+            Foreground="{DynamicResource MaterialDesignBody}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding MaxPlayers, StringFormat='Max Players: {0}'}"/>
+                        <TextBlock Text="{Binding NumOfQuestionsInGame, StringFormat='Questions: {0}'}"/>
+                        <TextBlock Text="{Binding TimePerQuestion, StringFormat='Time per Question: {0} sec'}"/>
+                        <TextBlock Text="status?" />
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
 
-        <StackPanel Grid.Row="1" Grid.Column="1" >
+        <StackPanel Grid.Row="1" Grid.Column="1">
             <Button Content="Refresh" Margin="8" Command="{Binding RefreshCommand}"/>
             <Button Content="Join" Margin="8" Command="{Binding JoinCommand}"/>
-            <!-- Error Message -->
-            <TextBlock Text="{Binding ErrorMessage}" Grid.Row="2" Grid.Column="1" Foreground="Red" />
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" />
         </StackPanel>
-
-
     </Grid>
 </local:NavigablePage>

@@ -10,46 +10,60 @@ LoginManager& LoginManager::getInstance(IDatabase& database)
 	return instance;
 }
 
-LoginResponseStatus LoginManager::login(const std::string username, const std::string password)
+LoginResponseErrors LoginManager::login(const std::string username, const std::string password)
 {
+	LoginResponseErrors errors;
 	if (!this->m_database->doesUserExist(username))
-		return LoginResponseStatus::UnknowenUsername;
-	if (!this->m_database->doesPasswordMatch(username, password))
-		return LoginResponseStatus::PasswordDoesntMatch;
-	LoggedUser loggeduser;
-	loggeduser.m_username = username;
-	this->m_loggedUsers.push_back(loggeduser);
-	return LoginResponseStatus::Success;
+		errors.usernameError = "Unknown username";
+	else if(!this->m_database->doesPasswordMatch(username, password)) {
+		errors.passwordError = "Wrong password";
+	}
+	errors.statusCode = !errors.noErrors();
+
+	if (errors.statusCode == 0) {
+		LoggedUser loggeduser;
+		loggeduser.m_username = username;
+		this->m_loggedUsers.push_back(loggeduser);
+	}
+	return errors;
 }
 
-SendEmailCodeResponseStatus LoginManager::sendEmailCode(const std::string email, unsigned int code) const
+PasswordCodeResponseErrors LoginManager::sendEmailCode(const std::string email, unsigned int code) const
 {
+	PasswordCodeResponseErrors errors;
 	if (!RegexValidator::validEmail(email))
-		return SendEmailCodeResponseStatus::InvalidEmail;
+		errors.emailErrors = std::string() + "Invalid email format, Use: " + RegexValidator::emailRegexDescription.data();
+	else if (!this->m_database->emailExists(email)) 
+		errors.emailErrors = "Email doesnt exist";
 
-	if (!this->m_database->emailExists(email)) 
-		return SendEmailCodeResponseStatus::UnknowenEmail;
+	errors.statusCode = !errors.noErrors();
+	if (errors.statusCode == 0) {
+		EmailSender::sendEmail("servicehandler055@gmail.com", email,
+			"Reset Password Code", "Code: " + std::to_string(code));
+	}
 
-	EmailSender::sendEmail("servicehandler055@gmail.com", email,
-		"Reset Password Code", "Code: " + std::to_string(code));
-
-	return SendEmailCodeResponseStatus::Success;
+	return errors;
 }
 
-ResetPasswordResponseStatus LoginManager::resetPassword(const std::string& username, const std::string& newPassword) const
+ResetPasswordResponseErrors LoginManager::resetPassword(const std::string& username, const std::string& newPassword) const
 {
+	ResetPasswordResponseErrors resetPasswordErrors;
 	if (!RegexValidator::validUsername)
-		return ResetPasswordResponseStatus::InvalidUsername;
+		resetPasswordErrors.generalError = std::string() + "Invalid username. Use: " + RegexValidator::usernameRegexDescription.data();
 
 	if (!this->m_database->doesUserExist(username))
-		return ResetPasswordResponseStatus::UnknowenUsername;
+		resetPasswordErrors.generalError = std::string() + "Unknown username: " + username;
 
 	if (!RegexValidator::validPassword(newPassword))
-		return ResetPasswordResponseStatus::InvalidPassword;
+		resetPasswordErrors.newPasswordError = std::string() + "Invalid password. Use: " + RegexValidator::passwordRegexDescription.data();
 
-	this->m_database->updatePassword(username, newPassword);
+	resetPasswordErrors.statusCode = !resetPasswordErrors.noErrors();
 
-	return ResetPasswordResponseStatus::Success;
+	if (resetPasswordErrors.statusCode == 0) {
+		this->m_database->updatePassword(username, newPassword);
+	}
+
+	return resetPasswordErrors;
 	
 }
 
@@ -58,28 +72,39 @@ std::string LoginManager::getUsername(const std::string& email) const
 	return this->m_database->getUserRecord(email).username;
 }
 
-SignupResponseStatus LoginManager::signup(const UserRecord& userRecord) const
+SignupResponseErrors LoginManager::signup(const UserRecord& userRecord) const
 {
+	SignupResponseErrors signupErrors;
+
+	if (!RegexValidator::validUsername(userRecord.username))
+		signupErrors.usernameError = std::string() + "Invalid format. Use: " + RegexValidator::usernameRegexDescription.data();
+	else if (this->m_database->doesUserExist(userRecord.username))
+		signupErrors.usernameError = "User already exist";
+
 	if (!RegexValidator::validPassword(userRecord.password))
-		return SignupResponseStatus::InvalidPassword;
+		signupErrors.passwordError = std::string() + "Password must be " + RegexValidator::passwordRegexDescription.data();
 
-    if (!RegexValidator::validEmail(userRecord.email))
-        return SignupResponseStatus::InvalidEmailFormat;
+	if (!RegexValidator::validEmail(userRecord.email))
+		signupErrors.emailError = std::string() + "Invalid format. Use: " + RegexValidator::emailRegexDescription.data();
+	else if (this->m_database->emailExists(userRecord.email))
+		signupErrors.emailError = "User with this email exist.";
 
-    if (!RegexValidator::validHouseAddress(userRecord.houseAddress))
-        return SignupResponseStatus::InvalidHousAddress;
+	if (userRecord.houseAddress != "" && !RegexValidator::validHouseAddress(userRecord.houseAddress))
+		signupErrors.houseAddressError = std::string() + "Invalid format. Use: " + RegexValidator::houseAddressRegexDescription.data();
 
-    if (!RegexValidator::validPhoneNumber(userRecord.phoneNumber))
-        return SignupResponseStatus::InvalidPhoneNumber;
+    if (userRecord.phoneNumber != "" && !RegexValidator::validPhoneNumber(userRecord.phoneNumber))
+        signupErrors.phoneNumberError = std::string() + "Invalid format. Use: " + RegexValidator::phoneNumberRegexDescription.data();
 
-    if (!RegexValidator::validBirthDate(userRecord.birthDate))
-        return SignupResponseStatus::InvalidBirthDate;
-  
-	if (this->m_database->doesUserExist(userRecord.username)) 
-		return SignupResponseStatus::KnowenUsername;
+	if (userRecord.birthDate != "" && !RegexValidator::validBirthDate(userRecord.birthDate))
+		signupErrors.birthDateError = std::string() + "Invalid format. Use: " + RegexValidator::birthDateRegexDescription.data();
 
-    this->m_database->addNewUser(userRecord);
-    return SignupResponseStatus::Success;
+	signupErrors.statusCode = !signupErrors.noErrors();
+
+	if (signupErrors.statusCode == 0) {
+		this->m_database->addNewUser(userRecord);
+	}
+
+    return signupErrors;
 }
 
 

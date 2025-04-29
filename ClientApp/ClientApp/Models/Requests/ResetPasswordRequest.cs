@@ -20,8 +20,8 @@ namespace ClientApp.Models.Requests
 
         public RequestsCodes GetCode() => RequestsCodes.ResetPasswordRequest;
 
-        public string Username { get; set; }
+        public string Username { get; }
 
-        public string NewPassword { get; set; }
+        public string NewPassword { get; }
     }
 }

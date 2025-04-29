@@ -10,7 +10,6 @@ using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Views;
 using ClientApp.ViewModels.ClientApp.ViewModels;
-using ClientApp.Enums;
 
 namespace ClientApp.ViewModels
 {
@@ -108,11 +107,13 @@ namespace ClientApp.ViewModels
             {
                 LogoutResponse logoutResponse = JsonResponseDeserialize.DeserializeResponse<LogoutResponse>(responseInfo);
 
-                switch (logoutResponse.Status)
+                if(logoutResponse.Status == 0)
                 {
-                    case (byte)LogoutResponseStatus.Success:
-                        MyNavigationService.Navigate(new LoginPage());
-                        break;
+
+                }
+                else
+                {
+
                 }
             }
         }

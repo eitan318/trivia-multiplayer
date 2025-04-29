@@ -16,6 +16,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Input fields section -->
@@ -74,6 +75,14 @@
                 VerticalAlignment="Center" 
                 Grid.Row="1" />
 
-        
+
+
+        <!-- Error Message -->
+        <TextBlock Text="{Binding ErrorMessage}" 
+                   Foreground="Red" 
+                   Visibility="{Binding ErrorMessage}" 
+                   Grid.Row="2"/>
+
+
     </Grid>
 </local:NavigablePage>

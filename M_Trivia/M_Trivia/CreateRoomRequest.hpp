@@ -6,18 +6,22 @@
  * @class CreateRoomRequest
  * @brief Represents a request to create a room with specific settings.
  */
-struct CreateRoomRequest {
-    /// The name of the room.
+class CreateRoomRequest {
+    friend void from_json(const nlohmann::json& j, CreateRoomRequest& request);
+
+private:
     std::string roomName;
-
-    /// The maximum number of users allowed in the room.
     unsigned int maxUsers;
-
-    /// The number of questions in the room's quiz.
     unsigned int questionCount;
-
-    /// The timeout (in seconds) for answering a question.
     unsigned int answerTimeout;
+
+public:
+    CreateRoomRequest() = default;
+
+    const std::string& getRoomName() const { return roomName; }
+    unsigned int getMaxUsers() const { return maxUsers; }
+    unsigned int getQuestionCount() const { return questionCount; }
+    unsigned int getAnswerTimeout() const { return answerTimeout; }
 
     /**
      * @brief Deserializes a JSON object into a CreateRoomRequest object.

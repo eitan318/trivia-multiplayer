@@ -8,7 +8,6 @@ using ClientApp.Models;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
-using ClientApp.Enums;
 using ClientApp.Views.Pages;
 
 namespace ClientApp.ViewModels
@@ -24,6 +23,7 @@ namespace ClientApp.ViewModels
         private uint _maxPlayers = 1; //Min val from xaml
         private uint _questionsCount = 1; //Min val from xaml
         private string _questionCountError;
+        private string _errorMessage;
 
         /// <summary>
         /// The name of the room to be created.
@@ -64,10 +64,17 @@ namespace ClientApp.ViewModels
         /// <summary>
         /// Error message related to the number of questions.
         /// </summary>
-        public string QuestionCountErrort
+        public string QuestionCountError
         {
             get => _questionCountError;
             set { _questionCountError = value; OnPropertyChanged(); }
+        }
+
+
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set { _errorMessage = value; OnPropertyChanged(); }
         }
 
 
@@ -114,7 +121,7 @@ namespace ClientApp.ViewModels
         /// <returns>True if the room can be created, otherwise false.</returns>
         private bool CanCreateRoom(object parameter)
         {
-            return !string.IsNullOrWhiteSpace(RoomName)
+            return !string.IsNullOrWhiteSpace(RoomName?.Trim())
                    && MaxPlayers > 0
                    && QuestionsCount > 0
                    && QuestionTimeout > 0;
@@ -126,12 +133,11 @@ namespace ClientApp.ViewModels
         /// <param name="parameter">Unused parameter.</param>
         private async void PerformCreateRoom(object parameter)
         {
-            uint? roomId = await CreateRoom();
-            if (roomId != null)
+            RoomData? roomData = await CreateRoom();
+            if (roomData != null)
             {
-                MyNavigationService.Navigate(new RoomPage(roomId.Value));
+                MyNavigationService.Navigate(new RoomPage(roomData.Value));
             }
-
 
         }
 
@@ -139,28 +145,30 @@ namespace ClientApp.ViewModels
         /// <summary>
         /// Sends a request to create a room with the specified parameters.
         /// </summary>
-        private async Task<uint?> CreateRoom()
+        private async Task<RoomData?> CreateRoom()
         {
-            var createRoomRequest = new CreateRoomRequest(RoomName, MaxPlayers, QuestionsCount, QuestionTimeout);
+            string trimmedRoomName = RoomName?.Trim();
+
+            var createRoomRequest = new CreateRoomRequest(trimmedRoomName, MaxPlayers, QuestionsCount, QuestionTimeout);
             var responseInfo = await RequestsExchangeService.ExchangeRequest(createRoomRequest);
 
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
             {
-                // Handle error appropriately.
+                ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
+                ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
                 return null;
             }
 
             CreateRoomResponse createRoomResponse = JsonResponseDeserialize.DeserializeResponse<CreateRoomResponse>(responseInfo);
-
-
-            switch (createRoomResponse.Status)
+            if (createRoomResponse.Status == 0)
             {
-                case (byte)CreateRoomResponseStatus.Success:
-                    return createRoomResponse.RoomId;
-                case (byte)CreateRoomResponseStatus.TooMuchQuestions:
-                    this.QuestionCountErrort = "Too much questions";
-                    break;
+                return createRoomResponse.RoomData;
             }
+            else
+            {
+                this.QuestionCountError = createRoomResponse.Errors.QuestionCountError;
+            }
+
             return null;
         }
     }

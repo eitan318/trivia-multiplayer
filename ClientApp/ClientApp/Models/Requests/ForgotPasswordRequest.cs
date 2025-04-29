@@ -20,6 +20,6 @@ namespace ClientApp.Models.Requests
             this.Email = email;
         }
         public RequestsCodes GetCode() => RequestsCodes.SendPasswordResetCodeRequest;
-        public string Email { get; set; }
+        public string Email { get; }
     }
 }

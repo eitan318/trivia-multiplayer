@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ClientApp.Models.ResponseErrors;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +10,13 @@ namespace ClientApp.Models.Responses
 {
     class CreateRoomResponse : Response
     {
+        [JsonConstructor]
+        public CreateRoomResponse(uint status, CreateRoomResponseErros errors, RoomData roomData) : base(status){
+            this.RoomData = roomData;
+            this.Errors = errors;
+        }
         public ResponsesCodes GetCode() => ResponsesCodes.CreateRoomResponse;
-        public uint RoomId { get; set; }
+        public RoomData RoomData { get; }
+        public CreateRoomResponseErros Errors { get; }
     }
 }

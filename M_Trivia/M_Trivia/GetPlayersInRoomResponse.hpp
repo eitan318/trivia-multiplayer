@@ -7,15 +7,21 @@
  * @brief Represents a response containing a list of players in a room.
  */
 class GetPlayersInRoomResponse : public Response {
-public:
+private:
     /// A list of player names in the room.
     std::vector<std::string> players;
+
+public:
+    GetPlayersInRoomResponse() = delete;
+    GetPlayersInRoomResponse(unsigned int status, const std::vector<std::string>& players) : Response(status), players(players) {
+
+    }
 
     /**
      * @brief Gets the response code for this response.
      * @return The response code as an unsigned integer.
      */
-    unsigned char getCode() const { return C_GetPlayersInRoomResponse; }
+    ResponseCodes getCode() const override { return ResponseCodes::C_GetPlayersInRoomResponse; }
 
     /**
      * @brief Converts the response to a JSON object.

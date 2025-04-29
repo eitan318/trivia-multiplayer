@@ -55,15 +55,17 @@ namespace ClientApp.ViewModels.ForgotPassword
         /// </summary>
         private async void SubmitEmail()
         {
+            string trimmedEmail = Email?.Trim();
+
             // Ensure email is not empty
-            if (string.IsNullOrEmpty(Email))
+            if (string.IsNullOrEmpty(trimmedEmail))
             {
                 ErrorMessage = "Email field cannot be empty";
                 return;
             }
 
             // Create request for password reset with the entered email
-            ForgotPasswordRequest request = new ForgotPasswordRequest(Email);
+            ForgotPasswordRequest request = new ForgotPasswordRequest(trimmedEmail);
             ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(request);
 
             // Handle potential error response
@@ -75,21 +77,14 @@ namespace ClientApp.ViewModels.ForgotPassword
             }
 
             // Process the response and move to the next step
-            ForgotPasswordResponse response = JsonResponseDeserialize.DeserializeResponse<ForgotPasswordResponse>(responseInfo);
+            PasswordResetCodeResponse response = JsonResponseDeserialize.DeserializeResponse<PasswordResetCodeResponse>(responseInfo);
             if (response.Status == 0)
             {
                 _parent.GoToCodeStep(response.EmailCode, response.Username);
             }
             else
             {
-                // Map response status to an error message
-                string[] errMsg =
-                {
-                    "",
-                    "Email does not exist",
-                    "Invalid Email Format",
-                };
-                ErrorMessage = errMsg[response.Status];
+                ErrorMessage = response.Errors.EmailError;
             }
         }
     }

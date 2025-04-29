@@ -8,13 +8,15 @@
  */
 class LogoutResponse : public Response {
 public:
+	LogoutResponse(unsigned int status) : Response(status) {
 
+	}
 
 	/**
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.
 	 */
-	unsigned char getCode() const { return C_LoginResponse; }
+	ResponseCodes getCode() const override { return ResponseCodes::C_LoginResponse; }
 
 	/**
 	 * @brief Converts the response to a JSON object.

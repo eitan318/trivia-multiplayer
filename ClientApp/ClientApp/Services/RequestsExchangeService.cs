@@ -42,11 +42,8 @@ namespace ClientApp.Services
             byte[] payloadBuffer = await SocketService.ReceiveDataAsync(length);
 
             // Return the response information as a ResponseInfo object
-            return new ResponseInfo
-            {
-                Code = codeBuffer[0],
-                Buffer = payloadBuffer
-            };
+            return new ResponseInfo( codeBuffer[0], payloadBuffer);
+
         }
     }
 }

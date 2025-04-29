@@ -5,7 +5,7 @@ namespace ClientApp.Models.Requests
     /// <summary>
     /// Represents a request for logging in a user.
     /// </summary>
-    public struct LoginRequest : IRequest
+    class LoginRequest : IRequest
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginRequest"/> struct.
@@ -20,8 +20,8 @@ namespace ClientApp.Models.Requests
 
         public RequestsCodes GetCode() => RequestsCodes.LoginRequest;
 
-        public string Username { get; set; }
+        public string Username { get; }
 
-        public string Password { get; set; }
+        public string Password { get; }
     }
 }

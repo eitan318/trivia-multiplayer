@@ -18,19 +18,19 @@ namespace ClientApp.ViewModels
         /// <summary>
         /// Provides a singleton instance of the <see cref="RoomPageViewModel"/>.
         /// </summary>
-        public static RoomPageViewModel Instance(uint roomId)
+        public static RoomPageViewModel Instance(RoomData roomData)
         {
-            return GetInstance(() => new RoomPageViewModel(roomId));
+            return GetInstance(() => new RoomPageViewModel(roomData));
         }
 
-        private RoomPageViewModel(uint roomId) 
+        private RoomPageViewModel(RoomData roomData) 
         {
             this.RefreshCommand = new RelayCommand(RefreshPlayers);
-            this.roomId = roomId;
+            this.roomData = roomData;
             RefreshPlayers();
         }
 
-        private uint roomId;
+        private RoomData roomData;
 
         public ICommand RefreshCommand { get; }
 
@@ -45,7 +45,7 @@ namespace ClientApp.ViewModels
         /// </summary>
         private async void RefreshPlayers()
         {
-            var getPlayersRequest = new GetPlayersInRoomRequest(roomId);
+            var getPlayersRequest = new GetPlayersInRoomRequest(roomData.Id);
             ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(getPlayersRequest);
 
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)

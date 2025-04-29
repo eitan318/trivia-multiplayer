@@ -10,15 +10,22 @@ void to_json(nlohmann::json& j, const HighScoreInfo& highScoreInfo);
  * @brief Represents a response status, statistics
  */
 class GetHighScoreResponse : public Response{
+private:
+    std::vector<HighScoreInfo> statistics;
+
 public:
+    GetHighScoreResponse() = delete;
+    GetHighScoreResponse(unsigned int status, const std::vector<HighScoreInfo>& statistics) : Response(status), statistics(statistics) {
+
+    }
 
     /**
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.
 	 */
-    unsigned char getCode() const { return C_GetHighScoreResponse; }
+    ResponseCodes getCode() const override { return ResponseCodes::C_GetHighScoreResponse; }
 
-	std::vector<HighScoreInfo> statistics;
+
 
     /**
 	 * @brief Converts the response to a JSON object.

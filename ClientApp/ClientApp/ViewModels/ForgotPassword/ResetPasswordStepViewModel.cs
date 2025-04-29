@@ -1,5 +1,4 @@
 ﻿using ClientApp.Commands;
-using ClientApp.Enums;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
@@ -44,6 +43,15 @@ namespace ClientApp.ViewModels.ForgotPassword
             set { _errorMessage = value; OnPropertyChanged(); }
         }
 
+        
+
+        private string _newPasswordErrorMessage;
+        public string NewPasswordErrorMessage
+        {
+            get => _newPasswordErrorMessage;
+            set { _newPasswordErrorMessage = value; OnPropertyChanged(); }
+        }
+
         /// <summary>
         /// The username associated with the password reset request.
         /// </summary>
@@ -69,15 +77,18 @@ namespace ClientApp.ViewModels.ForgotPassword
         /// </summary>
         private async void OnResetPassword()
         {
+            string trimmedNewPassword = NewPassword?.Trim();
+            string trimmedConfirmPassword = ConfirmPassword?.Trim();
+
             // Ensure the new password and confirmation password match
-            if (NewPassword != ConfirmPassword)
+            if (trimmedNewPassword != trimmedConfirmPassword)
             {
                 ErrorMessage = "Need to be the same";
                 return;
             }
 
             // Create the request with the new password and username
-            ResetPasswordRequest request = new ResetPasswordRequest(NewPassword, Username);
+            ResetPasswordRequest request = new ResetPasswordRequest(trimmedNewPassword, Username);
             ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(request);
 
             // Handle server error response
@@ -90,31 +101,17 @@ namespace ClientApp.ViewModels.ForgotPassword
 
             // Handle successful response
             ResetPasswordResponse response = JsonResponseDeserialize.DeserializeResponse<ResetPasswordResponse>(responseInfo);
-
-            switch ((ResetPasswordResponseStatus) response.Status)
+            if(response.Status == 0)
             {
-                case ResetPasswordResponseStatus.Success:
-                    // Navigate to the login page upon successful password reset
-                    MyNavigationService.Navigate(new LoginPage());
-                    break;
-
-                case ResetPasswordResponseStatus.UnknowenUsername:
-                    this.ErrorMessage = $"Unknown username: {request.Username}";
-                    break;
-
-                case ResetPasswordResponseStatus.InvalidPassword:
-                    this.ErrorMessage = $"Invalid password format. {RegexFormats.Password}";
-                    break;
-
-                case ResetPasswordResponseStatus.InvalidUsername:
-                    this.ErrorMessage = $"Invalid username: {request.Username}";
-                    break;
-
-                default:
-                    this.ErrorMessage = "An unknown error occurred.";
-                    break;
+                // Navigate to the login page upon successful password reset
+                MyNavigationService.Navigate(new LoginPage());
+            }
+            else
+            {
+                this.ErrorMessage = response.Errors.GeneralError;
+                this.NewPasswordErrorMessage = response.Errors.NewPasswordError;
             }
 
-}
+        }
     }
 }

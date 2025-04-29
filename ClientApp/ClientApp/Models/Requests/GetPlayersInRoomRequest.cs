@@ -12,12 +12,11 @@ namespace ClientApp.Models.Requests
     /// /// </summary>
     class GetPlayersInRoomRequest : IRequest
     {
-        [JsonProperty]
-        private uint roomId;
+        public uint RoomId { get; }
 
         public GetPlayersInRoomRequest(uint roomId)
         {
-            this.roomId = roomId;
+            this.RoomId = roomId;
         }
         public RequestsCodes GetCode() => RequestsCodes.GetPlayersInRoomRequest;
     }

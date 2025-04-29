@@ -38,9 +38,11 @@ public:
             // Parse the buffer into a JSON object
             nlohmann::json j = nlohmann::json::parse(buffer);
 
-            // Create an instance of T and deserialize JSON data into it
+            // Create an instance of T
             T request;
-            j.get_to(request);  // Calls from_json if implemented for T
+
+            // Manually call from_json to populate the request object
+            from_json(j, request);
 
             return request;
         }
@@ -49,4 +51,5 @@ public:
             throw std::runtime_error(std::string("Request parse error: ") + e.what());
         }
     }
+
 };

@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ClientApp.Models.ResponseErrors;
+using Newtonsoft.Json;
 
 namespace ClientApp.Models.Responses
 {
     class SignupResponse : Response
     {
+        [JsonConstructor]
+        public SignupResponse(uint status, SignupErrors errors) : base(status) {
+            Errors = errors;
+        }
+        public SignupErrors Errors { get; }
         public ResponsesCodes GetCode() => ResponsesCodes.SignupResponse;
     }
 }

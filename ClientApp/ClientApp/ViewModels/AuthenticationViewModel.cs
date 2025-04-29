@@ -1,5 +1,4 @@
 ﻿using ClientApp.Commands;
-using ClientApp.Enums;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
@@ -13,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using ClientApp.Models;
 
 namespace ClientApp.ViewModels
 {
@@ -26,7 +26,7 @@ namespace ClientApp.ViewModels
             // Initialize commands for different actions
             SignupCommand = new RelayCommand(PerformSignup);
             NavigateToLoginCommand = new RelayCommand(NavigateToLogin);
-            LoginCommand = new RelayCommand(PerformLogin);
+            LoginCommand = new RelayCommand(PerformLogin, CanPerformLogin);
             NavigateToSignupCommand = new RelayCommand(NavigateToSignup);
             NavigateToForgotPasswordCommand = new RelayCommand(NavigateToForgotPassword);
         }
@@ -39,27 +39,99 @@ namespace ClientApp.ViewModels
             return GetInstance(() => new AuthenticationViewModel());
 
         }
-        private string _password;
-        private string _username;
-        private string _email;
-        private string _houseAddress;
-        private string _phoneNumber;
-        private string _birthDate;
-        private string _passwordErrorMessage;
+        private string _password = "";
+        private string _username = "";
+        private string _email = "";
+        private string _houseAddress = "";
+        private string _phoneNumber = "";
+        private string _birthDate = "";
+
         private string _usernameErrorMessage;
+        private string _passwordErrorMessage;
+        private string _emailErrorMessage;
+        private string _phoneNumberErrorMessage;
+        private string _houseAddressErrorMessage;
+        private string _birthDateErrorMessage;
+
         private string _errorMessage;
 
         // Properties for username, password, email, etc., with change notification
-        public string Password { get => _password; set { _password = value; OnPropertyChanged(); } }
-        public string Username { get => _username; set { _username = value; OnPropertyChanged(); } }
-        public string Email { get => _email; set { _email = value; OnPropertyChanged(); } }
-        public string PhoneNumber { get => _phoneNumber; set { _phoneNumber = value; OnPropertyChanged(); } }
-        public string HouseAddress { get => _houseAddress; set { _houseAddress = value; OnPropertyChanged(); } }
-        public string BirthDate { get => _birthDate; set { _birthDate = value; OnPropertyChanged(); } }
+        public string Username
+        {
+            get => _username;
+            set
+            {
+                _username = value;
+                OnPropertyChanged();
+                ((RelayCommand)LoginCommand).RaiseCanExecuteChanged();
+                ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                _password = value;
+                OnPropertyChanged();
+                ((RelayCommand)LoginCommand).RaiseCanExecuteChanged();
+                ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public string Email
+        {
+            get => _email;
+            set
+            {
+                _email = value;
+                OnPropertyChanged();
+                ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public string PhoneNumber
+        {
+            get => _phoneNumber;
+            set
+            {
+                _phoneNumber = value;
+                OnPropertyChanged();
+                ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public string HouseAddress
+        {
+            get => _houseAddress;
+            set
+            {
+                _houseAddress = value;
+                OnPropertyChanged();
+                ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public string BirthDate
+        {
+            get => _birthDate;
+            set
+            {
+                _birthDate = value;
+                OnPropertyChanged();
+                ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
+            }
+        }
+
 
         // Error message properties
-        public string PasswordErrorMessage { get => _passwordErrorMessage; set { _passwordErrorMessage = value; OnPropertyChanged(); } }
         public string UsernameErrorMessage { get => _usernameErrorMessage; set { _usernameErrorMessage = value; OnPropertyChanged(); } }
+        public string PasswordErrorMessage { get => _passwordErrorMessage; set { _passwordErrorMessage = value; OnPropertyChanged(); } }
+        public string EmailErrorMessage { get => _emailErrorMessage; set { _emailErrorMessage = value; OnPropertyChanged(); } }
+        public string PhoneNumberErrorMessage { get => _phoneNumberErrorMessage; set { _phoneNumberErrorMessage = value; OnPropertyChanged(); } }
+        public string HouseAddressErrorMessage { get => _houseAddressErrorMessage; set { _houseAddressErrorMessage = value; OnPropertyChanged(); } }
+        public string BirthDateErrorMessage { get => _birthDateErrorMessage; set { _birthDateErrorMessage = value; OnPropertyChanged(); } }
         public string ErrorMessage { get => _errorMessage; set { _errorMessage = value; OnPropertyChanged(); } }
 
         // Commands for different actions
@@ -72,6 +144,13 @@ namespace ClientApp.ViewModels
         // Method to navigate to the signup page
         private void NavigateToSignup()
         {
+            ErrorMessage = "";
+            UsernameErrorMessage = "";
+            PasswordErrorMessage = "";
+            EmailErrorMessage = "";
+            PhoneNumberErrorMessage = "";
+            HouseAddressErrorMessage = "";
+            BirthDateErrorMessage = "";
             MyNavigationService.Navigate(new SignupPage());
         }
 
@@ -79,6 +158,14 @@ namespace ClientApp.ViewModels
         private void NavigateToForgotPassword()
         {
             MyNavigationService.Navigate(new ForgotPasswordPage(new LoginPage()));
+        }
+
+
+
+        private bool CanPerformLogin()
+        {
+            return !string.IsNullOrWhiteSpace(Username) &&
+                !string.IsNullOrWhiteSpace(Password);
         }
 
         /// <summary>
@@ -90,30 +177,15 @@ namespace ClientApp.ViewModels
             ErrorMessage = "";
             UsernameErrorMessage = "";
             PasswordErrorMessage = "";
-            bool perform = true;
-            if (string.IsNullOrWhiteSpace(Username))
-            {
-                UsernameErrorMessage = "Cannot be empty";
-                perform = false;
-            }
-            if (string.IsNullOrWhiteSpace(Password))
-            {
-                PasswordErrorMessage = "Cannot be empty";
-                perform = false;
-            }
-
-            if (!perform)
-                return;
 
             try
             {
-                // Prepare the login request and send it
-                LoginRequest loginRequest = new LoginRequest
-                {
-                    Password = Password,
-                    Username = Username,
-                };
+                // Trim input values
+                string trimmedUsername = Username?.Trim();
+                string trimmedPassword = Password?.Trim();
 
+                // Prepare the login request and send it
+                LoginRequest loginRequest = new LoginRequest(trimmedUsername, trimmedPassword);
                 ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(loginRequest);
 
                 // Handle server error response
@@ -125,18 +197,16 @@ namespace ClientApp.ViewModels
                 else
                 {
                     LoginResponse loginResponse = JsonResponseDeserialize.DeserializeResponse<LoginResponse>(responseInfo);
-                    switch (loginResponse.Status)
+                    if(loginResponse.Status == 0)
                     {
-                        case (byte)LoginResponseStatus.Success:
-                            MyNavigationService.Navigate(new MenuPage());
-                            break;
-                        case (byte)LoginResponseStatus.UnknowenUsername:
-                            UsernameErrorMessage = "username does not exist";
-                            break;
-                        case (byte)LoginResponseStatus.PasswordDoesntMatch:
-                            PasswordErrorMessage = "password doesn't match username";
-                            break;
+                        MyNavigationService.Navigate(new MenuPage());
                     }
+                    else
+                    {
+                        UsernameErrorMessage = loginResponse.Errors.UsernameError;
+                        PasswordErrorMessage= loginResponse.Errors.PasswordError;
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -148,6 +218,9 @@ namespace ClientApp.ViewModels
         // Method to navigate to the login page
         private void NavigateToLogin()
         {
+            ErrorMessage = "";
+            UsernameErrorMessage = "";
+            PasswordErrorMessage = "";
             MyNavigationService.Navigate(new LoginPage());
         }
 
@@ -157,24 +230,82 @@ namespace ClientApp.ViewModels
         /// </summary>
         private async void PerformSignup()
         {
-            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+            const string cannotBeEmptyString = "Cannot be empty";
+
+            // Reset error messages
+            ErrorMessage = "";
+            UsernameErrorMessage = "";
+            PasswordErrorMessage = "";
+            EmailErrorMessage = "";
+            PhoneNumberErrorMessage = "";
+            HouseAddressErrorMessage = "";
+            BirthDateErrorMessage = "";
+
+            bool perform = true;
+
+            // Trim input values
+            string trimmedUsername = Username?.Trim();
+            string trimmedPassword = Password?.Trim();
+            string trimmedEmail = Email?.Trim();
+            string trimmedPhoneNumber = PhoneNumber?.Trim();
+            string trimmedHouseAddress = HouseAddress?.Trim();
+            string trimmedBirthDate = BirthDate?.Trim();
+
+            // Validate each field
+            if (string.IsNullOrWhiteSpace(Username))
             {
-                ErrorMessage = "All fields must be filled.";
+                UsernameErrorMessage = cannotBeEmptyString;
+                perform = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(Password))
+            {
+                PasswordErrorMessage = cannotBeEmptyString;
+                perform = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(Email))
+            {
+                EmailErrorMessage = cannotBeEmptyString;
+                perform = false;
+            }
+
+            //if (string.IsNullOrWhiteSpace(PhoneNumber))
+            //{
+            //    PhoneNumberErrorMessage = cannotBeEmptyString;
+            //    perform = false;
+            //}
+
+            //if (string.IsNullOrWhiteSpace(HouseAddress))
+            //{
+            //    HouseAddressErrorMessage = cannotBeEmptyString;
+            //    perform = false;
+            //}
+
+            //if (string.IsNullOrWhiteSpace(BirthDate))
+            //{
+            //    BirthDateErrorMessage = cannotBeEmptyString;
+            //    perform = false;
+            //}
+
+            // If any field is invalid, prevent further action
+            if (!perform)
+            {
                 return;
             }
+
 
             try
             {
                 // Prepare the signup request and send it
-                SignupRequest signupRequest = new SignupRequest
-                {
-                    Password = Password,
-                    Username = Username,
-                    Email = Email,
-                    PhoneNumber = PhoneNumber,
-                    HouseAddress = HouseAddress,
-                    BirthDate = BirthDate,
-                };
+                SignupRequest signupRequest = new SignupRequest(
+                        trimmedUsername,
+                        trimmedPassword,
+                        trimmedEmail,
+                        trimmedPhoneNumber,
+                        trimmedHouseAddress,
+                        trimmedBirthDate
+                    );
 
                 ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(signupRequest);
 
@@ -187,40 +318,19 @@ namespace ClientApp.ViewModels
                 else
                 {
                     SignupResponse signupResponse = JsonResponseDeserialize.DeserializeResponse<SignupResponse>(responseInfo);
-                    switch ((SignupResponseStatus)signupResponse.Status)
+                    if(signupResponse.Status == 0)
                     {
-                        case SignupResponseStatus.Success:
-                            // Navigate to the login page upon successful signup
-                            MyNavigationService.Navigate(new LoginPage());
-                            break;
-
-                        case SignupResponseStatus.KnowenUsername:
-                            ErrorMessage = "Known username.";
-                            break;
-
-                        case SignupResponseStatus.InvalidPassword:
-                            ErrorMessage = $"Invalid password: {RegexFormats.Password}";
-                            break;
-
-                        case SignupResponseStatus.InvalidEmailFormat:
-                            ErrorMessage = "Invalid email format.";
-                            break;
-
-                        case SignupResponseStatus.InvalidHousAddress:
-                            ErrorMessage = $"Invalid address format. {RegexFormats.Email}";
-                            break;
-
-                        case SignupResponseStatus.InvalidPhoneNumber:
-                            ErrorMessage = $"Invalid phone number. Expected format: {RegexFormats.PhoneNumber}";
-                            break;
-
-                        case SignupResponseStatus.InvalidBirthDate:
-                            ErrorMessage = $"Invalid birth date format. Expected: {RegexFormats.Date}";
-                            break;
-
-                        default:
-                            ErrorMessage = "An unknown error occurred.";
-                            break;
+                        // Navigate to the login page upon successful signup
+                        MyNavigationService.Navigate(new LoginPage());
+                    }
+                    else
+                    {
+                        UsernameErrorMessage = signupResponse.Errors.UsernameError;
+                        PasswordErrorMessage = signupResponse.Errors.PasswordError;
+                        EmailErrorMessage = signupResponse.Errors.EmailError;
+                        HouseAddressErrorMessage = signupResponse.Errors.HouseAddressError;
+                        PhoneNumberErrorMessage = signupResponse.Errors.PhoneNumberError;
+                        BirthDateErrorMessage = signupResponse.Errors.BirthDateError;
                     }
                 }
             }

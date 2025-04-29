@@ -1,18 +1,16 @@
-﻿using ClientApp.Models.Requests;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace ClientApp.Models.Responses
 {
     class ErrorResponse : Response
     {
-        //public ErrorResponse(string message) { 
-        //    this.Message = message;
-        //}
+        [JsonConstructor]
+        public ErrorResponse(uint status, string message) : base(status)
+        {
+            Message = message;
+        }
+
         public ResponsesCodes GetCode() => ResponsesCodes.ErrorResponse;
-        public string Message { get; set; }
+        public string Message { get; }
     }
 }

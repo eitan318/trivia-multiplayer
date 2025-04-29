@@ -11,6 +11,13 @@
  */
 class RegexValidator {
 public:
+    static constexpr std::string_view usernameRegexDescription = "None";
+    static constexpr std::string_view emailRegexDescription = "_@_._";
+    static constexpr std::string_view passwordRegexDescription = "8 + chars, include upper / lower letters, digit, special char.";
+    static constexpr std::string_view houseAddressRegexDescription = "Street, Apt, City";
+    static constexpr std::string_view phoneNumberRegexDescription = "0X(X)-XXXXXXX";
+    static constexpr std::string_view birthDateRegexDescription = "DD.MM.YYYY or DD/MM/YYYY";
+
     /**
      * @brief Validates whether the input string is a valid email address.
      *

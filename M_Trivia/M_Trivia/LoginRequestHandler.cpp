@@ -38,16 +38,18 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& requestInfo)
 
 RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const
 {
-	LoginRequest request = JsonRequestPacketDeserializer<LoginRequest>::deserializeRequest(requestInfo.buffer);
+
 	try {
-		LoginResponse loginResponse;
-		LoginResponseStatus status = (this->m_handlerFactory.getLoginManager().login(request.username, request.password));
-		loginResponse.status = static_cast<int>(status);
+		LoginRequest request = JsonRequestPacketDeserializer<LoginRequest>::deserializeRequest(requestInfo.buffer);
+
+		auto errors = std::make_shared<LoginResponseErrors>(
+			this->m_handlerFactory.getLoginManager().login(request.getUsername(), request.getPassword()));
+		LoginResponse loginResponse(errors);
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(loginResponse);
 		LoggedUser user;
-		user.m_username = request.username;
-		if (status != LoginResponseStatus::Success) {
+		user.m_username = request.getUsername();
+		if (errors->statusCode != 0) {
 			requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
 		}
 		else {
@@ -56,8 +58,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const
 		return requestResult;
 	}
 	catch (std::exception e) {
-		ErrorResponse errorResponse;
-		errorResponse.message = e.what();
+		ServerErrorResponse errorResponse(e.what());
 
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
@@ -72,10 +73,11 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo) const
 {
 	try {
 
-		SignupRequest request;
-		request = JsonRequestPacketDeserializer<SignupRequest>::deserializeRequest(requestInfo.buffer);
-		SignupResponse signupResponse;
-		signupResponse.status = static_cast<int>(this->m_handlerFactory.getLoginManager().signup(request.userRecord));
+		SignupRequest request = JsonRequestPacketDeserializer<SignupRequest>::deserializeRequest(requestInfo.buffer);
+		auto errors = std::make_shared<SignupResponseErrors>(
+			this->m_handlerFactory.getLoginManager().signup(request.getUserRecord()));
+
+		SignupResponse signupResponse(errors);
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(signupResponse);
 		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
@@ -83,8 +85,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo) const
 	}
 	catch (const std::runtime_error& e) {
 		RequestResult res;
-		ErrorResponse errResponse;
-		errResponse.message = e.what();
+		ServerErrorResponse errResponse(e.what());
 		res.response = JsonResponsePacketSerializer::serializeResponse(errResponse);
 		res.newHandler = new LoginRequestHandler(this->m_handlerFactory);
 		return res;
@@ -114,13 +115,22 @@ unsigned int  LoginRequestHandler::generateRandomCode(unsigned int digsOfCode) c
 RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& requestInfo) const
 {
 	try {
-		SendPasswordResetCodeRequest request;
-		request = JsonRequestPacketDeserializer<SendPasswordResetCodeRequest>::deserializeRequest(requestInfo.buffer);
+		SendPasswordResetCodeRequest request = JsonRequestPacketDeserializer<SendPasswordResetCodeRequest>::deserializeRequest(requestInfo.buffer);
 		unsigned int randomCode = generateRandomCode(CODE_DIGITS);
-		SendPasswordResetCodeResponse response;
-		response.status = static_cast<int>(this->m_handlerFactory.getLoginManager().sendEmailCode(request.email, randomCode));
-		response.emailCode = randomCode;
-		response.username = this->m_handlerFactory.getLoginManager().getUsername(request.email);
+		auto errors = std::make_shared<PasswordCodeResponseErrors>(
+			this->m_handlerFactory.getLoginManager().sendEmailCode(request.getEmail(), randomCode));
+
+		std::string username = errors->statusCode == 0 ?
+			this->m_handlerFactory.getLoginManager().getUsername(request.getEmail()) :
+			"Error occured: No username";
+
+
+		PasswordCodeResponse response(
+			errors,
+			randomCode,
+			username
+		);
+
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(response);
 		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
@@ -128,8 +138,7 @@ RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& req
 	}
 	catch (const std::runtime_error& e) {
 		RequestResult res;
-		ErrorResponse errResponse;
-		errResponse.message = e.what();
+		ServerErrorResponse errResponse(e.what());
 		res.response = JsonResponsePacketSerializer::serializeResponse(errResponse);
 		res.newHandler = new LoginRequestHandler(this->m_handlerFactory);
 		return res;
@@ -144,10 +153,17 @@ RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& req
 RequestResult LoginRequestHandler::resetPassword(const RequestInfo& requestInfo) const
 {
 	try {
-		ResetPasswordRequest resetPasswordResponse;
-		resetPasswordResponse = JsonRequestPacketDeserializer<ResetPasswordRequest>::deserializeRequest(requestInfo.buffer);
-		ResetPasswordResponse response;
-		response.status = static_cast<int>(this->m_handlerFactory.getLoginManager().resetPassword(resetPasswordResponse.username, resetPasswordResponse.newPassword));
+		ResetPasswordRequest resetPasswordRequest = JsonRequestPacketDeserializer<ResetPasswordRequest>::deserializeRequest(requestInfo.buffer);
+
+		std::shared_ptr<ResetPasswordResponseErrors> errors =
+			std::make_shared<ResetPasswordResponseErrors>(
+				this->m_handlerFactory.getLoginManager().resetPassword(
+					resetPasswordRequest.getUsername(),
+					resetPasswordRequest.getNewPassword()
+				)
+			);
+
+		ResetPasswordResponse response(errors);
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(response);
 		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
@@ -155,8 +171,7 @@ RequestResult LoginRequestHandler::resetPassword(const RequestInfo& requestInfo)
 	}
 	catch (const std::runtime_error& e) {
 		RequestResult res;
-		ErrorResponse errResponse;
-		errResponse.message = e.what();
+		ServerErrorResponse errResponse(e.what());
 		res.response = JsonResponsePacketSerializer::serializeResponse(errResponse);
 		res.newHandler = new LoginRequestHandler(this->m_handlerFactory);
 		return res;

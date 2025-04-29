@@ -1,4 +1,5 @@
-﻿using ClientApp.ViewModels;
+﻿using ClientApp.Models;
+using ClientApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,10 @@ namespace ClientApp.Views.Pages
     /// </summary>
     public partial class RoomPage : Page
     {
-        public RoomPage(uint roomId)
+        public RoomPage(RoomData roomData)
         {
             InitializeComponent();
-            DataContext = RoomPageViewModel.Instance(roomId);
+            DataContext = RoomPageViewModel.Instance(roomData);
         }
     }
 }

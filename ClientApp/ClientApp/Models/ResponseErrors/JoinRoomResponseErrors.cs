@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientApp.Enums
+namespace ClientApp.Models.ResponseErrors
 {
-    enum CreateRoomResponseStatus
+    class JoinRoomResponseErrors
     {
-        Success = 0,
-        TooMuchQuestions = 1
+        public string GeneralError { get; set; }
     }
 }

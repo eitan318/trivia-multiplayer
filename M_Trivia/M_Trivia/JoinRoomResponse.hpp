@@ -1,6 +1,7 @@
 #pragma once
 #include "json.hpp"
 #include "Response.hpp"
+#include "JoinRoomResponseErrors.hpp"
 
 /**
  * @class JoinRoomResponse
@@ -8,13 +9,16 @@
  */
 class JoinRoomResponse : public Response {
 public:
-
+	JoinRoomResponse(std::shared_ptr <JoinRoomResponseErrors> errors) 
+		: Response(std::move(errors)) {
+		
+	}
 
 	/**
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.
 	 */
-	unsigned char getCode() const { return C_JoinRoomResponse; }
+	ResponseCodes getCode() const override { return ResponseCodes::C_JoinRoomResponse; }
 
 	/**
 	 * @brief Converts the response to a JSON object.

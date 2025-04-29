@@ -105,8 +105,7 @@ void Communicator::handleNewClient(SOCKET sock)
             requestResult = handler->handleRequest(requestInfo);
         }
         else{
-			ErrorResponse errorResponse;
-			errorResponse.message = "Invalid msg code.";
+			ServerErrorResponse errorResponse("Invalid msg code.");
 
 			RequestResult requestResult;
 			requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
@@ -118,6 +117,7 @@ void Communicator::handleNewClient(SOCKET sock)
         handler = requestResult.newHandler;
         this->m_clients.at(sock) = handler;
         Helper::sendData(sock, requestResult.response);
+        std::cout << "Sended" << std::string(requestResult.response.begin(), requestResult.response.end()) << std::endl;
     }
     delete handler;
 }

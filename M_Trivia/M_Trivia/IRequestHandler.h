@@ -12,6 +12,8 @@
  */
 class IRequestHandler {
 public:
+    virtual ~IRequestHandler() { };
+
     /**
      * @brief Determines whether the given request is relevant to this handler.
      *
@@ -33,4 +35,6 @@ public:
      * @return A RequestResult that encapsulates the response and any additional information.
      */
     virtual RequestResult handleRequest(const RequestInfo&) const = 0;
+
+
 };
