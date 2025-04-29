@@ -9,6 +9,49 @@
       Title="HighScoresPage">
 
     <Grid>
-        
+        <Border Background="White"
+        Margin="40"
+        Padding="30"
+        BorderBrush="#CCCCCC"
+        BorderThickness="1"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        CornerRadius="15">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="350">
+
+        <!-- Title -->
+        <TextBlock Text="🏆 Leaderboards"
+                   FontSize="26"
+                   FontWeight="Bold"
+                   Foreground="#333333"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,20"/>
+
+        <!-- Top Players -->
+        <StackPanel Margin="0,0,0,20">
+            <TextBlock x:Name="Top1" Text="1st => " FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="Top2" Text="2nd => " FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="Top3" Text="3rd => " FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Buttons -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button 
+                    Content="Refresh"
+                    Click="{Binding RefreshTop3}"
+                    Margin="5"
+                    Padding="10,5"
+                    FontWeight="Bold"/>
+                    <Button 
+                    Content="Back"
+                    Click="{Binding BackToStatisticsPage}"
+                    Margin="5"
+                    Padding="10,5"
+                    FontWeight="Bold"/>
+                    
+        </StackPanel>
+
+    </StackPanel>
+</Border>
     </Grid>
 </local:NavigablePage>
