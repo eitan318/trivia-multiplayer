@@ -2,7 +2,6 @@
 #include "LoggedUser.h"
 #include "RequestsCodes.hpp"
 #include "RequestHandlerFactory.h"
-#include "JoinRoomResponseStatus.h"
 #include "JoinRoomRequest.hpp"
 #include "CreateRoomRequest.hpp"
 #include "GetPlayersInRoomRequest.hpp"
