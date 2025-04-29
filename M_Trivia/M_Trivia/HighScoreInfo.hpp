@@ -7,10 +7,10 @@
  * @brief A structure that holds information about a player's high score in a specific game.
  */
 struct HighScoreInfo {
-    std::string username; 
-    std::string game_name; 
-    int total_score;      
-    int game_id;           
+    std::string UserName; 
+    std::string GameName; 
+    int TotalScore;      
+    int GameId;           
 };
 
 /**
@@ -22,8 +22,8 @@ struct HighScoreInfo {
  */
 inline void to_json(nlohmann::json& j, const HighScoreInfo& highScoreInfo) {
     j = nlohmann::json{
-        {"game_name", highScoreInfo.game_name},  
-        {"player_username", highScoreInfo.username},   
-        {"total_score", highScoreInfo.total_score},
+        {"GameName", highScoreInfo.GameName},  
+        {"PlayerUsername", highScoreInfo.UserName},
+        {"TotalScore", highScoreInfo.TotalScore},
     };
 }

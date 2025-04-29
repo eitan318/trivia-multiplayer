@@ -414,10 +414,10 @@ std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit) const
 
 	while (sqlite3_step(stmt) == SQLITE_ROW) {
 		HighScoreInfo bsi;
-		bsi.username = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
-		bsi.game_id = sqlite3_column_int(stmt, 1);
-		bsi.game_name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-		bsi.total_score = sqlite3_column_int(stmt, 3);
+		bsi.UserName = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
+		bsi.GameId = sqlite3_column_int(stmt, 1);
+		bsi.GameName = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+		bsi.TotalScore = sqlite3_column_int(stmt, 3);
 
 		results.push_back(bsi);
 	}
