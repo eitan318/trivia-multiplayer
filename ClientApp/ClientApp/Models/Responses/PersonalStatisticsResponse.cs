@@ -12,8 +12,12 @@ namespace ClientApp.Models.Responses
     class PersonalStatisticsResponse : Response
     {
         [JsonConstructor]
-        public PersonalStatisticsResponse(uint status) : base(status) { }
+        public PersonalStatisticsResponse(PersonalStatistics personalstats,uint status) : base(status)
+        {
+            this.PersonalStatistics = personalstats;
+        }
         public ResponsesCodes GetCode() => ResponsesCodes.JoinRoomResponse;
+        public PersonalStatistics PersonalStatistics { get; }
         public JoinRoomResponseErrors Errors { get; }
     }
 }

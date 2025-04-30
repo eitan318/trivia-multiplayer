@@ -26,23 +26,28 @@
                    HorizontalAlignment="Center"
                    Margin="0,0,0,20"/>
 
-                <!-- Top Players -->
-                <StackPanel Margin="0,0,0,20">
-                    <TextBlock Text="{Binding Top1Name}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding Top2Name}"  FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding Top3Name}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
-                </StackPanel>
+                <!-- Personal statistics -->
+                <ItemsControl ItemsSource="{Binding PersonalInfo}" Margin="0,0,0,20">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="6" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock Text="{Binding username,StringFormat='Username: '}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding gamesPlayed, StringFormat='Games Played: '}"  FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding totalAnswers, StringFormat='Total Answers: '}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding totalCorrectAnswers, StringFormat='Total Correct answers: '}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding avgAnswerTime, StringFormat='Average Answer Time: '}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
 
-                <!-- Buttons -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button 
-                    Content="Refresh"
-                    Command="{Binding RefreshTop3}"
-                    Margin="5"
-                    Padding="10,5"
-                    FontWeight="Bold"/>
 
-                </StackPanel>
+                <!-- ErrorBlock -->
                 <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" />
 
             </StackPanel>
