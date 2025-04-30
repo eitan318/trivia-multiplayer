@@ -1,40 +1,43 @@
 #include "SqliteDatabase.h"
 
-SqliteDatabase* SqliteDatabase::_instance = nullptr;
-	
-
-SqliteDatabase* SqliteDatabase::getInstance()
+SqliteDatabase& SqliteDatabase::getInstance()
 {
-	if (_instance == nullptr) {
-		_instance = new SqliteDatabase();
-	}
-	else {
-		throw std::exception("Cannot instansiate a singleton twice. Eitan");
-	}
-	return _instance;
-}
-
-void SqliteDatabase::deleteInstance()
-{
-	delete _instance;
-	_instance = nullptr;
+	static SqliteDatabase instance;
+	return instance;
 }
 
 bool SqliteDatabase::open()
 {
-	std::string dbFileName = "trivia_db.sqlite";
+	if (db) {
+		// Database is already opened
+		return true;
+	}
 
-	int file_exist = _access(dbFileName.c_str(), 0);
-	int res = sqlite3_open(dbFileName.c_str(), &db);
-	if (file_exist != 0) {
+	const std::string dbFileName = "trivia_db.sqlite";
+
+	// Check if the database file exists
+	int fileExists = _access(dbFileName.c_str(), 0);
+	int result = sqlite3_open(dbFileName.c_str(), &db);
+
+	if (result != SQLITE_OK) {
+		// Opening the database failed
+		db = nullptr;
+		std::cerr << "Error: Failed to open database. Error code: " << result << "\n";
+		return false;
+	}
+
+	// If the file didn't exist, create the database and initialize tables
+	if (fileExists != 0) {
 		if (!createInitialDB()) {
-			throw std::runtime_error("Failed to create tables");
-			this->close();
+			std::cerr << "Error: Failed to initialize database tables.\n";
+			this->close(); // Ensure resources are released
 			return false;
 		}
 	}
-	return res == SQLITE_OK;
+
+	return true;
 }
+
 
 bool SqliteDatabase::close()
 {
@@ -44,7 +47,6 @@ bool SqliteDatabase::close()
 	}
 	return true;
 }
-
 
 int SqliteDatabase::doesUserExist(const std::string& username) const
 {

@@ -21,7 +21,7 @@
  */
 class Communicator {
 private:
-    std::map<SOCKET, IRequestHandler*> m_clients;  ///< Map of connected clients and their corresponding IRequestHandler.
+    std::map<SOCKET, std::unique_ptr<IRequestHandler>> m_clients;  ///< Map of connected clients and their corresponding IRequestHandler.
     SOCKET m_serverSocket;  ///< The main server socket.
     RequestHandlerFactory& m_handlerFactory;  ///< Reference to the factory for creating request handlers.
 

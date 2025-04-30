@@ -80,44 +80,53 @@ void Communicator::bindAndListen() const
 
 void Communicator::handleNewClient(SOCKET sock)
 {
-    IRequestHandler* handler = new LoginRequestHandler(this->m_handlerFactory);
-	this->m_clients.insert({ sock, handler});
+    // Create a unique_ptr for the initial handler
+    std::unique_ptr<IRequestHandler> handler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
+    this->m_clients.insert({ sock, std::move(handler) }); 
 
     while (true) {
         RequestInfo requestInfo;
         int msgLen;
         std::string msgStr;
 
+        // Read request code
         requestInfo.code = Helper::getIntFromSocket(sock, 1);
         if (requestInfo.code == 0) {
             std::cout << "Client probably left" << std::endl;
             break;
         }
+
+        // Read message length and content
         msgLen = Helper::getIntFromSocket(sock, sizeof(int));
         msgStr = Helper::getStringPartFromSocket(sock, msgLen);
-  
 
-        std::cout << "Recieved: " << msgStr << std::endl;
+        std::cout << "Received: " << msgStr << std::endl;
         requestInfo.buffer = std::vector<char>(msgStr.begin(), msgStr.end());
+
         RequestResult requestResult;
 
         if (handler->isRequestRelevant(requestInfo)) {
             requestResult = handler->handleRequest(requestInfo);
         }
-        else{
-			ServerErrorResponse errorResponse("Invalid msg code.");
+        else {
+            ServerErrorResponse errorResponse("Invalid msg code.");
 
-			RequestResult requestResult;
-			requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
-            requestResult.newHandler = handler;
+            requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
+            requestResult.newHandler = std::move(handler); 
         }
 
-        if (handler != requestResult.newHandler)
-            delete handler;
-        handler = requestResult.newHandler;
-        this->m_clients.at(sock) = handler;
+        // Update handler if it has changed
+        if (requestResult.newHandler) {
+            handler = std::move(requestResult.newHandler);
+            this->m_clients.at(sock) = std::move(handler); // Update raw pointer in m_clients
+        }
+
+        // Send response back to the client
         Helper::sendData(sock, requestResult.response);
-        std::cout << "Sended" << std::string(requestResult.response.begin(), requestResult.response.end()) << std::endl;
+        std::cout << "Sent: " << std::string(requestResult.response.begin(), requestResult.response.end()) << std::endl;
     }
-    delete handler;
+
+    // Automatically cleanup when handler goes out of scope
+    this->m_clients.erase(sock); 
 }
+

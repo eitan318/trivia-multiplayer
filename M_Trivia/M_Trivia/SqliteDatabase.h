@@ -14,8 +14,7 @@
 class SqliteDatabase : public IDatabase
 {
 public:
-	static SqliteDatabase* getInstance();
-	static void deleteInstance();
+	static SqliteDatabase& getInstance();
 	bool open();
 	bool close();
 	int doesUserExist(const std::string&) const;
@@ -43,7 +42,6 @@ private:
 	bool createGamesTable() const;
 	bool addQuestions(int amount) const;
 
-	static SqliteDatabase* _instance;
 	sqlite3* db;
 };
 

@@ -1,8 +1,7 @@
 #include "LoginManager.h"
 
-LoginManager::LoginManager(IDatabase& database)
+LoginManager::LoginManager(IDatabase& database) : m_database(database)
 {
-	this->m_database = &database;
 }
 LoginManager& LoginManager::getInstance(IDatabase& database)
 {
@@ -13,9 +12,9 @@ LoginManager& LoginManager::getInstance(IDatabase& database)
 LoginResponseErrors LoginManager::login(const std::string username, const std::string password)
 {
 	LoginResponseErrors errors;
-	if (!this->m_database->doesUserExist(username))
+	if (!this->m_database.doesUserExist(username))
 		errors.usernameError = "Unknown username";
-	else if(!this->m_database->doesPasswordMatch(username, password)) {
+	else if(!this->m_database.doesPasswordMatch(username, password)) {
 		errors.passwordError = "Wrong password";
 	}
 	errors.statusCode = !errors.noErrors();
@@ -33,7 +32,7 @@ PasswordCodeResponseErrors LoginManager::sendEmailCode(const std::string email, 
 	PasswordCodeResponseErrors errors;
 	if (!RegexValidator::validEmail(email))
 		errors.emailErrors = std::string() + "Invalid email format, Use: " + RegexValidator::emailRegexDescription.data();
-	else if (!this->m_database->emailExists(email)) 
+	else if (!this->m_database.emailExists(email)) 
 		errors.emailErrors = "Email doesnt exist";
 
 	errors.statusCode = !errors.noErrors();
@@ -51,7 +50,7 @@ ResetPasswordResponseErrors LoginManager::resetPassword(const std::string& usern
 	if (!RegexValidator::validUsername)
 		resetPasswordErrors.generalError = std::string() + "Invalid username. Use: " + RegexValidator::usernameRegexDescription.data();
 
-	if (!this->m_database->doesUserExist(username))
+	if (!this->m_database.doesUserExist(username))
 		resetPasswordErrors.generalError = std::string() + "Unknown username: " + username;
 
 	if (!RegexValidator::validPassword(newPassword))
@@ -60,7 +59,7 @@ ResetPasswordResponseErrors LoginManager::resetPassword(const std::string& usern
 	resetPasswordErrors.statusCode = !resetPasswordErrors.noErrors();
 
 	if (resetPasswordErrors.statusCode == 0) {
-		this->m_database->updatePassword(username, newPassword);
+		this->m_database.updatePassword(username, newPassword);
 	}
 
 	return resetPasswordErrors;
@@ -69,7 +68,7 @@ ResetPasswordResponseErrors LoginManager::resetPassword(const std::string& usern
 
 std::string LoginManager::getUsername(const std::string& email) const
 {
-	return this->m_database->getUserRecord(email).username;
+	return this->m_database.getUserRecord(email).username;
 }
 
 SignupResponseErrors LoginManager::signup(const UserRecord& userRecord) const
@@ -78,7 +77,7 @@ SignupResponseErrors LoginManager::signup(const UserRecord& userRecord) const
 
 	if (!RegexValidator::validUsername(userRecord.username))
 		signupErrors.usernameError = std::string() + "Invalid format. Use: " + RegexValidator::usernameRegexDescription.data();
-	else if (this->m_database->doesUserExist(userRecord.username))
+	else if (this->m_database.doesUserExist(userRecord.username))
 		signupErrors.usernameError = "User already exist";
 
 	if (!RegexValidator::validPassword(userRecord.password))
@@ -86,7 +85,7 @@ SignupResponseErrors LoginManager::signup(const UserRecord& userRecord) const
 
 	if (!RegexValidator::validEmail(userRecord.email))
 		signupErrors.emailError = std::string() + "Invalid format. Use: " + RegexValidator::emailRegexDescription.data();
-	else if (this->m_database->emailExists(userRecord.email))
+	else if (this->m_database.emailExists(userRecord.email))
 		signupErrors.emailError = "User with this email exist.";
 
 	if (userRecord.houseAddress != "" && !RegexValidator::validHouseAddress(userRecord.houseAddress))
@@ -101,7 +100,7 @@ SignupResponseErrors LoginManager::signup(const UserRecord& userRecord) const
 	signupErrors.statusCode = !signupErrors.noErrors();
 
 	if (signupErrors.statusCode == 0) {
-		this->m_database->addNewUser(userRecord);
+		this->m_database.addNewUser(userRecord);
 	}
 
     return signupErrors;

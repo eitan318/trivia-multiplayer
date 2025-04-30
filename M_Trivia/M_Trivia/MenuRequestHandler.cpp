@@ -42,7 +42,7 @@ RequestResult MenuRequestHandler::signout(const RequestInfo& info) const
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(signOutResponse);
-    requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+    requestResult.newHandler = std::make_unique<MenuRequestHandler>(this->m_user, this->m_handlerFactory);
     return requestResult;
 }
 
@@ -54,7 +54,7 @@ RequestResult MenuRequestHandler::getRooms(const RequestInfo& requestInfo) const
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(getRoomsResponse);
-    requestResult.newHandler = new MenuRequestHandler(this->m_user,this->m_handlerFactory);
+    requestResult.newHandler = std::make_unique<MenuRequestHandler>(this->m_user, this->m_handlerFactory);
     return requestResult;
 }
 
@@ -72,7 +72,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInf
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(getPlayersInRoomResponse);
-    requestResult.newHandler = new MenuRequestHandler(this->m_user, this->m_handlerFactory);
+    requestResult.newHandler = std::make_unique<MenuRequestHandler>(this->m_user, this->m_handlerFactory);
     return requestResult;
 }
 
@@ -85,7 +85,7 @@ RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& requestInf
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(personalStatsResponse);
-    requestResult.newHandler = new MenuRequestHandler(this->m_user,this->m_handlerFactory);
+    requestResult.newHandler = std::make_unique<MenuRequestHandler>(this->m_user, this->m_handlerFactory);
     return requestResult;
 }
 
@@ -100,7 +100,7 @@ RequestResult MenuRequestHandler::getHighScore(const RequestInfo& requestInfo) c
   
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(highScoreResponse);
-    requestResult.newHandler = new MenuRequestHandler(this->m_user,this->m_handlerFactory);
+    requestResult.newHandler = std::make_unique<MenuRequestHandler>(this->m_user, this->m_handlerFactory);
     return requestResult;
 }
 
@@ -126,7 +126,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& requestInfo) const
     JoinRoomResponse joinRoomResponse(std::make_shared<JoinRoomResponseErrors>(errors));
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(joinRoomResponse);
-    requestResult.newHandler = new MenuRequestHandler(this->m_user,this->m_handlerFactory);
+    requestResult.newHandler = std::make_unique<MenuRequestHandler>(this->m_user, this->m_handlerFactory);
     return requestResult;
 }
 
@@ -157,6 +157,6 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& requestInfo) con
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(createRoomResponse);
-    requestResult.newHandler = new MenuRequestHandler(this->m_user,this->m_handlerFactory);
+    requestResult.newHandler = std::make_unique<MenuRequestHandler>(this->m_user, this->m_handlerFactory);
     return requestResult;
 }

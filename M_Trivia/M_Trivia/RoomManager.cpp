@@ -10,12 +10,11 @@ RoomManager& RoomManager::getInstance(IDatabase& database)
 
 unsigned int RoomManager::getTotalQuestionsCount() const
 {
-    return this->m_database->getQuestionsCount();
+    return this->m_database.getQuestionsCount();
 }
 
-RoomManager::RoomManager(IDatabase& database)
+RoomManager::RoomManager(IDatabase& database) : m_database(database)
 {
-    this->m_database = &database;
     this->m_rooms = std::map<int, Room>();
 }
 RoomManager::~RoomManager()

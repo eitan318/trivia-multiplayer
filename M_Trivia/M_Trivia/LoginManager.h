@@ -15,7 +15,7 @@
  */
 class LoginManager {
 private:
-    IDatabase* m_database; ///< Pointer to the database interface for user data.
+    IDatabase& m_database; ///< Pointer to the database interface for user data.
     std::vector<LoggedUser> m_loggedUsers; ///< List of currently logged-in users.
 
     /**

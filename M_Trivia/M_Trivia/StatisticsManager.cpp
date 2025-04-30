@@ -8,15 +8,15 @@ StatisticsManager& StatisticsManager::getInstance(IDatabase& database)
 
 std::vector<HighScoreInfo> StatisticsManager::getBestScores(int limit) const
 {
-    return this->m_db->getBestScores(limit);
+    return this->m_db.getBestScores(limit);
 }
 
 PersonalStatistics StatisticsManager::getPlayerStatistics(const std::string& username) const
 {
     return PersonalStatistics(
         username,
-        this->m_db->getNumOfTotalCorrectAnswers(username),
-        this->m_db->getNumOfTotalAnswers(username),
-        this->m_db->getNumOfPlayerGames(username),
-        this->m_db->getAvgAnswerTime(username));
+        this->m_db.getNumOfTotalCorrectAnswers(username),
+        this->m_db.getNumOfTotalAnswers(username),
+        this->m_db.getNumOfPlayerGames(username),
+        this->m_db.getAvgAnswerTime(username));
 }

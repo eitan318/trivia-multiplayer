@@ -2,15 +2,14 @@
 
 Server::Server()
 	: m_database(SqliteDatabase::getInstance()),
-	m_handlerFactory(RequestHandlerFactory::getInstance(*m_database)),
+	m_handlerFactory(RequestHandlerFactory::getInstance(m_database)),
 	m_communicator(Communicator::getInstance(m_handlerFactory))
 {
 }
 
-Server::~Server()
-{
-	SqliteDatabase::deleteInstance();
+Server::~Server() {
 }
+
 
 Server& Server::getInstance()
 {
@@ -20,7 +19,7 @@ Server& Server::getInstance()
 
 void Server::run() const
 {
-	m_database->open();
+	m_database.open();
 	m_communicator.bindAndListen();
 
 	std::thread t_connector(&Communicator::startHandleRequest, &m_communicator);

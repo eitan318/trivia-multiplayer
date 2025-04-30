@@ -11,7 +11,7 @@ class RoomManager {
 private:
     static unsigned int ids; ///< Counter for generating unique room IDs.
     std::map<int, Room> m_rooms; ///< Map of active rooms indexed by their ID.
-    IDatabase* m_database; ///< Pointer to the database interface for accessing data.
+    IDatabase& m_database; ///< Pointer to the database interface for accessing data.
 
     /**
      * @brief Constructs a RoomManager instance.

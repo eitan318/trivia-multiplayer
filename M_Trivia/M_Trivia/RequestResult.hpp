@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include "IRequestHandler.h"
+#include <memory>
 
 struct IRequestHandler;
 
@@ -11,5 +12,5 @@ struct IRequestHandler;
  */
 struct RequestResult {
     std::vector<char> response;
-    IRequestHandler* newHandler = nullptr; 
+    std::unique_ptr<IRequestHandler> newHandler; 
 };

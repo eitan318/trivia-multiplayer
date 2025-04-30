@@ -50,10 +50,10 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const
 		LoggedUser user;
 		user.m_username = request.getUsername();
 		if (errors->statusCode != 0) {
-			requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+			requestResult.newHandler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
 		}
 		else {
-			requestResult.newHandler = new MenuRequestHandler(user,this->m_handlerFactory);
+			requestResult.newHandler = std::make_unique<MenuRequestHandler>(user, this->m_handlerFactory);
 		}
 		return requestResult;
 	}
@@ -62,7 +62,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const
 
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
-		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+		requestResult.newHandler  = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
 		return requestResult;
 	}
 
@@ -80,14 +80,14 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo) const
 		SignupResponse signupResponse(errors);
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(signupResponse);
-		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+		requestResult.newHandler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
 		return requestResult;
 	}
 	catch (const std::runtime_error& e) {
 		RequestResult res;
 		ServerErrorResponse errResponse(e.what());
 		res.response = JsonResponsePacketSerializer::serializeResponse(errResponse);
-		res.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+		res.newHandler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
 		return res;
 	}
 
@@ -133,14 +133,14 @@ RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& req
 
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(response);
-		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+		requestResult.newHandler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
 		return requestResult;
 	}
 	catch (const std::runtime_error& e) {
 		RequestResult res;
 		ServerErrorResponse errResponse(e.what());
 		res.response = JsonResponsePacketSerializer::serializeResponse(errResponse);
-		res.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+		res.newHandler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
 		return res;
 	}
 
@@ -166,14 +166,14 @@ RequestResult LoginRequestHandler::resetPassword(const RequestInfo& requestInfo)
 		ResetPasswordResponse response(errors);
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(response);
-		requestResult.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+		requestResult.newHandler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);;
 		return requestResult;
 	}
 	catch (const std::runtime_error& e) {
 		RequestResult res;
 		ServerErrorResponse errResponse(e.what());
 		res.response = JsonResponsePacketSerializer::serializeResponse(errResponse);
-		res.newHandler = new LoginRequestHandler(this->m_handlerFactory);
+		res.newHandler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
 		return res;
 	}
 

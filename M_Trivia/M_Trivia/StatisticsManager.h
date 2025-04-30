@@ -9,13 +9,13 @@
 class StatisticsManager
 {
 private:
-    IDatabase* m_db; ///< Pointer to the database interface for accessing statistics.
+    IDatabase& m_db; ///< Pointer to the database interface for accessing statistics.
 
     /**
      * @brief Constructs a StatisticsManager instance.
      * @param database Reference to the database interface.
      */
-    StatisticsManager(IDatabase& database) : m_db(&database) {};
+    StatisticsManager(IDatabase& database) : m_db(database) {};
 
     /**
      * @brief Default destructor.
