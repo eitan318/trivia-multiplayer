@@ -5,6 +5,7 @@ using ClientApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Printing;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace ClientApp.ViewModels
         public PersonalStatisticsPageViewModel(Page owner)
         {
             this.ownerPage = owner;
+            this.personalInfo = new PersonalStatistics();
             getPersonalStats();
         }
         public static PersonalStatisticsPageViewModel Instance(Page owner)
@@ -27,6 +29,56 @@ namespace ClientApp.ViewModels
         private Page ownerPage;
         private string _errorMessage;
         private PersonalStatistics personalInfo;
+        private string username;
+        private string gamesPlayed;
+        private string totalAnswers;
+        private string totalCorrectAnswers;
+        private string avgAnswerTime;
+        public string Username
+        {
+            get => username;
+            set
+            {
+                username = value;
+                OnPropertyChanged();
+            }
+        }
+        public string GamesPlayed
+        {
+            get => gamesPlayed;
+            set
+            {
+                gamesPlayed = value;
+                OnPropertyChanged();
+            }
+        }
+        public string TotalAnswers
+        {
+            get => totalAnswers;
+            set
+            {
+                totalAnswers = value;
+                OnPropertyChanged();
+            }
+        }
+        public string TotalCorrectAnswers
+        {
+            get => totalCorrectAnswers;
+            set
+            {
+                totalCorrectAnswers = value;
+                OnPropertyChanged();
+            }
+        }
+        public string AvgAnswerTime
+        {
+            get => avgAnswerTime;
+            set
+            {
+                avgAnswerTime = value;
+                OnPropertyChanged();
+            }
+        }
         public PersonalStatistics PersonalInfo
         {
             get => personalInfo;
@@ -64,7 +116,12 @@ namespace ClientApp.ViewModels
                 var personalStatisticsResponse =
                     JsonResponseDeserialize.DeserializeResponse<PersonalStatisticsResponse>(responseInfo);
                 this.PersonalInfo = personalStatisticsResponse.PersonalStatistics;
-
+                this.Username = this.PersonalInfo.username;
+                this.TotalAnswers = this.PersonalInfo.totalAnswers.ToString();
+                this.TotalCorrectAnswers = this.PersonalInfo.totalCorrectAnswers.ToString();
+                this.avgAnswerTime = this.PersonalInfo.avgAnswerTime.ToString();
+                this.gamesPlayed = this.personalInfo.gamesPlayed.ToString();
+                
 
             }
             catch (Exception ex)

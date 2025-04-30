@@ -27,24 +27,13 @@
                    Margin="0,0,0,20"/>
 
                 <!-- Personal statistics -->
-                <ItemsControl ItemsSource="{Binding PersonalInfo}" Margin="0,0,0,20">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Columns="6" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Margin="0,0,0,20">
-                                <TextBlock Text="{Binding username,StringFormat='Username: '}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
-                                <TextBlock Text="{Binding gamesPlayed, StringFormat='Games Played: '}"  FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
-                                <TextBlock Text="{Binding totalAnswers, StringFormat='Total Answers: '}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
-                                <TextBlock Text="{Binding totalCorrectAnswers, StringFormat='Total Correct answers: '}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
-                                <TextBlock Text="{Binding avgAnswerTime, StringFormat='Average Answer Time: '}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <StackPanel Margin="0,0,0,20">
+                    <TextBlock Text="{Binding Username,StringFormat='Username: {0}'}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding GamesPlayed, StringFormat='Games Played: {0}'}"  FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding TotalAnswers, StringFormat='Total Answers: {0}'}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding TotalCorrectAnswers, StringFormat='Total Correct answers: {0}'}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding AvgAnswerTime, StringFormat='Average Answer Time: {0}'}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
+                </StackPanel>
 
 
                 <!-- ErrorBlock -->
