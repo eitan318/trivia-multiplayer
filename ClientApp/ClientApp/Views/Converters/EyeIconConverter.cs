@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace ClientApp.Converters
+namespace ClientApp.Views.Converters
 {
     public class EyeIconConverter : IValueConverter
     {

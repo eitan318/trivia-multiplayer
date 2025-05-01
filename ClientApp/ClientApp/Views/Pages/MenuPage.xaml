@@ -35,7 +35,7 @@
 
             <!-- Error Message -->
             <TextBlock Text="{Binding ErrorMessage}" 
-                   Foreground="Red" 
+                   Foreground="{StaticResource ErrorBrush}" 
                    Visibility="{Binding ErrorMessage}" />
         </StackPanel>
     </Grid>

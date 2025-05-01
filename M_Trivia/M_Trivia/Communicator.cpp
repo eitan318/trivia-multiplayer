@@ -97,6 +97,8 @@ void Communicator::handleNewClient(SOCKET sock)
         int msgLen;
         std::string msgStr;
 
+        requestInfo.receivalTime = time(nullptr);
+
         try {
             requestInfo.code = SocketService::getIntFromSocket(sock, 1);
             msgLen = SocketService::getIntFromSocket(sock, sizeof(int));

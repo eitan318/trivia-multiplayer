@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ClientApp.Views.Pages"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      xmlns:controls="clr-namespace:ClientApp.Controls"
+      xmlns:controls="clr-namespace:ClientApp.Views.Controls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CreateRoomPage">
@@ -79,7 +79,7 @@
 
         <!-- Error Message -->
         <TextBlock Text="{Binding ErrorMessage}" 
-                   Foreground="Red" 
+                   Foreground="{StaticResource ErrorBrush}" 
                    Visibility="{Binding ErrorMessage}" 
                    Grid.Row="2"/>
 

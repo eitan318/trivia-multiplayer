@@ -81,9 +81,6 @@
     <ClInclude Include="SignupRequest.hpp">
       <Filter>Headers\Model\Requests</Filter>
     </ClInclude>
-    <ClInclude Include="ApiClient.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Communicator.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -99,9 +96,6 @@
     <ClInclude Include="Server.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="WSAInitializer.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="ServerErrorResponse.hpp">
       <Filter>Headers\Model\Responses</Filter>
     </ClInclude>
@@ -115,13 +109,10 @@
       <Filter>Headers\RequestHandlers</Filter>
     </ClInclude>
     <ClInclude Include="SqliteDatabase.h">
-      <Filter>Headers\Database</Filter>
+      <Filter>Headers\DatabaseAccess</Filter>
     </ClInclude>
     <ClInclude Include="IDatabase.h">
-      <Filter>Headers\Database</Filter>
-    </ClInclude>
-    <ClInclude Include="sqlite3.h">
-      <Filter>Headers</Filter>
+      <Filter>Headers\DatabaseAccess</Filter>
     </ClInclude>
     <ClInclude Include="GetPlayersInRoomResponse.hpp">
       <Filter>Headers\Model\Responses</Filter>
@@ -228,6 +219,15 @@
     <ClInclude Include="SocketService.h">
       <Filter>Headers\Services</Filter>
     </ClInclude>
+    <ClInclude Include="sqlite3.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="ApiClient.h">
+      <Filter>Headers\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="WSAInitializer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
@@ -238,9 +238,6 @@
     </Filter>
     <Filter Include="Headers\RequestHandlers">
       <UniqueIdentifier>{e5b86cdc-037a-4dd7-b630-0249849c3556}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\Database">
-      <UniqueIdentifier>{c296c418-2067-4c50-b550-f5ed75bd6bcc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{8589bacd-2888-478e-9c20-c8dc1fd05b67}</UniqueIdentifier>
@@ -265,6 +262,9 @@
     </Filter>
     <Filter Include="Headers\Model\Responses">
       <UniqueIdentifier>{657137e1-0233-4c25-88b9-403657cc5236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\DatabaseAccess">
+      <UniqueIdentifier>{c296c418-2067-4c50-b550-f5ed75bd6bcc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

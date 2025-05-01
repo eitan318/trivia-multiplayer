@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace ClientApp.Controls
+namespace ClientApp.Views.Controls
 {
     /// <summary>
     /// A custom control that wraps a <see cref="PasswordBox"/> and a <see cref="TextBox"/> for password visibility toggle.
