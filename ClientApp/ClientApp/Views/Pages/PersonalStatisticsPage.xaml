@@ -27,14 +27,20 @@
                    Margin="0,0,0,20"/>
 
                 <!-- Personal statistics -->
-                <StackPanel Margin="0,0,0,20">
-                    <TextBlock Text="{Binding Username,StringFormat='Username: {0}'}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding GamesPlayed, StringFormat='Games Played: {0}'}"  FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding TotalAnswers, StringFormat='Total Answers: {0}'}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding TotalCorrectAnswers, StringFormat='Total Correct answers: {0}'}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding AvgAnswerTime, StringFormat='Average Answer Time: {0}'}" FontSize="18" Margin="0,4" HorizontalAlignment="Center"/>
-                </StackPanel>
-
+                <ItemsControl ItemsSource="{Binding PersonalInfo}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding username}" FontWeight="Bold" />
+                                <TextBlock Text="{Binding gamesPlayed}" FontWeight="Bold" />
+                                <TextBlock Text="{Binding totalAnswers}" FontWeight="Bold" />
+                                <TextBlock Text="{Binding totalCorrectAnswers}" FontWeight="Bold" />
+                                <TextBlock Text="{Binding avgAnswerTime}" FontWeight="Bold" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
 
                 <!-- ErrorBlock -->
                 <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" />

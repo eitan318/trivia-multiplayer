@@ -115,18 +115,18 @@ namespace ClientApp.ViewModels
 
                 var personalStatisticsResponse =
                     JsonResponseDeserialize.DeserializeResponse<PersonalStatisticsResponse>(responseInfo);
-                this.PersonalInfo = personalStatisticsResponse.PersonalStatistics;
-                this.Username = this.PersonalInfo.username;
-                this.TotalAnswers = this.PersonalInfo.totalAnswers.ToString();
-                this.TotalCorrectAnswers = this.PersonalInfo.totalCorrectAnswers.ToString();
-                this.avgAnswerTime = this.PersonalInfo.avgAnswerTime.ToString();
-                this.gamesPlayed = this.personalInfo.gamesPlayed.ToString();
+                this.PersonalInfo = personalStatisticsResponse.Statistics;
+                this.Username = this.PersonalInfo.UserName;
+                this.TotalAnswers = this.PersonalInfo.TotalAnswers.ToString();
+                this.TotalCorrectAnswers = this.PersonalInfo.TotalCorrectAnswers.ToString();
+                this.avgAnswerTime = this.PersonalInfo.AvgAnswerTime.ToString();
+                this.gamesPlayed = this.personalInfo.GamesPlayed.ToString();
                 
 
             }
             catch (Exception ex)
             {
-                ErrorMessage = $"Error retrieving top users: {ex.Message}";
+                ErrorMessage = $"Error retrieving data on user: {ex.Message}";
             }
         }
 

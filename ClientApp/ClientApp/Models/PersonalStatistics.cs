@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Models
 {
-    public struct PersonalStatistics
+    public class PersonalStatistics
     {
-        public string username {  get; set; }
-        public int totalCorrectAnswers {  get; set; }
-        public int gamesPlayed {  get; set; }
-        public int totalAnswers { get; set; }
-        public double avgAnswerTime {  get; set; }
+        public string UserName {  get; set; }
+        public int TotalCorrectAnswers {  get; set; }
+        public int GamesPlayed {  get; set; }
+        public int TotalAnswers { get; set; }
+        public double AvgAnswerTime {  get; set; }
 
     }
 }
