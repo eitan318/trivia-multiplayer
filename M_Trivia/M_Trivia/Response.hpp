@@ -19,6 +19,7 @@ enum class ResponseCodes : unsigned char{
     C_ResetPasswordResponse = 8,
     C_JoinRoomResponse = 9,
     C_CreateRoomResponse = 10,
+    C_LogoutResponse = 11,
 };
 
 class Response {

@@ -1,4 +1,4 @@
-#include "Helper.h"
+#include "SocketService.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -7,11 +7,11 @@
 using std::string;
 
 
-int Helper::getIntFromSocket(SOCKET sc, int bytesNum)
+int SocketService::getIntFromSocket(SOCKET sc, int bytesNum)
 {
 	std::vector<char> buffer(bytesNum);
 	int res = recv(sc, buffer.data(), bytesNum, 0);
-	if (res == SOCKET_ERROR)
+	if (res == SOCKET_ERROR || res == 0)
 	{
 		throw std::exception("Error while receiving int from socket");
 	}
@@ -25,11 +25,11 @@ int Helper::getIntFromSocket(SOCKET sc, int bytesNum)
 }
 
 
-std::string Helper::getStringPartFromSocket(SOCKET sc, int bytesNum)
+std::string SocketService::getStringPartFromSocket(SOCKET sc, int bytesNum)
 {
 	std::vector<char> buffer(bytesNum);
 	int res = recv(sc, buffer.data(), bytesNum, 0);
-	if (res == SOCKET_ERROR)
+	if (res == SOCKET_ERROR || res == 0)
 	{
 		throw std::exception("Error while receiving from socket");
 	}
@@ -37,12 +37,12 @@ std::string Helper::getStringPartFromSocket(SOCKET sc, int bytesNum)
 }
 
 
-char* Helper::getPartFromSocket(SOCKET sc, int bytesNum)
+char* SocketService::getPartFromSocket(SOCKET sc, int bytesNum)
 {
 	return getPartFromSocket(sc, bytesNum, 0);
 }
 
-char* Helper::getPartFromSocket(SOCKET sc, int bytesNum, int flags)
+char* SocketService::getPartFromSocket(SOCKET sc, int bytesNum, int flags)
 {
 	if (bytesNum == 0)
 	{
@@ -53,7 +53,7 @@ char* Helper::getPartFromSocket(SOCKET sc, int bytesNum, int flags)
 	int res = recv(sc, data, bytesNum, flags);
 	int err = WSAGetLastError();
 
-	if (res == INVALID_SOCKET)
+	if (res == INVALID_SOCKET || res == 0)
 	{
 		std::string s = "Error while recieving from socket: ";
 		s += std::to_string(sc);
@@ -64,7 +64,7 @@ char* Helper::getPartFromSocket(SOCKET sc, int bytesNum, int flags)
 	return data;
 }
 
-void Helper::sendData(SOCKET sc, const std::vector<char>& data)
+void SocketService::sendData(SOCKET sc, const std::vector<char>& data)
 {
 	if (send(sc, data.data(), data.size(), 0) == SOCKET_ERROR)
 	{
@@ -72,7 +72,7 @@ void Helper::sendData(SOCKET sc, const std::vector<char>& data)
 	}
 }
 
-void Helper::sendData(SOCKET sc, const std::string& message)
+void SocketService::sendData(SOCKET sc, const std::string& message)
 {
 	const char* data = message.c_str();
 

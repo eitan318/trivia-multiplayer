@@ -36,7 +36,9 @@
                     </StackPanel>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
+
         </ComboBox>
+
 
         <StackPanel Grid.Row="1" Grid.Column="1">
             <Button Content="Refresh" Margin="8" Command="{Binding RefreshCommand}"/>

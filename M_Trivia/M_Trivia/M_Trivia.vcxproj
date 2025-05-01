@@ -154,7 +154,7 @@
     <ClInclude Include="GetPersonalStatisticsResponse.hpp" />
     <ClInclude Include="GetPlayersInRoomResponse.hpp" />
     <ClInclude Include="GetRoomsResponse.hpp" />
-    <ClInclude Include="Helper.h" />
+    <ClInclude Include="SocketService.h" />
     <ClInclude Include="HighScoreInfo.hpp" />
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="IRequestHandler.h" />
@@ -189,7 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Communicator.cpp" />
-    <ClCompile Include="Helper.cpp" />
+    <ClCompile Include="SocketService.cpp" />
     <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="main.cpp" />

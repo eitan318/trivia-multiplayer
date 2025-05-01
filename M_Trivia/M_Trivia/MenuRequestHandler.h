@@ -32,7 +32,7 @@ private:
  * @param requestInfo The request information containing details about the sign-out request.
  * @return A RequestResult with the serialized response and the next handler.
  */
-	RequestResult signout(const RequestInfo& requestInfo) const;
+	RequestResult logout(const RequestInfo& requestInfo) const;
 
 	/**
  * @brief Retrieves a list of available rooms.
@@ -78,17 +78,22 @@ private:
 public:
 
 	/**
- * @brief Constructor for the MenuRequestHandler class.
- * @param user The currently logged-in user.
- * @param handlerFactory The factory for creating other request handlers.
- */
+	 * @brief Constructor for the MenuRequestHandler class.
+	 * @param user The currently logged-in user.
+	 * @param handlerFactory The factory for creating other request handlers.
+	 */
 	MenuRequestHandler(const LoggedUser& user, RequestHandlerFactory& handlerFactory);
 
 	/**
-		* @brief Checks if a given request is relevant for this handler.
-		* @param requestInfo The request information.
-		* @return True if the request is relevant, otherwise false.
-		*/
+	 * @brief Default destructor.
+	 */
+	~MenuRequestHandler() = default;
+
+	/**
+	* @brief Checks if a given request is relevant for this handler.
+	* @param requestInfo The request information.
+	* @return True if the request is relevant, otherwise false.
+	*/
 	bool isRequestRelevant(const RequestInfo& requestInfo) const override;
 	
 	/**

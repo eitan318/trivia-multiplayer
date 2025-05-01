@@ -10,11 +10,11 @@ LoginRequestHandler::~LoginRequestHandler()
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
 {
-	switch (static_cast<RequestsCodes>(requestInfo.code)) {
-	case RequestsCodes::LoginRequest:
-	case RequestsCodes::SignupRequest:
-	case RequestsCodes::SendPasswordResetCodeRequest:
-	case RequestsCodes::ResetPasswordRequest:
+	switch (static_cast<RequestCodes>(requestInfo.code)) {
+	case RequestCodes::LoginRequest:
+	case RequestCodes::SignupRequest:
+	case RequestCodes::SendPasswordResetCodeRequest:
+	case RequestCodes::ResetPasswordRequest:
 		return true;
 	default:
 		return false;
@@ -23,17 +23,22 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) cons
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo& requestInfo) const
 {
-	switch (static_cast<RequestsCodes>(requestInfo.code)) {
-	case RequestsCodes::LoginRequest:
+	switch (static_cast<RequestCodes>(requestInfo.code)) {
+	case RequestCodes::LoginRequest:
 		return login(requestInfo);
-	case RequestsCodes::SignupRequest:
+	case RequestCodes::SignupRequest:
 		return signup(requestInfo);
-	case RequestsCodes::SendPasswordResetCodeRequest:
+	case RequestCodes::SendPasswordResetCodeRequest:
 		return sendPasswordResetEmail(requestInfo);
-	case RequestsCodes::ResetPasswordRequest:
+	case RequestCodes::ResetPasswordRequest:
 		return resetPassword(requestInfo);
+	default:
+		ServerErrorResponse errorResponse("Invalid msg code.");
+		RequestResult requestResult;
+		requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
+		requestResult.newHandler = nullptr;
+		return requestResult;
 	}
-	return {};
 }
 
 RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const

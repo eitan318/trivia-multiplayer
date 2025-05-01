@@ -1,5 +1,5 @@
 #pragma once
-enum class RequestsCodes : unsigned char {
+enum class RequestCodes : unsigned char {
     LoginRequest = 1,
     SignupRequest = 2,
     LogoutRequest = 3,

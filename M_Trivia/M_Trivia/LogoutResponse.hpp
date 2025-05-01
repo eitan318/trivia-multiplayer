@@ -16,7 +16,7 @@ public:
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.
 	 */
-	ResponseCodes getCode() const override { return ResponseCodes::C_LoginResponse; }
+	ResponseCodes getCode() const override { return ResponseCodes::C_LogoutResponse; }
 
 	/**
 	 * @brief Converts the response to a JSON object.
