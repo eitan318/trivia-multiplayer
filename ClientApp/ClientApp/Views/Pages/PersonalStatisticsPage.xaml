@@ -9,7 +9,7 @@
       Title="PersonalStatisticsPage">
 
     <Grid>
-        <Border Background="White"
+        <Border Background="#333333"
         Margin="40"
         Padding="30"
         BorderBrush="#CCCCCC"
@@ -23,7 +23,6 @@
                 <TextBlock Text="Personal Statistics"
                    FontSize="26"
                    FontWeight="Bold"
-                   Foreground="#333333"
                    HorizontalAlignment="Center"
                    Margin="0,0,0,20"/>
 

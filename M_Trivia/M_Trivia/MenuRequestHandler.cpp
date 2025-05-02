@@ -5,6 +5,7 @@ m_handlerFactory(handlerFactory)
 {
 }
 
+//Checks if the request is relevant for menureqhandler
 bool MenuRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
 {
     switch (static_cast<RequestCodes>(requestInfo.code)) {
@@ -14,6 +15,7 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
     case RequestCodes::GetRoomsRequest:
     case RequestCodes::LogoutRequest:
     case RequestCodes::GetHighScoresRequest:
+    case RequestCodes::PersonalStatisticsRequest:    
         return true;
     default:
         return false;
@@ -35,13 +37,14 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& requestInfo) 
         return this->logout(requestInfo);
     case RequestCodes::GetHighScoresRequest:
         return this->getHighScore(requestInfo);
+    case RequestCodes::PersonalStatisticsRequest:
+        return this->getPersonalStats(requestInfo);
     default:
 		ServerErrorResponse errorResponse("Invalid msg code.");
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
 		requestResult.newHandler = nullptr;
 		return requestResult;
-
     }
     
 }

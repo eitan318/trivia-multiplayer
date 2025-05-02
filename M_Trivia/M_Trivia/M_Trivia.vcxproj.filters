@@ -216,6 +216,7 @@
     <ClInclude Include="PersonalStatistics.hpp">
       <Filter>Headers\Model</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="SocketService.h">
       <Filter>Headers\Services</Filter>
     </ClInclude>
@@ -227,6 +228,10 @@
     </ClInclude>
     <ClInclude Include="WSAInitializer.h">
       <Filter>Headers</Filter>
+=======
+    <ClInclude Include="PersonalStatisticsRequest.hpp">
+      <Filter>Headers\Model\Requests</Filter>
+>>>>>>> b04e4c6 (Added PersonalStats Viewmodel response+request on client&server fixed menuhandler)
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,9 @@ namespace ClientApp.ViewModels
     {
         private HighScoresPageViewModel(Page owner)
         {
+            
+            this.ResponseList = new List<HighScoreInfo>();
+            RefreshTopCommand = new RelayCommand(RefreshTop);
             RefreshTop();
             this.ownerPage = owner;
         }
