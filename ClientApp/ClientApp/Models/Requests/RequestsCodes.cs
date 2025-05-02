@@ -18,5 +18,9 @@ namespace ClientApp.Models.Requests
         ResetPasswordRequest = 8,
         GetHighScoresRequest = 9,
         GetRoomsRequest = 10
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     }
 }
