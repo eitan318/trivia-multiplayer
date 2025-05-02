@@ -4,19 +4,16 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ClientApp.Views.Pages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HighScoresPage">
 
     <Grid>
-        <Border Background="#333333"
-                Margin="40"
+        <materialDesign:Card Margin="40"
                 Padding="30"
-                BorderBrush="#CCCCCC"
-                BorderThickness="1"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                CornerRadius="15">
+                VerticalAlignment="Center">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="350">
 
                 <!-- Title -->
@@ -71,6 +68,6 @@
                 <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" />
 
             </StackPanel>
-        </Border>
+        </materialDesign:Card>
     </Grid>
 </local:NavigablePage>

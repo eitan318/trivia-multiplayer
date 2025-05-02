@@ -4,20 +4,17 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ClientApp.Views.Pages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:controls="clr-namespace:ClientApp.Views.Controls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="PersonalStatisticsPage">
 
     <Grid>
-        <Border Background="#333333"
-                Margin="40"
+        <materialDesign:Card
                 Padding="30"
-                BorderBrush="#CCCCCC"
-                BorderThickness="1"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                CornerRadius="15">
+                VerticalAlignment="Center">
             <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
                 <!-- Title -->
                 <TextBlock Text="Personal Statistics"
@@ -43,6 +40,6 @@
                             Command="{Binding RefreshCommand}"
                             FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"/>
             </StackPanel>
-        </Border>
+        </materialDesign:Card>
     </Grid>
 </local:NavigablePage>

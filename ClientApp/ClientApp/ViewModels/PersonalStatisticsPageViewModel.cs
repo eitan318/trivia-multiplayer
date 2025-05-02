@@ -1,4 +1,5 @@
-﻿using ClientApp.Models;
+﻿using ClientApp.Commands;
+using ClientApp.Models;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
@@ -10,6 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace ClientApp.ViewModels
@@ -20,6 +22,7 @@ namespace ClientApp.ViewModels
         {
             this.ownerPage = owner;
             this.personalInfo = new PersonalStatistics();
+            this.RefreshCommand = new RelayCommand(Refresh);
             Refresh();
         }
         public static PersonalStatisticsPageViewModel Instance(Page owner)

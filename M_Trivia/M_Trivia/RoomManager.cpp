@@ -15,11 +15,7 @@ unsigned int RoomManager::getTotalQuestionsCount() const
 
 RoomManager::RoomManager(IDatabase& database) : m_database(database)
 {
-<<<<<<< Updated upstream
-=======
-    this->m_database = &database;
->>>>>>> Stashed changes
-    this->m_rooms = std::map<int, Room>();
+   this->m_rooms = std::map<int, Room>();
 }
 RoomManager::~RoomManager()
 {

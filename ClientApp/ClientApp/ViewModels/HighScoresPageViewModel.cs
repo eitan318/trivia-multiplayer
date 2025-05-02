@@ -79,7 +79,7 @@ namespace ClientApp.ViewModels
 
                 var HighestScoresResponse = 
                     JsonResponseDeserialize.DeserializeResponse<HighScoresResponse>(responseInfo);
-                this.ResponseList = HighestScoresResponse.Statisics;
+                this.ResponseList = HighestScoresResponse.Statistics;
 
 
             }

@@ -8,19 +8,19 @@
 
     <StackPanel Margin="0,10,0,0">
         <UniformGrid Columns="2" Margin="0,5,0,5" VerticalAlignment="Top" HorizontalAlignment="Stretch">
-            <TextBlock Text="Username:" FontWeight="Bold" Foreground="White" FontSize="16" />
+            <TextBlock Text="Username:" FontWeight="Bold" Foreground="{DynamicResource MaterialDesignBody}" FontSize="16" />
             <TextBlock Text="{Binding UserName}" Foreground="{DynamicResource MaterialDesignBody}" FontSize="16" HorizontalAlignment="Center" Margin="10,0,0,0" />
 
-            <TextBlock Text="Games Played:" FontWeight="Bold" Foreground="White" FontSize="16" />
+            <TextBlock Text="Games Played:" FontWeight="Bold" Foreground="{DynamicResource MaterialDesignBody}" FontSize="16" />
             <TextBlock Text="{Binding GamesPlayed}" Foreground="{DynamicResource MaterialDesignBody}" FontSize="16" HorizontalAlignment="Center" Margin="10,0,0,0" />
 
-            <TextBlock Text="Total Answers:" FontWeight="Bold" Foreground="White" FontSize="16" />
+            <TextBlock Text="Total Answers:" FontWeight="Bold" Foreground="{DynamicResource MaterialDesignBody}" FontSize="16" />
             <TextBlock Text="{Binding TotalAnswers}" Foreground="{DynamicResource MaterialDesignBody}" FontSize="16" HorizontalAlignment="Center" Margin="10,0,0,0" />
 
-            <TextBlock Text="Correct Answers:" FontWeight="Bold" Foreground="White" FontSize="16" />
+            <TextBlock Text="Correct Answers:" FontWeight="Bold" Foreground="{DynamicResource MaterialDesignBody}" FontSize="16" />
             <TextBlock Text="{Binding TotalCorrectAnswers}" Foreground="{DynamicResource MaterialDesignBody}" FontSize="16" HorizontalAlignment="Center" Margin="10,0,0,0" />
 
-            <TextBlock Text="Avg. Answer Time:" FontWeight="Bold" Foreground="White" FontSize="16" />
+            <TextBlock Text="Avg. Answer Time:" FontWeight="Bold" Foreground="{DynamicResource MaterialDesignBody}" FontSize="16" />
             <TextBlock Text="{Binding AvgAnswerTime}" Foreground="{DynamicResource MaterialDesignBody}" FontSize="16" HorizontalAlignment="Center" Margin="10,0,0,0" />
         </UniformGrid>
     </StackPanel>
