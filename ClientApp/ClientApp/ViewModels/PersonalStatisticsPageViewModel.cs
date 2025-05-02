@@ -28,57 +28,13 @@ namespace ClientApp.ViewModels
         }
         private Page ownerPage;
         private string _errorMessage;
+        private List<PersonalStatistics> personalInfoList;
+        public List<PersonalStatistics> PersonalInfoList
+        {
+            get => new List<PersonalStatistics> { personalInfo };
+        }
+
         private PersonalStatistics personalInfo;
-        private string username;
-        private string gamesPlayed;
-        private string totalAnswers;
-        private string totalCorrectAnswers;
-        private string avgAnswerTime;
-        public string Username
-        {
-            get => username;
-            set
-            {
-                username = value;
-                OnPropertyChanged();
-            }
-        }
-        public string GamesPlayed
-        {
-            get => gamesPlayed;
-            set
-            {
-                gamesPlayed = value;
-                OnPropertyChanged();
-            }
-        }
-        public string TotalAnswers
-        {
-            get => totalAnswers;
-            set
-            {
-                totalAnswers = value;
-                OnPropertyChanged();
-            }
-        }
-        public string TotalCorrectAnswers
-        {
-            get => totalCorrectAnswers;
-            set
-            {
-                totalCorrectAnswers = value;
-                OnPropertyChanged();
-            }
-        }
-        public string AvgAnswerTime
-        {
-            get => avgAnswerTime;
-            set
-            {
-                avgAnswerTime = value;
-                OnPropertyChanged();
-            }
-        }
         public PersonalStatistics PersonalInfo
         {
             get => personalInfo;
@@ -116,13 +72,7 @@ namespace ClientApp.ViewModels
                 var personalStatisticsResponse =
                     JsonResponseDeserialize.DeserializeResponse<PersonalStatisticsResponse>(responseInfo);
                 this.PersonalInfo = personalStatisticsResponse.Statistics;
-                this.Username = this.PersonalInfo.UserName;
-                this.TotalAnswers = this.PersonalInfo.TotalAnswers.ToString();
-                this.TotalCorrectAnswers = this.PersonalInfo.TotalCorrectAnswers.ToString();
-                this.avgAnswerTime = this.PersonalInfo.AvgAnswerTime.ToString();
-                this.gamesPlayed = this.personalInfo.GamesPlayed.ToString();
-                
-
+                this.PersonalInfoList.Add(PersonalInfo);
             }
             catch (Exception ex)
             {

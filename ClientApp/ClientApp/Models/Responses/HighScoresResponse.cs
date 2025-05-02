@@ -1,5 +1,5 @@
 ﻿using ClientApp.Models.ResponseErrors;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +11,12 @@ namespace ClientApp.Models.Responses
     class HighScoresResponse : Response
     {
         [JsonConstructor]
-        public HighScoresResponse(uint status, List<HighScoreInfo> highscores) : base(status)
+        public HighScoresResponse(uint status, List<HighScoreInfo> statistics) : base(status)
         {
             
-            this.HighScores = highscores;
+            this.Statisics = statistics;
         }
-        public List<HighScoreInfo> HighScores { get; set; }
+        public List<HighScoreInfo> Statisics { get; }
         public ResponsesCodes GetCode() => ResponsesCodes.HighScoresRespones;
 
     }

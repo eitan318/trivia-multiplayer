@@ -94,7 +94,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInf
 RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& requestInfo) const
 {
     StatisticsManager& statsManager = this->m_handlerFactory.getStatisticsManger();
-    GetPersonalStatisticsResponse personalStatsResponse(0, statsManager.getPlayerStatistics(this->m_user.getUsername()));
+    GetPersonalStatisticsResponse personalStatsResponse(statsManager.getPlayerStatistics(this->m_user.getUsername()),0);
 
 
     RequestResult requestResult;

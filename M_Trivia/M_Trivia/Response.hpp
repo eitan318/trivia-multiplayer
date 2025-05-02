@@ -61,10 +61,14 @@ public:
      */
     virtual nlohmann::json baseJson() const {
         nlohmann::json errorsJson = errors ? errors->getJson() : nlohmann::json();
-        return nlohmann::json{
+        nlohmann::json j = nlohmann::json{
             {"Status", status},
-            {"Errors", errorsJson}
+            //{"Errors", errorsJson}
         };
+        if (errors) {
+            j["Errors"] = errorsJson;
+        }
+        return j;
     }
 
     /**

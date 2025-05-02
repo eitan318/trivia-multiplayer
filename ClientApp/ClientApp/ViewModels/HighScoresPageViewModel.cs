@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ClientApp.ViewModels
 {
@@ -78,8 +79,12 @@ namespace ClientApp.ViewModels
 
                 var HighestScoresResponse = 
                     JsonResponseDeserialize.DeserializeResponse<HighScoresResponse>(responseInfo);
-                this.ResponseList = HighestScoresResponse.HighScores;
-
+                this.ResponseList = HighestScoresResponse.Statisics;
+                for (int i = 0;i < HighestScoresResponse.Statisics.Count();i++)
+                {
+                    HighestScoresResponse.Statisics[i].PlayerUsername =
+                        $"#{i + 1} - {HighestScoresResponse.Statisics[i].PlayerUsername}";
+                }
 
             }
             catch (Exception ex)

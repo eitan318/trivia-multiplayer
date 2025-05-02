@@ -25,5 +25,6 @@ inline void to_json(nlohmann::json& j, const HighScoreInfo& highScoreInfo) {
         {"GameName", highScoreInfo.GameName},  
         {"PlayerUsername", highScoreInfo.UserName},
         {"TotalScore", highScoreInfo.TotalScore},
+        {"GameId", highScoreInfo.GameId},
     };
 }

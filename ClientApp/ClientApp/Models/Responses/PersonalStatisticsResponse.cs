@@ -1,5 +1,5 @@
 ﻿using ClientApp.Models.ResponseErrors;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +12,11 @@ namespace ClientApp.Models.Responses
     class PersonalStatisticsResponse : Response
     {
         [JsonConstructor]
-        public PersonalStatisticsResponse(uint status, PersonalStatistics personalstats) : base(status)
+        public PersonalStatisticsResponse(uint status, PersonalStatistics statistics) : base(status)
         {
-            this.Statistics = personalstats;
+            this.Statistics = statistics;
         }
-        public ResponsesCodes GetCode() => ResponsesCodes.JoinRoomResponse;
+        public ResponsesCodes GetCode() => ResponsesCodes.GetPersonalStatsResponse;
         public PersonalStatistics Statistics { get; }
-        public JoinRoomResponseErrors Errors { get; }
     }
 }

@@ -30,12 +30,13 @@
                 <ItemsControl ItemsSource="{Binding ResponseList}" Margin="0,0,0,20">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid Columns="6" />
+                            <StackPanel Orientation="Vertical" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding UserName}" />
+                            <TextBlock Text="{Binding PlayerUsername}" 
+                                       Foreground="{DynamicResource MaterialDesignBody}"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

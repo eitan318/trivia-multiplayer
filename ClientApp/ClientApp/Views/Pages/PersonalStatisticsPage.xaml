@@ -27,20 +27,34 @@
                    Margin="0,0,0,20"/>
 
                 <!-- Personal statistics -->
-                <ItemsControl ItemsSource="{Binding PersonalInfo}">
+                <ItemsControl ItemsSource="{Binding PersonalInfoList}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding username}" FontWeight="Bold" />
-                                <TextBlock Text="{Binding gamesPlayed}" FontWeight="Bold" />
-                                <TextBlock Text="{Binding totalAnswers}" FontWeight="Bold" />
-                                <TextBlock Text="{Binding totalCorrectAnswers}" FontWeight="Bold" />
-                                <TextBlock Text="{Binding avgAnswerTime}" FontWeight="Bold" />
+                            <StackPanel>
+                                <TextBlock Text="Username:" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding UserName}" Margin="0,0,0,10"
+                                           Foreground="{DynamicResource MaterialDesignBody}"/>
+
+                                <TextBlock Text="Games Played:" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding GamesPlayed}" Margin="0,0,0,10"
+                                           Foreground="{DynamicResource MaterialDesignBody}"/>
+
+                                <TextBlock Text="Total Answers:" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding TotalAnswers}" Margin="0,0,0,10"
+                                           Foreground="{DynamicResource MaterialDesignBody}"/>
+
+                                <TextBlock Text="Correct Answers:" FontWeight="Bold"
+                                           Foreground="{DynamicResource MaterialDesignBody}"/>
+                                <TextBlock Text="{Binding TotalCorrectAnswers}" Margin="0,0,0,10"
+                                           Foreground="{DynamicResource MaterialDesignBody}"/>
+
+                                <TextBlock Text="Avg. Answer Time:" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding AvgAnswerTime}" Margin="0,0,0,10"
+                                           Foreground="{DynamicResource MaterialDesignBody}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                
 
                 <!-- ErrorBlock -->
                 <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" />

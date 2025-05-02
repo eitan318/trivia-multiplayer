@@ -12,7 +12,7 @@ namespace ClientApp.Models
     */
     public struct HighScoreInfo
     {
-        public string UserName {  get; set; }
+        public string PlayerUsername {  get; set; }
         public string GameName {  get; set; }
         public int TotalScore {  get; set; }
         public int GameId {  get; set; }
