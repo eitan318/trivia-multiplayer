@@ -4,7 +4,7 @@
 #include <string>
 
 
-class Helper
+class SocketService
 {
 public:
 	/**

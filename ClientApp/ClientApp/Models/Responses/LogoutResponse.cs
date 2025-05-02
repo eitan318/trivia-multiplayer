@@ -9,8 +9,7 @@ namespace ClientApp.Models.Responses
 {
     class LogoutResponse : Response
     {
-        [JsonConstructor]
-        public LogoutResponse(uint status) : base(status) { }
+        private LogoutResponse() { }
         public ResponsesCodes GetCode() => ResponsesCodes.LogoutResponse;
     }
 }

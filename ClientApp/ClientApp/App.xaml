@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:ClientApp"
-             xmlns:converters="clr-namespace:ClientApp.Converters"
-             xmlns:controls="clr-namespace:ClientApp.Controls"
+             xmlns:converters="clr-namespace:ClientApp.Views.Converters"
+             xmlns:controls="clr-namespace:ClientApp.Views.Controls"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
 
@@ -14,18 +14,14 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
 
-                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Orange" SecondaryColor="Lime" />
-                <ResourceDictionary Source="Controls/HyperLink.xaml"/>
+                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="LightBlue" SecondaryColor="Lime" />
+                <ResourceDictionary Source="Views/Controls/HyperLink.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"/>
-            <converters:EyeIconConverter x:Key="EyeIconConverter"/>
             <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
 
-            <Style TargetType="TextBlock" x:Key="HelperTextRedStyle">
-                <Setter Property="Foreground" Value="Red" />
-            </Style>
 
+            <SolidColorBrush x:Key="ErrorBrush" Color="Red" />
         </ResourceDictionary>
     </Application.Resources>
 

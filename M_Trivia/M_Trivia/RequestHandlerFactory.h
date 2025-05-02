@@ -63,6 +63,8 @@ private:
      */
     RequestHandlerFactory(const RequestHandlerFactory&) = delete;
 
+    ~RequestHandlerFactory() = default;
+
     /**
      * @brief Deleted assignment operator to prevent assignment of the factory.
      * @return A reference to the current instance.

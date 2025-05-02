@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      xmlns:controls="clr-namespace:ClientApp.Controls"
+      xmlns:controls="clr-namespace:ClientApp.Views.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ClientApp.Views"
       xmlns:vm="clr-namespace:ClientApp.ViewModels"
@@ -47,7 +47,7 @@
                     Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
                     materialDesign:HintAssist.Hint="Password"/>
             <TextBlock Text="{Binding PasswordErrorMessage}" 
-                       Foreground="Red" 
+                       Foreground="{StaticResource ErrorBrush}" 
                        FontSize="12"
                        Visibility="{Binding PasswordErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
 
@@ -57,7 +57,7 @@
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"/>
             <TextBlock Text="{Binding EmailErrorMessage}" 
-                       Foreground="Red" 
+                       Foreground="{StaticResource ErrorBrush}" 
                        FontSize="12"
                        Visibility="{Binding EmailErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
 
@@ -67,7 +67,7 @@
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"/>
             <TextBlock Text="{Binding PhoneNumberErrorMessage}" 
-                       Foreground="Red" 
+                       Foreground="{StaticResource ErrorBrush}" 
                        FontSize="12"
                        Visibility="{Binding PhoneNumberErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
 
@@ -77,7 +77,7 @@
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"/>
             <TextBlock Text="{Binding HouseAddressErrorMessage}" 
-                       Foreground="Red" 
+                       Foreground="{StaticResource ErrorBrush}" 
                        FontSize="12"
                        Visibility="{Binding HouseAddressErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
 
@@ -91,7 +91,7 @@
             SelectedDate="{Binding BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBlock Text="{Binding BirthDateErrorMessage}" 
-               Foreground="Red" 
+               Foreground="{StaticResource ErrorBrush}" 
                FontSize="12"
                Visibility="{Binding BirthDateErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
             
@@ -117,7 +117,7 @@
 
             <!-- Error message display -->
             <TextBlock Text="{Binding ErrorMessage}"
-                       Foreground="Red"
+                       Foreground="{StaticResource ErrorBrush}" 
                        TextAlignment="Center"
                        Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
         </StackPanel>

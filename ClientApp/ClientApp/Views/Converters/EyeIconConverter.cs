@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace ClientApp.Converters
+namespace ClientApp.Views.Converters
 {
     public class EyeIconConverter : IValueConverter
     {
@@ -25,7 +25,7 @@ namespace ClientApp.Converters
         {
             if (value is bool isChecked)
             {
-                return isChecked ? "Eye" : "EyeOff"; // Eye or EyeOff based on state
+                return isChecked ? "EyeOff" : "Eye"; // Eye or EyeOff based on state
             }
             return "Eye";
         }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ClientApp.Services;
 using ClientApp.Views.Pages;
 using System.Windows.Interop;
+using ClientApp.Models.Responses;
 
 namespace ClientApp
 {

@@ -47,6 +47,15 @@ namespace ClientApp.ViewModels
             return GetInstance(() => new MenuPageViewModel(owner));
         }
 
+
+        private string _errorMessage;
+
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set { _errorMessage = value; OnPropertyChanged(); }
+        }
+
         /// <summary>
         /// Command to create a new room.
         /// </summary>
@@ -102,6 +111,7 @@ namespace ClientApp.ViewModels
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
             {
                 ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
+                ErrorMessage = errorResponse.Message;
             }
             else
             {
@@ -109,7 +119,7 @@ namespace ClientApp.ViewModels
 
                 if(logoutResponse.Status == 0)
                 {
-
+                    MyNavigationService.Navigate(new LoginPage());
                 }
                 else
                 {

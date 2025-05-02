@@ -7,11 +7,12 @@ m_handlerFactory(handlerFactory)
 
 bool MenuRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
 {
-    switch (static_cast<RequestsCodes>(requestInfo.code)) {
-    case RequestsCodes::CreateRoomRequest:
-    case RequestsCodes::GetPlayersInRoomRequest:
-    case RequestsCodes::JoinRoomRequest:
-    case RequestsCodes::GetRoomsRequest:
+    switch (static_cast<RequestCodes>(requestInfo.code)) {
+    case RequestCodes::CreateRoomRequest:
+    case RequestCodes::GetPlayersInRoomRequest:
+    case RequestCodes::JoinRoomRequest:
+    case RequestCodes::GetRoomsRequest:
+    case RequestCodes::LogoutRequest:
         return true;
     default:
         return false;
@@ -20,29 +21,37 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
 
 RequestResult MenuRequestHandler::handleRequest(const RequestInfo& requestInfo) const
 {
-    switch (static_cast<RequestsCodes>(requestInfo.code)) {
-    case RequestsCodes::CreateRoomRequest:
+    switch (static_cast<RequestCodes>(requestInfo.code)) {
+    case RequestCodes::CreateRoomRequest:
         return this->createRoom(requestInfo);
-    case RequestsCodes::GetPlayersInRoomRequest:
+    case RequestCodes::GetPlayersInRoomRequest:
         return this->getPlayersInRoom(requestInfo);
-    case RequestsCodes::GetRoomsRequest:
+    case RequestCodes::GetRoomsRequest:
         return this->getRooms(requestInfo);
-    case RequestsCodes::JoinRoomRequest:
+    case RequestCodes::JoinRoomRequest:
         return this->joinRoom(requestInfo);
+    case RequestCodes::LogoutRequest:
+        return this->logout(requestInfo);
+    default:
+		ServerErrorResponse errorResponse("Invalid msg code.");
+		RequestResult requestResult;
+		requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
+		requestResult.newHandler = nullptr;
+		return requestResult;
+		
     }
+    
 }
 
-RequestResult MenuRequestHandler::signout(const RequestInfo& info) const
+RequestResult MenuRequestHandler::logout(const RequestInfo& info) const
 {
-    //signoutRequest request = JsonRequestPacketDeserializer<GetPlayersInRoomRequest>::deserializeRequest(requestInfo.buffer);
-
-    LogoutResponse signOutResponse(0);
+    LogoutResponse logOutResponse(0);
     LoginManager& manager = this->m_handlerFactory.getLoginManager();
     manager.logout(this->m_user.getUsername());
 
     RequestResult requestResult;
-    requestResult.response = JsonResponsePacketSerializer::serializeResponse(signOutResponse);
-    requestResult.newHandler = std::make_unique<MenuRequestHandler>(this->m_user, this->m_handlerFactory);
+    requestResult.response = JsonResponsePacketSerializer::serializeResponse(logOutResponse);
+    requestResult.newHandler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
     return requestResult;
 }
 
@@ -78,7 +87,6 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInf
 
 RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& requestInfo) const
 {
-    //signoutRequest request = JsonRequestPacketDeserializer<GetPlayersInRoomRequest>::deserializeRequest(requestInfo.buffer);
     StatisticsManager& statsManager = this->m_handlerFactory.getStatisticsManger();
     GetPersonalStatisticsResponse personalStatsResponse(0, statsManager.getPlayerStatistics(this->m_user.getUsername()));
 

@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ClientApp.ViewModels.ForgotPassword;
+using ClientApp.Views.Controls;
 
 namespace ClientApp.Views.Pages
 {

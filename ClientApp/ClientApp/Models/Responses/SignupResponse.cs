@@ -10,11 +10,9 @@ namespace ClientApp.Models.Responses
 {
     class SignupResponse : Response
     {
-        [JsonConstructor]
-        public SignupResponse(uint status, SignupErrors errors) : base(status) {
-            Errors = errors;
-        }
-        public SignupErrors Errors { get; }
+        private SignupResponse() { }
+        [JsonProperty]
+        public SignupErrors Errors { get; private set; }
         public ResponsesCodes GetCode() => ResponsesCodes.SignupResponse;
     }
 }

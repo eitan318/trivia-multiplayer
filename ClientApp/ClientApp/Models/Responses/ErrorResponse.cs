@@ -4,13 +4,9 @@ namespace ClientApp.Models.Responses
 {
     class ErrorResponse : Response
     {
-        [JsonConstructor]
-        public ErrorResponse(uint status, string message) : base(status)
-        {
-            Message = message;
-        }
-
+        private ErrorResponse() { }
         public ResponsesCodes GetCode() => ResponsesCodes.ErrorResponse;
-        public string Message { get; }
+        [JsonProperty]
+        public string Message { get; private set; }
     }
 }
