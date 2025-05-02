@@ -11,7 +11,7 @@ namespace ClientApp.Models.Responses
     class CreateRoomResponse : Response
     {
         [JsonConstructor]
-        public CreateRoomResponse(uint status, CreateRoomResponseErros errors, RoomData roomData) : base(status){
+        private CreateRoomResponse(uint status, CreateRoomResponseErros errors, RoomData roomData) : base(status) {
             this.RoomData = roomData;
             this.Errors = errors;
         }

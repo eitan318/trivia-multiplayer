@@ -5,7 +5,7 @@ namespace ClientApp.Models.Responses
     class ErrorResponse : Response
     {
         [JsonConstructor]
-        public ErrorResponse(uint status, string message) : base(status)
+        private ErrorResponse(uint status, string message) : base(status)
         {
             Message = message;
         }

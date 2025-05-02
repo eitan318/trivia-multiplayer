@@ -12,7 +12,7 @@ namespace ClientApp.Models.Responses
     class LoginResponse : Response
     {
         [JsonConstructor]
-        public LoginResponse(uint status, LoginResponseErrors errors) : base(status) {
+        private LoginResponse(uint status, LoginResponseErrors errors) : base(status) {
             Errors = errors;
         }
 

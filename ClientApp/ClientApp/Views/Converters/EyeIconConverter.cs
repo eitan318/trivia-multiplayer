@@ -25,7 +25,7 @@ namespace ClientApp.Views.Converters
         {
             if (value is bool isChecked)
             {
-                return isChecked ? "Eye" : "EyeOff"; // Eye or EyeOff based on state
+                return isChecked ? "EyeOff" : "Eye"; // Eye or EyeOff based on state
             }
             return "Eye";
         }
