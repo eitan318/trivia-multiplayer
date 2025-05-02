@@ -8,9 +8,10 @@
  */
 struct HighScoreInfo {
     std::string username; 
-    std::string game_name; 
-    int total_score;      
-    int game_id;           
+    std::string gameName; 
+    int totalScore;      
+    unsigned int gameId;    
+    unsigned int rank;
 };
 
 /**
@@ -22,8 +23,10 @@ struct HighScoreInfo {
  */
 inline void to_json(nlohmann::json& j, const HighScoreInfo& highScoreInfo) {
     j = nlohmann::json{
-        {"game_name", highScoreInfo.game_name},  
-        {"player_username", highScoreInfo.username},   
-        {"total_score", highScoreInfo.total_score},
+        {"GameName", highScoreInfo.gameName},  
+        {"PlayerUsername", highScoreInfo.username},
+        {"TotalScore", highScoreInfo.totalScore},
+        {"GameId", highScoreInfo.gameId},
+        {"Rank", highScoreInfo.rank}
     };
 }

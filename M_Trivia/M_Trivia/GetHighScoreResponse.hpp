@@ -15,7 +15,8 @@ private:
 
 public:
     GetHighScoreResponse() = delete;
-    GetHighScoreResponse(unsigned int status, const std::vector<HighScoreInfo>& statistics) : Response(status), statistics(statistics) {
+    GetHighScoreResponse(unsigned int status, const std::vector<HighScoreInfo>& statistics) : Response(status),
+        statistics(statistics) {
 
     }
 

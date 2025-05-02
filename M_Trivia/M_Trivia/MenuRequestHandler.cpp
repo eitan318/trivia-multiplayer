@@ -5,6 +5,7 @@ m_handlerFactory(handlerFactory)
 {
 }
 
+//Checks if the request is relevant for menureqhandler
 bool MenuRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
 {
     switch (static_cast<RequestCodes>(requestInfo.code)) {
@@ -13,6 +14,8 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
     case RequestCodes::JoinRoomRequest:
     case RequestCodes::GetRoomsRequest:
     case RequestCodes::LogoutRequest:
+    case RequestCodes::GetHighScoresRequest:
+    case RequestCodes::PersonalStatisticsRequest:    
         return true;
     default:
         return false;
@@ -32,13 +35,16 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& requestInfo) 
         return this->joinRoom(requestInfo);
     case RequestCodes::LogoutRequest:
         return this->logout(requestInfo);
+    case RequestCodes::GetHighScoresRequest:
+        return this->getHighScore(requestInfo);
+    case RequestCodes::PersonalStatisticsRequest:
+        return this->getPersonalStats(requestInfo);
     default:
 		ServerErrorResponse errorResponse("Invalid msg code.");
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
 		requestResult.newHandler = nullptr;
 		return requestResult;
-		
     }
     
 }
@@ -88,8 +94,8 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInf
 RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& requestInfo) const
 {
     StatisticsManager& statsManager = this->m_handlerFactory.getStatisticsManger();
-    GetPersonalStatisticsResponse personalStatsResponse(0, statsManager.getPlayerStatistics(this->m_user.getUsername()));
-
+    PersonalStatistics ps = statsManager.getPlayerStatistics(this->m_user.getUsername());
+    GetPersonalStatisticsResponse personalStatsResponse(ps, 0);
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(personalStatsResponse);
@@ -104,7 +110,8 @@ RequestResult MenuRequestHandler::getHighScore(const RequestInfo& requestInfo) c
 
 
     StatisticsManager& statsManager = this->m_handlerFactory.getStatisticsManger();
-    GetHighScoreResponse highScoreResponse(0, statsManager.getBestScores(request.getTopPlayersLimit()));
+    std::vector<HighScoreInfo> highestScores = statsManager.getBestScores(request.getTopPlayersLimit());
+    GetHighScoreResponse highScoreResponse(0, highestScores);
   
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(highScoreResponse);
