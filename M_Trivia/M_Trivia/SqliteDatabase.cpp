@@ -412,12 +412,13 @@ std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit) const
 
 	sqlite3_bind_int(stmt, 1, limit);
 
-	while (sqlite3_step(stmt) == SQLITE_ROW) {
+	for (unsigned int i = 1; sqlite3_step(stmt) == SQLITE_ROW; i++) {
 		HighScoreInfo bsi;
 		bsi.username = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
-		bsi.game_id = sqlite3_column_int(stmt, 1);
-		bsi.game_name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-		bsi.total_score = sqlite3_column_int(stmt, 3);
+		bsi.gameId = sqlite3_column_int(stmt, 1);
+		bsi.gameName = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+		bsi.totalScore = sqlite3_column_int(stmt, 3);
+		bsi.rank = i;
 
 		results.push_back(bsi);
 	}

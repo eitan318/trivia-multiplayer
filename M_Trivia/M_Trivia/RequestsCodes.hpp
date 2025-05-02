@@ -9,7 +9,8 @@ enum class RequestCodes : unsigned char {
     SendPasswordResetCodeRequest = 7,
     ResetPasswordRequest = 8,
     GetHighScoresRequest = 9,
-    GetRoomsRequest = 10
+    GetRoomsRequest = 10,
+    PersonalStatisticsRequest = 11,
 };
 
 

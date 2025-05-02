@@ -10,6 +10,7 @@
 #include "GetPlayersInRoomResponse.hpp"
 #include "GetPersonalStatisticsResponse.hpp"
 #include "GetHighScoreResponse.hpp"
+#include "PersonalStatisticsRequest.hpp"
 #include "CreateRoomResponse.hpp"
 
 class RequestHandlerFactory;

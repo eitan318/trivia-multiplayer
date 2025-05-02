@@ -14,9 +14,6 @@ private:
 public:
 
     GetPersonalStatisticsResponse() = delete;
-    GetPersonalStatisticsResponse(unsigned int status, const PersonalStatistics& statistics) : Response(status), statistics(statistics) {
-
-    }
     /**
      * @brief Constructor for GetPersonalStatisticsResponse.
      * @param personalStats The personal statistics data.

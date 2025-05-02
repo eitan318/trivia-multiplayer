@@ -20,6 +20,7 @@ namespace ClientApp.Models.Responses
         SignupResponse = 9,
         ResetPasswordResponse = 10,
         LogoutResponse = 11,
+        HighScoresRespones = 12,
 
     }
 }
