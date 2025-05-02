@@ -94,8 +94,8 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInf
 RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& requestInfo) const
 {
     StatisticsManager& statsManager = this->m_handlerFactory.getStatisticsManger();
-    GetPersonalStatisticsResponse personalStatsResponse(statsManager.getPlayerStatistics(this->m_user.getUsername()),0);
-
+    PersonalStatistics ps = statsManager.getPlayerStatistics(this->m_user.getUsername());
+    GetPersonalStatisticsResponse personalStatsResponse(ps, 0);
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(personalStatsResponse);
@@ -111,7 +111,6 @@ RequestResult MenuRequestHandler::getHighScore(const RequestInfo& requestInfo) c
 
     StatisticsManager& statsManager = this->m_handlerFactory.getStatisticsManger();
     std::vector<HighScoreInfo> highestScores = statsManager.getBestScores(request.getTopPlayersLimit());
-    
     GetHighScoreResponse highScoreResponse(0, highestScores);
   
     RequestResult requestResult;

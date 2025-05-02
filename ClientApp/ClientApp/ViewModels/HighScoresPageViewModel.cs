@@ -80,13 +80,6 @@ namespace ClientApp.ViewModels
                 var HighestScoresResponse = 
                     JsonResponseDeserialize.DeserializeResponse<HighScoresResponse>(responseInfo);
                 this.ResponseList = HighestScoresResponse.Statisics;
-                for (int i = 0; i < HighestScoresResponse.Statisics.Count; i++)
-                {
-                    var info = HighestScoresResponse.Statisics[i];
-                    info.PlayerUsername = $"#{i + 1} - {info.PlayerUsername}";
-                    HighestScoresResponse.Statisics[i] = info;
-                }
-                this.ResponseList = HighestScoresResponse.Statisics;
 
 
             }

@@ -5,18 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ClientApp.Models.ResponseErrors;
+using Newtonsoft.Json;
 
 namespace ClientApp.Models.Responses
 {
     class PersonalStatisticsResponse : Response
     {
-        [JsonConstructor]
-        public PersonalStatisticsResponse(uint status, PersonalStatistics statistics) : base(status)
-        {
-            this.Statistics = statistics;
-        }
+        private PersonalStatisticsResponse() {}
         public ResponsesCodes GetCode() => ResponsesCodes.GetPersonalStatsResponse;
+        [JsonProperty]
         public PersonalStatistics Statistics { get; }
     }
 }

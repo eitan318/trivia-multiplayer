@@ -20,7 +20,7 @@ namespace ClientApp.ViewModels
         {
             this.ownerPage = owner;
             this.personalInfo = new PersonalStatistics();
-            getPersonalStats();
+            Refresh();
         }
         public static PersonalStatisticsPageViewModel Instance(Page owner)
         {
@@ -28,11 +28,6 @@ namespace ClientApp.ViewModels
         }
         private Page ownerPage;
         private string _errorMessage;
-        private List<PersonalStatistics> personalInfoList;
-        public List<PersonalStatistics> PersonalInfoList
-        {
-            get => new List<PersonalStatistics> { personalInfo };
-        }
 
         private PersonalStatistics personalInfo;
         public PersonalStatistics PersonalInfo
@@ -54,9 +49,9 @@ namespace ClientApp.ViewModels
             }
         }
 
-        public ICommand getPersonalStatsCommand { get; }
+        public ICommand RefreshCommand { get; }
 
-        public async void getPersonalStats()
+        public async void Refresh()
         {
             try
             {
@@ -72,9 +67,8 @@ namespace ClientApp.ViewModels
                 var personalStatisticsResponse =
                     JsonResponseDeserialize.DeserializeResponse<PersonalStatisticsResponse>(responseInfo);
                 this.PersonalInfo = personalStatisticsResponse.Statistics;
-                this.PersonalInfoList.Add(PersonalInfo);
             }
-            catch (Exception ex)
+            catch (Exception ex)    
             {
                 ErrorMessage = $"Error retrieving data on user: {ex.Message}";
             }
