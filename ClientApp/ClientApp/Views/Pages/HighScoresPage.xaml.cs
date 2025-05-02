@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClientApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,8 @@ namespace ClientApp.Views.Pages
         public HighScoresPage(Page parent) : base(parent)
         {
             InitializeComponent();
+            DataContext = HighScoresPageViewModel.Instance(this);
+
         }
     }
 }

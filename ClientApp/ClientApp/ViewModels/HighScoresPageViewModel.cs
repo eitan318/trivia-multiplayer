@@ -18,12 +18,9 @@ namespace ClientApp.ViewModels
 
     class HighScoresPageViewModel : BaseViewModel
     {
-        const int TOP1INDEX = 0;
-        const int TOP2INDEX = 1;
-        const int TOP3INDEX = 2;
         private HighScoresPageViewModel(Page owner)
         {
-            RefreshTop3();
+            RefreshTop();
             this.ownerPage = owner;
         }
         public static HighScoresPageViewModel Instance(Page owner)
@@ -34,9 +31,7 @@ namespace ClientApp.ViewModels
         /// The page that owns this ViewModel. Used for navigation purposes.
         /// </summary>
         private Page ownerPage;
-        private string top1Name;
-        private string top2Name;
-        private string top3Name;
+        private List<HighScoreInfo> responseList;
         private string _errorMessage;
         public string ErrorMessage
         {
@@ -47,21 +42,29 @@ namespace ClientApp.ViewModels
                 OnPropertyChanged();
             }
         }
-        public string Top1Name { get => top1Name; set => top1Name = value; }
-        public string Top2Name { get => top2Name; set => top2Name = value; }
-        public string Top3Name { get => top3Name; set => top3Name = value; }
+        public List<HighScoreInfo> ResponseList
+        {
+            get => responseList;
+            set
+            {
+                responseList = value;
+                OnPropertyChanged();
+            }
+        }
 
 
-        public ICommand BackToStatisticsPageCommand { get; }
+        public ICommand RefreshTopCommand { get; }
+
+
 
         /// <summary>
-        /// This function refreshes the top 3 leading players
+        /// This function refreshes the top leading players
         /// </summary>
-        public async void RefreshTop3()
+        public async void RefreshTop()
         { 
             try
             {
-                HighScoresRequest request = new HighScoresRequest();
+                HighScoresRequest request = new HighScoresRequest(3);
                 var responseInfo = await RequestsExchangeService.ExchangeRequest(request);
 
                 if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
@@ -70,17 +73,15 @@ namespace ClientApp.ViewModels
                     return;
                 }
 
-                var HighestScoresResponse = JsonResponseDeserialize.DeserializeResponse<HighScoresResponse>(responseInfo);
-                this.Top1Name = "1st =>" + HighestScoresResponse.HighScores[TOP1INDEX].UserName;
-                this.Top2Name = "2nd =>" + HighestScoresResponse.HighScores[TOP2INDEX].UserName;
-                this.Top3Name = "3rd =>" + HighestScoresResponse.HighScores[TOP3INDEX].UserName;
-
+                var HighestScoresResponse = 
+                    JsonResponseDeserialize.DeserializeResponse<HighScoresResponse>(responseInfo);
+                this.ResponseList = HighestScoresResponse.HighScores;
 
 
             }
             catch (Exception ex)
             {
-                ErrorMessage = $"Error retrieving top 3 users: {ex.Message}";
+                ErrorMessage = $"Error retrieving top users: {ex.Message}";
             }
         }
 

@@ -13,6 +13,7 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
     case RequestCodes::JoinRoomRequest:
     case RequestCodes::GetRoomsRequest:
     case RequestCodes::LogoutRequest:
+    case RequestCodes::GetHighScoresRequest:
         return true;
     default:
         return false;
@@ -32,13 +33,15 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& requestInfo) 
         return this->joinRoom(requestInfo);
     case RequestCodes::LogoutRequest:
         return this->logout(requestInfo);
+    case RequestCodes::GetHighScoresRequest:
+        return this->getHighScore(requestInfo);
     default:
 		ServerErrorResponse errorResponse("Invalid msg code.");
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
 		requestResult.newHandler = nullptr;
 		return requestResult;
-		
+
     }
     
 }
@@ -104,7 +107,8 @@ RequestResult MenuRequestHandler::getHighScore(const RequestInfo& requestInfo) c
 
 
     StatisticsManager& statsManager = this->m_handlerFactory.getStatisticsManger();
-    GetHighScoreResponse highScoreResponse(0, statsManager.getBestScores(request.getTopPlayersLimit()));
+    std::vector<HighScoreInfo> highestScores = statsManager.getBestScores(request.getTopPlayersLimit());
+    GetHighScoreResponse highScoreResponse(0, highestScores);
   
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(highScoreResponse);
