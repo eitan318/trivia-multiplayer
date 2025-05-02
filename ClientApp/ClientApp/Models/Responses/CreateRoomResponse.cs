@@ -10,13 +10,11 @@ namespace ClientApp.Models.Responses
 {
     class CreateRoomResponse : Response
     {
-        [JsonConstructor]
-        private CreateRoomResponse(uint status, CreateRoomResponseErros errors, RoomData roomData) : base(status) {
-            this.RoomData = roomData;
-            this.Errors = errors;
-        }
+        private CreateRoomResponse() { }
         public ResponsesCodes GetCode() => ResponsesCodes.CreateRoomResponse;
-        public RoomData RoomData { get; }
-        public CreateRoomResponseErros Errors { get; }
+        [JsonProperty]
+        public RoomData RoomData { get; private set; }
+        [JsonProperty]
+        public CreateRoomResponseErros Errors { get; private set; }
     }
 }

@@ -10,10 +10,10 @@ namespace ClientApp.Models.Responses
 {
     class JoinRoomResponse : Response
     {
-        [JsonConstructor]
-        private JoinRoomResponse(uint status) : base(status) { }
+        private JoinRoomResponse() { }
         public ResponsesCodes GetCode() => ResponsesCodes.JoinRoomResponse;
-        public JoinRoomResponseErrors Errors {  get; }
+        [JsonProperty]
+        public JoinRoomResponseErrors Errors { get; private set; }
 
     }
 }

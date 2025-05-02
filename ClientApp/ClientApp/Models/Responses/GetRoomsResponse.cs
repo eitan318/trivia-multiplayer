@@ -5,16 +5,14 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using ClientApp.Models;
+using Newtonsoft.Json;
 
 namespace ClientApp.Models.Responses
 {
     class GetRoomsResponse : Response
     {
-        [JsonConstructor]
-        private GetRoomsResponse(uint status, List<RoomData> rooms) :base(status)
-        { 
-            this.Rooms = rooms;
-        }
-        public List<RoomData> Rooms { get; }
+        private GetRoomsResponse() { }
+        [JsonProperty]
+        public List<RoomData> Rooms { get; private set; }
     }
 }
