@@ -25,6 +25,8 @@ namespace ClientApp.ViewModels
         private string _questionCountError;
         private string _errorMessage;
 
+        private string user;
+
         /// <summary>
         /// The name of the room to be created.
         /// </summary>
@@ -88,8 +90,9 @@ namespace ClientApp.ViewModels
         /// <summary>
         /// Private constructor for initializing the ViewModel.
         /// </summary>
-        private CreateRoomPageViewModel()
+        private CreateRoomPageViewModel(string user)
         {
+            this.user = user;
             CreateRoomCommand = new RelayCommand(PerformCreateRoom, CanCreateRoom);
 
             PropertyChanged += (sender, args) =>
@@ -109,17 +112,16 @@ namespace ClientApp.ViewModels
         /// Creates or retrieves a singleton instance of the CreateRoomPageViewModel.
         /// </summary>
         /// <returns>An instance of CreateRoomPageViewModel.</returns>
-        public static CreateRoomPageViewModel Instance()
+        public static CreateRoomPageViewModel Instance(string user)
         {
-            return GetInstance(() => new CreateRoomPageViewModel());
+            return GetInstance(() => new CreateRoomPageViewModel(user));
         }
 
         /// <summary>
         /// Determines whether the room can be created based on input validation.
         /// </summary>
-        /// <param name="parameter">Unused parameter.</param>
         /// <returns>True if the room can be created, otherwise false.</returns>
-        private bool CanCreateRoom(object parameter)
+        private bool CanCreateRoom()
         {
             return !string.IsNullOrWhiteSpace(RoomName?.Trim())
                    && MaxPlayers > 0
@@ -130,13 +132,12 @@ namespace ClientApp.ViewModels
         /// <summary>
         /// Executes the process of creating a room and fetching players.
         /// </summary>
-        /// <param name="parameter">Unused parameter.</param>
-        private async void PerformCreateRoom(object parameter)
+        private async void PerformCreateRoom()
         {
             RoomData? roomData = await CreateRoom();
             if (roomData != null)
             {
-                MyNavigationService.Navigate(new RoomPage(roomData.Value));
+                MyNavigationService.Navigate(new AdminRoomPage(roomData.Value, user));
             }
 
         }

@@ -1,18 +1,6 @@
 ﻿using ClientApp.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ClientApp.Views.Pages
 {
@@ -21,10 +9,11 @@ namespace ClientApp.Views.Pages
     /// </summary>
     public partial class CreateRoomPage : NavigablePage
     {
-        public CreateRoomPage(Page parent) : base(parent)
+        public CreateRoomPage(Page parent, string user) : base(parent)
         {
             InitializeComponent();
-            DataContext = CreateRoomPageViewModel.Instance();
+            RoomName_TB.Focus(); // Corrected syntax for Focus
+            DataContext = CreateRoomPageViewModel.Instance(user);
         }
     }
 }

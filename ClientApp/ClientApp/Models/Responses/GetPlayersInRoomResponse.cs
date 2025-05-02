@@ -11,6 +11,6 @@ namespace ClientApp.Models.Responses
     {
         private GetPlayersInRoomResponse() { }
         [JsonProperty]
-        public List<string> Players { get; private set; }
+        public List<LoggedUser> Players { get; private set; }
     }
 }

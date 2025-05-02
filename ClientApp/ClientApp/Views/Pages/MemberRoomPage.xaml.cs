@@ -20,12 +20,12 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for RoomPage.xaml
     /// </summary>
-    public partial class RoomPage : Page
+    partial class MemberRoomPage : Page
     {
-        public RoomPage(RoomData roomData)
+        public MemberRoomPage(RoomData roomData, string user)
         {
             InitializeComponent();
-            DataContext = RoomPageViewModel.Instance(roomData);
+            DataContext = MemberRoomPageViewModel.Instance(roomData, user);
         }
     }
 }

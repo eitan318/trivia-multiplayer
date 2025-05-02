@@ -199,7 +199,7 @@ namespace ClientApp.ViewModels
                     LoginResponse loginResponse = JsonResponseDeserialize.DeserializeResponse<LoginResponse>(responseInfo);
                     if(loginResponse.Status == 0)
                     {
-                        MyNavigationService.Navigate(new MenuPage());
+                        MyNavigationService.Navigate(new MenuPage(trimmedUsername));
                     }
                     else
                     {
@@ -269,24 +269,6 @@ namespace ClientApp.ViewModels
                 EmailErrorMessage = cannotBeEmptyString;
                 perform = false;
             }
-
-            //if (string.IsNullOrWhiteSpace(PhoneNumber))
-            //{
-            //    PhoneNumberErrorMessage = cannotBeEmptyString;
-            //    perform = false;
-            //}
-
-            //if (string.IsNullOrWhiteSpace(HouseAddress))
-            //{
-            //    HouseAddressErrorMessage = cannotBeEmptyString;
-            //    perform = false;
-            //}
-
-            //if (string.IsNullOrWhiteSpace(BirthDate))
-            //{
-            //    BirthDateErrorMessage = cannotBeEmptyString;
-            //    perform = false;
-            //}
 
             // If any field is invalid, prevent further action
             if (!perform)

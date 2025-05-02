@@ -7,22 +7,25 @@ using ClientApp.ViewModels;
 using ClientApp.Views.Pages;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Xaml.Behaviors.Media;
 
 public class JoinRoomViewModel : BaseViewModel
 {
-    private JoinRoomViewModel(Page owner)
+    private JoinRoomViewModel(Page owner, string user)
     {
         this.ownerPage = owner;
+        this.user = user;
         RefreshCommand = new RelayCommand(async () => await Refresh());
         JoinCommand = new RelayCommand(async () => await JoinRoom(), CanJoinRoom);
         _ = Refresh(); // Fire and forget
     }
 
-    public static JoinRoomViewModel Instance(Page owner)
+    public static JoinRoomViewModel Instance(Page owner, string user)
     {
-        return GetInstance(() => new JoinRoomViewModel(owner));
+        return GetInstance(() => new JoinRoomViewModel(owner, user));
     }
 
+    private string user;
     private Page ownerPage;
     private List<RoomData> _rooms;
     private string _errorMessage;
@@ -118,7 +121,7 @@ public class JoinRoomViewModel : BaseViewModel
             var joinResponse = JsonResponseDeserialize.DeserializeResponse<JoinRoomResponse>(responseInfo);
             if(joinResponse.Status == 0)
             {
-                MyNavigationService.Navigate(new RoomPage(SelectedRoom.Value));
+                MyNavigationService.Navigate(new MemberRoomPage(SelectedRoom.Value, user));
             }
             else
             {

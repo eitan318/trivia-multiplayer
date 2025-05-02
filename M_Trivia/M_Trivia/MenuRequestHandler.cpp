@@ -76,7 +76,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInf
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
 
     Room room = roomManager.getRoom(id);
-    std::vector<std::string> players = room.getAllUsers();
+    std::vector<LoggedUser> players = room.getAllUsers();
     GetPlayersInRoomResponse getPlayersInRoomResponse(0, players);
 
     RequestResult requestResult;

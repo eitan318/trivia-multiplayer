@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Models
 {
-    class Player
+    class LoggedUser
     {
         public string Username { get; set; }
+        public bool IsMe { get; set; }
 
     }
 }
