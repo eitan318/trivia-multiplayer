@@ -111,6 +111,7 @@ RequestResult MenuRequestHandler::getHighScore(const RequestInfo& requestInfo) c
 
     StatisticsManager& statsManager = this->m_handlerFactory.getStatisticsManger();
     std::vector<HighScoreInfo> highestScores = statsManager.getBestScores(request.getTopPlayersLimit());
+    
     GetHighScoreResponse highScoreResponse(0, highestScores);
   
     RequestResult requestResult;
