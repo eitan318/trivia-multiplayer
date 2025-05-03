@@ -9,23 +9,27 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 namespace ClientApp.ViewModels
 {
-    class RoomPageViewModel : BaseViewModel
+    class AdminRoomPageViewModel : BaseViewModel
     {
         /// <summary>
-        /// Provides a singleton instance of the <see cref="RoomPageViewModel"/>.
+        /// Provides a singleton instance of the <see cref="MemberRoomPageViewModel"/>.
         /// </summary>
-        public static RoomPageViewModel Instance(RoomData roomData)
+        public static AdminRoomPageViewModel Instance(RoomData roomData, string user)
         {
-            return GetInstance(() => new RoomPageViewModel(roomData));
+            return GetInstance(() => new AdminRoomPageViewModel(roomData, user));
         }
 
-        private RoomPageViewModel(RoomData roomData) 
+        private AdminRoomPageViewModel(RoomData roomData, string user)
         {
+            this.user = user;
             this.RefreshCommand = new RelayCommand(RefreshPlayers);
+            this.StartGameCommand = new RelayCommand(StartGame);
+            this.CloseRoomCommand = new RelayCommand(CloseRoom);
             this.roomData = roomData;
             RefreshPlayers();
         }
@@ -34,10 +38,17 @@ namespace ClientApp.ViewModels
 
         public ICommand RefreshCommand { get; }
 
+        public ICommand StartGameCommand { get; }
+        public ICommand CloseRoomCommand { get; }
+
         /// <summary>
         /// Collection of players currently in the room.
         /// </summary>
-        public ObservableCollection<Player> Players { get; set; } = new ObservableCollection<Player>();
+        public ObservableCollection<LoggedUser> Players { get; set; } = new ObservableCollection<LoggedUser>();
+
+        public LoggedUser Admin { get; set; }
+
+        private string user;
 
 
         /// <summary>
@@ -55,12 +66,28 @@ namespace ClientApp.ViewModels
             }
 
             var response = JsonResponseDeserialize.DeserializeResponse<GetPlayersInRoomResponse>(responseInfo);
-            var playerNames = response.Players;
             Players.Clear();
-            foreach (var playerName in playerNames)
+            if (response.Players != null && response.Players.Any())
             {
-                Players.Add(new Player { Username = playerName });
+                Admin = response.Players.First(); // Set Admin
+                Admin.IsMe = Admin.Username == user;
+                foreach (var player in response.Players.Skip(1)) // Add remaining players
+                {
+                    player.IsMe = player.Username ==user;
+                    Players.Add(player);
+                }
             }
+        }
+
+        private void StartGame()
+        {
+
+        }
+
+
+        private void CloseRoom()
+        {
+
         }
 
     }

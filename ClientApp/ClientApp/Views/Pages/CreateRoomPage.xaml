@@ -1,4 +1,4 @@
-﻿<local:NavigablePage x:Class="ClientApp.Views.Pages.CreateRoomPage"
+<local:NavigablePage x:Class="ClientApp.Views.Pages.CreateRoomPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -11,23 +11,23 @@
       TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
       Title="CreateRoomPage">
 
-
-    <Grid>
+    <Grid Margin="20">
         <!-- Define rows for the layout -->
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Input fields section -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0">
+        <!-- Input Fields Section -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" >
             <!-- TextBox for entering the room name -->
             <TextBox 
-                materialDesign:HintAssist.Hint="Room name" 
+                materialDesign:HintAssist.Hint="Room Name" 
+                x:Name="RoomName_TB"
                 Text="{Binding RoomName, UpdateSourceTrigger=PropertyChanged}"
                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                Width="80"
+                Width="200"
                 Margin="0,0,10,0"/>
 
             <!-- NumericUpDown for specifying the number of players -->
@@ -39,30 +39,31 @@
                 Value="{Binding MaxPlayers, UpdateSourceTrigger=PropertyChanged}"
                 Maximum="50"
                 Minimum="1"
+                Width="120"
                 Margin="0,0,10,0"/>
 
             <!-- NumericUpDown for specifying the question count -->
             <materialDesign:NumericUpDown
-                materialDesign:HintAssist.Hint="Question count" 
-                materialDesign:HintAssist.HelperText="{Binding QuestionCountError, Mode=TwoWay}"
+                materialDesign:HintAssist.Hint="Questions" 
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Style="{StaticResource MaterialDesignFloatingHintNumericUpDown}"
                 Maximum="50"
                 Minimum="1"
                 Value="{Binding QuestionsCount, UpdateSourceTrigger=PropertyChanged}"
-                Margin="0,0,10,0">
-            </materialDesign:NumericUpDown>
+                Width="120"
+                Margin="0,0,10,0"/>
 
             <!-- NumericUpDown for specifying the question timeout -->
             <materialDesign:DecimalUpDown
-                materialDesign:HintAssist.Hint="Question timeout" 
+                materialDesign:HintAssist.Hint="Timeout (s)" 
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Style="{StaticResource MaterialDesignFloatingHintDecimalUpDown}"
                 Value="{Binding QuestionTimeout, UpdateSourceTrigger=PropertyChanged}"
                 ValueStep="0.1"
                 Minimum="1"
+                Width="120"
                 Margin="0,0,10,0"/>
         </StackPanel>
 
@@ -71,16 +72,15 @@
                 Command="{Binding CreateRoomCommand}" 
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
-                Grid.Row="1" />
-
-
+                Grid.Row="1" 
+                Padding="10,5"/>
 
         <!-- Error Message -->
         <TextBlock Text="{Binding ErrorMessage}" 
                    Foreground="{StaticResource ErrorBrush}" 
-                   Visibility="{Binding ErrorMessage}" 
+                   Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,10,0,0"
                    Grid.Row="2"/>
-
-
     </Grid>
 </local:NavigablePage>

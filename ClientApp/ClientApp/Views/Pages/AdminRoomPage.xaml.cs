@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ClientApp.Models;
+using ClientApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,20 +14,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ClientApp.ViewModels;
 
 namespace ClientApp.Views.Pages
 {
     /// <summary>
-    /// Interaction logic for JoinRoomPage.xaml
+    /// Interaction logic for AdminRoomPage.xaml
     /// </summary>
-    public partial class JoinRoomPage : NavigablePage
+    public partial class AdminRoomPage : Page
     {
-        public JoinRoomPage(Page parent, string user) : base(parent)
+        public AdminRoomPage(RoomData roomData, string user)
         {
             InitializeComponent();
-            DataContext = JoinRoomViewModel.Instance(this, user);
-            
+            DataContext = AdminRoomPageViewModel.Instance(roomData, user);
         }
     }
 }

@@ -14,17 +14,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ClientApp.Views
+namespace ClientApp.Views.Pages
 {
     /// <summary>
     /// Interaction logic for MenuPage.xaml
     /// </summary>
     public partial class MenuPage : Page
     {
-        public MenuPage()
+        public MenuPage(string user)
         {
             InitializeComponent();
-            DataContext = MenuPageViewModel.Instance(this);
+            DataContext = MenuPageViewModel.Instance(this, user);
         }
     }
 

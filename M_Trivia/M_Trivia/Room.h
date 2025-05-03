@@ -47,7 +47,7 @@ public:
      * @brief Retrieves the usernames of all users in the room.
      * @return A vector of strings containing the usernames of all users.
      */
-    std::vector<std::string> getAllUsers() const;
+    std::vector<LoggedUser> getAllUsers() const;
 
     /**
      * @brief Retrieves the metadata associated with the room.

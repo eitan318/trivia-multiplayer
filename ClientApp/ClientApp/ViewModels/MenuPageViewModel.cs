@@ -28,9 +28,10 @@ namespace ClientApp.ViewModels
         /// Private constructor for the MenuPageViewModel. Initializes the commands for the actions available in the menu.
         /// </summary>
         /// <param name="owner">The page that owns this ViewModel.</param>
-        private MenuPageViewModel(Page owner)
+        private MenuPageViewModel(Page owner, string user)
         {
             this.ownerPage = owner;
+            this.user = user;
             CreateRoomCommand = new RelayCommand(CreateRoom);
             JoinRoomCommand = new RelayCommand(JoinRoom);
             ShowStatisticsCommand = new RelayCommand(ShowStatistics);
@@ -42,9 +43,9 @@ namespace ClientApp.ViewModels
         /// </summary>
         /// <param name="owner">The page that owns this ViewModel.</param>
         /// <returns>The singleton instance of MenuPageViewModel.</returns>
-        public static MenuPageViewModel Instance(Page owner)
+        public static MenuPageViewModel Instance(Page owner, string user)
         {
-            return GetInstance(() => new MenuPageViewModel(owner));
+            return GetInstance(() => new MenuPageViewModel(owner, user));
         }
 
 
@@ -55,6 +56,8 @@ namespace ClientApp.ViewModels
             get => _errorMessage;
             set { _errorMessage = value; OnPropertyChanged(); }
         }
+
+        private string user;
 
         /// <summary>
         /// Command to create a new room.
@@ -81,7 +84,7 @@ namespace ClientApp.ViewModels
         /// </summary>
         private void CreateRoom()
         {
-            MyNavigationService.Navigate(new CreateRoomPage(ownerPage));
+            MyNavigationService.Navigate(new CreateRoomPage(ownerPage, user));
         }
 
         /// <summary>
@@ -89,7 +92,7 @@ namespace ClientApp.ViewModels
         /// </summary>
         private void JoinRoom()
         {
-            MyNavigationService.Navigate(new JoinRoomPage(ownerPage));
+            MyNavigationService.Navigate(new JoinRoomPage(ownerPage, user));
         }
 
         /// <summary>

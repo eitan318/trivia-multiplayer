@@ -1,6 +1,7 @@
 #pragma once
 #include "json.hpp"
 #include "Response.hpp"
+#include "LoggedUser.h"
 
 /**
  * @class GetPlayersInRoomResponse
@@ -9,11 +10,11 @@
 class GetPlayersInRoomResponse : public Response {
 private:
     /// A list of player names in the room.
-    std::vector<std::string> players;
+    std::vector<LoggedUser> players;
 
 public:
     GetPlayersInRoomResponse() = delete;
-    GetPlayersInRoomResponse(unsigned int status, const std::vector<std::string>& players) : Response(status), players(players) {
+    GetPlayersInRoomResponse(unsigned int status, const std::vector<LoggedUser>& players) : Response(status), players(players) {
 
     }
 

@@ -1,4 +1,4 @@
-﻿using ClientApp.Commands;
+using ClientApp.Commands;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
@@ -202,7 +202,7 @@ namespace ClientApp.ViewModels
                     LoginResponse loginResponse = JsonResponseDeserialize.DeserializeResponse<LoginResponse>(responseInfo);
                     if(loginResponse.Status == 0)
                     {
-                        MyNavigationService.Navigate(new MenuPage());
+                        MyNavigationService.Navigate(new MenuPage(trimmedUsername));
                     }
                     else
                     {
@@ -273,8 +273,6 @@ namespace ClientApp.ViewModels
                 EmailErrorMessage = cannotBeEmptyString;
                 requiredNotEmpty = false;
             }
-
-
 
             try
             {
