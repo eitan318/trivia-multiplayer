@@ -22,7 +22,7 @@
                            FontSize="15" 
                            FontWeight="Bold"/>
                                         <TextBlock Text=" #" 
-                           FontSize="13"  />
+                           FontSize="15"  />
                 </StackPanel>
 
                 <!-- Player Info -->

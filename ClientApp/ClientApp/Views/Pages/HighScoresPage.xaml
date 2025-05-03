@@ -16,18 +16,28 @@
                 Padding="30"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                MaxHeight="800">
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="450">
+                MaxHeight="800"
+                MinWidth="300">
+            <Grid>
+                <!-- Define rows for the layout -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Title -->
+                    <RowDefinition Height="*"/>
+                    <!-- Scrollable Content -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Buttons and Error Message -->
+                </Grid.RowDefinitions>
 
                 <!-- Title -->
-                <TextBlock Text="🏆 Leaderboard"
+                <TextBlock Grid.Row="0" Text="🏆 Leaderboard"
                            FontSize="30"
                            FontWeight="Bold"
                            HorizontalAlignment="Center"
                            Margin="0,0,0,15"/>
 
                 <!-- ScrollViewer with MaxHeight -->
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" MaxHeight="400">
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" MaxHeight="400">
                     <ItemsControl ItemsSource="{Binding ResponseList}" Margin="0,0,0,15">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -42,19 +52,22 @@
                     </ItemsControl>
                 </ScrollViewer>
 
-                <!-- Buttons -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
-                    <Button 
-                        Content="Refresh"
-                        Command="{Binding RefreshTopCommand}"
-                        Margin="5"
-                        Padding="10,5"
-                        FontWeight="Bold"/>
-                </StackPanel>
+                <!-- Buttons and Error Message -->
+                <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,10">
+                    <!-- Buttons -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button 
+                            Content="Refresh"
+                            Command="{Binding RefreshTopCommand}"
+                            Margin="5"
+                            Padding="10,5"
+                            FontWeight="Bold"/>
+                    </StackPanel>
 
-                <!-- Error Message -->
-                <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" />
-            </StackPanel>
+                    <!-- Error Message -->
+                    <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" TextAlignment="Center" />
+                </StackPanel>
+            </Grid>
         </materialDesign:Card>
     </Grid>
 </local:NavigablePage>

@@ -75,29 +75,6 @@ namespace ClientApp.ViewModels
 
                 var HighestScoresResponse = 
                     JsonResponseDeserialize.DeserializeResponse<HighScoresResponse>(responseInfo);
-
-                HighScoreInfo h = new HighScoreInfo();
-                h.Rank = 1;
-                h.GameName = "safd";
-                h.TotalScore = 0;
-                h.PlayerUsername = "fasfd";
-                h.GameId = 9;
-                HighestScoresResponse.Statistics.Add(h);
-                HighestScoresResponse.Statistics.Add(h);
-                HighestScoresResponse.Statistics.Add(h);
-                HighestScoresResponse.Statistics.Add(h);
-                HighestScoresResponse.Statistics.Add(h);
-                HighestScoresResponse.Statistics.Add(h);
-                HighestScoresResponse.Statistics.Add(h);
-                HighestScoresResponse.Statistics.Add(h);
-                HighestScoresResponse.Statistics.Add(h);
-                HighestScoresResponse.Statistics.Add(h);
-                HighestScoresResponse.Statistics.Add(h);
-                HighestScoresResponse.Statistics.Add(h);
-                HighestScoresResponse.Statistics.Add(h);
-                HighestScoresResponse.Statistics.Add(h);
-                HighestScoresResponse.Statistics.Add(h);
-
                 this.ResponseList = HighestScoresResponse.Statistics;
             }
             catch (Exception ex)

@@ -111,6 +111,29 @@ RequestResult MenuRequestHandler::getHighScore(const RequestInfo& requestInfo) c
 
     StatisticsManager& statsManager = this->m_handlerFactory.getStatisticsManger();
     std::vector<HighScoreInfo> highestScores = statsManager.getBestScores(request.getTopPlayersLimit());
+
+
+    HighScoreInfo h;
+    h.rank = 1;
+    h.gameName = "gamename";
+    h.totalScore = 0;
+    h.username = "some name";
+    h.gameId = 9;
+    highestScores.push_back(h);
+    highestScores.push_back(h);
+    highestScores.push_back(h);
+    highestScores.push_back(h);
+    highestScores.push_back(h);
+    highestScores.push_back(h);
+    highestScores.push_back(h);
+    highestScores.push_back(h);
+    highestScores.push_back(h);
+    highestScores.push_back(h);
+    highestScores.push_back(h);
+    highestScores.push_back(h);
+    highestScores.push_back(h);
+    highestScores.push_back(h);
+
     GetHighScoreResponse highScoreResponse(0, highestScores);
   
     RequestResult requestResult;
