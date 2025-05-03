@@ -4,11 +4,42 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ClientApp.Views.Pages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:controls="clr-namespace:ClientApp.Views.Controls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="PersonalStatisticsPage">
 
     <Grid>
-        
+        <materialDesign:Card
+                Padding="30"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <!-- Title -->
+                <TextBlock Text="Personal Statistics"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource MaterialDesignBody}"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,20"/>
+
+                <!-- Personal Info UserControl -->
+                <controls:PersonalStatisticsUserControl DataContext="{Binding PersonalInfo}" />
+
+                <!-- ErrorBlock -->
+                <TextBlock Text="{Binding ErrorMessage}" 
+                           Foreground="Red" 
+                           FontSize="14" 
+                           FontStyle="Italic"
+                           HorizontalAlignment="Center" 
+                           Margin="0,20,0,0"/>
+
+                     <!-- Refresh Button -->
+                    <Button Content="Refresh"
+                            Command="{Binding RefreshCommand}"
+                            FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"/>
+            </StackPanel>
+        </materialDesign:Card>
     </Grid>
 </local:NavigablePage>

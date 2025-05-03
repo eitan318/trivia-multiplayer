@@ -18,7 +18,7 @@ namespace ClientApp.ViewModels
     class CreateRoomPageViewModel : BaseViewModel
     {
         private string _roomName;
-        private uint _questionTimeout = 1; //Min val from xaml
+        private double _questionTimeout = 1; //Min val from xaml
 
         private uint _maxPlayers = 1; //Min val from xaml
         private uint _questionsCount = 1; //Min val from xaml
@@ -39,7 +39,7 @@ namespace ClientApp.ViewModels
         /// <summary>
         /// The timeout duration for questions in the room.
         /// </summary>
-        public uint QuestionTimeout
+        public double QuestionTimeout
         {
             get => _questionTimeout;
             set { _questionTimeout = value; OnPropertyChanged(); }

@@ -34,10 +34,10 @@ struct PersonalStatistics {
  */
 inline void to_json(nlohmann::json& j, const PersonalStatistics& personalStatistics) {
     j = nlohmann::json{
-        {"username", personalStatistics.username},
-        {"avg_answer_time", personalStatistics.avgAnswerTime},
-        {"games_played", personalStatistics.gamesPlayed},
-        {"total_answers", personalStatistics.totalAnswers},
-        {"total_correct_answers", personalStatistics.totalCorrectAnswers}
+        {"UserName", personalStatistics.username},
+        {"AvgAnswerTime", personalStatistics.avgAnswerTime},
+        {"GamesPlayed", personalStatistics.gamesPlayed},
+        {"TotalAnswers", personalStatistics.totalAnswers},
+        {"TotalCorrectAnswers", personalStatistics.totalCorrectAnswers}
     };
 }

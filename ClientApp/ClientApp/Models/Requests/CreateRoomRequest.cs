@@ -15,7 +15,7 @@ namespace ClientApp.Models.Requests
         /// <param name="maxUsers">The maximum number of users allowed in the room.</param>
         /// <param name="questionCount">The number of questions in the room.</param>
         /// <param name="answerTimeout">The timeout in seconds for answering each question.</param>
-        public CreateRoomRequest(string roomName, uint maxUsers, uint questionCount, uint answerTimeout)
+        public CreateRoomRequest(string roomName, uint maxUsers, uint questionCount, double answerTimeout)
         {
             this.RoomName = roomName;
             this.MaxUsers = maxUsers;
@@ -28,6 +28,6 @@ namespace ClientApp.Models.Requests
         public string RoomName { get; }
         public uint MaxUsers { get; }
         public uint QuestionCount { get; }
-        public uint AnswerTimeout { get; }
+        public double AnswerTimeout { get; }
     }
 }

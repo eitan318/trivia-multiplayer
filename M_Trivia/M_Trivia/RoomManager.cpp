@@ -15,7 +15,7 @@ unsigned int RoomManager::getTotalQuestionsCount() const
 
 RoomManager::RoomManager(IDatabase& database) : m_database(database)
 {
-    this->m_rooms = std::map<int, Room>();
+   this->m_rooms = std::map<int, Room>();
 }
 RoomManager::~RoomManager()
 {
