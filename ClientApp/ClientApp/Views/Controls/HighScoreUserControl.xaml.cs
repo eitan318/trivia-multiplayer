@@ -1,5 +1,4 @@
-﻿using ClientApp.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,18 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ClientApp.Views.Pages
+namespace ClientApp.Views.Controls
 {
     /// <summary>
-    /// Interaction logic for HighScoresPage.xaml
+    /// Interaction logic for HighScoreUserControl.xaml
     /// </summary>
-    public partial class HighScoresPage : NavigablePage
+    public partial class HighScoreUserControl : UserControl
     {
-        public HighScoresPage(Page parent) : base(parent)
+        public HighScoreUserControl()
         {
             InitializeComponent();
-            DataContext = HighScoresPageViewModel.Instance();
-
         }
     }
 }

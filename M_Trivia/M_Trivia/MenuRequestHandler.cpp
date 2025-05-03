@@ -130,7 +130,12 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& requestInfo) const
     JoinRoomResponseErrors errors;
     try {
         Room& room = roomManager.getRoom(id);
-        room.addUser(m_user);
+        if (room.getRoomData().maxPlayers == room.getAllUsers().size()) {
+            errors.generalError = "Room is already full.";
+        }
+        else {
+            room.addUser(m_user);
+        }
     }
     catch (MyException err) {
         errors.generalError = "Room does not exist.";

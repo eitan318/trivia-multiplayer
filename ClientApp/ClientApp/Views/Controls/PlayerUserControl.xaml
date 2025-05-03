@@ -1,7 +1,8 @@
 ﻿<UserControl x:Class="ClientApp.Views.Controls.PlayerUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converters="clr-namespace:ClientApp.Views.Converters">
+             xmlns:converters="clr-namespace:ClientApp.Views.Converters"
+             TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}">
     <UserControl.Resources>
         <!-- Example: Create a converter to handle conditionally setting the border color -->
         <converters:BoolToBorderBrushConverter x:Key="BoolToBorderBrushConverter"/>

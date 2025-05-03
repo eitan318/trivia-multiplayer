@@ -19,22 +19,18 @@ namespace ClientApp.ViewModels
 
     class HighScoresPageViewModel : BaseViewModel
     {
-        private HighScoresPageViewModel(Page owner)
+        private HighScoresPageViewModel()
         {
-            
-            this.ResponseList = new List<HighScoreInfo>();
             RefreshTopCommand = new RelayCommand(RefreshTop);
             RefreshTop();
-            this.ownerPage = owner;
         }
-        public static HighScoresPageViewModel Instance(Page owner)
+        public static HighScoresPageViewModel Instance()
         {
-            return GetInstance(() => new HighScoresPageViewModel(owner));
+            return GetInstance(() => new HighScoresPageViewModel());
         }
         /// <summary>
         /// The page that owns this ViewModel. Used for navigation purposes.
         /// </summary>
-        private Page ownerPage;
         private List<HighScoreInfo> responseList;
         private string _errorMessage;
         public string ErrorMessage
@@ -79,9 +75,30 @@ namespace ClientApp.ViewModels
 
                 var HighestScoresResponse = 
                     JsonResponseDeserialize.DeserializeResponse<HighScoresResponse>(responseInfo);
+
+                HighScoreInfo h = new HighScoreInfo();
+                h.Rank = 1;
+                h.GameName = "safd";
+                h.TotalScore = 0;
+                h.PlayerUsername = "fasfd";
+                h.GameId = 9;
+                HighestScoresResponse.Statistics.Add(h);
+                HighestScoresResponse.Statistics.Add(h);
+                HighestScoresResponse.Statistics.Add(h);
+                HighestScoresResponse.Statistics.Add(h);
+                HighestScoresResponse.Statistics.Add(h);
+                HighestScoresResponse.Statistics.Add(h);
+                HighestScoresResponse.Statistics.Add(h);
+                HighestScoresResponse.Statistics.Add(h);
+                HighestScoresResponse.Statistics.Add(h);
+                HighestScoresResponse.Statistics.Add(h);
+                HighestScoresResponse.Statistics.Add(h);
+                HighestScoresResponse.Statistics.Add(h);
+                HighestScoresResponse.Statistics.Add(h);
+                HighestScoresResponse.Statistics.Add(h);
+                HighestScoresResponse.Statistics.Add(h);
+
                 this.ResponseList = HighestScoresResponse.Statistics;
-
-
             }
             catch (Exception ex)
             {

@@ -31,11 +31,10 @@ namespace ClientApp.ViewModels
         {
             this.RefreshCommand = new RelayCommand(RefreshPlayers);
             this.LeaveRoomCommand = new RelayCommand(LeaveRoom);
-            this.roomData = roomData;
+            this.RoomData = roomData;
             this.user = userUsername;
             RefreshPlayers();
         }
-        private RoomData roomData;
 
 
         public ICommand RefreshCommand { get; }
@@ -47,6 +46,10 @@ namespace ClientApp.ViewModels
         public ObservableCollection<LoggedUser> Players { get; set; } = new ObservableCollection<LoggedUser>();
 
         public LoggedUser Admin { get; set; }
+
+        public RoomData RoomData { get; set; }
+
+
         private string user;
 
 
@@ -55,7 +58,7 @@ namespace ClientApp.ViewModels
         /// </summary>
         private async void RefreshPlayers()
         {
-            var getPlayersRequest = new GetPlayersInRoomRequest(roomData.Id);
+            var getPlayersRequest = new GetPlayersInRoomRequest(RoomData.Id);
             ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(getPlayersRequest);
 
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)

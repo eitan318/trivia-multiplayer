@@ -30,11 +30,11 @@ namespace ClientApp.ViewModels
             this.RefreshCommand = new RelayCommand(RefreshPlayers);
             this.StartGameCommand = new RelayCommand(StartGame);
             this.CloseRoomCommand = new RelayCommand(CloseRoom);
-            this.roomData = roomData;
+            this.RoomData = roomData;
             RefreshPlayers();
         }
 
-        private RoomData roomData;
+        public RoomData RoomData { get; set; }
 
         public ICommand RefreshCommand { get; }
 
@@ -56,7 +56,7 @@ namespace ClientApp.ViewModels
         /// </summary>
         private async void RefreshPlayers()
         {
-            var getPlayersRequest = new GetPlayersInRoomRequest(roomData.Id);
+            var getPlayersRequest = new GetPlayersInRoomRequest(RoomData.Id);
             ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(getPlayersRequest);
 
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
