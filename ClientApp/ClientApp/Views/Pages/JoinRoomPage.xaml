@@ -28,7 +28,7 @@
             SelectedItem="{Binding SelectedRoom}" >
             <ComboBox.ItemTemplate>
                 <DataTemplate>
-                    <controls:RoomDataUserControl/>
+                    <controls:RoomPreviewUserControl/>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
 

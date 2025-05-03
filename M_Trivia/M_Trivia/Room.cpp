@@ -30,12 +30,21 @@ std::vector<LoggedUser> Room::getAllUsers() const
 {
 	return this->m_users;
 }
-RoomData Room::getRoomData() const
+bool Room::getRoomStatus() const
 {
-	return this->m_metadata;
+	return true;
 }
 
 void Room::setRoomData(const RoomData& roomdata)
 {
 	this->m_metadata = roomdata;
+}
+
+
+RoomPreview Room::getRoomPreview() const {
+	RoomPreview p;
+	p.currPlayersAmount = getAllUsers().size();
+	p.status = getRoomStatus();
+	p.roomData = this->m_metadata;
+	return p;
 }

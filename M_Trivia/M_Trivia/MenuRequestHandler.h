@@ -12,6 +12,7 @@
 #include "GetHighScoreResponse.hpp"
 #include "PersonalStatisticsRequest.hpp"
 #include "CreateRoomResponse.hpp"
+#include "RoomPreview.hpp"
 
 class RequestHandlerFactory;
 

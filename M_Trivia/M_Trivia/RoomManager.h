@@ -2,6 +2,7 @@
 #include "Room.h"
 #include "MyException.h"
 #include "IDatabase.h"
+#include "RoomPreview.hpp"
 #include <map>
 
 /**
@@ -66,7 +67,7 @@ public:
      * @brief Retrieves a list of all active rooms.
      * @return A vector of RoomData objects representing active rooms.
      */
-    std::vector<RoomData> getRooms();
+    std::vector<RoomPreview> getRooms() const;
 
     /**
      * @brief Retrieves a reference to a specific room.

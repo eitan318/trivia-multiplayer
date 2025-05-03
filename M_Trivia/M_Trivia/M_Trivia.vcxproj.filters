@@ -231,6 +231,9 @@
     <ClInclude Include="WSAInitializer.h">
       <Filter>Headers\Services</Filter>
     </ClInclude>
+    <ClInclude Include="RoomPreview.hpp">
+      <Filter>Headers\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

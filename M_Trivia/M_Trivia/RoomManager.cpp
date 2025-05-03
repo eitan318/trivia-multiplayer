@@ -47,17 +47,17 @@ bool RoomManager::getRoomState(int ID)
     auto it = this->m_rooms.find(ID);
     if (it != this->m_rooms.end())
     {
-        return it->second.getRoomData().status; 
+        return it->second.getRoomStatus(); 
     }
     return false;
 }
 
-std::vector<RoomData> RoomManager::getRooms()
+std::vector<RoomPreview> RoomManager::getRooms() const
 {
-	std::vector<RoomData> roomsvec;
+	std::vector<RoomPreview> roomsvec;
 	for (auto& room : this->m_rooms) 
 	{
-		roomsvec.push_back(room.second.getRoomData());
+		roomsvec.push_back(room.second.getRoomPreview());
 	}
     return roomsvec;
 }

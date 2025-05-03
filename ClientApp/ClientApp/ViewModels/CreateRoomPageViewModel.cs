@@ -137,7 +137,7 @@ namespace ClientApp.ViewModels
             RoomData? roomData = await CreateRoom();
             if (roomData != null)
             {
-                MyNavigationService.Navigate(new AdminRoomPage(roomData.Value, user));
+                MyNavigationService.Navigate(new AdminRoomPage(roomData, user));
             }
 
         }

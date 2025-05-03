@@ -148,6 +148,7 @@
     <ClInclude Include="ResetPasswordRequest.hpp" />
     <ClInclude Include="ResetPasswordResponse.hpp" />
     <ClInclude Include="PasswordCodeResponseErrors.hpp" />
+    <ClInclude Include="RoomPreview.hpp" />
     <ClInclude Include="SendPasswordResetCodeRequest.hpp" />
     <ClInclude Include="PasswordCodeResponse.hpp" />
     <ClInclude Include="ServerErrorResponse.hpp" />

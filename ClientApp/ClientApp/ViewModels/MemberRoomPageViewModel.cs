@@ -73,7 +73,7 @@ namespace ClientApp.ViewModels
             {
                 Admin = response.Players.First(); // Set Admin
                 Admin.IsMe = Admin.Username == user;
-                foreach (var player in response.Players.Skip(1)) // Add remaining players
+                foreach (var player in response.Players.Skip(1)) 
                 {
                     player.IsMe = player.Username == user;
                     Players.Add(player);

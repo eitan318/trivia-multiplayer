@@ -1,9 +1,9 @@
 #pragma once
 #include "json.hpp"
-#include "RoomData.h"
+#include "RoomPreview.hpp"
 #include "Response.hpp"
 
-void to_json(nlohmann::json& j, const RoomData& roomData);
+void to_json(nlohmann::json& j, const RoomPreview& roomPreview);
 
 
 /**
@@ -12,10 +12,10 @@ void to_json(nlohmann::json& j, const RoomData& roomData);
  */
 class GetRoomsResponse : public Response{
 private:
-    std::vector<RoomData> rooms;
+    std::vector<RoomPreview> rooms;
 public:
     GetRoomsResponse() = delete;
-    GetRoomsResponse(unsigned int status, const std::vector<RoomData>& rooms) : Response(status), rooms(rooms) {
+    GetRoomsResponse(unsigned int status, const std::vector<RoomPreview>& rooms) : Response(status), rooms(rooms) {
 
     }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "RoomData.h"
 #include "LoggedUser.h"
+#include "RoomPreview.hpp"
 #include <vector>
 
 /**
@@ -49,15 +50,19 @@ public:
      */
     std::vector<LoggedUser> getAllUsers() const;
 
-    /**
-     * @brief Retrieves the metadata associated with the room.
-     * @return The RoomData object containing the room's metadata.
-     */
-    RoomData getRoomData() const;
+
 
     /**
      * @brief Updates the metadata of the room.
      * @param roomdata The new RoomData object to set as the room's metadata.
      */
     void setRoomData(const RoomData& roomdata);
+
+
+    bool getRoomStatus() const;
+    /**
+     * @brief Retrieves the metadata associated with the room.
+     * @return The RoomPreview object containing the room's metadata.
+     */
+    RoomPreview getRoomPreview() const;
 };

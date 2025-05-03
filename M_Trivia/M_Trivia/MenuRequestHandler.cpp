@@ -64,7 +64,7 @@ RequestResult MenuRequestHandler::logout(const RequestInfo& info) const
 RequestResult MenuRequestHandler::getRooms(const RequestInfo& requestInfo) const
 {
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
-    std::vector<RoomData> rooms = roomManager.getRooms();
+    std::vector<RoomPreview> rooms = roomManager.getRooms();
     GetRoomsResponse getRoomsResponse(0, rooms);
 
     RequestResult requestResult;
@@ -113,27 +113,6 @@ RequestResult MenuRequestHandler::getHighScore(const RequestInfo& requestInfo) c
     std::vector<HighScoreInfo> highestScores = statsManager.getBestScores(request.getTopPlayersLimit());
 
 
-    HighScoreInfo h;
-    h.rank = 1;
-    h.gameName = "gamename";
-    h.totalScore = 0;
-    h.username = "some name";
-    h.gameId = 9;
-    highestScores.push_back(h);
-    highestScores.push_back(h);
-    highestScores.push_back(h);
-    highestScores.push_back(h);
-    highestScores.push_back(h);
-    highestScores.push_back(h);
-    highestScores.push_back(h);
-    highestScores.push_back(h);
-    highestScores.push_back(h);
-    highestScores.push_back(h);
-    highestScores.push_back(h);
-    highestScores.push_back(h);
-    highestScores.push_back(h);
-    highestScores.push_back(h);
-
     GetHighScoreResponse highScoreResponse(0, highestScores);
   
     RequestResult requestResult;
@@ -153,7 +132,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& requestInfo) const
     JoinRoomResponseErrors errors;
     try {
         Room& room = roomManager.getRoom(id);
-        if (room.getRoomData().maxPlayers == room.getAllUsers().size()) {
+        if (room.getRoomPreview().roomData.maxPlayers == room.getAllUsers().size()) {
             errors.generalError = "Room is already full.";
         }
         else {

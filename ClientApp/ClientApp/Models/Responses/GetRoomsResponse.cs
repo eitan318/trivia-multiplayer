@@ -13,6 +13,6 @@ namespace ClientApp.Models.Responses
     {
         private GetRoomsResponse() { }
         [JsonProperty]
-        public List<RoomData> Rooms { get; private set; }
+        public List<RoomPreview> Rooms { get; private set; }
     }
 }

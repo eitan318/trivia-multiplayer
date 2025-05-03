@@ -27,11 +27,11 @@ public class JoinRoomViewModel : BaseViewModel
 
     private string user;
     private Page ownerPage;
-    private List<RoomData> _rooms;
+    private List<RoomPreview> _rooms;
     private string _errorMessage;
-    private RoomData? _selectedRoom;
+    private RoomPreview? _selectedRoom;
 
-    public List<RoomData> Rooms
+    public List<RoomPreview> Rooms
     {
         get => _rooms;
         set
@@ -51,7 +51,7 @@ public class JoinRoomViewModel : BaseViewModel
         }
     }
 
-    public RoomData? SelectedRoom
+    public RoomPreview? SelectedRoom
     {
         get => _selectedRoom;
         set
@@ -107,7 +107,7 @@ public class JoinRoomViewModel : BaseViewModel
 
         try
         {
-            var selectedRoomId = SelectedRoom.Value.Id;
+            var selectedRoomId = SelectedRoom.Value.RoomData.Id;
             var request = new JoinRoomRequest(selectedRoomId);
             var responseInfo = await RequestsExchangeService.ExchangeRequest(request);
 
@@ -121,7 +121,7 @@ public class JoinRoomViewModel : BaseViewModel
             var joinResponse = JsonResponseDeserialize.DeserializeResponse<JoinRoomResponse>(responseInfo);
             if(joinResponse.Status == 0)
             {
-                MyNavigationService.Navigate(new MemberRoomPage(SelectedRoom.Value, user));
+                MyNavigationService.Navigate(new MemberRoomPage(SelectedRoom.Value.RoomData, user));
             }
             else
             {
