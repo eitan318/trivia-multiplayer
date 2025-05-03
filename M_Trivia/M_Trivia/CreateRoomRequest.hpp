@@ -13,7 +13,7 @@ private:
     std::string roomName;
     unsigned int maxUsers;
     unsigned int questionCount;
-    unsigned int answerTimeout;
+    double answerTimeout;
 
 public:
     CreateRoomRequest() = default;
@@ -21,7 +21,7 @@ public:
     const std::string& getRoomName() const { return roomName; }
     unsigned int getMaxUsers() const { return maxUsers; }
     unsigned int getQuestionCount() const { return questionCount; }
-    unsigned int getAnswerTimeout() const { return answerTimeout; }
+    double getAnswerTimeout() const { return answerTimeout; }
 
     /**
      * @brief Deserializes a JSON object into a CreateRoomRequest object.

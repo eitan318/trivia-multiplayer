@@ -44,7 +44,6 @@ namespace ClientApp.ViewModels
         private string _email = "";
         private string _houseAddress = "";
         private string _phoneNumber = "";
-        private string _birthDate = "";
 
         private string _usernameErrorMessage;
         private string _passwordErrorMessage;
@@ -113,14 +112,18 @@ namespace ClientApp.ViewModels
             }
         }
 
-        public string BirthDate
+        private DateTime? _birthDate;
+        public DateTime? BirthDate
         {
             get => _birthDate;
             set
             {
-                _birthDate = value;
-                OnPropertyChanged();
-                ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
+                if (_birthDate != value)
+                {
+                    _birthDate = value?.Date;
+                    OnPropertyChanged(nameof(BirthDate));
+                    ((RelayCommand)SignupCommand).RaiseCanExecuteChanged();
+                }
             }
         }
 
@@ -241,7 +244,7 @@ namespace ClientApp.ViewModels
             HouseAddressErrorMessage = "";
             BirthDateErrorMessage = "";
 
-            bool perform = true;
+            bool requiredNotEmpty = true;
 
             // Trim input values
             string trimmedUsername = Username?.Trim();
@@ -249,50 +252,28 @@ namespace ClientApp.ViewModels
             string trimmedEmail = Email?.Trim();
             string trimmedPhoneNumber = PhoneNumber?.Trim();
             string trimmedHouseAddress = HouseAddress?.Trim();
-            string trimmedBirthDate = BirthDate?.Trim();
+            string trimmedBirthDate = BirthDate?.ToString("dd/MM/yyyy")??"";
+
 
             // Validate each field
             if (string.IsNullOrWhiteSpace(Username))
             {
                 UsernameErrorMessage = cannotBeEmptyString;
-                perform = false;
+                requiredNotEmpty = false;
             }
 
             if (string.IsNullOrWhiteSpace(Password))
             {
                 PasswordErrorMessage = cannotBeEmptyString;
-                perform = false;
+                requiredNotEmpty = false;
             }
 
             if (string.IsNullOrWhiteSpace(Email))
             {
                 EmailErrorMessage = cannotBeEmptyString;
-                perform = false;
+                requiredNotEmpty = false;
             }
 
-            //if (string.IsNullOrWhiteSpace(PhoneNumber))
-            //{
-            //    PhoneNumberErrorMessage = cannotBeEmptyString;
-            //    perform = false;
-            //}
-
-            //if (string.IsNullOrWhiteSpace(HouseAddress))
-            //{
-            //    HouseAddressErrorMessage = cannotBeEmptyString;
-            //    perform = false;
-            //}
-
-            //if (string.IsNullOrWhiteSpace(BirthDate))
-            //{
-            //    BirthDateErrorMessage = cannotBeEmptyString;
-            //    perform = false;
-            //}
-
-            // If any field is invalid, prevent further action
-            if (!perform)
-            {
-                return;
-            }
 
 
             try
@@ -318,16 +299,19 @@ namespace ClientApp.ViewModels
                 else
                 {
                     SignupResponse signupResponse = JsonResponseDeserialize.DeserializeResponse<SignupResponse>(responseInfo);
-                    if(signupResponse.Status == 0)
+                    if(signupResponse.Status == 0 && requiredNotEmpty)
                     {
                         // Navigate to the login page upon successful signup
                         MyNavigationService.Navigate(new LoginPage());
                     }
                     else
                     {
-                        UsernameErrorMessage = signupResponse.Errors.UsernameError;
-                        PasswordErrorMessage = signupResponse.Errors.PasswordError;
-                        EmailErrorMessage = signupResponse.Errors.EmailError;
+                        if(UsernameErrorMessage == "")
+                            UsernameErrorMessage = signupResponse.Errors.UsernameError;
+                        if (PasswordErrorMessage == "") 
+                            PasswordErrorMessage = signupResponse.Errors.PasswordError;
+                        if (EmailErrorMessage == "")
+                            EmailErrorMessage = signupResponse.Errors.EmailError;
                         HouseAddressErrorMessage = signupResponse.Errors.HouseAddressError;
                         PhoneNumberErrorMessage = signupResponse.Errors.PhoneNumberError;
                         BirthDateErrorMessage = signupResponse.Errors.BirthDateError;

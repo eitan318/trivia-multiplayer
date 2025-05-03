@@ -15,17 +15,6 @@
         >
     
     <Grid>
-        <!-- Title -->
-        <TextBlock Text="My Trivia Game" 
-               x:Name="GameTitle"
-               FontSize="32" 
-               FontWeight="Bold" 
-               TextAlignment="Center" 
-               VerticalAlignment="Center" 
-               Foreground="{DynamicResource MaterialDesignBody}" 
-               Margin="0,20" 
-               Visibility="Hidden"/>
-
         <!-- Frame for Navigation -->
         <Frame x:Name="MainFrame" Grid.Row="1" NavigationUIVisibility="Hidden" />
     </Grid>
