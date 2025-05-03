@@ -1,0 +1,34 @@
+#pragma once
+#include <string>
+#include "json.hpp"
+#include "Response.hpp"
+
+/**
+ * @class ErrorResponse
+ * @brief Represents a response containing an error message
+ */
+struct ServerErrorResponse : public Response{
+private:
+    std::string message;
+
+public:
+    ServerErrorResponse() = delete;
+
+    ServerErrorResponse(const std::string& message) : Response(0), message(message) {
+
+    }
+
+    /**
+	 * @brief Gets the response code for this response.
+	 * @return The response code as an unsigned integer.
+	 */
+    ResponseCodes getCode() const override { return ResponseCodes::C_ErrorResponse; }
+
+
+
+    nlohmann::json getJson() const override {
+        nlohmann::json j = baseJson();
+        j["Message"] = message; 
+        return j;
+    }
+};

@@ -1,39 +1,43 @@
 #include "SqliteDatabase.h"
 
-SqliteDatabase* SqliteDatabase::_instance = nullptr;
-	
-
-SqliteDatabase::~SqliteDatabase()
+SqliteDatabase& SqliteDatabase::getInstance()
 {
-	close(); 
-}
-
-SqliteDatabase* SqliteDatabase::getInstance()
-{
-	if (_instance == nullptr) {
-		_instance = new SqliteDatabase();
-	}
-	else {
-		throw std::exception("Cannot instansiate a singleton twice. Eitan");
-	}
-	return _instance;
+	static SqliteDatabase instance;
+	return instance;
 }
 
 bool SqliteDatabase::open()
 {
-	std::string dbFileName = "trivia_db.sqlite";
+	if (db) {
+		// Database is already opened
+		return true;
+	}
 
-	int file_exist = _access(dbFileName.c_str(), 0);
-	int res = sqlite3_open(dbFileName.c_str(), &db);
-	if (file_exist != 0) {
+	const std::string dbFileName = "trivia_db.sqlite";
+
+	// Check if the database file exists
+	int fileExists = _access(dbFileName.c_str(), 0);
+	int result = sqlite3_open(dbFileName.c_str(), &db);
+
+	if (result != SQLITE_OK) {
+		// Opening the database failed
+		db = nullptr;
+		std::cerr << "Error: Failed to open database. Error code: " << result << "\n";
+		return false;
+	}
+
+	// If the file didn't exist, create the database and initialize tables
+	if (fileExists != 0) {
 		if (!createInitialDB()) {
-			throw std::runtime_error("Failed to create tables");
-			this->close();
+			std::cerr << "Error: Failed to initialize database tables.\n";
+			this->close(); // Ensure resources are released
 			return false;
 		}
 	}
-	return res == SQLITE_OK;
+
+	return true;
 }
+
 
 bool SqliteDatabase::close()
 {
@@ -44,8 +48,7 @@ bool SqliteDatabase::close()
 	return true;
 }
 
-
-int SqliteDatabase::doesUserExist(const std::string& username)
+int SqliteDatabase::doesUserExist(const std::string& username) const
 {
 	const char* query = "SELECT * FROM users WHERE username = ?";
 	sqlite3_stmt* stmt;
@@ -59,7 +62,7 @@ int SqliteDatabase::doesUserExist(const std::string& username)
 	return sqlite3_step(stmt) == SQLITE_ROW;
 }
 
-int SqliteDatabase::doesPasswordMatch(const std::string& username, const std::string& password)
+int SqliteDatabase::doesPasswordMatch(const std::string& username, const std::string& password) const
 {
 	const char* query = "SELECT password FROM users WHERE username = ?";
 	sqlite3_stmt* stmt;
@@ -81,7 +84,7 @@ int SqliteDatabase::doesPasswordMatch(const std::string& username, const std::st
 	}
 }
 
-int SqliteDatabase::addNewUser(const UserRecord& userRecord)
+int SqliteDatabase::addNewUser(const UserRecord& userRecord) const
 {
 	const char* query = "INSERT INTO users (username, password, email, house_address, phone_number, birth_date) VALUES (?,?,?,?,?,?)";
 	sqlite3_stmt* stmt;
@@ -106,12 +109,12 @@ int SqliteDatabase::addNewUser(const UserRecord& userRecord)
 	}
 }
 
-bool SqliteDatabase::createInitialDB()
+bool SqliteDatabase::createInitialDB() const
 {
 	return createUsersTable() && createQuestionsTable() && addQuestions(50) && createAnswersTable() && createGamesTable();
 }
 
-bool SqliteDatabase::createUsersTable() {
+bool SqliteDatabase::createUsersTable() const{
 	const char* query = R"(
         CREATE TABLE Users (
             username TEXT PRIMARY KEY,
@@ -132,7 +135,7 @@ bool SqliteDatabase::createUsersTable() {
 	return success;
 }
 
-bool SqliteDatabase::createQuestionsTable()
+bool SqliteDatabase::createQuestionsTable() const
 {
 	const char* query = R"(
         CREATE TABLE Questions (
@@ -157,10 +160,7 @@ bool SqliteDatabase::createQuestionsTable()
 
 }
 
-
-
-
-bool SqliteDatabase::createGamesTable()
+bool SqliteDatabase::createGamesTable() const
 {
 	const char* query = R"(
         CREATE TABLE Games (
@@ -178,8 +178,7 @@ bool SqliteDatabase::createGamesTable()
 	return success;
 }
 
-
-bool SqliteDatabase::createAnswersTable()
+bool SqliteDatabase::createAnswersTable() const
 {
 	const char* query = R"(
     CREATE TABLE answers (
@@ -207,11 +206,7 @@ bool SqliteDatabase::createAnswersTable()
 	return success;
 }
 
-
-
-
-
-bool SqliteDatabase::addQuestions(int amount)
+bool SqliteDatabase::addQuestions(int amount) const
 {
 	std::string url = ApiClient::generateTriviaQuestionsUrl(45, 9, "multiple");
 	std::string questionsJsonStr = ApiClient::getQuestionsJson(url.c_str()); // Fetch questions JSON
@@ -280,10 +275,7 @@ bool SqliteDatabase::addQuestions(int amount)
 	return true;
 }
 
-
-
-
-int SqliteDatabase::getNumOfTotalAnswers(const std::string& username)
+int SqliteDatabase::getNumOfTotalAnswers(const std::string& username) const
 {
 	const char* query = "SELECT COUNT(*) FROM answers WHERE username = ?";
 	sqlite3_stmt* stmt;
@@ -305,7 +297,7 @@ int SqliteDatabase::getNumOfTotalAnswers(const std::string& username)
 }
 
 
-int SqliteDatabase::getNumOfTotalCorrectAnswers(const std::string& username)
+int SqliteDatabase::getNumOfTotalCorrectAnswers(const std::string& username) const
 {
 	const char* query = "SELECT COUNT(*) FROM answers WHERE username = ? AND correct = 1";
 	sqlite3_stmt* stmt;
@@ -327,7 +319,7 @@ int SqliteDatabase::getNumOfTotalCorrectAnswers(const std::string& username)
 }
 
 
-int SqliteDatabase::getNumOfPlayerGames(const std::string& username)
+int SqliteDatabase::getNumOfPlayerGames(const std::string& username) const
 {
 	const char* query = "SELECT COUNT(DISTINCT game_id) FROM answers WHERE username = ?";
 	sqlite3_stmt* stmt;
@@ -348,7 +340,7 @@ int SqliteDatabase::getNumOfPlayerGames(const std::string& username)
 	return games;
 }
 
-float SqliteDatabase::getAvgAnswerTime(const std::string& username)
+float SqliteDatabase::getAvgAnswerTime(const std::string& username) const
 {
 	const char* query = "SELECT AVG(answer_time) FROM answers WHERE username = ?";
 	sqlite3_stmt* stmt;
@@ -372,8 +364,8 @@ float SqliteDatabase::getAvgAnswerTime(const std::string& username)
 }
 
 
-
-UserRecord SqliteDatabase::getUserRecord(const std::string& email)
+  
+UserRecord SqliteDatabase::getUserRecord(const std::string& email) const
 {
 	const char* query = R"(SELECT username, password, email, phone_number, house_address, birth_date
 		FROM users WHERE email = ?)";
@@ -398,9 +390,7 @@ UserRecord SqliteDatabase::getUserRecord(const std::string& email)
 }
 
 
-
-
-std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit)
+std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit) const
 {
 	const char* query = R"(
         SELECT a.username, a.game_id, g.name AS game_name, SUM(a.score) AS total_score
@@ -422,12 +412,13 @@ std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit)
 
 	sqlite3_bind_int(stmt, 1, limit);
 
-	while (sqlite3_step(stmt) == SQLITE_ROW) {
+	for (unsigned int i = 1; sqlite3_step(stmt) == SQLITE_ROW; i++) {
 		HighScoreInfo bsi;
 		bsi.username = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
-		bsi.game_id = sqlite3_column_int(stmt, 1);
-		bsi.game_name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-		bsi.total_score = sqlite3_column_int(stmt, 3);
+		bsi.gameId = sqlite3_column_int(stmt, 1);
+		bsi.gameName = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+		bsi.totalScore = sqlite3_column_int(stmt, 3);
+		bsi.rank = i;
 
 		results.push_back(bsi);
 	}
@@ -437,7 +428,7 @@ std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit)
 	return results;
 }
 
-std::list<Question> SqliteDatabase::getQuestions(int amount)
+std::list<Question> SqliteDatabase::getQuestions(int amount) const
 {
 	const char* query = R"(
     SELECT difficulty, category, question, answer, incorrect_answer_1,
@@ -472,7 +463,31 @@ std::list<Question> SqliteDatabase::getQuestions(int amount)
 	return questions;
 }
 
-void SqliteDatabase::updatePassword(const std::string& username, const std::string& newPassword)
+
+unsigned int SqliteDatabase::getQuestionsCount() const
+{
+	const char* query = R"(
+    SELECT COUNT(*) FROM questions)";
+
+	sqlite3_stmt* stmt = nullptr;
+
+	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+		throw MyException(std::string("Failed to prepare statement: ") + sqlite3_errmsg(db));
+	}
+
+	std::unique_ptr<sqlite3_stmt, decltype(&sqlite3_finalize)> stmtGuard(stmt, sqlite3_finalize);
+
+	if (sqlite3_step(stmt) != SQLITE_ROW) {
+		throw MyException("Failed to execute query or no result returned.");
+	}
+
+	int count = sqlite3_column_int(stmt, 0);
+
+	return static_cast<unsigned int>(count);
+}
+
+ 
+void SqliteDatabase::updatePassword(const std::string& username, const std::string& newPassword) const
 {
 	const char* query = R"(UPDATE users SET password = ? WHERE username = ?)";
 
@@ -499,7 +514,7 @@ void SqliteDatabase::updatePassword(const std::string& username, const std::stri
 }
 
 
-bool SqliteDatabase::emailExists(const std::string& email)
+bool SqliteDatabase::emailExists(const std::string& email) const
 {
 	const char* query = "SELECT * FROM users WHERE email = ?";
 	sqlite3_stmt* stmt;

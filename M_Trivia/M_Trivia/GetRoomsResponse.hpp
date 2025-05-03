@@ -1,24 +1,38 @@
 #pragma once
 #include "json.hpp"
-#include "RoomData.h"
+#include "RoomPreview.hpp"
 #include "Response.hpp"
 
-void to_json(nlohmann::json& j, const RoomData& roomData);
+void to_json(nlohmann::json& j, const RoomPreview& roomPreview);
 
 
-
+/**
+ * @class GetRoomsResponse
+ * @brief class represents a response containing the rooms
+ */
 class GetRoomsResponse : public Response{
+private:
+    std::vector<RoomPreview> rooms;
 public:
-	unsigned int status;
-	std::vector<RoomData> rooms;
+    GetRoomsResponse() = delete;
+    GetRoomsResponse(unsigned int status, const std::vector<RoomPreview>& rooms) : Response(status), rooms(rooms) {
 
-    unsigned int getCode() const { return C_GetRoomsResponse; }
+    }
 
-    nlohmann::json getJson() const {
-        return nlohmann::json {
-            {"Status", status},
-            {"Rooms", rooms}
-        };
+    /**
+     * @brief Gets the response code for this response.
+     * @return The response code as an unsigned integer.
+     */
+    ResponseCodes getCode() const override { return ResponseCodes::C_GetRoomsResponse; }
+
+    /**
+	 * @brief Converts the response to a JSON object.
+	 * @return A JSON representation of the response.
+	 */
+    nlohmann::json getJson() const override {
+        nlohmann::json j = baseJson();
+        j["Rooms"] = rooms; // Uses the to_json for PersonalStatistics
+        return j;
     }
 };
 

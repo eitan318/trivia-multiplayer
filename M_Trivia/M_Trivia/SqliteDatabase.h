@@ -14,34 +14,34 @@
 class SqliteDatabase : public IDatabase
 {
 public:
-	static SqliteDatabase* getInstance();
+	static SqliteDatabase& getInstance();
 	bool open();
 	bool close();
-	int doesUserExist(const std::string&);
-	int doesPasswordMatch(const std::string&, const std::string&);
-	int addNewUser(const UserRecord&);
-	int getNumOfTotalAnswers(const std::string& username);
-	int getNumOfTotalCorrectAnswers(const std::string& username);
-	int getNumOfPlayerGames(const std::string& username);
-	float getAvgAnswerTime(const std::string& username);
-	bool emailExists(const std::string& email);
-	UserRecord getUserRecord(const std::string& email);
-	std::vector<HighScoreInfo> getBestScores(int limit);
-	std::list<Question> getQuestions(int amount);
-    void updatePassword(const std::string& username, const std::string& newPassword);
+	int doesUserExist(const std::string&) const;
+	int doesPasswordMatch(const std::string&, const std::string&) const;
+	int addNewUser(const UserRecord&) const;
+	int getNumOfTotalAnswers(const std::string& username) const;
+	int getNumOfTotalCorrectAnswers(const std::string& username) const;
+	int getNumOfPlayerGames(const std::string& username) const;
+	float getAvgAnswerTime(const std::string& username) const;
+	bool emailExists(const std::string& email) const;
+	UserRecord getUserRecord(const std::string& email) const;
+	std::vector<HighScoreInfo> getBestScores(int limit) const;
+	std::list<Question> getQuestions(int amount) const;
+    void updatePassword(const std::string& username, const std::string& newPassword) const;
+	unsigned int getQuestionsCount() const;
 private:
-	~SqliteDatabase();
+	~SqliteDatabase() { close(); };
 	SqliteDatabase() { };
 	SqliteDatabase(const SqliteDatabase&) = delete;
 	SqliteDatabase& operator=(const SqliteDatabase&) = delete;
-	bool createInitialDB();
-	bool createUsersTable();
-	bool createQuestionsTable();
-	bool createAnswersTable();
-	bool createGamesTable();
-	bool addQuestions(int amount);
+	bool createInitialDB() const;
+	bool createUsersTable() const;
+	bool createQuestionsTable() const;
+	bool createAnswersTable() const;
+	bool createGamesTable() const;
+	bool addQuestions(int amount) const;
 
-	static SqliteDatabase* _instance;
 	sqlite3* db;
 };
 

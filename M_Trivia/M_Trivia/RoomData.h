@@ -9,7 +9,6 @@ struct RoomData {
 	unsigned int maxPlayers;
 	unsigned int numOfQuestionsInGame;
 	unsigned int timePerQuestion;
-	bool status;
 };
 
 
@@ -17,11 +16,10 @@ struct RoomData {
 // Define a to_json function for RoomData
 inline void to_json(nlohmann::json& j, const RoomData& roomData) {
     j = nlohmann::json{
-        {"id", roomData.id},
-        {"name", roomData.name},
-        {"maxPlayers", roomData.maxPlayers},
-        {"numOfQuestionsInGame", roomData.numOfQuestionsInGame},
-        {"timePerQuestion", roomData.timePerQuestion},
-        {"status", roomData.status}
+        {"Id", roomData.id},
+        {"RoomName", roomData.name},
+        {"MaxPlayers", roomData.maxPlayers},
+        {"NumOfQuestionsInGame", roomData.numOfQuestionsInGame},
+        {"TimePerQuestion", roomData.timePerQuestion},
     };
 }

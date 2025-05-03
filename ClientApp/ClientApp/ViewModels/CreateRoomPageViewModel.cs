@@ -1,0 +1,176 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+using ClientApp.Commands;
+using ClientApp.Models;
+using ClientApp.Models.Requests;
+using ClientApp.Models.Responses;
+using ClientApp.Services;
+using ClientApp.Views.Pages;
+
+namespace ClientApp.ViewModels
+{
+    /// <summary>
+    /// ViewModel for the Create Room page, managing the room creation process and player data.
+    /// </summary>
+    class CreateRoomPageViewModel : BaseViewModel
+    {
+        private string _roomName;
+        private double _questionTimeout = 1; //Min val from xaml
+
+        private uint _maxPlayers = 1; //Min val from xaml
+        private uint _questionsCount = 1; //Min val from xaml
+        private string _questionCountError;
+        private string _errorMessage;
+
+        private string user;
+
+        /// <summary>
+        /// The name of the room to be created.
+        /// </summary>
+        public string RoomName
+        {
+            get => _roomName;
+            set { _roomName = value; OnPropertyChanged(); }
+        }
+
+        /// <summary>
+        /// The timeout duration for questions in the room.
+        /// </summary>
+        public double QuestionTimeout
+        {
+            get => _questionTimeout;
+            set { _questionTimeout = value; OnPropertyChanged(); }
+        }
+
+        /// <summary>
+        /// The maximum number of players allowed in the room.
+        /// </summary>
+        public uint MaxPlayers
+        {
+            get => _maxPlayers;
+            set { _maxPlayers = value; OnPropertyChanged(); }
+        }
+
+        /// <summary>
+        /// The total number of questions in the room.
+        /// </summary>
+        public uint QuestionsCount
+        {
+            get => _questionsCount;
+            set { _questionsCount = value; OnPropertyChanged(); }
+        }
+
+        /// <summary>
+        /// Error message related to the number of questions.
+        /// </summary>
+        public string QuestionCountError
+        {
+            get => _questionCountError;
+            set { _questionCountError = value; OnPropertyChanged(); }
+        }
+
+
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set { _errorMessage = value; OnPropertyChanged(); }
+        }
+
+
+
+
+        /// <summary>
+        /// Command to create a new room.
+        /// </summary>
+        public ICommand CreateRoomCommand { get; }
+
+        /// <summary>
+        /// Private constructor for initializing the ViewModel.
+        /// </summary>
+        private CreateRoomPageViewModel(string user)
+        {
+            this.user = user;
+            CreateRoomCommand = new RelayCommand(PerformCreateRoom, CanCreateRoom);
+
+            PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(RoomName) ||
+                    args.PropertyName == nameof(MaxPlayers) ||
+                    args.PropertyName == nameof(QuestionsCount) ||
+                    args.PropertyName == nameof(QuestionTimeout))
+                {
+                    ((RelayCommand)CreateRoomCommand).RaiseCanExecuteChanged();
+                }
+            };
+
+        }
+
+        /// <summary>
+        /// Creates or retrieves a singleton instance of the CreateRoomPageViewModel.
+        /// </summary>
+        /// <returns>An instance of CreateRoomPageViewModel.</returns>
+        public static CreateRoomPageViewModel Instance(string user)
+        {
+            return GetInstance(() => new CreateRoomPageViewModel(user));
+        }
+
+        /// <summary>
+        /// Determines whether the room can be created based on input validation.
+        /// </summary>
+        /// <returns>True if the room can be created, otherwise false.</returns>
+        private bool CanCreateRoom()
+        {
+            return !string.IsNullOrWhiteSpace(RoomName?.Trim())
+                   && MaxPlayers > 0
+                   && QuestionsCount > 0
+                   && QuestionTimeout > 0;
+        }
+
+        /// <summary>
+        /// Executes the process of creating a room and fetching players.
+        /// </summary>
+        private async void PerformCreateRoom()
+        {
+            RoomData? roomData = await CreateRoom();
+            if (roomData != null)
+            {
+                MyNavigationService.Navigate(new AdminRoomPage(roomData, user));
+            }
+
+        }
+
+
+        /// <summary>
+        /// Sends a request to create a room with the specified parameters.
+        /// </summary>
+        private async Task<RoomData?> CreateRoom()
+        {
+            string trimmedRoomName = RoomName?.Trim();
+
+            var createRoomRequest = new CreateRoomRequest(trimmedRoomName, MaxPlayers, QuestionsCount, QuestionTimeout);
+            var responseInfo = await RequestsExchangeService.ExchangeRequest(createRoomRequest);
+
+            if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+            {
+                ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
+                ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
+                return null;
+            }
+
+            CreateRoomResponse createRoomResponse = JsonResponseDeserialize.DeserializeResponse<CreateRoomResponse>(responseInfo);
+            if (createRoomResponse.Status == 0)
+            {
+                return createRoomResponse.RoomData;
+            }
+            else
+            {
+                this.QuestionCountError = createRoomResponse.Errors.QuestionCountError;
+            }
+
+            return null;
+        }
+    }
+}

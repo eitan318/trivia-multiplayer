@@ -1,8 +1,9 @@
 #include "Room.h"
 
-Room::Room(RoomData& roomdata, LoggedUser& user) 
+Room::Room(const RoomData& roomdata, const LoggedUser& user) 
 {
 	this->m_metadata = roomdata;
+	this->m_users = std::vector<LoggedUser>();
 	this->m_users.push_back(user);
 }
 Room::Room() {
@@ -10,11 +11,11 @@ Room::Room() {
 Room::~Room() {
 }
 
-void Room::addUser(LoggedUser& loggeduser) 
+void Room::addUser(const LoggedUser& loggeduser)
 {
 	this->m_users.push_back(loggeduser);
 }
-void Room::removeUser(LoggedUser& loggeduser)
+void Room::removeUser(const LoggedUser& loggeduser)
 {
 	for (auto player = this->m_users.begin(); player != this->m_users.end(); ++player) 
 	{
@@ -25,20 +26,25 @@ void Room::removeUser(LoggedUser& loggeduser)
 		}
 	}
 }
-std::vector<std::string> Room::getAllUsers()
+std::vector<LoggedUser> Room::getAllUsers() const
 {
-	std::vector<std::string> userslist;
-	for (const auto user : this->m_users) 
-	{
-		userslist.push_back(user.m_username);
-	}
-	return userslist;
+	return this->m_users;
 }
-RoomData Room::getRoomData() 
+bool Room::getRoomStatus() const
 {
-	return this->m_metadata;
+	return true;
 }
-void Room::setRoomData(RoomData& roomdata)
+
+void Room::setRoomData(const RoomData& roomdata)
 {
 	this->m_metadata = roomdata;
+}
+
+
+RoomPreview Room::getRoomPreview() const {
+	RoomPreview p;
+	p.currPlayersAmount = getAllUsers().size();
+	p.status = getRoomStatus();
+	p.roomData = this->m_metadata;
+	return p;
 }
