@@ -2,6 +2,7 @@
 #include "json.hpp"
 #include "RoomPreview.hpp"
 #include "Response.hpp"
+#include <vector>
 
 void to_json(nlohmann::json& j, const RoomPreview& roomPreview);
 

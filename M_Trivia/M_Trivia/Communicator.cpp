@@ -1,5 +1,15 @@
 #include "Communicator.h"
+
 #include "SocketService.h"
+#include "ServerErrorResponse.hpp"
+#include "JsonResponsePacketSerializer.hpp"
+#include "RequestResult.hpp"
+#include "RequestInfo.hpp"
+#include "LoginRequestHandler.h"
+#include <iostream>
+#include <thread>
+#include <string>
+#include <Windows.h>    
 
 
 Communicator::Communicator(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)

@@ -1,11 +1,8 @@
 #pragma once
 #include "Communicator.h"
-#include <thread>
-#include <string>
-#include <iostream>
 #include "IDatabase.h"
 #include "RequestHandlerFactory.h"
-#include "SqliteDatabase.h"
+
 
 /**
  * @class Server

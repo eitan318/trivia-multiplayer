@@ -1,14 +1,13 @@
 #pragma once
 #include "IDataBase.h"
 #include "LoggedUser.h"
-#include "EmailSender.hpp"
 #include <vector>
-#include "UserRecord.hpp"
-#include "RegexValidator.h"
 #include "SignupResponseErrors.hpp"
 #include "ResetPasswordResponseErrors.hpp"
 #include "LoginResponseErrors.hpp"
 #include "PasswordCodeResponseErrors.hpp"
+
+
 
 /**
  * @brief Manages user authentication, registration, and session handling.

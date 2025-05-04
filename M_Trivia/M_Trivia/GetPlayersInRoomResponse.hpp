@@ -2,6 +2,7 @@
 #include "json.hpp"
 #include "Response.hpp"
 #include "LoggedUser.h"
+#include <vector>
 
 /**
  * @class GetPlayersInRoomResponse

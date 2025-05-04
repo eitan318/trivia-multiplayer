@@ -1,6 +1,5 @@
 #pragma once
 #include "json.hpp"
-#include "HighScoreInfo.hpp"
 #include "Response.hpp"
 #include "SignupResponseErrors.hpp"
 

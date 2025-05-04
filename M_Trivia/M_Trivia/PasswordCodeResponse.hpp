@@ -2,6 +2,8 @@
 #include "json.hpp"
 #include "Response.hpp"
 #include "PasswordCodeResponseErrors.hpp"
+#include <string>
+#include <memory>
 
 
 class PasswordCodeResponse : public Response{

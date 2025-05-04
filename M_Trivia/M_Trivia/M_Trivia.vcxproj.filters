@@ -162,10 +162,10 @@
     <ClInclude Include="sqlite3.h">
       <Filter>Libs</Filter>
     </ClInclude>
-    <ClInclude Include="JsonResponsePacketSerializer.h">
+    <ClInclude Include="JsonResponsePacketSerializer.hpp">
       <Filter>Headers\Services</Filter>
     </ClInclude>
-    <ClInclude Include="JsonRequestPacketDeserializer.h">
+    <ClInclude Include="JsonRequestPacketDeserializer.hpp">
       <Filter>Headers\Services</Filter>
     </ClInclude>
     <ClInclude Include="IRequestHandler.h">
@@ -207,7 +207,7 @@
     <ClInclude Include="Room.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="RoomData.h">
+    <ClInclude Include="RoomData.hpp">
       <Filter>Headers\Model</Filter>
     </ClInclude>
     <ClInclude Include="RoomManager.h">

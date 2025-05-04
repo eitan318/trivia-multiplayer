@@ -1,12 +1,15 @@
 #pragma once
 #include "LoginManager.h"
 #include "LoginRequestHandler.h"
+#include "MenuRequestHandler.h"
 #include "IDatabase.h"
 #include "RoomManager.h"
 #include "StatisticsManager.h"
+#include <memory>
 
 
 class LoginRequestHandler;
+class MenuRequestHandler;
 
 /**
  * @class RequestHandlerFactory
@@ -26,7 +29,14 @@ public:
      * @brief Creates a new LoginRequestHandler.
      * @return A pointer to a newly created LoginRequestHandler.
      */
-    LoginRequestHandler* createLoginRequestHandler();
+    std::unique_ptr<LoginRequestHandler> createLoginRequestHandler() const;
+
+    /**
+	 * @brief Creates a new MenuRequestHandler.
+	 * @return A pointer to a newly created MenuRequestHandler.
+	 */
+    std::unique_ptr<MenuRequestHandler> createMenuRequestHandler(const LoggedUser& loggedUser) const;
+
 
     /**
      * @brief Gets a reference to the LoginManager.

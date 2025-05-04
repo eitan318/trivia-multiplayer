@@ -2,6 +2,7 @@
 #include "json.hpp"
 #include "Response.hpp"
 #include "LoginResponseErrors.hpp"
+#include <memory>
 
 /**
  * @class LoginResponse

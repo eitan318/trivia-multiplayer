@@ -1,14 +1,15 @@
 #pragma once
-#include "IDatabase.h"
-#include "sqlite3.h"
-#include <io.h>
 #include <string>
-#include <iostream>
-#include "MyException.h"
-#include "ApiClient.h"
-#include "json.hpp"
+#include "IDatabase.h"
+#include "UserRecord.hpp"
+#include "HighScoreInfo.hpp"
+#include "Question.hpp"
 #include <vector>
 #include <list>
+#include "sqlite3.h"
+
+
+
 
 
 class SqliteDatabase : public IDatabase

@@ -2,6 +2,7 @@
 #include "json.hpp"
 #include "Response.hpp"
 #include "JoinRoomResponseErrors.hpp"
+#include <memory>
 
 /**
  * @class JoinRoomResponse

@@ -1,14 +1,10 @@
 #pragma once
 #include <WinSock2.h>
-#include <Windows.h>
 #include <map>
 #include "IRequestHandler.h"
-#include "RequestResult.hpp"
-#include "RequestInfo.hpp"
-#include "LoginRequestHandler.h"
-#include <iostream>
-#include <thread>
-#include <string>
+#include "RequestHandlerFactory.h"
+
+
 
 #define PORT 5554  ///< The port number for the server to listen on.
 

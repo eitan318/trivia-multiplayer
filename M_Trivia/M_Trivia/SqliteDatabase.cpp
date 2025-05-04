@@ -1,5 +1,11 @@
 #include "SqliteDatabase.h"
 
+#include <io.h>
+#include <iostream>
+#include "MyException.h"
+#include "ApiClient.h"
+#include "json.hpp"
+
 SqliteDatabase& SqliteDatabase::getInstance()
 {
 	static SqliteDatabase instance;

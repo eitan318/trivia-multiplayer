@@ -1,5 +1,25 @@
 #include "LoginRequestHandler.h"
 
+#include "RequestsCodes.hpp"
+#include "LoginRequest.hpp"
+#include "SignupRequest.hpp"
+#include "ResetPasswordRequest.hpp"
+#include "SendPasswordResetCodeRequest.hpp"
+#include "JsonResponsePacketSerializer.h"
+#include "JsonRequestPacketDeserializer.h"
+#include <random>
+#include <cmath>
+#include "ServerErrorResponse.hpp"
+#include "LoginResponse.hpp"
+#include "SignupResponse.hpp"
+#include "ResetPasswordResponse.hpp"
+#include "PasswordCodeResponse.hpp"
+#include "JoinRoomResponse.hpp"
+#include "LogoutResponse.hpp"
+#include "ResetPasswordResponseErrors.hpp"
+#include <memory>
+
+
 LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
 {
 }
@@ -55,10 +75,10 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const
 		LoggedUser user;
 		user.m_username = request.getUsername();
 		if (errors->statusCode != 0) {
-			requestResult.newHandler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
+			requestResult.newHandler = this->m_handlerFactory.createLoginRequestHandler();
 		}
 		else {
-			requestResult.newHandler = std::make_unique<MenuRequestHandler>(user, this->m_handlerFactory);
+			requestResult.newHandler = this->m_handlerFactory.createMenuRequestHandler(user);
 		}
 		return requestResult;
 	}
@@ -67,7 +87,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const
 
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
-		requestResult.newHandler  = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
+		requestResult.newHandler = this->m_handlerFactory.createLoginRequestHandler();
 		return requestResult;
 	}
 
@@ -85,14 +105,14 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& requestInfo) const
 		SignupResponse signupResponse(errors);
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(signupResponse);
-		requestResult.newHandler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
+		requestResult.newHandler = this->m_handlerFactory.createLoginRequestHandler();
 		return requestResult;
 	}
 	catch (const std::runtime_error& e) {
 		RequestResult res;
 		ServerErrorResponse errResponse(e.what());
 		res.response = JsonResponsePacketSerializer::serializeResponse(errResponse);
-		res.newHandler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
+		res.newHandler = this->m_handlerFactory.createLoginRequestHandler();
 		return res;
 	}
 
@@ -138,14 +158,14 @@ RequestResult LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& req
 
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(response);
-		requestResult.newHandler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
+		requestResult.newHandler = this->m_handlerFactory.createLoginRequestHandler();
 		return requestResult;
 	}
 	catch (const std::runtime_error& e) {
 		RequestResult res;
 		ServerErrorResponse errResponse(e.what());
 		res.response = JsonResponsePacketSerializer::serializeResponse(errResponse);
-		res.newHandler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
+		res.newHandler = this->m_handlerFactory.createLoginRequestHandler();
 		return res;
 	}
 
@@ -171,14 +191,14 @@ RequestResult LoginRequestHandler::resetPassword(const RequestInfo& requestInfo)
 		ResetPasswordResponse response(errors);
 		RequestResult requestResult;
 		requestResult.response = JsonResponsePacketSerializer::serializeResponse(response);
-		requestResult.newHandler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);;
+		requestResult.newHandler = this->m_handlerFactory.createLoginRequestHandler();
 		return requestResult;
 	}
 	catch (const std::runtime_error& e) {
 		RequestResult res;
 		ServerErrorResponse errResponse(e.what());
 		res.response = JsonResponsePacketSerializer::serializeResponse(errResponse);
-		res.newHandler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
+		res.newHandler = this->m_handlerFactory.createLoginRequestHandler();
 		return res;
 	}
 

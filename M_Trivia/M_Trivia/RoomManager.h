@@ -1,6 +1,5 @@
 #pragma once
 #include "Room.h"
-#include "MyException.h"
 #include "IDatabase.h"
 #include "RoomPreview.hpp"
 #include <map>

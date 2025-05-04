@@ -1,5 +1,10 @@
 #include "Server.h"
 
+#include <thread>
+#include <string>
+#include <iostream>
+#include "SqliteDatabase.h"
+
 Server::Server()
 	: m_database(SqliteDatabase::getInstance()),
 	m_handlerFactory(RequestHandlerFactory::getInstance(m_database)),

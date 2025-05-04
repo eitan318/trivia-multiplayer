@@ -2,7 +2,7 @@
 #include "json.hpp"
 #include "Response.hpp"
 #include "CreateRoomResponseErrors.hpp"
-#include "RoomData.h"
+#include "RoomData.hpp"
 #include <memory>
 
 /**

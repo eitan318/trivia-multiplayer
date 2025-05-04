@@ -16,9 +16,14 @@ RequestHandlerFactory& RequestHandlerFactory::getInstance(IDatabase& database)
 	return instance;
 }
 
-LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
+std::unique_ptr<LoginRequestHandler> RequestHandlerFactory::createLoginRequestHandler() const 
 {
-	return new LoginRequestHandler(*this);
+	return std::make_unique<LoginRequestHandler>(const_cast<RequestHandlerFactory&>(*this));
+}
+
+std::unique_ptr<MenuRequestHandler> RequestHandlerFactory::createMenuRequestHandler(const LoggedUser& loggedUser) const
+{
+	return std::make_unique<MenuRequestHandler>(loggedUser, const_cast<RequestHandlerFactory&>(*this));
 }
 
 LoginManager& RequestHandlerFactory::getLoginManager() const

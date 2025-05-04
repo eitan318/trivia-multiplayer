@@ -1,5 +1,25 @@
 #include "MenuRequestHandler.h"
 
+#include "MyException.h"
+#include "ServerErrorResponse.hpp"
+#include "JsonResponsePacketSerializer.h"
+#include "LogoutResponse.hpp"
+#include "JsonRequestPacketDeserializer.h"
+#include "RequestsCodes.hpp"
+#include "JoinRoomRequest.hpp"
+#include "CreateRoomRequest.hpp"
+#include "GetPlayersInRoomRequest.hpp"
+#include "GetHighScoreRequest.hpp"
+#include "GetRoomsResponse.hpp"
+#include "GetPlayersInRoomResponse.hpp"
+#include "GetPersonalStatisticsResponse.hpp"
+#include "GetHighScoreResponse.hpp"
+#include "PersonalStatisticsRequest.hpp"
+#include "CreateRoomResponse.hpp"
+#include "RoomPreview.hpp"
+#include "JoinRoomResponse.hpp"
+#include "JoinRoomResponseErrors.hpp"
+
 MenuRequestHandler::MenuRequestHandler(const LoggedUser& user, RequestHandlerFactory& handlerFactory) : m_user(user),
 m_handlerFactory(handlerFactory)
 {
@@ -57,7 +77,7 @@ RequestResult MenuRequestHandler::logout(const RequestInfo& info) const
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(logOutResponse);
-    requestResult.newHandler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
+    requestResult.newHandler = this->m_handlerFactory.createLoginRequestHandler();
     return requestResult;
 }
 
@@ -69,7 +89,7 @@ RequestResult MenuRequestHandler::getRooms(const RequestInfo& requestInfo) const
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(getRoomsResponse);
-    requestResult.newHandler = std::make_unique<MenuRequestHandler>(this->m_user, this->m_handlerFactory);
+    requestResult.newHandler = std::move(this->m_handlerFactory.createMenuRequestHandler(this->m_user));
     return requestResult;
 }
 
@@ -87,7 +107,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInf
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(getPlayersInRoomResponse);
-    requestResult.newHandler = std::make_unique<MenuRequestHandler>(this->m_user, this->m_handlerFactory);
+    requestResult.newHandler = std::move(this->m_handlerFactory.createMenuRequestHandler(this->m_user));
     return requestResult;
 }
 
@@ -99,7 +119,7 @@ RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& requestInf
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(personalStatsResponse);
-    requestResult.newHandler = std::make_unique<MenuRequestHandler>(this->m_user, this->m_handlerFactory);
+    requestResult.newHandler = std::move(this->m_handlerFactory.createMenuRequestHandler(this->m_user));
     return requestResult;
 }
 
@@ -117,7 +137,7 @@ RequestResult MenuRequestHandler::getHighScore(const RequestInfo& requestInfo) c
   
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(highScoreResponse);
-    requestResult.newHandler = std::make_unique<MenuRequestHandler>(this->m_user, this->m_handlerFactory);
+    requestResult.newHandler = std::move(this->m_handlerFactory.createMenuRequestHandler(this->m_user));
     return requestResult;
 }
 
@@ -148,7 +168,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& requestInfo) const
     JoinRoomResponse joinRoomResponse(std::make_shared<JoinRoomResponseErrors>(errors));
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(joinRoomResponse);
-    requestResult.newHandler = std::make_unique<MenuRequestHandler>(this->m_user, this->m_handlerFactory);
+    requestResult.newHandler = std::move(this->m_handlerFactory.createMenuRequestHandler(this->m_user));
     return requestResult;
 }
 
@@ -179,6 +199,6 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& requestInfo) con
 
     RequestResult requestResult;
     requestResult.response = JsonResponsePacketSerializer::serializeResponse(createRoomResponse);
-    requestResult.newHandler = std::make_unique<MenuRequestHandler>(this->m_user, this->m_handlerFactory);
+    requestResult.newHandler = std::move(this->m_handlerFactory.createMenuRequestHandler(this->m_user));
     return requestResult;
 }

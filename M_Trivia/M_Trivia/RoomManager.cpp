@@ -1,5 +1,7 @@
 #include "RoomManager.h"
 
+#include "MyException.h"
+
 unsigned int RoomManager::ids = 0;
 
 RoomManager& RoomManager::getInstance(IDatabase& database)

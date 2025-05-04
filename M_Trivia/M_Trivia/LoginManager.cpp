@@ -1,5 +1,10 @@
 #include "LoginManager.h"
 
+#include "UserRecord.hpp"
+#include "RegexValidator.h"
+#include "EmailSender.hpp"
+
+
 LoginManager::LoginManager(IDatabase& database) : m_database(database)
 {
 }

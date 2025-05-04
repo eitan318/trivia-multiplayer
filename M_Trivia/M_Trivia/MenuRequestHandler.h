@@ -1,18 +1,10 @@
 #pragma once
 #include "LoggedUser.h"
-#include "RequestsCodes.hpp"
+#include "RequestInfo.hpp"
+#include "RequestResult.hpp"
 #include "RequestHandlerFactory.h"
-#include "JoinRoomRequest.hpp"
-#include "CreateRoomRequest.hpp"
-#include "GetPlayersInRoomRequest.hpp"
-#include "GetHighScoreRequest.hpp"
-#include "GetRoomsResponse.hpp"
-#include "GetPlayersInRoomResponse.hpp"
-#include "GetPersonalStatisticsResponse.hpp"
-#include "GetHighScoreResponse.hpp"
-#include "PersonalStatisticsRequest.hpp"
-#include "CreateRoomResponse.hpp"
-#include "RoomPreview.hpp"
+
+
 
 class RequestHandlerFactory;
 

@@ -1,43 +1,84 @@
+/**
+ * @file LoginRequestHandler.h
+ * @brief Declaration of the LoginRequestHandler class responsible for handling login-related requests.
+ */
+
 #pragma once
 #include "IRequestHandler.h"
-#include "MenuRequestHandler.h"
-#include "RequestsCodes.hpp"
-#include "LoginRequest.hpp"
-#include "SignupRequest.hpp"
-#include "ResetPasswordRequest.hpp"
-#include "SendPasswordResetCodeRequest.hpp"
-#include "JsonResponsePacketSerializer.h"
-#include "JsonRequestPacketDeserializer.h"
 #include "RequestHandlerFactory.h"
-#include <random>
-#include <cmath>
-#include "ServerErrorResponse.hpp"
-#include "LoginResponse.hpp"
-#include "SignupResponse.hpp"
-#include "ResetPasswordResponse.hpp"
-#include "PasswordCodeResponse.hpp"
-#include "JoinRoomResponse.hpp"
-#include "LogoutResponse.hpp"
-#include "ResetPasswordResponseErrors.hpp"
-#include <memory>
+#include "RequestInfo.hpp"
+#include "RequestResult.hpp"
 
 #define CODE_DIGITS 6
 
-
 class RequestHandlerFactory;
 
+/**
+ * @class LoginRequestHandler
+ * @brief Handles requests related to user login, signup, and password management.
+ */
 class LoginRequestHandler : public IRequestHandler {
 public:
-	LoginRequestHandler(RequestHandlerFactory& handlerFactory);
-	~LoginRequestHandler();
-	bool isRequestRelevant(const RequestInfo&) const override;
-	RequestResult handleRequest(const RequestInfo&) const override;
-private:
-	RequestHandlerFactory& m_handlerFactory;
-	RequestResult login(const RequestInfo&) const;
-	RequestResult signup(const RequestInfo&) const;
-	RequestResult sendPasswordResetEmail(const RequestInfo& requestInfo) const;
-	RequestResult resetPassword(const RequestInfo& requestInfo) const;
-	unsigned int generateRandomCode(unsigned int digsOfCode) const;
+    /**
+     * @brief Constructs a LoginRequestHandler instance.
+     * @param handlerFactory Reference to the RequestHandlerFactory for creating other request handlers.
+     */
+    LoginRequestHandler(RequestHandlerFactory& handlerFactory);
 
+    /**
+     * @brief Destructor for LoginRequestHandler.
+     */
+    ~LoginRequestHandler();
+
+    /**
+     * @brief Checks if a given request is relevant for this handler.
+     * @param requestInfo The request information to be checked.
+     * @return True if the request is relevant, false otherwise.
+     */
+    bool isRequestRelevant(const RequestInfo& requestInfo) const override;
+
+    /**
+     * @brief Handles a given request and produces a result.
+     * @param requestInfo The request information to handle.
+     * @return The result of handling the request.
+     */
+    RequestResult handleRequest(const RequestInfo& requestInfo) const override;
+
+private:
+    RequestHandlerFactory& m_handlerFactory; /**< Reference to the request handler factory. */
+
+    /**
+     * @brief Handles login requests.
+     * @param requestInfo The request information for login.
+     * @return The result of the login process.
+     */
+    RequestResult login(const RequestInfo& requestInfo) const;
+
+    /**
+     * @brief Handles signup requests.
+     * @param requestInfo The request information for signup.
+     * @return The result of the signup process.
+     */
+    RequestResult signup(const RequestInfo& requestInfo) const;
+
+    /**
+     * @brief Sends a password reset email.
+     * @param requestInfo The request information containing the email details.
+     * @return The result of sending the email.
+     */
+    RequestResult sendPasswordResetEmail(const RequestInfo& requestInfo) const;
+
+    /**
+     * @brief Handles password reset requests.
+     * @param requestInfo The request information for resetting the password.
+     * @return The result of the password reset process.
+     */
+    RequestResult resetPassword(const RequestInfo& requestInfo) const;
+
+    /**
+     * @brief Generates a random code of specified digit length.
+     * @param digsOfCode The number of digits in the random code.
+     * @return The generated random code.
+     */
+    unsigned int generateRandomCode(unsigned int digsOfCode) const;
 };
