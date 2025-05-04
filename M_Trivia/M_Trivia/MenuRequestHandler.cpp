@@ -2,9 +2,9 @@
 
 #include "MyException.h"
 #include "ServerErrorResponse.hpp"
-#include "JsonResponsePacketSerializer.h"
+#include "JsonResponsePacketSerializer.hpp"
 #include "LogoutResponse.hpp"
-#include "JsonRequestPacketDeserializer.h"
+#include "JsonRequestPacketDeserializer.hpp"
 #include "RequestsCodes.hpp"
 #include "JoinRoomRequest.hpp"
 #include "CreateRoomRequest.hpp"

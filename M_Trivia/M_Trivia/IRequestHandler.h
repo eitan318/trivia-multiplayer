@@ -36,5 +36,4 @@ public:
      */
     virtual RequestResult handleRequest(const RequestInfo&) const = 0;
 
-
 };

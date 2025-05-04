@@ -4,8 +4,6 @@
 #include "RequestResult.hpp"
 #include "RequestHandlerFactory.h"
 
-
-
 class RequestHandlerFactory;
 
 /**

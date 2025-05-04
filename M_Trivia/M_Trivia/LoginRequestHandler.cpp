@@ -5,8 +5,8 @@
 #include "SignupRequest.hpp"
 #include "ResetPasswordRequest.hpp"
 #include "SendPasswordResetCodeRequest.hpp"
-#include "JsonResponsePacketSerializer.h"
-#include "JsonRequestPacketDeserializer.h"
+#include "JsonResponsePacketSerializer.hpp"
+#include "JsonRequestPacketDeserializer.hpp"
 #include <random>
 #include <cmath>
 #include "ServerErrorResponse.hpp"

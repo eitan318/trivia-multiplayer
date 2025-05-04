@@ -1,9 +1,8 @@
 #pragma once
 #include <vector>
-#include "IRequestHandler.h"
 #include <memory>
 
-struct IRequestHandler;
+class IRequestHandler;
 
 /**
  * @struct RequestResult
