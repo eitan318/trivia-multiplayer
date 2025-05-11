@@ -54,8 +54,9 @@ void Communicator::startHandleRequest()
 {
     while (true) {
         SOCKET client_socket = accept(this->m_serverSocket, NULL, NULL);
-        if (client_socket == INVALID_SOCKET)
+        if (client_socket == INVALID_SOCKET) {
             throw std::exception(__FUNCTION__);
+        }
         try {
             std::thread t_client(&Communicator::handleNewClient, this, client_socket);
             t_client.detach();
