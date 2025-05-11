@@ -207,7 +207,8 @@ namespace ClientApp.ViewModels
                     else
                     {
                         UsernameErrorMessage = loginResponse.Errors.UsernameError;
-                        PasswordErrorMessage= loginResponse.Errors.PasswordError;
+                        PasswordErrorMessage = loginResponse.Errors.PasswordError;
+                        ErrorMessage = loginResponse.Errors.GeneralError;
                     }
 
                 }

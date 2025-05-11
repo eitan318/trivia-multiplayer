@@ -17,11 +17,9 @@ LoginManager& LoginManager::getInstance(IDatabase& database)
 LoginResponseErrors LoginManager::login(const std::string username, const std::string password)
 {
 	LoginResponseErrors errors;
-	if (!this->m_database.doesUserExist(username)) {
-		errors.usernameError = "Unknown username";
-	}
-	else if(!this->m_database.doesPasswordMatch(username, password)) {
-		errors.passwordError = "Wrong password";
+	if (!this->m_database.doesUserExist(username)
+		|| !this->m_database.doesPasswordMatch(username, password)) {
+		errors.generalError = "Unknown username or wrong password";
 	}
 	errors.statusCode = !errors.noErrors();
 

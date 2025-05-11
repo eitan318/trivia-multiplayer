@@ -8,6 +8,7 @@ public:
     // Error fields
     std::string usernameError;
     std::string passwordError;
+    std::string generalError;
 
     /**
      * @brief Checks if all error fields are not set (empty).
@@ -16,13 +17,15 @@ public:
      */
     bool noErrors() const override {
         return passwordError.empty()
-            && usernameError.empty();
+            && usernameError.empty()
+            && generalError.empty();
     }
 
     nlohmann::json getJson() const override {
         nlohmann::json j = nlohmann::json{
             {"PasswordError", passwordError},
             {"UsernameError", usernameError},
+            {"GeneralError", generalError},
         };
         return j;
     }

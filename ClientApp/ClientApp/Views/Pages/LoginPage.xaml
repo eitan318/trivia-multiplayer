@@ -58,6 +58,12 @@
                     Foreground="{StaticResource ErrorBrush}" 
                     Visibility="{Binding PasswordErrorMessage}" />
 
+                <!-- General Error Message -->
+                <TextBlock Text="{Binding ErrorMessage}" 
+                           Foreground="{StaticResource ErrorBrush}" 
+                           TextAlignment="Center"
+                           Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
+
                 <!-- Spacer for better alignment -->
                 <Grid Height="20"/>
 
@@ -84,11 +90,7 @@
                         </TextBlock.InputBindings>
                     </TextBlock>
 
-                    <!-- General Error Message -->
-                <TextBlock Text="{Binding ErrorMessage}" 
-                           Foreground="{StaticResource ErrorBrush}" 
-                           TextAlignment="Center"
-                           Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
+
             </StackPanel>
         </materialDesign:Card>
     </Grid>
