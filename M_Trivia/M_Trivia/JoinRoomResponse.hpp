@@ -20,11 +20,4 @@ public:
 	 */
 	ResponseCodes getCode() const override { return ResponseCodes::C_JoinRoomResponse; }
 
-	/**
-	 * @brief Converts the response to a JSON object.
-	 * @return A JSON representation of the response.
-	 */
-	nlohmann::json getJson() const override {
-		return baseJson();
-	}
 };

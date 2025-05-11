@@ -17,13 +17,4 @@ public:
 	 * @return The response code as an unsigned integer.
 	 */
 	ResponseCodes getCode() const override { return ResponseCodes::C_ResetPasswordResponse; }
-
-	/**
-	 * @brief Converts the response to a JSON object.
-	 * @return A JSON representation of the response.
-	 */
-	nlohmann::json getJson() const override {
-		nlohmann::json j = baseJson();
-		return j;
-	}
 };

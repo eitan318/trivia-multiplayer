@@ -18,11 +18,4 @@ public:
 	 */
 	ResponseCodes getCode() const override { return ResponseCodes::C_LogoutResponse; }
 
-	/**
-	 * @brief Converts the response to a JSON object.
-	 * @return A JSON representation of the response.
-	 */
-	nlohmann::json getJson() const override {
-		return baseJson();
-	}
 };
