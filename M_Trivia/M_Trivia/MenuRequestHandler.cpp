@@ -44,7 +44,8 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
 
 RequestResult MenuRequestHandler::handleRequest(const RequestInfo& requestInfo) const
 {
-    switch (static_cast<RequestCodes>(requestInfo.code)) {
+    switch (static_cast<RequestCodes>(requestInfo.code)) 
+    {
     case RequestCodes::CreateRoomRequest:
         return this->createRoom(requestInfo);
     case RequestCodes::GetPlayersInRoomRequest:
