@@ -99,7 +99,7 @@ void Communicator::handleNewClient(SOCKET sock)
 {
     std::cout << "Client " << sock << " accepted." << std::endl;
     // Create a unique_ptr for the initial handler
-    std::unique_ptr<IRequestHandler> handler = std::make_unique<LoginRequestHandler>(this->m_handlerFactory);
+    std::unique_ptr<IRequestHandler> handler = this->m_handlerFactory.createLoginRequestHandler();
     this->m_clients.insert({ sock, std::move(handler) });
 
     while (this->m_clients.at(sock) != nullptr)

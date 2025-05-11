@@ -3,7 +3,6 @@
 #include "Response.hpp"
 #include "CreateRoomResponseErrors.hpp"
 #include "RoomData.hpp"
-#include <memory>
 
 /**
  * @class CreateRoomResponse
@@ -19,8 +18,8 @@ public:
         * @param errors The error details for the response.
         * @param roomData The room data associated with the response.
         */
-    CreateRoomResponse(std::shared_ptr<CreateRoomResponseErrors> errors, const RoomData& roomData)
-        : Response(std::move(errors)), roomData(roomData) {
+    CreateRoomResponse(CreateRoomResponseErrors* errors, const RoomData& roomData)
+        : Response(errors), roomData(roomData) {
     }
 
     /**

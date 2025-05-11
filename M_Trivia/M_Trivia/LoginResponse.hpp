@@ -2,7 +2,6 @@
 #include "json.hpp"
 #include "Response.hpp"
 #include "LoginResponseErrors.hpp"
-#include <memory>
 
 /**
  * @class LoginResponse
@@ -10,8 +9,8 @@
  */
 class LoginResponse : public Response {
 public:
-	LoginResponse(std::shared_ptr <LoginResponseErrors> errors)
-		: Response(std::move(errors)) {
+	LoginResponse(LoginResponseErrors* errors)
+		: Response(errors) {
 	}
 
 	/**

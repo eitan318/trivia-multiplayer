@@ -14,7 +14,7 @@ private:
 public:
     ServerErrorResponse() = delete;
 
-    ServerErrorResponse(const std::string& message) : Response(0), message(message) {
+    ServerErrorResponse(const std::string& message) : Response((unsigned int)(0)), message(message) {
 
     }
 

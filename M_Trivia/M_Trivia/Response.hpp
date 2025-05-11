@@ -24,7 +24,7 @@ enum class ResponseCodes : unsigned char{
 
 class Response {
 private:
-    std::shared_ptr<IResponseErrors> errors; // Use smart pointer for polymorphism
+    IResponseErrors* errors; // Use smart pointer for polymorphism
     unsigned int status;
 
 public:
@@ -36,8 +36,8 @@ public:
      * @brief Constructor for Response.
      * @param errors The error object containing details of the response.
      */
-    explicit Response(std::shared_ptr<IResponseErrors> errors)
-        : errors(std::move(errors)), status(this->errors->statusCode) {
+    explicit Response(IResponseErrors* errors)
+        : errors(errors), status(this->errors->statusCode) {
     }
 
     /**

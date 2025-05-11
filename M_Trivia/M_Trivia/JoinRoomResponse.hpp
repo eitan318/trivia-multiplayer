@@ -2,7 +2,6 @@
 #include "json.hpp"
 #include "Response.hpp"
 #include "JoinRoomResponseErrors.hpp"
-#include <memory>
 
 /**
  * @class JoinRoomResponse
@@ -10,8 +9,8 @@
  */
 class JoinRoomResponse : public Response {
 public:
-	JoinRoomResponse(std::shared_ptr <JoinRoomResponseErrors> errors) 
-		: Response(std::move(errors)) {
+	JoinRoomResponse(JoinRoomResponseErrors* errors) 
+		: Response(errors) {
 		
 	}
 

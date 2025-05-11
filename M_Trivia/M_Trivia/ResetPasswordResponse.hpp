@@ -2,7 +2,6 @@
 #include "json.hpp"
 #include "Response.hpp"
 #include "ResetPasswordResponseErrors.hpp"
-#include <memory>
 
 /**
  * @class LoginResponse
@@ -10,8 +9,8 @@
  */
 class ResetPasswordResponse : public Response {
 public:
-	ResetPasswordResponse(std::shared_ptr<ResetPasswordResponseErrors> resetPasswordResponseErrors)
-		: Response(std::move(resetPasswordResponseErrors)) {
+	ResetPasswordResponse(ResetPasswordResponseErrors* resetPasswordResponseErrors)
+		: Response(resetPasswordResponseErrors	) {
 	}
 	/**
 	 * @brief Gets the response code for this response.

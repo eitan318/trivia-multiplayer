@@ -3,7 +3,6 @@
 #include "Response.hpp"
 #include "PasswordCodeResponseErrors.hpp"
 #include <string>
-#include <memory>
 
 
 class PasswordCodeResponse : public Response{
@@ -13,11 +12,11 @@ private:
 public:
     PasswordCodeResponse() = delete;
     PasswordCodeResponse(
-        std::shared_ptr<PasswordCodeResponseErrors> errors,
+        PasswordCodeResponseErrors* errors,
         unsigned int randomCode,
         const std::string& username
     )
-        : Response(std::move(errors)), emailCode(randomCode), username(username) {
+        : Response(errors), emailCode(randomCode), username(username) {
     }
 
 

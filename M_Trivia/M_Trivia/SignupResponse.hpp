@@ -14,8 +14,8 @@ public:
      * @param status The status of the response.
      * @param regexResult A vector of boolean values representing the regex result.
      */
-    SignupResponse(std::shared_ptr<SignupResponseErrors> signupResponseErrors)
-        : Response(std::move(signupResponseErrors)){
+    SignupResponse(SignupResponseErrors* signupResponseErrors)
+        : Response(signupResponseErrors){
     }
 
 
