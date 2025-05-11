@@ -31,8 +31,10 @@ unsigned int RoomManager::createRoom(const LoggedUser& player, RoomData& roomDat
     roomData.id = roomid;
     for (const auto& pair : this->m_rooms)
     {
-        if (pair.first >= roomid)
+        if (pair.first >= roomid) {
             roomid = pair.first + 1;
+        }
+
     }
 
     this->m_rooms[roomid] = Room(roomData, player);

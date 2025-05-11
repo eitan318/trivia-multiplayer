@@ -17,8 +17,9 @@ LoginManager& LoginManager::getInstance(IDatabase& database)
 LoginResponseErrors LoginManager::login(const std::string username, const std::string password)
 {
 	LoginResponseErrors errors;
-	if (!this->m_database.doesUserExist(username))
+	if (!this->m_database.doesUserExist(username)) {
 		errors.usernameError = "Unknown username";
+	}
 	else if(!this->m_database.doesPasswordMatch(username, password)) {
 		errors.passwordError = "Wrong password";
 	}
@@ -35,10 +36,13 @@ LoginResponseErrors LoginManager::login(const std::string username, const std::s
 PasswordCodeResponseErrors LoginManager::sendEmailCode(const std::string email, unsigned int code) const
 {
 	PasswordCodeResponseErrors errors;
-	if (!RegexValidator::validEmail(email))
+	if (!RegexValidator::validEmail(email)) {
 		errors.emailErrors = std::string() + "Invalid email format, Use: " + RegexValidator::emailRegexDescription.data();
-	else if (!this->m_database.emailExists(email)) 
+	}
+	else if (!this->m_database.emailExists(email)) {
 		errors.emailErrors = "Email doesnt exist";
+	}
+
 
 	errors.statusCode = !errors.noErrors();
 	if (errors.statusCode == 0) {
@@ -52,14 +56,16 @@ PasswordCodeResponseErrors LoginManager::sendEmailCode(const std::string email, 
 ResetPasswordResponseErrors LoginManager::resetPassword(const std::string& username, const std::string& newPassword) const
 {
 	ResetPasswordResponseErrors resetPasswordErrors;
-	if (!RegexValidator::validUsername)
+	if (!RegexValidator::validUsername) {
 		resetPasswordErrors.generalError = std::string() + "Invalid username. Use: " + RegexValidator::usernameRegexDescription.data();
-
-	if (!this->m_database.doesUserExist(username))
+	}
+	if (!this->m_database.doesUserExist(username)) {
 		resetPasswordErrors.generalError = std::string() + "Unknown username: " + username;
+	}
 
-	if (!RegexValidator::validPassword(newPassword))
+	if (!RegexValidator::validPassword(newPassword)) {
 		resetPasswordErrors.newPasswordError = std::string() + "Invalid password. Use: " + RegexValidator::passwordRegexDescription.data();
+	}
 
 	resetPasswordErrors.statusCode = !resetPasswordErrors.noErrors();
 
@@ -80,27 +86,35 @@ SignupResponseErrors LoginManager::signup(const UserRecord& userRecord) const
 {
 	SignupResponseErrors signupErrors;
 
-	if (!RegexValidator::validUsername(userRecord.username))
+	if (!RegexValidator::validUsername(userRecord.username)) {
 		signupErrors.usernameError = std::string() + "Invalid format. Use: " + RegexValidator::usernameRegexDescription.data();
-	else if (this->m_database.doesUserExist(userRecord.username))
+	}
+	else if (this->m_database.doesUserExist(userRecord.username)) {
 		signupErrors.usernameError = "User already exist";
+	}
 
-	if (!RegexValidator::validPassword(userRecord.password))
+	if (!RegexValidator::validPassword(userRecord.password)) {
 		signupErrors.passwordError = std::string() + "Password must be " + RegexValidator::passwordRegexDescription.data();
+	}
 
-	if (!RegexValidator::validEmail(userRecord.email))
+	if (!RegexValidator::validEmail(userRecord.email)) {
 		signupErrors.emailError = std::string() + "Invalid format. Use: " + RegexValidator::emailRegexDescription.data();
-	else if (this->m_database.emailExists(userRecord.email))
+	}
+	else if (this->m_database.emailExists(userRecord.email)) {
 		signupErrors.emailError = "User with this email exist.";
+	}
 
-	if (userRecord.houseAddress != "" && !RegexValidator::validHouseAddress(userRecord.houseAddress))
+	if (userRecord.houseAddress != "" && !RegexValidator::validHouseAddress(userRecord.houseAddress)) {
 		signupErrors.houseAddressError = std::string() + "Invalid format. Use: " + RegexValidator::houseAddressRegexDescription.data();
+	}
 
-    if (userRecord.phoneNumber != "" && !RegexValidator::validPhoneNumber(userRecord.phoneNumber))
+	if (userRecord.phoneNumber != "" && !RegexValidator::validPhoneNumber(userRecord.phoneNumber)) {
         signupErrors.phoneNumberError = std::string() + "Invalid format. Use: " + RegexValidator::phoneNumberRegexDescription.data();
+	}
 
-	if (userRecord.birthDate != "" && !RegexValidator::validBirthDate(userRecord.birthDate))
+	if (userRecord.birthDate != "" && !RegexValidator::validBirthDate(userRecord.birthDate)) {
 		signupErrors.birthDateError = std::string() + "Invalid format. Use: " + RegexValidator::birthDateRegexDescription.data();
+	}
 
 	signupErrors.statusCode = !signupErrors.noErrors();
 
