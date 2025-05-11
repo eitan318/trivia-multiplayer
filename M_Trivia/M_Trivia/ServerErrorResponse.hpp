@@ -27,7 +27,7 @@ public:
 
 
     nlohmann::json getJson() const override {
-        nlohmann::json j = baseJson();
+        nlohmann::json j = Response::getJson();
         j["Message"] = message; 
         return j;
     }

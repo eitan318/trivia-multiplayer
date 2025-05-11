@@ -56,10 +56,10 @@ public:
     virtual ResponseCodes getCode() const = 0;
 
     /**
-     * @brief Converts the common fields of the response to a JSON object.
-     * @return A JSON representation of the common response fields.
+     * @brief Converts the response to a JSON object.
+     * @return A JSON representation of the response.
      */
-    virtual nlohmann::json baseJson() const {
+    virtual nlohmann::json getJson() const {
         nlohmann::json errorsJson = errors ? errors->getJson() : nlohmann::json();
         nlohmann::json j = nlohmann::json{
             {"Status", status},
@@ -71,12 +71,6 @@ public:
         return j;
     }
 
-    /**
-     * @brief Converts the response to a JSON object.
-     * Derived classes should call `baseJson` to include common fields.
-     * @return A JSON representation of the response.
-     */
-    virtual nlohmann::json getJson() const = 0;
 
 
 };

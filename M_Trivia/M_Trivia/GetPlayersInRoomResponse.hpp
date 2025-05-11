@@ -30,7 +30,7 @@ public:
      * @return A JSON representation of the response.
      */
     nlohmann::json getJson() const override {
-        nlohmann::json j = baseJson();
+        nlohmann::json j = Response::getJson();
         j["Players"] = players; 
         return j;
     }
