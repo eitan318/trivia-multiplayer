@@ -35,7 +35,7 @@ namespace ClientApp.Services
             byte[] codeBuffer = await SocketService.ReceiveDataAsync(1);
 
             // Receive the length of the response payload (4 bytes)
-            byte[] lengthBuffer = await SocketService.ReceiveDataAsync(4);
+            byte[] lengthBuffer = await SocketService.ReceiveDataAsync(4); //Little endian
             int length = BitConverter.ToInt32(lengthBuffer, 0);
 
             // Receive the response payload based on the length
@@ -43,7 +43,6 @@ namespace ClientApp.Services
 
             // Return the response information as a ResponseInfo object
             return new ResponseInfo( codeBuffer[0], payloadBuffer);
-
         }
     }
 }

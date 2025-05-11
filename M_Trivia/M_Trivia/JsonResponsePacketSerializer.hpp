@@ -53,7 +53,7 @@ public:
         res.resize(res.size() + sizeof(int));
 
         // Copy the JSON length into the vector after the message code
-        std::memcpy(res.data() + MSG_CODE_SIZE, &json_length, sizeof(int));
+        std::memcpy(res.data() + MSG_CODE_SIZE, &json_length, sizeof(int)); //Little endian
 
         // Append the JSON string to the vector
         res.insert(res.end(), json_str.begin(), json_str.end());

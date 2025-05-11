@@ -5,14 +5,16 @@
 #include <sstream>
 #include <vector>
 #include <stdexcept>
+#include <algorithm> // For std::reverse
 
 using std::string;
 
-int SocketService::getIntFromSocket(SOCKET sc, int bytesNum)
+int SocketService::getLittleEndianIntFromSocket(SOCKET sc, int bytesNum)
 {
     std::vector<char> buffer(bytesNum);
     int totalReceived = 0;
 
+    // Receive the required number of bytes
     while (totalReceived < bytesNum)
     {
         int res = recv(sc, buffer.data() + totalReceived, bytesNum - totalReceived, 0);
@@ -23,11 +25,13 @@ int SocketService::getIntFromSocket(SOCKET sc, int bytesNum)
         totalReceived += res;
     }
 
+    // Combine bytes to reconstruct the integer (little-endian)
     int value = 0;
-    for (int i = 0; i < bytesNum; ++i)
+    for (int i = bytesNum - 1; i >= 0; --i) // Iterate from least significant to most significant byte
     {
         value = (value << 8) | (unsigned char)buffer[i];
     }
+
     return value;
 }
 
@@ -36,6 +40,7 @@ std::string SocketService::getStringPartFromSocket(SOCKET sc, int bytesNum)
     std::vector<char> buffer(bytesNum);
     int totalReceived = 0;
 
+    // Receive the required number of bytes
     while (totalReceived < bytesNum)
     {
         int res = recv(sc, buffer.data() + totalReceived, bytesNum - totalReceived, 0);
@@ -52,6 +57,8 @@ std::string SocketService::getStringPartFromSocket(SOCKET sc, int bytesNum)
 void SocketService::sendData(SOCKET sc, const std::vector<char>& data)
 {
     int totalSent = 0;
+
+    // Send all the bytes in the data vector
     while (totalSent < data.size())
     {
         int res = send(sc, data.data() + totalSent, data.size() - totalSent, 0);

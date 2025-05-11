@@ -14,7 +14,7 @@ public:
 	 * @return The integer value read from the socket.
 	 * @throws std::exception if there is an error while reading from the socket.
 	 */
-	static int getIntFromSocket(SOCKET sc, int bytesNum);
+	static int getLittleEndianIntFromSocket(SOCKET sc, int bytesNum);
 	
 	/**
 	 * @brief Reads a string from a socket.

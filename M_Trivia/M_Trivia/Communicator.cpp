@@ -111,8 +111,8 @@ void Communicator::handleNewClient(SOCKET sock)
         requestInfo.receivalTime = time(nullptr);
 
         try {
-            requestInfo.code = SocketService::getIntFromSocket(sock, 1);
-            msgLen = SocketService::getIntFromSocket(sock, sizeof(int));
+            requestInfo.code = SocketService::getLittleEndianIntFromSocket(sock, 1);
+            msgLen = SocketService::getLittleEndianIntFromSocket(sock, sizeof(int));
             msgStr = SocketService::getStringPartFromSocket(sock, msgLen);
         }
         catch (std::exception e){

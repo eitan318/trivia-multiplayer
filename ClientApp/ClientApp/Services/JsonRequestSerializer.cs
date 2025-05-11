@@ -36,8 +36,8 @@ namespace ClientApp.Services
 
             // Convert the length of the JSON bytes to a 4-byte array
             byte[] lengthBytes = BitConverter.GetBytes(jsonBytes.Length);
-            if (BitConverter.IsLittleEndian)
-                Array.Reverse(lengthBytes); // Ensure big-endian format if needed
+            if (!BitConverter.IsLittleEndian)
+                Array.Reverse(lengthBytes); // Ensure little-endian format if needed
 
             var dataBytes = new byte[1 + lengthBytes.Length + jsonBytes.Length];
             dataBytes[0] = (byte)request.GetCode();
