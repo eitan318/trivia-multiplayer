@@ -4,9 +4,13 @@
 
 
 class LoggedUser {
-public:
-
+private:
 	std::string m_username;
+public:
+	LoggedUser(const std::string& username) {
+		this->m_username = username;
+	}
+
 	std::string getUsername() const{
 		return this->m_username;
 	}

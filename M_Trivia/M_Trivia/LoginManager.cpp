@@ -24,8 +24,7 @@ LoginResponseErrors LoginManager::login(const std::string username, const std::s
 	errors.statusCode = !errors.noErrors();
 
 	if (errors.statusCode == 0) {
-		LoggedUser loggeduser;
-		loggeduser.m_username = username;
+		LoggedUser loggeduser(username);
 		this->m_loggedUsers.push_back(loggeduser);
 	}
 	return errors;
@@ -130,7 +129,7 @@ void LoginManager::logout(const std::string username)
 {
 	for (auto loggedUser = this->m_loggedUsers.begin(); loggedUser != this->m_loggedUsers.end(); ++loggedUser) //goes through the vector
 	{
-		if (loggedUser->m_username == username)
+		if (loggedUser->getUsername() == username)
 		{
 			this->m_loggedUsers.erase(loggedUser);
 			return; 

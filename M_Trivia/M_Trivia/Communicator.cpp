@@ -132,8 +132,7 @@ void Communicator::handleNewClient(SOCKET sock)
         {
             ServerErrorResponse errorResponse("Invalid msg code.");
 
-            requestResult.response = JsonResponsePacketSerializer::serializeResponse(errorResponse);
-            requestResult.newHandler = nullptr;
+            requestResult = RequestResult(JsonResponsePacketSerializer::serializeResponse(errorResponse), nullptr);
         }
 
         // Update handler if it has changed

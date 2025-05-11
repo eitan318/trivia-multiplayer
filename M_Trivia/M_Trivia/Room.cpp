@@ -19,7 +19,7 @@ void Room::removeUser(const LoggedUser& loggeduser)
 {
 	for (auto player = this->m_users.begin(); player != this->m_users.end(); ++player) 
 	{
-		if (player->m_username == loggeduser.m_username) 
+		if (player->getUsername() == loggeduser.getUsername())
 		{
 			this->m_users.erase(player);
 			return;
