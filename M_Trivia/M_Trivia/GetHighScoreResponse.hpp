@@ -4,7 +4,6 @@
 #include "Response.hpp"
 #include <vector>
 
-void to_json(nlohmann::json& j, const HighScoreInfo& highScoreInfo);
 
 /**
  * @class GetHighScoreResponse

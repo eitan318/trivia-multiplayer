@@ -4,9 +4,6 @@
 #include "Response.hpp"
 #include <vector>
 
-void to_json(nlohmann::json& j, const RoomPreview& roomPreview);
-
-
 /**
  * @class GetRoomsResponse
  * @brief class represents a response containing the rooms
