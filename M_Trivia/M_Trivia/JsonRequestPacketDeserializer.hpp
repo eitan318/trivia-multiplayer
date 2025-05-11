@@ -39,11 +39,7 @@ public:
             nlohmann::json j = nlohmann::json::parse(buffer);
 
             // Create an instance of T
-            T request;
-
-            // Manually call from_json to populate the request object
-            from_json(j, request);
-
+            T request(j);
             return request;
         }
         catch (const nlohmann::json::exception& e) {

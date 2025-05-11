@@ -3,11 +3,9 @@
 #include "IDatabase.h"
 #include "RoomManager.h"
 #include "StatisticsManager.h"
+#include "IRequestHandler.h"
 #include <memory>
 
-
-class LoginRequestHandler;
-class MenuRequestHandler;
 
 /**
  * @class RequestHandlerFactory

@@ -19,6 +19,9 @@
 #include "RoomPreview.hpp"
 #include "JoinRoomResponse.hpp"
 #include "JoinRoomResponseErrors.hpp"
+#include "LoginManager.h"
+#include "RoomManager.h"
+#include "RequestHandlerFactory.h"
 
 MenuRequestHandler::MenuRequestHandler(const LoggedUser& user, RequestHandlerFactory& handlerFactory) : m_user(user),
 m_handlerFactory(handlerFactory)

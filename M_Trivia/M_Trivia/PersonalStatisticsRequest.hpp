@@ -1,25 +1,18 @@
 #pragma once
 #include "json.hpp"
 
+template <typename T>
+class JsonRequestPacketDeserializer;
+
+
 /**
  * @class PersonalStatisticsRequest
  * @brief Represents a request to get the statistics of the player/user.
  */
 class PersonalStatisticsRequest {
-    friend void from_json(const nlohmann::json& j, PersonalStatisticsRequest& request);
-
+    friend class JsonRequestPacketDeserializer<PersonalStatisticsRequest>;
 private:
-
-public:
     PersonalStatisticsRequest() = default;
+public:
 
-
-    /**
-     * @brief Deserializes a JSON object into a PersonalStatisticsRequest object.
-     *
-     * @param j The JSON object to deserialize.
-     * @param request The PersonalStatisticsRequest object to populate.
-     */
-    friend void from_json(const nlohmann::json& j, PersonalStatisticsRequest& request) {
-    }
 };

@@ -2,27 +2,25 @@
 #include <string>
 #include "json.hpp"
 
+template <typename T>
+class JsonRequestPacketDeserializer;
+
+
 /**
  * @class SendPasswordResetCodeRequest
  * @brief Represents a request to send the password-reset code to an email.
  */
 class SendPasswordResetCodeRequest {
-    friend void from_json(const nlohmann::json& j, SendPasswordResetCodeRequest& request);
-
+    friend class JsonRequestPacketDeserializer<SendPasswordResetCodeRequest>;
 private:
     std::string email;
+    SendPasswordResetCodeRequest(const nlohmann::json& j) :
+        email(j.at("Email")) {
+
+    }
+
 public:
-    SendPasswordResetCodeRequest() = default;
 
     const std::string& getEmail() const { return email; }
 
-    /**
-     * @brief Deserializes a JSON object into a SendPasswordResetCodeRequest object.
-     *
-     * @param j The JSON object to deserialize.
-     * @param request The SendPasswordResetCodeRequest object to populate.
-     */
-    friend void from_json(const nlohmann::json& j, SendPasswordResetCodeRequest& request) {
-        j.at("Email").get_to(request.email);
-    }
 };

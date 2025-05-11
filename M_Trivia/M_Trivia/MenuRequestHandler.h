@@ -2,7 +2,7 @@
 #include "LoggedUser.h"
 #include "RequestInfo.hpp"
 #include "RequestResult.hpp"
-#include "RequestHandlerFactory.h"
+#include "IRequestHandler.h";
 
 class RequestHandlerFactory;
 

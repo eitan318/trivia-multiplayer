@@ -2,37 +2,34 @@
 #include <string>
 #include "json.hpp"
 
+template <typename T>
+class JsonRequestPacketDeserializer;
+
 /**
  * @class CreateRoomRequest
  * @brief Represents a request to create a room with specific settings.
  */
 class CreateRoomRequest {
-    friend void from_json(const nlohmann::json& j, CreateRoomRequest& request);
-
+    friend class JsonRequestPacketDeserializer<CreateRoomRequest>;
 private:
-    std::string roomName;
+    const std::string& roomName;
     unsigned int maxUsers;
     unsigned int questionCount;
     double answerTimeout;
 
-public:
-    CreateRoomRequest() = default;
 
+    CreateRoomRequest(const nlohmann::json& j) :
+        roomName(j.at("RoomName")),
+        maxUsers(j.at("MaxUsers")),
+        questionCount(j.at("QuestionCount")),
+        answerTimeout(j.at("AnswerTimeout"))
+
+    {
+    }
+
+public:
     const std::string& getRoomName() const { return roomName; }
     unsigned int getMaxUsers() const { return maxUsers; }
     unsigned int getQuestionCount() const { return questionCount; }
     double getAnswerTimeout() const { return answerTimeout; }
-
-    /**
-     * @brief Deserializes a JSON object into a CreateRoomRequest object.
-     *
-     * @param j The JSON object to deserialize.
-     * @param request The CreateRoomRequest object to populate.
-     */
-    friend void from_json(const nlohmann::json& j, CreateRoomRequest& request) {
-        j.at("AnswerTimeout").get_to(request.answerTimeout);
-        j.at("MaxUsers").get_to(request.maxUsers);
-        j.at("QuestionCount").get_to(request.questionCount);
-        j.at("RoomName").get_to(request.roomName);
-    }
 };
