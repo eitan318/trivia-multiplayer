@@ -41,28 +41,6 @@ public:
 	 */
 	static void sendData(SOCKET sc, const std::string& message);
 
-private:
-	/**
-	 * @brief Reads raw data from a socket.
-	 * @param sc The socket to read from.
-	 * @param bytesNum The number of bytes to read.
-	 * @return A pointer to the raw data read from the socket.
-	 *         The caller is responsible for deallocating the memory.
-	 * @throws std::exception if there is an error while reading from the socket.
-	 */
-	static char* getPartFromSocket(SOCKET sc, int bytesNum);
-	
-	/**
-	 * @brief Reads raw data from a socket with specific flags.
-	 * @param sc The socket to read from.
-	 * @param bytesNum The number of bytes to read.
-	 * @param flags Additional flags for the `recv` function.
-	 * @return A pointer to the raw data read from the socket.
-	 *         The caller is responsible for deallocating the memory.
-	 * @throws std::exception if there is an error while reading from the socket.
-	 */
-	static char* getPartFromSocket(SOCKET sc, int bytesNum, int flags);
-
 };
 
 
