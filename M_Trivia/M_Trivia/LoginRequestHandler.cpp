@@ -64,7 +64,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& requestInfo)
 		RequestResult res(
 			JsonResponsePacketSerializer::serializeResponse(errResponse),
 			nullptr
-			);
+		);
 		return res;
 	}
 

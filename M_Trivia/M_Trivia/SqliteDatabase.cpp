@@ -120,7 +120,7 @@ bool SqliteDatabase::createInitialDB() const
 	return createUsersTable() && createQuestionsTable() && addQuestions(50) && createAnswersTable() && createGamesTable();
 }
 
-bool SqliteDatabase::createUsersTable() const{
+bool SqliteDatabase::createUsersTable() const {
 	const char* query = R"(
         CREATE TABLE Users (
             username TEXT PRIMARY KEY,
@@ -133,7 +133,7 @@ bool SqliteDatabase::createUsersTable() const{
     )";
 	sqlite3_stmt* stmt;
 	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
-		throw MyException( std::string("Failed to prepare statement: ") + sqlite3_errmsg(db));
+		throw MyException(std::string("Failed to prepare statement: ") + sqlite3_errmsg(db));
 	}
 
 	bool success = sqlite3_step(stmt) == SQLITE_DONE;
@@ -370,7 +370,7 @@ float SqliteDatabase::getAvgAnswerTime(const std::string& username) const
 }
 
 
-  
+
 UserRecord SqliteDatabase::getUserRecord(const std::string& email) const
 {
 	const char* query = R"(SELECT username, password, email, phone_number, house_address, birth_date
@@ -492,7 +492,7 @@ unsigned int SqliteDatabase::getQuestionsCount() const
 	return static_cast<unsigned int>(count);
 }
 
- 
+
 void SqliteDatabase::updatePassword(const std::string& username, const std::string& newPassword) const
 {
 	const char* query = R"(UPDATE users SET password = ? WHERE username = ?)";
