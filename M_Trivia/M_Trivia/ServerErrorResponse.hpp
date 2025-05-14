@@ -14,21 +14,15 @@ private:
 public:
     ServerErrorResponse() = delete;
 
-    ServerErrorResponse(const std::string& message) : Response((unsigned int)(0)), message(message) {
-
-    }
+    ServerErrorResponse(const std::string& message);
 
     /**
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.
 	 */
-    ResponseCodes getCode() const override { return ResponseCodes::C_ErrorResponse; }
+    ResponseCodes getCode() const override;
 
 
 
-    nlohmann::json getJson() const override {
-        nlohmann::json j = Response::getJson();
-        j["Message"] = message; 
-        return j;
-    }
+    nlohmann::json getJson() const override;
 };

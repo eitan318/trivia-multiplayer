@@ -1,5 +1,4 @@
 #pragma once
-#include "json.hpp"
 #include "RoomPreview.hpp"
 #include "Response.hpp"
 #include <vector>
@@ -13,25 +12,19 @@ private:
     std::vector<RoomPreview> rooms;
 public:
     GetRoomsResponse() = delete;
-    GetRoomsResponse(unsigned int status, const std::vector<RoomPreview>& rooms) : Response(status), rooms(rooms) {
-
-    }
+    GetRoomsResponse(unsigned int status, const std::vector<RoomPreview>& rooms);
 
     /**
      * @brief Gets the response code for this response.
      * @return The response code as an unsigned integer.
      */
-    ResponseCodes getCode() const override { return ResponseCodes::C_GetRoomsResponse; }
+    ResponseCodes getCode() const override ;
 
     /**
 	 * @brief Converts the response to a JSON object.
 	 * @return A JSON representation of the response.
 	 */
-    nlohmann::json getJson() const override {
-        nlohmann::json j = Response::getJson();
-        j["Rooms"] = rooms; // Uses the to_json for PersonalStatistics
-        return j;
-    }
+    nlohmann::json getJson() const override ;
 };
 
 

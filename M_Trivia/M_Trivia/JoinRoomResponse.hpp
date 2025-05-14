@@ -1,5 +1,4 @@
 #pragma once
-#include "json.hpp"
 #include "Response.hpp"
 #include "JoinRoomResponseErrors.hpp"
 
@@ -9,15 +8,11 @@
  */
 class JoinRoomResponse : public Response {
 public:
-	JoinRoomResponse(JoinRoomResponseErrors* errors) 
-		: Response(errors) {
-		
-	}
+	JoinRoomResponse(JoinRoomResponseErrors* errors);
 
 	/**
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.
 	 */
-	ResponseCodes getCode() const override { return ResponseCodes::C_JoinRoomResponse; }
-
+	ResponseCodes getCode() const override ;
 };

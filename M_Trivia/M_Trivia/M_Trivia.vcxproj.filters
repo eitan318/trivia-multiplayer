@@ -74,6 +74,36 @@
     <ClCompile Include="SignupResponse.cpp">
       <Filter>Model\Responses</Filter>
     </ClCompile>
+    <ClCompile Include="GetHighScoreResponse.cpp">
+      <Filter>Model\Responses</Filter>
+    </ClCompile>
+    <ClCompile Include="GetPersonalStatisticsResponse.cpp">
+      <Filter>Model\Responses</Filter>
+    </ClCompile>
+    <ClCompile Include="GetPlayersInRoomResponse.cpp">
+      <Filter>Model\Responses</Filter>
+    </ClCompile>
+    <ClCompile Include="GetRoomsResponse.cpp">
+      <Filter>Model\Responses</Filter>
+    </ClCompile>
+    <ClCompile Include="JoinRoomResponse.cpp">
+      <Filter>Model\Responses</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginResponse.cpp">
+      <Filter>Model\Responses</Filter>
+    </ClCompile>
+    <ClCompile Include="LogoutResponse.cpp">
+      <Filter>Model\Responses</Filter>
+    </ClCompile>
+    <ClCompile Include="PasswordCodeResponse.cpp">
+      <Filter>Model\Responses</Filter>
+    </ClCompile>
+    <ClCompile Include="ResetPasswordResponse.cpp">
+      <Filter>Model\Responses</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerErrorResponse.cpp">
+      <Filter>Model\Responses</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CreateRoomResponseErrors.hpp">

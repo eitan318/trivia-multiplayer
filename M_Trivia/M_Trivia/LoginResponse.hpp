@@ -1,7 +1,7 @@
 #pragma once
-#include "json.hpp"
 #include "Response.hpp"
 #include "LoginResponseErrors.hpp"
+
 
 /**
  * @class LoginResponse
@@ -9,13 +9,11 @@
  */
 class LoginResponse : public Response {
 public:
-	LoginResponse(LoginResponseErrors* errors)
-		: Response(errors) {
-	}
+	LoginResponse(LoginResponseErrors* errors);
 
 	/**
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.
 	 */
-	ResponseCodes getCode() const override { return ResponseCodes::C_LoginResponse; }
+	ResponseCodes getCode() const override;
 };

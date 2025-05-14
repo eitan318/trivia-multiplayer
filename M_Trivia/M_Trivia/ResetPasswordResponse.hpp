@@ -1,5 +1,4 @@
 #pragma once
-#include "json.hpp"
 #include "Response.hpp"
 #include "ResetPasswordResponseErrors.hpp"
 
@@ -9,12 +8,10 @@
  */
 class ResetPasswordResponse : public Response {
 public:
-	ResetPasswordResponse(ResetPasswordResponseErrors* resetPasswordResponseErrors)
-		: Response(resetPasswordResponseErrors	) {
-	}
+	ResetPasswordResponse(ResetPasswordResponseErrors* resetPasswordResponseErrors);
 	/**
 	 * @brief Gets the response code for this response.
 	 * @return The response code as an unsigned integer.
 	 */
-	ResponseCodes getCode() const override { return ResponseCodes::C_ResetPasswordResponse; }
+	ResponseCodes getCode() const override;
 };
