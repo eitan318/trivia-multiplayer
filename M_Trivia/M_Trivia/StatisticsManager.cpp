@@ -1,4 +1,4 @@
-#include "StatisticsManager.h"
+#include "StatisticsManager.hpp"
 
 StatisticsManager& StatisticsManager::getInstance(IDatabase& database)
 {

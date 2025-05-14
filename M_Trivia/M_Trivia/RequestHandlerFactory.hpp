@@ -1,9 +1,9 @@
 #pragma once
-#include "LoginManager.h"
-#include "IDatabase.h"
-#include "RoomManager.h"
-#include "StatisticsManager.h"
-#include "IRequestHandler.h"
+#include "LoginManager.hpp"
+#include "IDatabase.hpp"
+#include "RoomManager.hpp"
+#include "StatisticsManager.hpp"
+#include "IRequestHandler.hpp"
 #include <memory>
 
 

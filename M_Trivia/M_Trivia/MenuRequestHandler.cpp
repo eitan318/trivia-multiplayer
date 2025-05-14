@@ -1,6 +1,5 @@
-#include "MenuRequestHandler.h"
-
-#include "MyException.h"
+#include "MenuRequestHandler.hpp"
+#include "MyException.hpp"
 #include "ServerErrorResponse.hpp"
 #include "JsonResponsePacketSerializer.hpp"
 #include "LogoutResponse.hpp"
@@ -19,9 +18,9 @@
 #include "RoomPreview.hpp"
 #include "JoinRoomResponse.hpp"
 #include "JoinRoomResponseErrors.hpp"
-#include "LoginManager.h"
-#include "RoomManager.h"
-#include "RequestHandlerFactory.h"
+#include "LoginManager.hpp"
+#include "RoomManager.hpp"
+#include "RequestHandlerFactory.hpp"
 
 MenuRequestHandler::MenuRequestHandler(const LoggedUser& user, RequestHandlerFactory& handlerFactory) : m_user(user),
 m_handlerFactory(handlerFactory)

@@ -1,7 +1,7 @@
-#include "RequestHandlerFactory.h"
+#include "RequestHandlerFactory.hpp"
 
-#include "LoginRequestHandler.h"
-#include "MenuRequestHandler.h"
+#include "LoginRequestHandler.hpp"
+#include "MenuRequestHandler.hpp"
 
 
 RequestHandlerFactory::RequestHandlerFactory(IDatabase& database)

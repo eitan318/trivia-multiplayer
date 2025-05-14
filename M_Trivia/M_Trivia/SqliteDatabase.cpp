@@ -1,9 +1,9 @@
-#include "SqliteDatabase.h"
+#include "SqliteDatabase.hpp"
 
 #include <io.h>
 #include <iostream>
-#include "MyException.h"
-#include "ApiClient.h"
+#include "MyException.hpp"
+#include "ApiClient.hpp"
 #include "json.hpp"
 
 SqliteDatabase& SqliteDatabase::getInstance()

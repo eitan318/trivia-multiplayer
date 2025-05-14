@@ -1,7 +1,7 @@
 #pragma once
 #include "json.hpp"
 #include "Response.hpp"
-#include "LoggedUser.h"
+#include "LoggedUser.hpp"
 #include <vector>
 
 /**

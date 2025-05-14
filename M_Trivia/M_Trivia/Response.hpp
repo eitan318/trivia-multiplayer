@@ -24,7 +24,7 @@ enum class ResponseCodes : unsigned char{
 
 class Response {
 private:
-    IResponseErrors* errors; // Use smart pointer for polymorphism
+    IResponseErrors* errors; 
     unsigned int status;
 
 public:
@@ -36,19 +36,18 @@ public:
      * @brief Constructor for Response.
      * @param errors The error object containing details of the response.
      */
-    explicit Response(IResponseErrors* errors)
-        : errors(errors), status(this->errors->statusCode) {
-    }
+    explicit Response(IResponseErrors* errors);
 
     /**
      * @brief Constructor for Response with status only.
      * @param status The status code of the response.
      */
-    explicit Response(unsigned int status) : errors(nullptr), status(status) {}
+    explicit Response(unsigned int status);
+
 
     // Delete default constructor to enforce proper initialization.
     Response() = delete;
-
+    
     /**
      * @brief Gets the response code for this response.
      * @return The response code as a byte (uint8_t).
@@ -59,19 +58,6 @@ public:
      * @brief Converts the response to a JSON object.
      * @return A JSON representation of the response.
      */
-    virtual nlohmann::json getJson() const {
-        nlohmann::json errorsJson = errors ? errors->getJson() : nlohmann::json();
-        nlohmann::json j = nlohmann::json{
-            {"Status", status},
-            //{"Errors", errorsJson}
-        };
-        if (errors) {
-            j["Errors"] = errorsJson;
-        }
-        return j;
-    }
-
-
-
+    virtual nlohmann::json getJson() const; 
 };
 

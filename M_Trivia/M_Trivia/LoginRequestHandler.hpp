@@ -4,8 +4,8 @@
  */
 
 #pragma once
-#include "IRequestHandler.h"
-#include "RequestHandlerFactory.h"
+#include "IRequestHandler.hpp"
+#include "RequestHandlerFactory.hpp"
 #include "RequestInfo.hpp"
 #include "RequestResult.hpp"
 

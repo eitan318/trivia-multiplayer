@@ -1,7 +1,7 @@
-#include "LoginManager.h"
+#include "LoginManager.hpp"
 
 #include "UserRecord.hpp"
-#include "RegexValidator.h"
+#include "RegexValidator.hpp"
 #include "EmailSender.hpp"
 
 
@@ -125,7 +125,7 @@ SignupResponseErrors LoginManager::signup(const UserRecord& userRecord) const
 
 
 
-void LoginManager::logout(const std::string username)
+void LoginManager::logout(const std::string& username)
 {
 	for (auto loggedUser = this->m_loggedUsers.begin(); loggedUser != this->m_loggedUsers.end(); ++loggedUser) //goes through the vector
 	{

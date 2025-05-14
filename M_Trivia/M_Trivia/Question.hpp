@@ -27,36 +27,24 @@ public:
      */
     Question(const std::string& difficulty, int categoryId, const std::string& question,
         const std::string& correctAnswer, const std::string& ans1, const std::string& ans2,
-        const std::string& ans3)
-        : m_difficulty(difficulty), m_categoryId(categoryId), m_question(question)
-    {
-        m_possibleAnswers.push_back(correctAnswer);
-        m_possibleAnswers.push_back(ans1);
-        m_possibleAnswers.push_back(ans2);
-        m_possibleAnswers.push_back(ans3);
-    }
+        const std::string& ans3);
+    
 
     /**
      * @brief Gets the text of the question.
      * @return The question text as a string.
      */
-    std::string getQuestion() {
-        return m_question;
-    }
+    std::string getQuestion();
 
     /**
      * @brief Gets the list of possible answers.
      * @return A vector of strings containing the possible answers.
      */
-    std::vector<std::string> getPossibleAnswers() {
-        return m_possibleAnswers;
-    }
+    std::vector<std::string> getPossibleAnswers();
 
     /**
      * @brief Gets the index of the correct answer.
      * @return The index of the correct answer, always 0 in this implementation.
      */
-    int getCorrectAnswerId() {
-        return 0;  // Correct answer is always at index 0
-    }
+    int getCorrectAnswerId();
 };

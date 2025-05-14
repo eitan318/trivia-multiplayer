@@ -1,6 +1,6 @@
 #pragma once
 #include "RoomData.hpp"
-#include "LoggedUser.h"
+#include "LoggedUser.hpp"
 #include "RoomPreview.hpp"
 #include <vector>
 

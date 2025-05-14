@@ -1,6 +1,6 @@
-#include "RoomManager.h"
+#include "RoomManager.hpp"
 
-#include "MyException.h"
+#include "MyException.hpp"
 
 unsigned int RoomManager::ids = 0;
 

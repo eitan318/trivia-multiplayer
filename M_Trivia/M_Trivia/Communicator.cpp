@@ -1,11 +1,11 @@
-#include "Communicator.h"
+#include "Communicator.hpp"
 
-#include "SocketService.h"
+#include "SocketService.hpp"
 #include "ServerErrorResponse.hpp"
 #include "JsonResponsePacketSerializer.hpp"
 #include "RequestResult.hpp"
 #include "RequestInfo.hpp"
-#include "LoginRequestHandler.h"
+#include "LoginRequestHandler.hpp"
 #include <iostream>
 #include <thread>
 #include <string>

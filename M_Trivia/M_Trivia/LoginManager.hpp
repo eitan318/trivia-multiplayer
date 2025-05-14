@@ -1,6 +1,6 @@
 #pragma once
-#include "IDataBase.h"
-#include "LoggedUser.h"
+#include "IDataBase.hpp"
+#include "LoggedUser.hpp"
 #include <vector>
 #include "SignupResponseErrors.hpp"
 #include "ResetPasswordResponseErrors.hpp"
@@ -82,5 +82,5 @@ public:
      * @brief Logs out a user, removing them from the list of active sessions.
      * @param username The username of the user to log out.
      */
-    void logout(const std::string username);
+    void logout(const std::string& username);
 };

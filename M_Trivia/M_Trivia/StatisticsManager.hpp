@@ -1,5 +1,5 @@
 #pragma once
-#include "IDatabase.h"
+#include "IDatabase.hpp"
 #include "PersonalStatistics.hpp"
 #include "HighScoreInfo.hpp"
 #include <vector>

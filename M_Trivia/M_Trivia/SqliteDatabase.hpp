@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "IDatabase.h"
+#include "IDatabase.hpp"
 #include "UserRecord.hpp"
 #include "HighScoreInfo.hpp"
 #include "Question.hpp"

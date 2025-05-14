@@ -1,8 +1,8 @@
 #pragma once
-#include "LoggedUser.h"
+#include "LoggedUser.hpp"
 #include "RequestInfo.hpp"
 #include "RequestResult.hpp"
-#include "IRequestHandler.h";
+#include "IRequestHandler.hpp";
 
 class RequestHandlerFactory;
 

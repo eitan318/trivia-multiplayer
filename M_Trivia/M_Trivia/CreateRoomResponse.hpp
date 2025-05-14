@@ -1,5 +1,4 @@
 #pragma once
-#include "json.hpp"
 #include "Response.hpp"
 #include "CreateRoomResponseErrors.hpp"
 #include "RoomData.hpp"
@@ -18,9 +17,8 @@ public:
         * @param errors The error details for the response.
         * @param roomData The room data associated with the response.
         */
-    CreateRoomResponse(CreateRoomResponseErrors* errors, const RoomData& roomData)
-        : Response(errors), roomData(roomData) {
-    }
+    CreateRoomResponse(CreateRoomResponseErrors* errors, const RoomData& roomData);
+
 
     /**
      * @brief Deleted default constructor to enforce proper initialization.
@@ -31,15 +29,11 @@ public:
      * @brief Gets the response code for this response.
      * @return The response code as an unsigned integer.
      */
-    ResponseCodes getCode() const override { return ResponseCodes::C_CreateRoomResponse; }
+    ResponseCodes getCode() const override;
 
     /**
      * @brief Converts the response to a JSON object.
      * @return A JSON representation of the response.
      */
-    nlohmann::json getJson() const override {
-        nlohmann::json j = Response::getJson();
-        j["RoomData"] = roomData;
-        return j;
-    }
+    nlohmann::json getJson() const override;
 };

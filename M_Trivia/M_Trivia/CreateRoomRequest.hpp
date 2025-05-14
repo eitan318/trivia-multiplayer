@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include "json.hpp"
 
 template <typename T>
 class JsonRequestPacketDeserializer;
@@ -18,14 +17,13 @@ private:
     double answerTimeout;
 
 
-    CreateRoomRequest(const nlohmann::json& j) :
-        roomName(j.at("RoomName")),
+    CreateRoomRequest(const nlohmann::json& j)
+        : roomName(j.at("RoomName")),
         maxUsers(j.at("MaxUsers")),
         questionCount(j.at("QuestionCount")),
-        answerTimeout(j.at("AnswerTimeout"))
-
-    {
+        answerTimeout(j.at("AnswerTimeout")) {
     }
+
 
 public:
     const std::string& getRoomName() const { return roomName; }

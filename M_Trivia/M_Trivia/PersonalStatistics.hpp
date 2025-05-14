@@ -21,11 +21,10 @@ struct PersonalStatistics {
      * @param totalAns Total number of answers provided by the player.
      * @param avgTime Average time taken to answer, in seconds.
      */
-    PersonalStatistics(const std::string& user, int totalCorrect, int games, int totalAns, double avgTime)
-        : username(user), totalCorrectAnswers(totalCorrect), gamesPlayed(games),
-        totalAnswers(totalAns), avgAnswerTime(avgTime) {
-    }
+    PersonalStatistics(const std::string& user, int totalCorrect, int games, int totalAns, double avgTime);
 };
+
+
 
 /**
  * @brief Serializes a PersonalStatistics object into a JSON representation.

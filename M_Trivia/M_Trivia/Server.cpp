@@ -1,9 +1,9 @@
-#include "Server.h"
+#include "Server.hpp"
 
 #include <thread>
 #include <string>
 #include <iostream>
-#include "SqliteDatabase.h"
+#include "SqliteDatabase.hpp"
 
 Server::Server()
 	: m_database(SqliteDatabase::getInstance()),

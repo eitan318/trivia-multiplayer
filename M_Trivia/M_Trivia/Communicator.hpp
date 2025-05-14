@@ -1,8 +1,8 @@
 #pragma once
 #include <WinSock2.h>
 #include <map>
-#include "IRequestHandler.h"
-#include "RequestHandlerFactory.h"
+#include "IRequestHandler.hpp"
+#include "RequestHandlerFactory.hpp"
 
 
 

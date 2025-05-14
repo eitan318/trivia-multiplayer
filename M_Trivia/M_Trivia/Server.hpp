@@ -1,7 +1,7 @@
 #pragma once
-#include "Communicator.h"
-#include "IDatabase.h"
-#include "RequestHandlerFactory.h"
+#include "Communicator.hpp"
+#include "IDatabase.hpp"
+#include "RequestHandlerFactory.hpp"
 
 
 /**
