@@ -1,24 +1,20 @@
 #pragma once
 #include "json.hpp"
 
-template <typename T>
-class JsonRequestPacketDeserializer;
-
+template <typename T> class JsonRequestPacketDeserializer;
 
 /**
  * @class GetHighScoreRequest
  * @brief Represents a request to get the highest scores.
  */
 class GetHighScoreRequest {
-    friend class JsonRequestPacketDeserializer<GetHighScoreRequest>;
+  friend class JsonRequestPacketDeserializer<GetHighScoreRequest>;
+
 private:
-    unsigned int topPlayersLimit;
+  unsigned int topPlayersLimit;
 
-    GetHighScoreRequest(const nlohmann::json& j) :
-        topPlayersLimit(j.at("TopPlayersLimit"))
-    {
-    }
+  GetHighScoreRequest(const nlohmann::json &j);
+
 public:
-    unsigned int getTopPlayersLimit() const { return topPlayersLimit; }
-
+  unsigned int getTopPlayersLimit() const;
 };

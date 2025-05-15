@@ -16,13 +16,9 @@ private:
     std::string username;
     std::string password;
 
-    LoginRequest(const nlohmann::json& j) :
-        username(j.at("Username")),
-        password(j.at("Password"))
-    {
-    }
+    LoginRequest(const nlohmann::json& j) ;
 
 public:
-    const std::string& getUsername() const { return username; }
-    const std::string& getPassword() const { return password; }
+    const std::string& getUsername() const;
+    const std::string& getPassword() const;
 };

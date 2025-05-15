@@ -104,6 +104,48 @@
     <ClCompile Include="ServerErrorResponse.cpp">
       <Filter>Model\Responses</Filter>
     </ClCompile>
+    <ClCompile Include="ResetPasswordResponseErrors.cpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClCompile>
+    <ClCompile Include="PasswordCodeResponseErrors.cpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginResponseErrors.cpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClCompile>
+    <ClCompile Include="JoinRoomResponseErrors.cpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClCompile>
+    <ClCompile Include="SignupRequest.cpp">
+      <Filter>Model\Requests</Filter>
+    </ClCompile>
+    <ClCompile Include="SendPasswordResetCodeRequest.cpp">
+      <Filter>Model\Requests</Filter>
+    </ClCompile>
+    <ClCompile Include="ResetPasswordRequest.cpp">
+      <Filter>Model\Requests</Filter>
+    </ClCompile>
+    <ClCompile Include="PersonalStatisticsRequest.cpp">
+      <Filter>Model\Requests</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginRequest.cpp">
+      <Filter>Model\Requests</Filter>
+    </ClCompile>
+    <ClCompile Include="JoinRoomRequest.cpp">
+      <Filter>Model\Requests</Filter>
+    </ClCompile>
+    <ClCompile Include="GetPlayersInRoomRequest.cpp">
+      <Filter>Model\Requests</Filter>
+    </ClCompile>
+    <ClCompile Include="GetHighScoreRequest.cpp">
+      <Filter>Model\Requests</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateRoomRequest.cpp">
+      <Filter>Model\Requests</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateRoomResponseErrors.cpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CreateRoomResponseErrors.hpp">

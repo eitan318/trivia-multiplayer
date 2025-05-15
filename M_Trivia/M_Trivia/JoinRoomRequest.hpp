@@ -1,24 +1,20 @@
 #pragma once
 #include "json.hpp"
 
-template <typename T>
-class JsonRequestPacketDeserializer;
-
+template <typename T> class JsonRequestPacketDeserializer;
 
 /**
  * @class JoinRoomRequest
  * @brief Represents a request to join a room.
  */
 class JoinRoomRequest {
-    friend class JsonRequestPacketDeserializer<JoinRoomRequest>;
+  friend class JsonRequestPacketDeserializer<JoinRoomRequest>;
+
 private:
-    unsigned int roomId;
+  unsigned int roomId;
 
 public:
-    JoinRoomRequest(const nlohmann::json& j) : roomId(j.at("RoomId")){
+  JoinRoomRequest(const nlohmann::json &j);
 
-    }
-
-    unsigned int getRoomId() const { return roomId; }
-
+  unsigned int getRoomId() const;
 };

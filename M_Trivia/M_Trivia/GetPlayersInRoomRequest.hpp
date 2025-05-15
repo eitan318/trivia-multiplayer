@@ -1,26 +1,19 @@
 #pragma once
 #include "json.hpp"
 
-template <typename T>
-class JsonRequestPacketDeserializer;
-
+template <typename T> class JsonRequestPacketDeserializer;
 
 /**
  * @class GetPlayersInRoomRequest
  * @brief Represents a request to get the players in a room.
  */
 class GetPlayersInRoomRequest {
-    friend class JsonRequestPacketDeserializer<GetPlayersInRoomRequest>;
-private:
-    unsigned int roomId;
-    GetPlayersInRoomRequest(const nlohmann::json& j) :
-        roomId(j.at("RoomId")) {
+  friend class JsonRequestPacketDeserializer<GetPlayersInRoomRequest>;
 
-    }
+private:
+  unsigned int roomId;
+  GetPlayersInRoomRequest(const nlohmann::json &j);
 
 public:
-
-
-    unsigned int getRoomId() const { return roomId; }
-
+  unsigned int getRoomId() const;
 };

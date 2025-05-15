@@ -1,32 +1,21 @@
 #pragma once
-#include <string>
-#include "json.hpp"
 #include "IResponseErrors.hpp"
+#include "json.hpp"
+#include <string>
 
 class LoginResponseErrors : public IResponseErrors {
 public:
-    // Error fields
-    std::string usernameError;
-    std::string passwordError;
-    std::string generalError;
+  // Error fields
+  std::string usernameError;
+  std::string passwordError;
+  std::string generalError;
 
-    /**
-     * @brief Checks if all error fields are not set (empty).
-     *
-     * @return true if all error fields are empty; otherwise, false.
-     */
-    bool noErrors() const override {
-        return passwordError.empty()
-            && usernameError.empty()
-            && generalError.empty();
-    }
+  /**
+   * @brief Checks if all error fields are not set (empty).
+   *
+   * @return true if all error fields are empty; otherwise, false.
+   */
+  bool noErrors() const override;
 
-    nlohmann::json getJson() const override {
-        nlohmann::json j = nlohmann::json{
-            {"PasswordError", passwordError},
-            {"UsernameError", usernameError},
-            {"GeneralError", generalError},
-        };
-        return j;
-    }
+  nlohmann::json getJson() const override;
 };
