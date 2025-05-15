@@ -13,14 +13,7 @@ public:
      *
      * @return true if all error fields are empty; otherwise, false.
      */
-    bool noErrors() const override {
-        return emailErrors.empty();
-    }
+    bool noErrors() const override;
 
-    nlohmann::json getJson() const override {
-        nlohmann::json j = nlohmann::json{
-            {"EmailError", emailErrors},
-        };
-        return j;
-    }
+    nlohmann::json getJson() const override;
 };

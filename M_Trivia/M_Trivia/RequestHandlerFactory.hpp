@@ -25,13 +25,13 @@ public:
      * @brief Creates a new LoginRequestHandler.
      * @return A pointer to a newly created LoginRequestHandler.
      */
-    std::unique_ptr<IRequestHandler> createLoginRequestHandler() const;
+    std::shared_ptr<IRequestHandler> createLoginRequestHandler() const;
 
     /**
 	 * @brief Creates a new MenuRequestHandler.
 	 * @return A pointer to a newly created MenuRequestHandler.
 	 */
-    std::unique_ptr<IRequestHandler> createMenuRequestHandler(const LoggedUser& loggedUser) const;
+    std::shared_ptr<IRequestHandler> createMenuRequestHandler(const LoggedUser& loggedUser) const;
 
 
     /**

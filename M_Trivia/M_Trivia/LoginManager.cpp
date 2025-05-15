@@ -17,15 +17,18 @@ LoginManager& LoginManager::getInstance(IDatabase& database)
 LoginResponseErrors LoginManager::login(const std::string username, const std::string password)
 {
 	LoginResponseErrors errors;
-	if (!this->m_database.doesUserExist(username)
+
+	if (this->m_loggedUsers.find(username) != m_loggedUsers.end()) {
+		errors.generalError = "User already logged in";
+	}
+	else if (!this->m_database.doesUserExist(username)
 		|| !this->m_database.doesPasswordMatch(username, password)) {
 		errors.generalError = "Unknown username or wrong password";
 	}
 	errors.statusCode = !errors.noErrors();
 
 	if (errors.statusCode == 0) {
-		LoggedUser loggeduser(username);
-		this->m_loggedUsers.push_back(loggeduser);
+		m_loggedUsers.emplace(username, LoggedUser(username));
 	}
 	return errors;
 }
@@ -36,9 +39,9 @@ PasswordCodeResponseErrors LoginManager::sendEmailCode(const std::string email, 
 	if (!RegexValidator::validEmail(email)) {
 		errors.emailErrors = std::string() + "Invalid email format, Use: " + RegexValidator::emailRegexDescription.data();
 	}
-	else if (!this->m_database.emailExists(email)) {
-		errors.emailErrors = "Email doesnt exist";
-	}
+	//else if (!this->m_database.emailExists(email)) {
+	//	errors.emailErrors = "Email doesnt exist";
+	//}
 
 
 	errors.statusCode = !errors.noErrors();
@@ -125,15 +128,8 @@ SignupResponseErrors LoginManager::signup(const UserRecord& userRecord) const
 
 
 
-void LoginManager::logout(const std::string& username)
+void LoginManager::logout(const std::string& user)
 {
-	for (auto loggedUser = this->m_loggedUsers.begin(); loggedUser != this->m_loggedUsers.end(); ++loggedUser) //goes through the vector
-	{
-		if (loggedUser->getUsername() == username)
-		{
-			this->m_loggedUsers.erase(loggedUser);
-			return; 
-		}
-	}
+	this->m_loggedUsers.erase(user);
 }
 

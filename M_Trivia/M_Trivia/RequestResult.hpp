@@ -10,8 +10,8 @@ class IRequestHandler;
  */
 class RequestResult {
 public:
-    RequestResult(const std::vector<char>& response, std::unique_ptr<IRequestHandler> newHandler);
+    RequestResult(const std::vector<char>& response, std::shared_ptr<IRequestHandler> newHandler);
     RequestResult();
     std::vector<char> response;
-    std::unique_ptr<IRequestHandler> newHandler; 
+    std::shared_ptr<IRequestHandler> newHandler; 
 };

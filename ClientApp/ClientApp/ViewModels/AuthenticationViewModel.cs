@@ -215,7 +215,7 @@ namespace ClientApp.ViewModels
             }
             catch (Exception ex)
             {
-                ErrorMessage = $"Login failed (sent from client side): {ex.Message}";
+                ErrorMessage = $"Login failed: {ex.Message}";
             }
         }
 

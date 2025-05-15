@@ -1,152 +1,161 @@
 #include "Communicator.hpp"
 
-#include "SocketService.hpp"
-#include "ServerErrorResponse.hpp"
 #include "JsonResponsePacketSerializer.hpp"
-#include "RequestResult.hpp"
-#include "RequestInfo.hpp"
 #include "LoginRequestHandler.hpp"
+#include "RequestInfo.hpp"
+#include "RequestResult.hpp"
+#include "ServerErrorResponse.hpp"
+#include "SocketService.hpp"
+#include <Windows.h>
 #include <iostream>
-#include <thread>
+#include <mutex>
 #include <string>
-#include <Windows.h>    
+#include <thread>
 
+Communicator::Communicator(RequestHandlerFactory &handlerFactory)
+    : m_handlerFactory(handlerFactory) {
+  // This server uses TCP. Hence, SOCK_STREAM & IPPROTO_TCP
+  // If the server uses UDP, use SOCK_DGRAM & IPPROTO_UDP
+  this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
-Communicator::Communicator(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
-{
-    // This server uses TCP. Hence, SOCK_STREAM & IPPROTO_TCP
-    // If the server uses UDP, use SOCK_DGRAM & IPPROTO_UDP
-    this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-    if (this->m_serverSocket == INVALID_SOCKET) {
-        int errorCode = WSAGetLastError();
-        std::cerr << "socket() failed with error: " << errorCode << std::endl;
-        throw std::runtime_error(std::string(__FUNCTION__) + " - socket() failed with error " + std::to_string(errorCode));
-    }
+  if (this->m_serverSocket == INVALID_SOCKET) {
+    int errorCode = WSAGetLastError();
+    std::cerr << "socket() failed with error: " << errorCode << std::endl;
+    throw std::runtime_error(std::string(__FUNCTION__) +
+                             " - socket() failed with error " +
+                             std::to_string(errorCode));
+  }
 }
 
-Communicator::~Communicator()
-{
+Communicator::~Communicator() {
+  try {
+    // Close all client sockets
+    for (const auto &[sock, handler] : this->m_clients) {
+      if (sock != INVALID_SOCKET) {
+        closesocket(sock);
+      }
+    }
+
+    // Close the server socket
+    closesocket(this->m_serverSocket);
+  } catch (const std::exception &e) {
+    std::cerr << "Error in destructor: " << e.what() << std::endl;
+  }
+}
+
+Communicator &Communicator::getInstance(RequestHandlerFactory &handlerFactory) {
+  static Communicator instance(handlerFactory);
+  return instance;
+}
+
+void Communicator::startHandleRequest() {
+  while (true) {
+    SOCKET client_socket = accept(this->m_serverSocket, NULL, NULL);
+    if (client_socket == INVALID_SOCKET) {
+      throw std::exception(__FUNCTION__);
+    }
     try {
-        // Close all client sockets
-        for (const auto& [sock, handler] : this->m_clients) {
-            if (sock != INVALID_SOCKET) {
-                closesocket(sock);
-            }
-        }
-
-        // Close the server socket
-        closesocket(this->m_serverSocket);
+      std::thread t_client(&Communicator::handleNewClient, this, client_socket);
+      t_client.detach();
+    } catch (const std::exception &e) {
+      std::cerr << "Error: accepting client" << e.what() << "\n";
+      closesocket(client_socket);
     }
-    catch (const std::exception& e) {
-        std::cerr << "Error in destructor: " << e.what() << std::endl;
-    }
+  }
 }
 
+void Communicator::bindAndListen() const {
+  const int port = PORT;
 
-Communicator& Communicator::getInstance(RequestHandlerFactory& handlerFactory)
-{
-    static Communicator instance(handlerFactory);
-    return instance;
+  struct sockaddr_in sa = {0};
+
+  sa.sin_port = htons(port);       // Port that server will listen on
+  sa.sin_family = AF_INET;         // Must be AF_INET
+  sa.sin_addr.s_addr = INADDR_ANY; // "INADDR_ANY" for any available IPs
+
+  // Connects between the socket and the configuration (port, etc.)
+  if (bind(this->m_serverSocket, (struct sockaddr *)&sa, sizeof(sa)) ==
+      SOCKET_ERROR) {
+    int errorCode = WSAGetLastError();
+    std::cerr << "bind() failed with error: " << errorCode << std::endl;
+    throw std::runtime_error(std::string(__FUNCTION__) +
+                             " - bind() failed with error " +
+                             std::to_string(errorCode));
+  }
+
+  // Start listening for incoming requests from clients
+  if (listen(this->m_serverSocket, SOMAXCONN) == SOCKET_ERROR) {
+    int errorCode = WSAGetLastError();
+    std::cerr << "bind() failed with error: " << errorCode << std::endl;
+    throw std::runtime_error(std::string(__FUNCTION__) +
+                             " - listen() failed with error " +
+                             std::to_string(errorCode));
+  }
+
+  std::cout << "Listening on port " << port << std::endl;
 }
 
-void Communicator::startHandleRequest()
-{
-    while (true) {
-        SOCKET client_socket = accept(this->m_serverSocket, NULL, NULL);
-        if (client_socket == INVALID_SOCKET) {
-            throw std::exception(__FUNCTION__);
-        }
-        try {
-            std::thread t_client(&Communicator::handleNewClient, this, client_socket);
-            t_client.detach();
-        }
-        catch (const std::exception& e) {
-            std::cerr << "Error: accepting client" << e.what() << "\n";
-            closesocket(client_socket);
-        }
-    }
-}
-
-void Communicator::bindAndListen() const
-{
-    const int port = PORT;
-
-    struct sockaddr_in sa = { 0 };
-
-    sa.sin_port = htons(port); // Port that server will listen on
-    sa.sin_family = AF_INET;   // Must be AF_INET
-    sa.sin_addr.s_addr = INADDR_ANY; // "INADDR_ANY" for any available IPs
-
-    // Connects between the socket and the configuration (port, etc.)
-    if (bind(this->m_serverSocket, (struct sockaddr*)&sa, sizeof(sa)) == SOCKET_ERROR) {
-        int errorCode = WSAGetLastError();
-        std::cerr << "bind() failed with error: " << errorCode << std::endl;
-        throw std::runtime_error(std::string(__FUNCTION__) + " - bind() failed with error " + std::to_string(errorCode));
-    }
-
-    // Start listening for incoming requests from clients
-    if (listen(this->m_serverSocket, SOMAXCONN) == SOCKET_ERROR) {
-        int errorCode = WSAGetLastError();
-        std::cerr << "bind() failed with error: " << errorCode << std::endl;
-        throw std::runtime_error(std::string(__FUNCTION__) + " - listen() failed with error " + std::to_string(errorCode));
-    }
-
-    std::cout << "Listening on port " << port << std::endl;
-}
-
-void Communicator::handleNewClient(SOCKET sock)
-{
+void Communicator::handleNewClient(SOCKET sock) {
     std::cout << "Client " << sock << " accepted." << std::endl;
-    // Create a unique_ptr for the initial handler
-    std::unique_ptr<IRequestHandler> handler = this->m_handlerFactory.createLoginRequestHandler();
-    this->m_clients.insert({ sock, std::move(handler) });
 
-    while (this->m_clients.at(sock) != nullptr)
+    // Create a shared_ptr for the initial handler
+    std::shared_ptr<IRequestHandler> handler =
+        this->m_handlerFactory.createLoginRequestHandler();
+
     {
+        std::lock_guard<std::mutex> lock(m_clientsMtx);
+        this->m_clients.insert({ sock, handler }); // Add shared_ptr to map
+    }
+
+    while (handler != nullptr) {
         RequestInfo requestInfo;
         int msgLen;
         std::string msgStr;
-
-        requestInfo.receivalTime = time(nullptr);
 
         try {
             requestInfo.code = SocketService::getLittleEndianIntFromSocket(sock, 1);
             msgLen = SocketService::getLittleEndianIntFromSocket(sock, sizeof(int));
             msgStr = SocketService::getStringPartFromSocket(sock, msgLen);
         }
-        catch (std::exception e){
-            std::cerr << "Client " << sock << " probably exited ungracefully.";
+        catch (std::exception& e) {
+            std::cerr << "Client " << sock << " probably exited ungracefully." << std::endl;
             break;
         }
+        requestInfo.receivalTime = time(nullptr);
         std::cout << "Received: " << msgStr << std::endl;
         requestInfo.buffer = std::vector<char>(msgStr.begin(), msgStr.end());
 
         RequestResult requestResult;
-
-        if (this->m_clients.at(sock)->isRequestRelevant(requestInfo))
-        {
-            requestResult = this->m_clients.at(sock)->handleRequest(requestInfo);
+        if (handler->isRequestRelevant(requestInfo)) {
+            requestResult = handler->handleRequest(requestInfo);
         }
-        else
-        {
+        else {
             ServerErrorResponse errorResponse("Invalid msg code.");
 
-            requestResult = RequestResult(JsonResponsePacketSerializer::serializeResponse(errorResponse), nullptr);
+            requestResult = RequestResult(
+                JsonResponsePacketSerializer::serializeResponse(errorResponse),
+                nullptr);
         }
 
         // Update handler if it has changed
-        if (requestResult.newHandler)
-        {
-            this->m_clients.at(sock) = std::move(requestResult.newHandler);
+        if (requestResult.newHandler) {
+            handler = requestResult.newHandler; // Update the handler
+            std::lock_guard<std::mutex> lock(m_clientsMtx);
+            this->m_clients.at(sock) = requestResult.newHandler; // Update in map
         }
 
         // Send response back to the client
         SocketService::sendData(sock, requestResult.response);
-        std::cout << "Sent: " << std::string(requestResult.response.begin(), requestResult.response.end()) << std::endl;
+        std::cout << "Sent: "
+            << std::string(requestResult.response.begin(), requestResult.response.end())
+            << std::endl;
     }
-    closesocket(sock);
-    // Cleanup on client disconnect or error
-    this->m_clients.erase(sock);
-}
 
+    closesocket(sock);
+
+    // Cleanup on client disconnect or error
+    {
+        std::lock_guard<std::mutex> lock(m_clientsMtx);
+        this->m_clients.erase(sock);
+    }
+}

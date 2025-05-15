@@ -79,7 +79,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const
 	LoginResponse loginResponse(&errors);
 
 	auto response = JsonResponsePacketSerializer::serializeResponse(loginResponse);
-	std::unique_ptr<IRequestHandler> newHandler;
+	std::shared_ptr<IRequestHandler> newHandler;
 	LoggedUser user(request.getUsername());
 	if (errors.statusCode != 0) {
 		newHandler = this->m_handlerFactory.createLoginRequestHandler();
