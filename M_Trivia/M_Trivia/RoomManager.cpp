@@ -13,11 +13,6 @@ RoomManager &RoomManager::getInstance(IDatabase &database)
     return instance;
 }
 
-unsigned int RoomManager::getTotalQuestionsCount() const
-{
-    return this->m_database.getQuestionsCount();
-}
-
 RoomManager::RoomManager(IDatabase &database) : m_database(database)
 {
     this->m_rooms = std::map<int, Room>();
@@ -29,7 +24,7 @@ RoomManager::~RoomManager()
 CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser &player, RoomData &roomData)
 {
     CreateRoomResponseErrors createRoonResponseErrors;
-    unsigned int totalQuestionCount = this->getTotalQuestionsCount();
+    unsigned int totalQuestionCount = this->m_database.getQuestionsCount();
 
     if (roomData.numOfQuestionsInGame > totalQuestionCount)
     {
