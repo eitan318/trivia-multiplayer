@@ -1,39 +1,39 @@
 #include "Server.hpp"
 
-#include <thread>
-#include <string>
-#include <iostream>
 #include "SqliteDatabase.hpp"
+#include <iostream>
+#include <string>
+#include <thread>
 
 Server::Server()
-	: m_database(SqliteDatabase::getInstance()),
-	m_handlerFactory(RequestHandlerFactory::getInstance(m_database)),
-	m_communicator(Communicator::getInstance(m_handlerFactory))
+    : m_database(SqliteDatabase::getInstance()), m_handlerFactory(RequestHandlerFactory::getInstance(m_database)),
+      m_communicator(Communicator::getInstance(m_handlerFactory))
 {
 }
 
-Server::~Server() {
+Server::~Server()
+{
 }
 
-
-Server& Server::getInstance()
+Server &Server::getInstance()
 {
-	static Server instance;
-	return instance;
+    static Server instance;
+    return instance;
 }
 
 void Server::run() const
 {
-	m_database.open();
-	m_communicator.bindAndListen();
+    m_database.open();
+    m_communicator.bindAndListen();
 
-	std::thread t_connector(&Communicator::startHandleRequest, &m_communicator);
-	t_connector.detach();
+    std::thread t_connector(&Communicator::startHandleRequest, &m_communicator);
+    t_connector.detach();
 
-	std::cout << "Write to server:" << std::endl;
-	std::string input;
-	do {
-		std::cout << ">>> ";
-		std::getline(std::cin, input);
-	} while (input != "EXIT");
+    std::cout << "Write to server:" << std::endl;
+    std::string input;
+    do
+    {
+        std::cout << ">>> ";
+        std::getline(std::cin, input);
+    } while (input != "EXIT");
 }

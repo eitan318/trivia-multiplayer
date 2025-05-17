@@ -1,16 +1,17 @@
 #pragma once
-#include <string>
-#include <list>
-#include <vector>
-#include "UserRecord.hpp"
+#include "HighScoreInfo.hpp"
 #include "Question.hpp"
-#include "HighScoreinfo.hpp"
+#include "UserRecord.hpp"
+#include <list>
+#include <string>
+#include <vector>
 
 /**
  * @brief Interface for a database handling user and game-related data.
  */
-class IDatabase {
-public:
+class IDatabase
+{
+  public:
     /**
      * @brief Opens a connection to the database.
      * @return True if the database connection is successfully opened, false otherwise.
@@ -28,7 +29,7 @@ public:
      * @param username The username to check.
      * @return 1 if the user exists, 0 otherwise.
      */
-    virtual int doesUserExist(const std::string& username) const = 0;
+    virtual int doesUserExist(const std::string &username) const = 0;
 
     /**
      * @brief Verifies if the provided password matches the user's stored password.
@@ -36,14 +37,14 @@ public:
      * @param password The password to verify.
      * @return 1 if the password matches, 0 otherwise.
      */
-    virtual int doesPasswordMatch(const std::string& username, const std::string& password) const = 0;
+    virtual int doesPasswordMatch(const std::string &username, const std::string &password) const = 0;
 
     /**
      * @brief Adds a new user to the database.
      * @param userRecord The user information to add.
      * @return 1 if the user is successfully added, 0 otherwise.
      */
-    virtual int addNewUser(const UserRecord& userRecord) const = 0;
+    virtual int addNewUser(const UserRecord &userRecord) const = 0;
 
     /**
      * @brief Creates the initial database structure, if it doesn't already exist.
@@ -63,42 +64,42 @@ public:
      * @param username The username to query.
      * @return The total number of answers submitted.
      */
-    virtual int getNumOfTotalAnswers(const std::string& username) const = 0;
+    virtual int getNumOfTotalAnswers(const std::string &username) const = 0;
 
     /**
      * @brief Retrieves the total number of correct answers submitted by a user.
      * @param username The username to query.
      * @return The total number of correct answers.
      */
-    virtual int getNumOfTotalCorrectAnswers(const std::string& username) const = 0;
+    virtual int getNumOfTotalCorrectAnswers(const std::string &username) const = 0;
 
     /**
      * @brief Retrieves the total number of games played by a user.
      * @param username The username to query.
      * @return The total number of games played.
      */
-    virtual int getNumOfPlayerGames(const std::string& username) const = 0;
+    virtual int getNumOfPlayerGames(const std::string &username) const = 0;
 
     /**
      * @brief Retrieves the average answer time for a user.
      * @param username The username to query.
      * @return The average answer time in seconds.
      */
-    virtual float getAvgAnswerTime(const std::string& username) const = 0;
+    virtual float getAvgAnswerTime(const std::string &username) const = 0;
 
     /**
      * @brief Checks if an email exists in the database.
      * @param email The email to check.
      * @return True if the email exists, false otherwise.
      */
-    virtual bool emailExists(const std::string& email) const = 0;
+    virtual bool emailExists(const std::string &email) const = 0;
 
     /**
      * @brief Retrieves user information based on their email.
      * @param email The email to query.
      * @return A UserRecord containing the user's information.
      */
-    virtual UserRecord getUserRecord(const std::string& email) const = 0;
+    virtual UserRecord getUserRecord(const std::string &email) const = 0;
 
     /**
      * @brief Retrieves a list of high scores, ordered by score.
@@ -112,7 +113,7 @@ public:
      * @param username The username of the user.
      * @param newPassword The new password to set.
      */
-    virtual void updatePassword(const std::string& username, const std::string& newPassword) const = 0;
+    virtual void updatePassword(const std::string &username, const std::string &newPassword) const = 0;
 
     /**
      * @brief Retrieves the total number of questions in the database.

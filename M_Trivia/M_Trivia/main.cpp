@@ -1,14 +1,12 @@
-#pragma comment (lib, "ws2_32.lib")
+#pragma comment(lib, "ws2_32.lib")
 
-#include "WSAInitializer.hpp"
 #include "Server.hpp"
+#include "WSAInitializer.hpp"
 
-int main() {
-	WSAInitializer wsaInit;
-	Server& server = Server::getInstance();
-	server.run();
-	return 0;
+int main()
+{
+    WSAInitializer wsaInit;
+    Server &server = Server::getInstance();
+    server.run();
+    return 0;
 }
-
-
-

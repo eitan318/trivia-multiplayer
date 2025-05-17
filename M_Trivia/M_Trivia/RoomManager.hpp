@@ -1,23 +1,26 @@
 #pragma once
-#include "Room.hpp"
+#include "CreateRoomResponseErrors.hpp"
 #include "IDatabase.hpp"
+#include "JoinRoomResponseErrors.hpp"
+#include "Room.hpp"
 #include "RoomPreview.hpp"
 #include <map>
 
 /**
  * @brief Manages the lifecycle of rooms in the application.
  */
-class RoomManager {
-private:
-    static unsigned int ids; ///< Counter for generating unique room IDs.
+class RoomManager
+{
+  private:
+    static unsigned int ids;     ///< Counter for generating unique room IDs.
     std::map<int, Room> m_rooms; ///< Map of active rooms indexed by their ID.
-    IDatabase& m_database; ///< Pointer to the database interface for accessing data.
+    IDatabase &m_database;       ///< Pointer to the database interface for accessing data.
 
     /**
      * @brief Constructs a RoomManager instance.
      * @param database Reference to the database interface.
      */
-    RoomManager(IDatabase& database);
+    RoomManager(IDatabase &database);
 
     /**
      * @brief Destructor for cleaning up resources.
@@ -25,16 +28,16 @@ private:
     ~RoomManager();
 
     // Disable copy constructor and assignment operator to enforce singleton pattern.
-    RoomManager(const RoomManager&) = delete;
-    RoomManager& operator=(const RoomManager&) = delete;
+    RoomManager(const RoomManager &) = delete;
+    RoomManager &operator=(const RoomManager &) = delete;
 
-public:
+  public:
     /**
      * @brief Retrieves the singleton instance of RoomManager.
      * @param database Reference to the database interface.
      * @return A reference to the RoomManager instance.
      */
-    static RoomManager& getInstance(IDatabase& database);
+    static RoomManager &getInstance(IDatabase &database);
 
     /**
      * @brief Retrieves the total number of questions available in the database.
@@ -47,7 +50,14 @@ public:
      * @param player The user creating the room.
      * @param roomData The data defining the room's properties.
      */
-    unsigned int createRoom(const LoggedUser& player, RoomData& roomData);
+    CreateRoomResponseErrors createRoom(const LoggedUser &player, RoomData &roomData);
+
+    /**
+     * @brief join an existing room. I set the id in room data
+     * @param loggedUser The user joining the room.
+     * @param id The id of the room to join.
+     */
+    JoinRoomResponseErrors joinRoom(unsigned int id, const LoggedUser &loggedUser);
 
     /**
      * @brief Deletes an existing room by its ID.
@@ -74,5 +84,5 @@ public:
      * @return A reference to the Room object.
      * @throws MyException if the room does not exist.
      */
-    Room& getRoom(int ID);
+    Room &getRoom(int ID);
 };
