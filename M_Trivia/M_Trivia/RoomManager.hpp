@@ -40,12 +40,6 @@ class RoomManager
     static RoomManager &getInstance(IDatabase &database);
 
     /**
-     * @brief Retrieves the total number of questions available in the database.
-     * @return The total count of questions.
-     */
-    unsigned int getTotalQuestionsCount() const;
-
-    /**
      * @brief Creates a new room. I set the id in room data
      * @param player The user creating the room.
      * @param roomData The data defining the room's properties.
