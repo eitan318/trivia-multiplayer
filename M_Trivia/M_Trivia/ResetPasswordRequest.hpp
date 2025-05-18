@@ -12,12 +12,14 @@ class ResetPasswordRequest {
   friend class JsonRequestPacketDeserializer<ResetPasswordRequest>;
 
 private:
-  std::string username;
+  std::string email;
   std::string newPassword;
+  std::string resetPasswordTocken;
 
   ResetPasswordRequest(const nlohmann::json &j);
 
 public:
-  const std::string &getUsername() const;
+  const std::string &getEmail() const;
   const std::string &getNewPassword() const;
+  const std::string &getResetPasswordTocken() const;
 };

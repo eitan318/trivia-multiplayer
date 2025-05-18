@@ -1,10 +1,5 @@
 ﻿using ClientApp.Commands;
 using ClientApp.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
@@ -80,7 +75,7 @@ namespace ClientApp.ViewModels.ForgotPassword
             PasswordResetCodeResponse response = JsonResponseDeserialize.DeserializeResponse<PasswordResetCodeResponse>(responseInfo);
             if (response.Status == 0)
             {
-                _parent.GoToCodeStep(response.EmailCode, response.Username);
+                _parent.GoToCodeStep(trimmedEmail);
             }
             else
             {

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace ClientApp.Models.ResponseErrors
 {
-    class CreateRoomResponseErros
+    class CreateRoomResponseErrors
     {
         public string GeneralError { get; set; }
         public string QuestionCountError { get; set; }

@@ -1,15 +1,11 @@
 ﻿using ClientApp.Commands;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using ClientApp.Views.Pages;
 using ClientApp.Services;
-using ClientApp.Models;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Views;
-using ClientApp.ViewModels.ClientApp.ViewModels;
 
 namespace ClientApp.ViewModels
 {

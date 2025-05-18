@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using ClientApp.Commands;
 using ClientApp.Models;
 using ClientApp.Models.Requests;

@@ -7,104 +7,85 @@
 
 unsigned int RoomManager::ids = 0;
 
-RoomManager &RoomManager::getInstance(IDatabase &database)
-{
-    static RoomManager instance(database);
-    return instance;
+RoomManager &RoomManager::getInstance(IDatabase &database) {
+  static RoomManager instance(database);
+  return instance;
 }
 
-RoomManager::RoomManager(IDatabase &database) : m_database(database)
-{
-    this->m_rooms = std::map<int, Room>();
+RoomManager::RoomManager(IDatabase &database) : m_database(database) {
+  this->m_rooms = std::map<int, Room>();
 }
-RoomManager::~RoomManager()
-{
-}
+RoomManager::~RoomManager() {}
 
-CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser &player, RoomData &roomData)
-{
-    CreateRoomResponseErrors createRoonResponseErrors;
-    unsigned int totalQuestionCount = this->m_database.getQuestionsCount();
+CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser &player,
+                                                 RoomData &roomData) {
+  CreateRoomResponseErrors createRoonResponseErrors;
+  unsigned int totalQuestionCount = this->m_database.getQuestionsCount();
 
-    if (roomData.numOfQuestionsInGame > totalQuestionCount)
-    {
-        createRoonResponseErrors.questionCountError =
-            "Too many questions, there are only: " + std::to_string(totalQuestionCount);
-    }
-    createRoonResponseErrors.statusCode = !createRoonResponseErrors.noErrors();
+  if (roomData.numOfQuestionsInGame > totalQuestionCount) {
+    createRoonResponseErrors.questionCountError =
+        "Too many questions, there are only: " +
+        std::to_string(totalQuestionCount);
+  }
+  createRoonResponseErrors.statusCode = !createRoonResponseErrors.noErrors();
 
-    if (createRoonResponseErrors.noErrors())
-    {
-        int roomid = ids++;
-        roomData.id = roomid;
-        for (const auto &[id, room] : this->m_rooms)
-        {
-            if (id >= roomid)
-            {
-                roomid = id + 1;
-            }
-        }
-
-        this->m_rooms[roomid] = Room(roomData, player);
-    }
-    return createRoonResponseErrors;
-}
-
-void RoomManager::deleteRoom(int ID)
-{
-    this->m_rooms.erase(this->m_rooms.find(ID));
-}
-
-bool RoomManager::getRoomState(int ID)
-{
-    auto it = this->m_rooms.find(ID);
-    if (it != this->m_rooms.end())
-    {
-        return it->second.getRoomStatus();
-    }
-    return false;
-}
-
-std::vector<RoomPreview> RoomManager::getRooms() const
-{
-    std::vector<RoomPreview> roomsvec;
-    for (auto &room : this->m_rooms)
-    {
-        roomsvec.push_back(room.second.getRoomPreview());
-    }
-    return roomsvec;
-}
-
-JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id, const LoggedUser &loggedUser)
-{
-    JoinRoomResponseErrors errors;
-    try
-    {
-        Room &room = this->getRoom(id);
-        if (room.getRoomPreview().roomData.maxPlayers == room.getAllUsers().size())
-        {
-            errors.generalError = "Room is already full.";
-        }
-        else
-        {
-            room.addUser(loggedUser);
-        }
-    }
-    catch (MyException err)
-    {
-        errors.generalError = "room does not exist.";
+  if (createRoonResponseErrors.statusCode == 0) {
+    int roomid = ids++;
+    roomData.id = roomid;
+    for (const auto &[id, room] : this->m_rooms) {
+      if (id >= roomid) {
+        roomid = id + 1;
+      }
     }
 
-    errors.statusCode = !errors.noErrors();
-    return errors;
+    this->m_rooms[roomid] = Room(roomData, player);
+  }
+  return createRoonResponseErrors;
 }
 
-Room &RoomManager::getRoom(int ID)
-{
-    auto it = this->m_rooms.find(ID);
-    if (it != this->m_rooms.end())
-    {
-        return it->second;
+void RoomManager::deleteRoom(int ID) {
+  this->m_rooms.erase(this->m_rooms.find(ID));
+}
+
+bool RoomManager::getRoomState(int ID) {
+  auto it = this->m_rooms.find(ID);
+  if (it != this->m_rooms.end()) {
+    return it->second.getRoomStatus();
+  }
+  return false;
+}
+
+std::vector<RoomPreview> RoomManager::getRooms() const {
+  std::vector<RoomPreview> roomsvec;
+  for (auto &room : this->m_rooms) {
+    roomsvec.push_back(room.second.getRoomPreview());
+  }
+  return roomsvec;
+}
+
+JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
+                                             const LoggedUser &loggedUser) {
+  JoinRoomResponseErrors errors;
+  try {
+    Room &room = this->getRoom(id);
+    if (room.getRoomPreview().roomData.maxPlayers ==
+        room.getAllUsers().size()) {
+      errors.generalError = "Room is already full.";
+    } else {
+      room.addUser(loggedUser);
     }
-    throw MyException("Room not exist");
+  } catch (MyException err) {
+    errors.generalError = "room does not exist.";
+  }
+
+  errors.statusCode = !errors.noErrors();
+  return errors;
+}
+
+Room &RoomManager::getRoom(int ID) {
+  auto it = this->m_rooms.find(ID);
+  if (it != this->m_rooms.end()) {
+    return it->second;
+  }
+  throw MyException("Room not exist");
 }

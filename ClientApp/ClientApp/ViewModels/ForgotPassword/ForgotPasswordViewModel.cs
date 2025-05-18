@@ -59,11 +59,10 @@
         /// Navigates to the code input step, passing the target email code and username for validation.
         /// </summary>
         /// <param name="targetEmailCode">The code that was sent to the user's email for validation.</param>
-        /// <param name="username">The username associated with the password reset request.</param>
-        public void GoToCodeStep(string targetEmailCode, string username)
+        /// <param name="email">The email associated with the password reset request.</param>
+        public void GoToCodeStep(string email)
         {
-            CodeStep.TargetEmailCode = targetEmailCode;
-            CodeStep.Username = username;
+            CodeStep.Email = email;
             CurrentStep = CodeStep;
         }
 
@@ -78,10 +77,11 @@
         /// <summary>
         /// Navigates to the reset password step, passing the username to reset the password.
         /// </summary>
-        /// <param name="username">The username associated with the account that needs a password reset.</param>
-        public void GoToResetPasswordStep(string username)
+        /// <param name="email">The email associated with the account that needs a password reset.</param>
+        public void GoToResetPasswordStep(string email, string tocken)
         {
-            ResetPasswordStep.Username = username;
+            ResetPasswordStep.Tocken = tocken;
+            ResetPasswordStep.Email = email;
             CurrentStep = ResetPasswordStep;
         }
     }

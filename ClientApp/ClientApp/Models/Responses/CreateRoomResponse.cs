@@ -1,10 +1,5 @@
 ﻿using ClientApp.Models.ResponseErrors;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClientApp.Models.Responses
 {
@@ -15,6 +10,6 @@ namespace ClientApp.Models.Responses
         [JsonProperty]
         public RoomData RoomData { get; private set; }
         [JsonProperty]
-        public CreateRoomResponseErros Errors { get; private set; }
+        public CreateRoomResponseErrors Errors { get; private set; }
     }
 }

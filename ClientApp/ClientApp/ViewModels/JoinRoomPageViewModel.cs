@@ -7,7 +7,6 @@ using ClientApp.ViewModels;
 using ClientApp.Views.Pages;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.Xaml.Behaviors.Media;
 
 public class JoinRoomViewModel : BaseViewModel
 {

@@ -55,7 +55,8 @@ namespace ClientApp.ViewModels.ForgotPassword
         /// <summary>
         /// The username associated with the password reset request.
         /// </summary>
-        public string Username { get; set; }
+        public string Email { get; set; }
+        public string Tocken { get; set; }
 
         /// <summary>
         /// Command that triggers the password reset process.
@@ -88,7 +89,7 @@ namespace ClientApp.ViewModels.ForgotPassword
             }
 
             // Create the request with the new password and username
-            ResetPasswordRequest request = new ResetPasswordRequest(trimmedNewPassword, Username);
+            ResetPasswordRequest request = new ResetPasswordRequest(trimmedNewPassword, Email, this.Tocken);
             ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(request);
 
             // Handle server error response

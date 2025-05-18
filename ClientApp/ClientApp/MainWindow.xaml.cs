@@ -1,13 +1,8 @@
 ﻿using ClientApp.Views;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
-using System.Threading.Tasks;
 using ClientApp.Services;
 using ClientApp.Views.Pages;
-using System.Windows.Interop;
-using ClientApp.Models.Responses;
 
 namespace ClientApp
 {

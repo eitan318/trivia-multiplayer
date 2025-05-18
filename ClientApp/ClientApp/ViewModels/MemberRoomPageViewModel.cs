@@ -3,17 +3,9 @@ using ClientApp.Models;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using ClientApp.Views.Pages;
-using System.Windows.Controls;
-using System.Numerics;
 
 namespace ClientApp.ViewModels
 {

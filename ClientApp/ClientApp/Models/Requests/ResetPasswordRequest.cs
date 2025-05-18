@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace ClientApp.Models.Requests
 {
     /// <summary>
@@ -11,17 +10,20 @@ namespace ClientApp.Models.Requests
         /// Initializes a new instance of the <see cref="ResetPasswordRequest"/> class.
         /// </summary>
         /// <param name="newPassword">The new password to set for the user.</param>
-        /// <param name="username">The username of the user whose password is being reset.</param>
-        public ResetPasswordRequest(string newPassword, string username)
+        /// <param name="email">The username of the user whose password is being reset.</param>
+        public ResetPasswordRequest(string newPassword, string email, string tocken)
         {
             this.NewPassword = newPassword;
-            this.Username = username;
+            this.Email = email;
+            ResetPasswordTocken = tocken;
         }
 
         public RequestsCodes GetCode() => RequestsCodes.ResetPasswordRequest;
 
-        public string Username { get; }
+        public string Email { get; }
 
         public string NewPassword { get; }
+
+        public string ResetPasswordTocken { get; }
     }
 }

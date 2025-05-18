@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ClientApp.Models.Requests
 {
     enum RequestsCodes
@@ -19,5 +13,7 @@ namespace ClientApp.Models.Requests
         GetHighScoresRequest = 9,
         GetRoomsRequest = 10,
         PersonalStatisticsRequest = 11,
+        VerifyPasswordCodeRequest = 12,
+
     }
 }

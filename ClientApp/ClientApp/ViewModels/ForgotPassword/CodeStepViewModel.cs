@@ -1,13 +1,8 @@
 ﻿using ClientApp.Commands;
-using System;
-using System.Collections.Generic;
+using ClientApp.Models.Requests;
+using ClientApp.Models.Responses;
+using ClientApp.Services;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-
 namespace ClientApp.ViewModels.ForgotPassword
 {
     /// <summary>
@@ -37,14 +32,9 @@ namespace ClientApp.ViewModels.ForgotPassword
         public ObservableCollection<CodeBox> CodeBoxes { get; set; }
 
         /// <summary>
-        /// The target code sent to the user's email that needs to be entered correctly.
-        /// </summary>
-        public string TargetEmailCode { get; set; }
-
-        /// <summary>
         /// The username associated with the account that is undergoing the password reset process.
         /// </summary>
-        public string Username { get; set; }
+        public string Email { get; set; }
 
         /// <summary>
         /// Command to submit the entered code.
@@ -77,16 +67,30 @@ namespace ClientApp.ViewModels.ForgotPassword
         /// Submits the entered verification code. If the code is correct, it proceeds to the password reset step.
         /// If the code is incorrect, an error message is displayed.
         /// </summary>
-        private void SubmitCode()
+        private async void SubmitCode()
         {
             // Concatenate all values from the code boxes and process the code
             var code = string.Concat(CodeBoxes.Select(box => box.Value));
-            if (code != this.TargetEmailCode)
+            VerifyPasswordResetCodeRequest request = new VerifyPasswordResetCodeRequest(code);
+            ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(request);
+            if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
             {
-                ErrorMessage = "Wrong code";
-                return;
+                ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
+                ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
             }
-            _parent.GoToResetPasswordStep(Username);
+            else
+            {
+                VerifyPasswordResetCodeResponse response = JsonResponseDeserialize.DeserializeResponse<VerifyPasswordResetCodeResponse>(responseInfo);
+                if (response.Status == 0)
+                {
+                    _parent.GoToResetPasswordStep(Email, response.PasswordResetTocken);
+                }
+                else
+                {
+                    ErrorMessage = response.Errors.GeneralError;
+                }
+            }
+
         }
 
         /// <summary>

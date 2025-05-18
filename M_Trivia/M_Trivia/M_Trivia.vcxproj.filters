@@ -146,6 +146,15 @@
     <ClCompile Include="CreateRoomResponseErrors.cpp">
       <Filter>Model\ResponseErrors</Filter>
     </ClCompile>
+    <ClCompile Include="VerifyPasswordResetCodeRequest.cpp">
+      <Filter>Model\Requests</Filter>
+    </ClCompile>
+    <ClCompile Include="VerifyPasswordResetCodeResponseErrors.cpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClCompile>
+    <ClCompile Include="VerifyPasswordResetCodeResponse.cpp">
+      <Filter>Model\Responses</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CreateRoomResponseErrors.hpp">
@@ -319,6 +328,18 @@
     <ClInclude Include="Communicator.hpp" />
     <ClInclude Include="Room.hpp" />
     <ClInclude Include="Server.hpp" />
+    <ClInclude Include="VerifyPasswordResetCodeRequest.hpp">
+      <Filter>Model\Requests</Filter>
+    </ClInclude>
+    <ClInclude Include="VerifyPasswordResetCodeResponse.hpp">
+      <Filter>Model\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="VerifyPasswordResetCodeResponseErrors.hpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClInclude>
+    <ClInclude Include="StatusEnum.hpp">
+      <Filter>Model\Responses</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External Libs">

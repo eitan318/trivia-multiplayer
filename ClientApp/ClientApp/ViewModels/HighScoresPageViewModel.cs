@@ -3,16 +3,7 @@ using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Models;
 using ClientApp.Services;
-using ClientApp.ViewModels;
-using ClientApp.Views.Pages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Diagnostics.CodeAnalysis;
 
 namespace ClientApp.ViewModels
 {

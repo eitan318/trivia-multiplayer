@@ -371,29 +371,48 @@ float SqliteDatabase::getAvgAnswerTime(const std::string& username) const
 
 
 
-UserRecord SqliteDatabase::getUserRecord(const std::string& email) const
-{
+UserRecord SqliteDatabase::getUserRecord(const std::string& email) const {
 	const char* query = R"(SELECT username, password, email, phone_number, house_address, birth_date
-		FROM users WHERE email = ?)";
-	sqlite3_stmt* stmt;
+                           FROM users WHERE email = ?)";
+	sqlite3_stmt* stmt = nullptr;
 
-	if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
-		throw std::runtime_error(std::string("Failed to prepare SQL statement.") + sqlite3_errmsg(db));
-	}
+	try {
+		// Prepare the SQL statement
+		if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+			throw std::runtime_error(std::string("Failed to prepare SQL statement: ") + sqlite3_errmsg(db));
+		}
 
-	sqlite3_bind_text(stmt, 1, email.c_str(), -1, SQLITE_TRANSIENT);
-	if (sqlite3_step(stmt) == SQLITE_ROW) {
-		UserRecord userRecord;
-		userRecord.username = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
-		userRecord.password = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-		userRecord.email = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-		userRecord.phoneNumber = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
-		userRecord.houseAddress = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
-		userRecord.birthDate = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
-		return userRecord;
+		// Bind email to the query
+		if (sqlite3_bind_text(stmt, 1, email.c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK) {
+			throw std::runtime_error(std::string("Failed to bind email: ") + sqlite3_errmsg(db));
+		}
+
+		// Execute the query and check for a row
+		if (sqlite3_step(stmt) == SQLITE_ROW) {
+			UserRecord userRecord;
+			userRecord.username = sqlite3_column_text(stmt, 0) ? reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)) : "";
+			userRecord.password = sqlite3_column_text(stmt, 1) ? reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)) : "";
+			userRecord.email = sqlite3_column_text(stmt, 2) ? reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)) : "";
+			userRecord.phoneNumber = sqlite3_column_text(stmt, 3) ? reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3)) : "";
+			userRecord.houseAddress = sqlite3_column_text(stmt, 4) ? reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4)) : "";
+			userRecord.birthDate = sqlite3_column_text(stmt, 5) ? reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5)) : "";
+
+			sqlite3_finalize(stmt); // Finalize the statement before returning
+			return userRecord;
+		}
+		else {
+			// No row found
+			throw MyException("No user record found for the provided email.");
+		}
 	}
-	throw std::runtime_error("Failed to  execute statement");
+	catch (...) {
+		if (stmt) {
+			sqlite3_finalize(stmt); // Ensure resources are cleaned up
+		}
+		throw; // Re-throw the exception for the caller to handle
+	}
 }
+
 
 
 std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit) const

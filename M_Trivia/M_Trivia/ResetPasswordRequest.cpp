@@ -1,12 +1,17 @@
 #include "ResetPasswordRequest.hpp"
 
 ResetPasswordRequest::ResetPasswordRequest(const nlohmann::json &j)
-    : username(j.at("Username")), newPassword(j.at("NewPassword")) {}
+    : email(j.at("Email")), newPassword(j.at("NewPassword")),
+      resetPasswordTocken(j.at("ResetPasswordTocken")) {}
 
-const std::string &ResetPasswordRequest::getUsername() const {
-  return username;
+const std::string &ResetPasswordRequest::getEmail() const {
+  return email;
 }
 
 const std::string &ResetPasswordRequest::getNewPassword() const {
   return newPassword;
+}
+
+const std::string &ResetPasswordRequest::getResetPasswordTocken() const {
+  return this->resetPasswordTocken;
 }

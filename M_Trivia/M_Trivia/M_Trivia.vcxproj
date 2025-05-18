@@ -185,7 +185,11 @@
     <ClInclude Include="SqliteDatabase.hpp" />
     <ClInclude Include="ApiClient.hpp" />
     <ClInclude Include="StatisticsManager.hpp" />
+    <ClInclude Include="StatusEnum.hpp" />
     <ClInclude Include="UserRecord.hpp" />
+    <ClInclude Include="VerifyPasswordResetCodeRequest.hpp" />
+    <ClInclude Include="VerifyPasswordResetCodeResponse.hpp" />
+    <ClInclude Include="VerifyPasswordResetCodeResponseErrors.hpp" />
     <ClInclude Include="WSAInitializer.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +243,9 @@
     <ClCompile Include="SqliteDatabase.cpp" />
     <ClCompile Include="ApiClient.cpp" />
     <ClCompile Include="StatisticsManager.cpp" />
+    <ClCompile Include="VerifyPasswordResetCodeRequest.cpp" />
+    <ClCompile Include="VerifyPasswordResetCodeResponse.cpp" />
+    <ClCompile Include="VerifyPasswordResetCodeResponseErrors.cpp" />
     <ClCompile Include="WSAInitializer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
