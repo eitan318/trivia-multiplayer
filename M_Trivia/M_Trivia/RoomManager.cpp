@@ -1,5 +1,4 @@
 #include "RoomManager.hpp"
-
 #include "CreateRoomResponseErrors.hpp"
 #include "JoinRoomResponseErrors.hpp"
 #include "LoggedUser.hpp"
@@ -15,6 +14,7 @@ RoomManager &RoomManager::getInstance(IDatabase &database) {
 RoomManager::RoomManager(IDatabase &database) : m_database(database) {
   this->m_rooms = std::map<int, Room>();
 }
+
 RoomManager::~RoomManager() {}
 
 CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser &player,
@@ -22,22 +22,26 @@ CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser &player,
   CreateRoomResponseErrors createRoonResponseErrors;
   unsigned int totalQuestionCount = this->m_database.getQuestionsCount();
 
-  if (roomData.numOfQuestionsInGame > totalQuestionCount) {
+  if (roomData.numOfQuestionsInGame > totalQuestionCount) 
+  {
     createRoonResponseErrors.questionCountError =
         "Too many questions, there are only: " +
         std::to_string(totalQuestionCount);
   }
   createRoonResponseErrors.statusCode = !createRoonResponseErrors.noErrors();
 
-  if (createRoonResponseErrors.statusCode == 0) {
+  if (createRoonResponseErrors.statusCode == 0) 
+  {
     int roomid = ids++;
     roomData.id = roomid;
-    for (const auto &[id, room] : this->m_rooms) {
-      if (id >= roomid) {
+    for (const auto &[id, room] : this->m_rooms) 
+    {
+      if (id >= roomid) 
+      {
         roomid = id + 1;
+        roomData.id = roomid;
       }
     }
-
     this->m_rooms[roomid] = Room(roomData, player);
   }
   return createRoonResponseErrors;
@@ -77,14 +81,14 @@ JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
   } catch (MyException err) {
     errors.generalError = "room does not exist.";
   }
-
   errors.statusCode = !errors.noErrors();
   return errors;
 }
 
 Room &RoomManager::getRoom(int ID) {
   auto it = this->m_rooms.find(ID);
-  if (it != this->m_rooms.end()) {
+  if (it != this->m_rooms.end()) 
+  {
     return it->second;
   }
   throw MyException("Room not exist");
