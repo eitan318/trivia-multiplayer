@@ -1,9 +1,7 @@
 ﻿
 namespace ClientApp.Models.Requests
 {
-    /// <summary>
-    /// Represents a request for logging in a user.
-    /// </summary>
+    
     class LoginRequest : IRequest
     {
         /// <summary>

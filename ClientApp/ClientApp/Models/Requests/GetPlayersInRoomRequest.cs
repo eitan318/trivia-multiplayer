@@ -1,9 +1,7 @@
 ﻿
 namespace ClientApp.Models.Requests
 {
-    /// <summary>
-    /// Represents a request for getting players in room
-    /// /// </summary>
+    
     class GetPlayersInRoomRequest : IRequest
     {
         public uint RoomId { get; }

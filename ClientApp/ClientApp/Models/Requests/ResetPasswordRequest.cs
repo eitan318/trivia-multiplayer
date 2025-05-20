@@ -1,9 +1,7 @@
 ﻿
 namespace ClientApp.Models.Requests
 {
-    /// <summary>
-    /// Represents a request to reset a user's password.
-    /// </summary>
+    
     class ResetPasswordRequest : IRequest
     {
         /// <summary>
