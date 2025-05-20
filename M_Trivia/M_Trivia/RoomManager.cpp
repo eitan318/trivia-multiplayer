@@ -48,7 +48,10 @@ CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser &player,
 }
 
 void RoomManager::deleteRoom(int ID) {
-  this->m_rooms.erase(this->m_rooms.find(ID));
+  auto it = this->m_rooms.find(ID);
+  if (it != this->m_rooms.end()) {
+      this->m_rooms.erase(it);
+  }
 }
 
 bool RoomManager::getRoomState(int ID) {
