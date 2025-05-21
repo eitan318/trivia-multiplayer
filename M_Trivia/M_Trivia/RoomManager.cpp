@@ -34,14 +34,6 @@ CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser &player,
   {
     int roomid = ids++;
     roomData.id = roomid;
-    for (const auto &[id, room] : this->m_rooms) 
-    {
-      if (id >= roomid) 
-      {
-        roomid = id + 1;
-        roomData.id = roomid;
-      }
-    }
     this->m_rooms[roomid] = Room(roomData, player);
   }
   return createRoonResponseErrors;

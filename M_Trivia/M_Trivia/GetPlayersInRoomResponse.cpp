@@ -2,7 +2,7 @@
 #include "json.hpp"
 
 
-GetPlayersInRoomResponse::GetPlayersInRoomResponse(unsigned int status, const std::vector<LoggedUser>& players) : Response(status), players(players) {
+GetPlayersInRoomResponse::GetPlayersInRoomResponse(unsigned int status, const std::map<std::string,LoggedUser>& players) : Response(status), players(players) {
 
 }
 
