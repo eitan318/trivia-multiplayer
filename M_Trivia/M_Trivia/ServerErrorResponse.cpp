@@ -1,9 +1,9 @@
 #include "ServerErrorResponse.hpp"
-
+#define GENERALERROR 0
 #include "json.hpp"
 
 
-ServerErrorResponse::ServerErrorResponse(const std::string& message) : Response((unsigned int)(0)), message(message) {
+ServerErrorResponse::ServerErrorResponse(const std::string& message) : Response((unsigned int)(GENERALERROR)), message(message) {
 
 }
 
