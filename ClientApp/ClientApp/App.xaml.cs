@@ -27,7 +27,7 @@ public partial class App : Application
 
         // Set the main window
         var mainWindow = _serviceProvider.GetService<MainWindow>();
-        mainWindow.DataContext = _serviceProvider.GetService<MenuViewModel>();
+        mainWindow.DataContext = _serviceProvider.GetService<MainWindowViewModel>();
         mainWindow.Show();
     }
 

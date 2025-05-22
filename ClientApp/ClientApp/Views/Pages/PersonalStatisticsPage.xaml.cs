@@ -12,7 +12,6 @@ namespace ClientApp.Views.Pages
         public PersonalStatisticsPage() 
         {
             InitializeComponent();
-            DataContext = PersonalStatisticsViewModel.Instance(this);
         }
     }
 }

@@ -8,7 +8,6 @@ namespace ClientApp.Views.Pages
         public StatisticsPage() 
         {
             InitializeComponent();
-            DataContext = StatisticsViewModel.Instance();
         }
     }
 }

@@ -9,19 +9,19 @@ using System.Windows.Input;
 
 namespace ClientApp.ViewModels
 {
-    class AdminRoomPageViewModel : ViewModelBase
+    class AdminRoomViewModel : ViewModelBase
     {
         private UserState userState;
 
         /// <summary>
         /// Provides a singleton instance of the <see cref="MemberRoomViewModel"/>.
         /// </summary>
-        public static AdminRoomPageViewModel Instance(RoomData roomData, UserState userState)
+        public static AdminRoomViewModel Instance(RoomData roomData, UserState userState)
         {
-            return GetInstance(() => new AdminRoomPageViewModel(roomData, userState));
+            return GetInstance(() => new AdminRoomViewModel(roomData, userState));
         }
 
-        private AdminRoomPageViewModel(RoomData roomData, UserState userState)
+        private AdminRoomViewModel(RoomData roomData, UserState userState)
         {
             this.userState = userState;
             this.RefreshCmd = new RelayCommand(RefreshPlayers);

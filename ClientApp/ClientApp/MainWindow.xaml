@@ -17,14 +17,14 @@
 
    <DockPanel>
        <!-- Back Button -->
-       <Button x:Name="BackButton"
+       <!--<Button x:Name="BackButton"
                Content="Back"
                DockPanel.Dock="Top"
                Width="100"
                Height="30"
                Margin="5"
                Click="BackButton_Click"
-               Visibility="Collapsed" />
+               Visibility="Collapsed" />-->
 
        <!-- Page Content -->
        <Grid>

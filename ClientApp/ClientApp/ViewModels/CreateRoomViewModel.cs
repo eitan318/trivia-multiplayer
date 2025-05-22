@@ -5,6 +5,7 @@ using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
 using ClientApp.Views.Pages;
+using ClientApp.Views.States;
 
 namespace ClientApp.ViewModels
 {
@@ -13,83 +14,15 @@ namespace ClientApp.ViewModels
     /// </summary>
     class CreateRoomViewModel : ViewModelBase
     {
-        private string _roomName;
-        private double _questionTimeout = 1; //Min val from xaml
-
-        private uint _maxPlayers = 1; //Min val from xaml
-        private uint _questionsCount = 1; //Min val from xaml
-        private string _questionCountError;
-        private string _errorMessage;
-
-        private string user;
-
-        /// <summary>
-        /// The name of the room to be created.
-        /// </summary>
-        public string RoomName
-        {
-            get => _roomName;
-            set { _roomName = value; OnPropertyChanged(); }
-        }
-
-        /// <summary>
-        /// The timeout duration for questions in the room.
-        /// </summary>
-        public double QuestionTimeout
-        {
-            get => _questionTimeout;
-            set { _questionTimeout = value; OnPropertyChanged(); }
-        }
-
-        /// <summary>
-        /// The maximum number of players allowed in the room.
-        /// </summary>
-        public uint MaxPlayers
-        {
-            get => _maxPlayers;
-            set { _maxPlayers = value; OnPropertyChanged(); }
-        }
-
-        /// <summary>
-        /// The total number of questions in the room.
-        /// </summary>
-        public uint QuestionsCount
-        {
-            get => _questionsCount;
-            set { _questionsCount = value; OnPropertyChanged(); }
-        }
-
-        /// <summary>
-        /// Error message related to the number of questions.
-        /// </summary>
-        public string QuestionCountError
-        {
-            get => _questionCountError;
-            set { _questionCountError = value; OnPropertyChanged(); }
-        }
-
-
-        public string ErrorMessage
-        {
-            get => _errorMessage;
-            set { _errorMessage = value; OnPropertyChanged(); }
-        }
-
-
-
-
-        /// <summary>
-        /// Command to create a new room.
-        /// </summary>
-        public ICommand CreateRoomCommand { get; }
-
+        private INavigationService _navigationService;
+        
         /// <summary>
         /// Private constructor for initializing the ViewModel.
         /// </summary>
-        private CreateRoomViewModel(string user)
+        private CreateRoomViewModel(INavigationService navigationService)
         {
-            this.user = user;
-            CreateRoomCommand = new RelayCommand(PerformCreateRoom, CanCreateRoom);
+            this._navigationService = navigationService;
+            CreateRoomCmd = new RelayCommand(PerformCreateRoom, CanCreateRoom);
 
             PropertyChanged += (sender, args) =>
             {
@@ -98,7 +31,7 @@ namespace ClientApp.ViewModels
                     args.PropertyName == nameof(QuestionsCount) ||
                     args.PropertyName == nameof(QuestionTimeout))
                 {
-                    ((RelayCommand)CreateRoomCommand).RaiseCanExecuteChanged();
+                    ((RelayCommand)CreateRoomCmd).RaiseCanExecuteChanged();
                 }
             };
 
@@ -108,10 +41,107 @@ namespace ClientApp.ViewModels
         /// Creates or retrieves a singleton instance of the CreateRoomPageViewModel.
         /// </summary>
         /// <returns>An instance of CreateRoomPageViewModel.</returns>
-        public static CreateRoomViewModel Instance(string user)
+        public static CreateRoomViewModel Instance(INavigationService navigationService)
         {
-            return GetInstance(() => new CreateRoomViewModel(user));
+            return GetInstance(() => new CreateRoomViewModel(navigationService));
         }
+
+
+
+
+        // Room fields
+        private string _roomName;
+        private double _questionTimeout = 1; //Min val from xaml
+        private uint _maxPlayers = 1; //Min val from xaml
+        private uint _questionsCount = 1; //Min val from xaml
+
+        // Error message fields
+        private string _questionCountError;
+        private string _errorMessage;
+
+
+        /// <summary>
+        /// The name of the room to be created.
+        /// </summary>
+        public string RoomName
+        {
+            get => _roomName;
+            set 
+            {
+                _roomName = value;
+                OnPropertyChanged(); 
+            }
+        }
+
+        /// <summary>
+        /// The timeout duration for questions in the room.
+        /// </summary>
+        public double QuestionTimeout
+        {
+            get => _questionTimeout;
+            set 
+            {
+                _questionTimeout = value;
+                OnPropertyChanged(); 
+            }
+        }
+
+        /// <summary>
+        /// The maximum number of players allowed in the room.
+        /// </summary>
+        public uint MaxPlayers
+        {
+            get => _maxPlayers;
+            set 
+            {
+                _maxPlayers = value;
+                OnPropertyChanged(); 
+            }
+        }
+
+        /// <summary>
+        /// The total number of questions in the room.
+        /// </summary>
+        public uint QuestionsCount
+        {
+            get => _questionsCount;
+            set 
+            {
+                _questionsCount = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Error message related to the number of questions.
+        /// </summary>
+        public string QuestionCountError
+        {
+            get => _questionCountError;
+            set 
+            {
+                _questionCountError = value; 
+                OnPropertyChanged();
+            }
+        }
+
+
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set 
+            {
+                _errorMessage = value;
+                OnPropertyChanged(); 
+            }
+        }
+
+
+
+
+        // Commands
+        public ICommand CreateRoomCmd { get; }
+
 
         /// <summary>
         /// Determines whether the room can be created based on input validation.
@@ -133,7 +163,7 @@ namespace ClientApp.ViewModels
             RoomData? roomData = await CreateRoom();
             if (roomData != null)
             {
-                MyNavigationService.Navigate(new AdminRoomPage(roomData, user));
+                this._navigationService.NavigateTo<AdminRoomViewModel>();
             }
 
         }

@@ -8,11 +8,10 @@ namespace ClientApp.Views.Pages
     /// </summary>
     public partial class CreateRoomPage : CustomPage
     {
-        public CreateRoomPage(string user) 
+        public CreateRoomPage() 
         {
             InitializeComponent();
-            RoomName_TB.Focus(); // Corrected syntax for Focus
-            DataContext = CreateRoomViewModel.Instance(user);
+            RoomName_TB.Focus(); 
         }
     }
 }

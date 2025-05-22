@@ -9,10 +9,9 @@ namespace ClientApp.Views.Pages
     /// </summary>
     public partial class AdminRoomPage : Page
     {
-        public AdminRoomPage(RoomData roomData, string user)
+        public AdminRoomPage()
         {
             InitializeComponent();
-            DataContext = AdminRoomPageViewModel.Instance(roomData, user);
         }
     }
 }

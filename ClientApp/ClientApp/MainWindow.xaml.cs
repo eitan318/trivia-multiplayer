@@ -12,7 +12,6 @@ namespace ClientApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Page initialPage;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -20,21 +19,8 @@ namespace ClientApp
         /// </summary>
         public MainWindow()
         {
-            MainWindowViewModel mainViewModel = new MainWindowViewModel();
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
-            initialPage = new LoginPage();
-            SocketService.Initialize("127.0.0.1", 5554);
 
-            try
-            {
-                SocketService.Connect();
-                mainViewModel.NavigateToLoginPage();
-            }
-            catch (Exception ex)
-            {
-                AttemptConnectionAsync();
-            }
             this.Closed += MainWindow_Closed; // Subscribe to the Closed event
         }
 
@@ -48,47 +34,23 @@ namespace ClientApp
         }
 
 
-        private void MainFrame_ContentRendered(object sender, EventArgs e)
-        {
-            var currentPage = MainFrame.Content as CustomPage;
-            BackButton.Visibility = currentPage?.ShowBackButton == true
-                ? Visibility.Visible
-                : Visibility.Collapsed;
-        }
+        //private void MainFrame_ContentRendered(object sender, EventArgs e)
+        //{
+        //    var currentPage = MainFrame.Content as CustomPage;
+        //    BackButton.Visibility = currentPage?.ShowBackButton == true
+        //        ? Visibility.Visible
+        //        : Visibility.Collapsed;
+        //}
 
-        private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (MainFrame.CanGoBack)
-            {
-                MainFrame.GoBack();
-            }
-        }
+        //private void BackButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (MainFrame.CanGoBack)
+        //    {
+        //        MainFrame.GoBack();
+        //    }
+        //}
 
 
-        /// <summary>
-        /// Attempts to establish a connection to the server. If the connection fails, 
-        /// retries the connection every 2 seconds until successful.
-        /// Displays an error page while attempting to connect.
-        /// </summary>
-        private async void AttemptConnectionAsync()
-        {
-            // Display the error page
-            var errorPage = new ErrorPage("Connection Error", "Unable to connect to Server. Trying...");
-            MainFrame.Navigate(errorPage);
 
-            while (true)
-            {
-                try
-                {
-                    await Task.Run(() => SocketService.Connect());
-                    break;
-                }
-                catch
-                {
-                    await Task.Delay(2000); // Wait for 2 seconds before retrying
-                }
-            }
-            MainFrame.Navigate(initialPage); // Navigate to the initial page once connected
-        }
     }
 }

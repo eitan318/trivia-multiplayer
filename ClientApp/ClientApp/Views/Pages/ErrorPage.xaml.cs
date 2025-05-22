@@ -1,5 +1,5 @@
-﻿using ClientApp.ViewModels.ClientApp.ViewModels;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
+using ClientApp.ViewModels;
 
 namespace ClientApp.Views.Pages
 {
@@ -11,7 +11,7 @@ namespace ClientApp.Views.Pages
         public ErrorPage(string title, string initialMessage)
         {
             InitializeComponent();
-            DataContext = ErrorPageViewModel.Instance(initialMessage);  
+            DataContext = ErrorViewModel.Instance(initialMessage);  
         }
     }
 }

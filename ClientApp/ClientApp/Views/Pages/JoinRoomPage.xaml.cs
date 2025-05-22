@@ -7,11 +7,9 @@ namespace ClientApp.Views.Pages
     /// </summary>
     public partial class JoinRoomPage : CustomPage
     {
-        public JoinRoomPage(string user) 
+        public JoinRoomPage() 
         {
             InitializeComponent();
-            DataContext = JoinRoomViewModel.Instance(this, user);
-            
         }
     }
 }
