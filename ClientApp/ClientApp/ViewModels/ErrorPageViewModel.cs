@@ -7,7 +7,7 @@ namespace ClientApp.ViewModels
 
     namespace ClientApp.ViewModels
     {
-        class ErrorPageViewModel : BaseViewModel
+        class ErrorPageViewModel : ViewModelBase
         {
             public string StatusMessage { get; }
 

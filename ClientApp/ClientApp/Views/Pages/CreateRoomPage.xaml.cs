@@ -6,13 +6,13 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for CreateRoomPage.xaml
     /// </summary>
-    public partial class CreateRoomPage : NavigablePage
+    public partial class CreateRoomPage : CustomPage
     {
-        public CreateRoomPage(Page parent, string user) : base(parent)
+        public CreateRoomPage(string user) 
         {
             InitializeComponent();
             RoomName_TB.Focus(); // Corrected syntax for Focus
-            DataContext = CreateRoomPageViewModel.Instance(user);
+            DataContext = CreateRoomViewModel.Instance(user);
         }
     }
 }

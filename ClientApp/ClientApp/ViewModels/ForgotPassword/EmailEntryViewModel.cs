@@ -3,6 +3,8 @@ using ClientApp.Services;
 using System.Windows.Input;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
+using ClientApp.Views.States;
+using System.Windows.Navigation;
 
 namespace ClientApp.ViewModels.ForgotPassword
 {
@@ -10,39 +12,51 @@ namespace ClientApp.ViewModels.ForgotPassword
     /// ViewModel for the email input step in the forgot password process. Handles the user's input of their email address
     /// and processes the request to initiate the password recovery process.
     /// </summary>
-    class EmailStepViewModel : BaseViewModel
+    class EmailEntryViewModel : ViewModelBase
     {
-        /// <summary>
-        /// The parent ViewModel that controls the overall flow of the forgot password process.
-        /// </summary>
-        private readonly ForgotPasswordViewModel _parent;
+        INavigationService _navigationService;
+        PasswordResetState _state;
 
         /// <summary>
         /// Initializes the ViewModel, setting up the command for submitting the email.
         /// </summary>
-        /// <param name="parent">The parent ViewModel that controls the overall flow of the forgot password process.</param>
-        public EmailStepViewModel(ForgotPasswordViewModel parent)
+        public EmailEntryViewModel(INavigationService navigationService, PasswordResetState state)
         {
-            _parent = parent;
-            SubmitEmailCommand = new RelayCommand(SubmitEmail);
+            _navigationService = navigationService;
+            _state = state;
+            SubmitEmailCmd = new RelayCommand(SubmitEmail);
         }
 
-        /// <summary>
-        /// The email address entered by the user for the password recovery process.
-        /// </summary>
-        public string Email { get; set; }
-
-        public ICommand SubmitEmailCommand { get; }
-
-        /// <summary>
-        /// Error message to display if there is an issue with the email input or response.
-        /// </summary>
+        // Error fields
         private string _errorMessage;
+
+
+        //Email Property
+        public string Email
+        {
+            get => _state.Email;
+            set
+            {
+                _state.Email = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // Error properties
         public string ErrorMessage
         {
             get => _errorMessage;
-            set { _errorMessage = value; OnPropertyChanged(); }
+            set 
+            { 
+                _errorMessage = value; 
+                OnPropertyChanged();
+            }
         }
+
+        //Commands
+        public ICommand SubmitEmailCmd { get; }
+
+
 
         /// <summary>
         /// Submits the entered email address to initiate the password recovery process. 
@@ -50,7 +64,7 @@ namespace ClientApp.ViewModels.ForgotPassword
         /// </summary>
         private async void SubmitEmail()
         {
-            string trimmedEmail = Email?.Trim();
+            string trimmedEmail = this._state.Email?.Trim();
 
             // Ensure email is not empty
             if (string.IsNullOrEmpty(trimmedEmail))
@@ -75,7 +89,7 @@ namespace ClientApp.ViewModels.ForgotPassword
             PasswordResetCodeResponse response = JsonResponseDeserialize.DeserializeResponse<PasswordResetCodeResponse>(responseInfo);
             if (response.Status == 0)
             {
-                _parent.GoToCodeStep(trimmedEmail);
+                this._navigationService.NavigateTo<CodeEntryViewModel>();
             }
             else
             {

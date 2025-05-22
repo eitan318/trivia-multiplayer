@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using ClientApp.ViewModels;
 
-namespace ClientApp.Views
+namespace ClientApp.Views.Pages
 {
     /// <summary>
     /// Interaction logic for LoginPage.xaml
@@ -11,7 +11,6 @@ namespace ClientApp.Views
         public LoginPage()
         {
             InitializeComponent();
-            DataContext = AuthenticationViewModel.Instance();
             UsernameTB.Focus();
         }
 

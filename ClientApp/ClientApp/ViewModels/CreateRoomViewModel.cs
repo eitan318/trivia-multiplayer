@@ -11,7 +11,7 @@ namespace ClientApp.ViewModels
     /// <summary>
     /// ViewModel for the Create Room page, managing the room creation process and player data.
     /// </summary>
-    class CreateRoomPageViewModel : BaseViewModel
+    class CreateRoomViewModel : ViewModelBase
     {
         private string _roomName;
         private double _questionTimeout = 1; //Min val from xaml
@@ -86,7 +86,7 @@ namespace ClientApp.ViewModels
         /// <summary>
         /// Private constructor for initializing the ViewModel.
         /// </summary>
-        private CreateRoomPageViewModel(string user)
+        private CreateRoomViewModel(string user)
         {
             this.user = user;
             CreateRoomCommand = new RelayCommand(PerformCreateRoom, CanCreateRoom);
@@ -108,9 +108,9 @@ namespace ClientApp.ViewModels
         /// Creates or retrieves a singleton instance of the CreateRoomPageViewModel.
         /// </summary>
         /// <returns>An instance of CreateRoomPageViewModel.</returns>
-        public static CreateRoomPageViewModel Instance(string user)
+        public static CreateRoomViewModel Instance(string user)
         {
-            return GetInstance(() => new CreateRoomPageViewModel(user));
+            return GetInstance(() => new CreateRoomViewModel(user));
         }
 
         /// <summary>

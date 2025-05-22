@@ -3,12 +3,12 @@ using System.Windows.Controls;
 
 namespace ClientApp.Views.Pages
 {
-    public partial class StatisticsPage : NavigablePage
+    public partial class StatisticsPage : CustomPage
     {
-        public StatisticsPage(Page parent) : base(parent)
+        public StatisticsPage() 
         {
             InitializeComponent();
-            DataContext = StatisticsPageViewModel.Instance(this);
+            DataContext = StatisticsViewModel.Instance();
         }
     }
 }

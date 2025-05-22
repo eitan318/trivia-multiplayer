@@ -6,12 +6,12 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for HighScoresPage.xaml
     /// </summary>
-    public partial class HighScoresPage : NavigablePage
+    public partial class HighScoresPage : CustomPage
     {
-        public HighScoresPage(Page parent) : base(parent)
+        public HighScoresPage() 
         {
             InitializeComponent();
-            DataContext = HighScoresPageViewModel.Instance();
+            DataContext = HighScoresViewModel.Instance();
 
         }
     }

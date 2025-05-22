@@ -6,31 +6,30 @@ using ClientApp.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ClientApp.Views.Pages;
+using ClientApp.Views.States;
 
 namespace ClientApp.ViewModels
 {
-    class MemberRoomPageViewModel : BaseViewModel
+    class MemberRoomViewModel : ViewModelBase
     {
+        private UserState _userState;
+
         /// <summary>
-        /// Provides a singleton instance of the <see cref="MemberRoomPageViewModel"/>.
+        /// Provides a singleton instance of the <see cref="MemberRoomViewModel"/>.
         /// </summary>
-        public static MemberRoomPageViewModel Instance(RoomData roomData, string userUsername)
+        public static MemberRoomViewModel Instance(INavigationService navigationService, RoomData roomData, UserState userState)
         {
-            return GetInstance(() => new MemberRoomPageViewModel(roomData, userUsername));
+            return GetInstance(() => new MemberRoomViewModel(navigationService, roomData, userState));
         }
 
-        private MemberRoomPageViewModel(RoomData roomData, string userUsername) 
+        private MemberRoomViewModel(INavigationService navigationService, RoomData roomData, UserState userState) 
         {
-            this.RefreshCommand = new RelayCommand(RefreshPlayers);
-            this.LeaveRoomCommand = new RelayCommand(LeaveRoom);
+            this._userState = userState;
+            this.RefreshCmd = new RelayCommand(RefreshPlayers);
+            this.LeaveRoomCmd = new NavigateCommand<JoinRoomViewModel>(navigationService);
             this.RoomData = roomData;
-            this.user = userUsername;
             RefreshPlayers();
         }
-
-
-        public ICommand RefreshCommand { get; }
-        public ICommand LeaveRoomCommand { get; }
 
         /// <summary>
         /// Collection of players currently in the room.
@@ -42,7 +41,11 @@ namespace ClientApp.ViewModels
         public RoomData RoomData { get; set; }
 
 
-        private string user;
+        //Commands
+        public ICommand RefreshCmd { get; }
+        public ICommand LeaveRoomCmd { get; }
+
+
 
 
         /// <summary>
@@ -64,22 +67,13 @@ namespace ClientApp.ViewModels
             if (response.Players != null && response.Players.Any())
             {
                 Admin = response.Players.First(); // Set Admin
-                Admin.IsMe = Admin.Username == user;
+                Admin.IsMe = Admin.Username == this._userState.Username;
                 foreach (var player in response.Players.Skip(1)) 
                 {
-                    player.IsMe = player.Username == user;
+                    player.IsMe = player.Username == this._userState.Username;
                     Players.Add(player);
                 }
             }
-        }
-
-
-        /// <summary>
-        /// Sends a request to retrieve and populate the player list for the room.
-        /// </summary>
-        void LeaveRoom()
-        {
-            MyNavigationService.Navigate(new JoinRoomPage(new MenuPage(user), user));
         }
 
     }

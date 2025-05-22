@@ -24,7 +24,7 @@ def handle_client(client_socket):
 
 def main():
     IP = "127.0.0.1" 
-    PORT = 5554       
+    PORT = 5554
     server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_sock.bind((IP, PORT)) 
     server_sock.listen(1)  
@@ -36,4 +36,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 

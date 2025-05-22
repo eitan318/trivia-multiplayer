@@ -3,28 +3,31 @@ using ClientApp.Models;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace ClientApp.ViewModels
 {
-    class PersonalStatisticsPageViewModel : BaseViewModel
+    class PersonalStatisticsViewModel : ViewModelBase
     {
-        public PersonalStatisticsPageViewModel(Page owner)
+        public PersonalStatisticsViewModel()
         {
-            this.ownerPage = owner;
             this.personalInfo = new PersonalStatistics();
-            this.RefreshCommand = new RelayCommand(Refresh);
+            this.RefreshCmd = new RelayCommand(Refresh);
             Refresh();
         }
-        public static PersonalStatisticsPageViewModel Instance(Page owner)
+        public static PersonalStatisticsViewModel Instance()
         {
-            return GetInstance(() => new PersonalStatisticsPageViewModel(owner));
+            return GetInstance(() => new PersonalStatisticsViewModel());
         }
-        private Page ownerPage;
+
+
+        // Fields
+        private PersonalStatistics personalInfo;
+
+        // Error message fields
         private string _errorMessage;
 
-        private PersonalStatistics personalInfo;
+        // Properties
         public PersonalStatistics PersonalInfo
         {
             get => personalInfo;
@@ -34,6 +37,8 @@ namespace ClientApp.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        // Error message properties
         public string ErrorMessage
         {
             get => _errorMessage;
@@ -44,7 +49,9 @@ namespace ClientApp.ViewModels
             }
         }
 
-        public ICommand RefreshCommand { get; }
+
+        // Commands
+        public ICommand RefreshCmd { get; }
 
         public async void Refresh()
         {

@@ -16,8 +16,7 @@ private:
   IDatabase &m_database; ///< Pointer to the database interface for user data.
   unsigned int prevRandomCode;
   std::string prevResetPasswordTocken;
-  std::unordered_map<std::string, LoggedUser>
-      m_loggedUsers; ///< List of currently logged-in users.
+  std::unordered_map<std::string, LoggedUser> m_loggedUsers; ///< List of currently logged-in users.
 
   /**
      @brief Constructs a LoginManager instance.

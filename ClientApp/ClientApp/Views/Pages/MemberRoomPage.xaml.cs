@@ -11,7 +11,7 @@ namespace ClientApp.Views.Pages
         public MemberRoomPage(RoomData roomData, string user)
         {
             InitializeComponent();
-            DataContext = MemberRoomPageViewModel.Instance(roomData, user);
+            DataContext = MemberRoomViewModel.Instance(roomData, user);
         }
     }
 }

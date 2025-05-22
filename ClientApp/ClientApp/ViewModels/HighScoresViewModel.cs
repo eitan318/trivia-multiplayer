@@ -8,31 +8,26 @@ using System.Windows.Input;
 namespace ClientApp.ViewModels
 {
 
-    class HighScoresPageViewModel : BaseViewModel
+    class HighScoresViewModel : ViewModelBase
     {
-        private HighScoresPageViewModel()
+        private HighScoresViewModel()
         {
-            RefreshTopCommand = new RelayCommand(RefreshTop);
+            RefreshTopCmd = new RelayCommand(RefreshTop);
             RefreshTop();
         }
-        public static HighScoresPageViewModel Instance()
+        public static HighScoresViewModel Instance()
         {
-            return GetInstance(() => new HighScoresPageViewModel());
+            return GetInstance(() => new HighScoresViewModel());
         }
-        /// <summary>
-        /// The page that owns this ViewModel. Used for navigation purposes.
-        /// </summary>
+
+        // Fields
         private List<HighScoreInfo> responseList;
+        
+        // Error mesasge fields
         private string _errorMessage;
-        public string ErrorMessage
-        {
-            get => _errorMessage;
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged();
-            }
-        }
+
+        // Properties
+
         public List<HighScoreInfo> ResponseList
         {
             get => responseList;
@@ -42,9 +37,21 @@ namespace ClientApp.ViewModels
                 OnPropertyChanged();
             }
         }
+        
+        
+        // Error message properties
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged();
+            }
+        }
 
-
-        public ICommand RefreshTopCommand { get; }
+        //Commands
+        public ICommand RefreshTopCmd { get; }
 
 
 

@@ -218,6 +218,7 @@
     <ClCompile Include="PersonalStatistics.cpp" />
     <ClCompile Include="PersonalStatisticsRequest.cpp" />
     <ClCompile Include="Question.cpp" />
+    <ClCompile Include="RequestInfo.cpp" />
     <ClCompile Include="RequestResult.cpp" />
     <ClCompile Include="ResetPasswordRequest.cpp" />
     <ClCompile Include="ResetPasswordResponse.cpp" />

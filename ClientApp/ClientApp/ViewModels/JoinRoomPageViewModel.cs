@@ -4,32 +4,34 @@ using ClientApp.Models.Responses;
 using ClientApp.Models;
 using ClientApp.Services;
 using ClientApp.ViewModels;
-using ClientApp.Views.Pages;
-using System.Windows.Controls;
 using System.Windows.Input;
+using ClientApp.Views.States;
 
-public class JoinRoomViewModel : BaseViewModel
+public class JoinRoomViewModel : ViewModelBase
 {
-    private JoinRoomViewModel(Page owner, string user)
+    private INavigationService _navigationService;
+    private JoinRoomViewModel(INavigationService navigationService)
     {
-        this.ownerPage = owner;
-        this.user = user;
-        RefreshCommand = new RelayCommand(async () => await Refresh());
-        JoinCommand = new RelayCommand(async () => await JoinRoom(), CanJoinRoom);
+        this._navigationService = navigationService;
+        RefreshCmd = new RelayCommand(async () => await Refresh());
+        JoinCmd = new RelayCommand(async () => await JoinRoom(), CanJoinRoom);
         _ = Refresh(); // Fire and forget
     }
 
-    public static JoinRoomViewModel Instance(Page owner, string user)
+    public static JoinRoomViewModel Instance(INavigationService navigationService)
     {
-        return GetInstance(() => new JoinRoomViewModel(owner, user));
+        return GetInstance(() => new JoinRoomViewModel(navigationService));
     }
 
-    private string user;
-    private Page ownerPage;
+    // Fields
     private List<RoomPreview> _rooms;
-    private string _errorMessage;
     private RoomPreview? _selectedRoom;
+    
+    // Error message fields
+    private string _errorMessage;
 
+
+    //Properties
     public List<RoomPreview> Rooms
     {
         get => _rooms;
@@ -40,6 +42,21 @@ public class JoinRoomViewModel : BaseViewModel
         }
     }
 
+
+    public RoomPreview? SelectedRoom
+    {
+        get => _selectedRoom;
+        set
+        {
+            _selectedRoom = value;
+            OnPropertyChanged();
+            // Notify JoinCommand that its state may have changed
+            ((RelayCommand)JoinCmd).RaiseCanExecuteChanged();
+        }
+    }
+
+    
+    // Errore message properties
     public string ErrorMessage
     {
         get => _errorMessage;
@@ -50,20 +67,11 @@ public class JoinRoomViewModel : BaseViewModel
         }
     }
 
-    public RoomPreview? SelectedRoom
-    {
-        get => _selectedRoom;
-        set
-        {
-            _selectedRoom = value;
-            OnPropertyChanged();
-            // Notify JoinCommand that its state may have changed
-            ((RelayCommand)JoinCommand).RaiseCanExecuteChanged();
-        }
-    }
 
-    public ICommand RefreshCommand { get; }
-    public ICommand JoinCommand { get; }
+    // Commands
+    public ICommand RefreshCmd { get; }
+    public ICommand JoinCmd { get; }
+
 
     public async Task Refresh()
     {
@@ -120,7 +128,8 @@ public class JoinRoomViewModel : BaseViewModel
             var joinResponse = JsonResponseDeserialize.DeserializeResponse<JoinRoomResponse>(responseInfo);
             if(joinResponse.Status == 0)
             {
-                MyNavigationService.Navigate(new MemberRoomPage(SelectedRoom.Value.RoomData, user));
+                //SelectedRoom.Value.RoomData
+                _navigationService.NavigateTo<MemberRoomViewModel>();
             }
             else
             {

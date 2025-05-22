@@ -8,7 +8,7 @@ namespace ClientApp.ViewModels
     /// The base class for all view models in the application. Implements the INotifyPropertyChanged interface 
     /// to support data binding and property change notification. It also provides singleton behavior for view models.
     /// </summary>
-    public abstract class BaseViewModel : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
         /// <summary>
         /// Event raised whenever a property value changes, allowing subscribers to respond to the change.
@@ -24,7 +24,7 @@ namespace ClientApp.ViewModels
         /// Protected constructor for derived classes to ensure that only classes inheriting from BaseViewModel 
         /// can be instantiated.
         /// </summary>
-        protected BaseViewModel() { }
+        protected ViewModelBase() { }
 
         /// <summary>
         /// Provides a singleton instance of the specified view model type.
@@ -37,7 +37,7 @@ namespace ClientApp.ViewModels
         /// <exception cref="InvalidOperationException">
         /// Thrown if no factory is provided and an instance for the specified type does not already exist.
         /// </exception>
-        public static T GetInstance<T>(Func<T> factory = null) where T : BaseViewModel
+        public static T GetInstance<T>(Func<T> factory = null) where T : ViewModelBase
         {
             var type = typeof(T);
 
@@ -60,6 +60,9 @@ namespace ClientApp.ViewModels
 
             return (T)_instances[type];
         }
+
+
+        public virtual void Dispose() { }
 
         /// <summary>
         /// Notifies subscribers that a property value has changed. This method is intended to be called in property setters.

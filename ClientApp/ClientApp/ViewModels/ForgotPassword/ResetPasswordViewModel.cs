@@ -3,6 +3,7 @@ using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
 using ClientApp.Views;
+using ClientApp.Views.States;
 using System.Windows.Input;
 
 namespace ClientApp.ViewModels.ForgotPassword
@@ -11,65 +12,79 @@ namespace ClientApp.ViewModels.ForgotPassword
     /// ViewModel that handles the reset password step in the forgot password process.
     /// It manages user inputs for the new password, confirms it, and sends the reset password request.
     /// </summary>
-    class ResetPasswordStepViewModel : BaseViewModel
+    class ResetPasswordViewModel : ViewModelBase
     {
-        /// <summary>
-        /// The new password entered by the user for password reset.
-        /// </summary>
+
+        INavigationService _navigationService;
+        PasswordResetState _state;
+
+        public ResetPasswordViewModel(INavigationService navigationService, PasswordResetState state)
+        {
+            _navigationService = navigationService;
+            _state = state;
+            ResetPasswordCmd = new RelayCommand(OnResetPassword);
+        }
+
+        // Password resert fields
         private string _newPassword;
+        private string _confirmPassword;
+        
+        // Error fields
+        private string _errorMessage;
+        private string _newPasswordErrorMessage;
+
+
+        // Password reset properties
         public string NewPassword
         {
             get => _newPassword;
-            set { _newPassword = value; OnPropertyChanged(); }
+            set
+            { 
+                _newPassword = value; 
+                OnPropertyChanged();
+            }
         }
 
-        /// <summary>
-        /// The confirmation password entered by the user to match with the new password.
-        /// </summary>
-        private string _confirmPassword;
+
         public string ConfirmPassword
         {
             get => _confirmPassword;
-            set { _confirmPassword = value; OnPropertyChanged(); }
+            set 
+            { 
+                _confirmPassword = value;
+                OnPropertyChanged();
+            }
         }
 
-        /// <summary>
-        /// Error message to display if there are issues with the reset process.
-        /// </summary>
-        private string _errorMessage;
+
+        //Error messages properties
         public string ErrorMessage
         {
             get => _errorMessage;
-            set { _errorMessage = value; OnPropertyChanged(); }
+            set 
+            { 
+                _errorMessage = value; 
+                OnPropertyChanged(); 
+            }
         }
 
-        
-
-        private string _newPasswordErrorMessage;
         public string NewPasswordErrorMessage
         {
             get => _newPasswordErrorMessage;
-            set { _newPasswordErrorMessage = value; OnPropertyChanged(); }
+            set
+            { 
+                _newPasswordErrorMessage = value; 
+                OnPropertyChanged(); 
+            }
         }
 
-        /// <summary>
-        /// The username associated with the password reset request.
-        /// </summary>
-        public string Email { get; set; }
-        public string Tocken { get; set; }
 
-        /// <summary>
-        /// Command that triggers the password reset process.
-        /// </summary>
-        public ICommand ResetPasswordCommand { get; }
 
-        /// <summary>
-        /// Initializes the ViewModel with the reset password command.
-        /// </summary>
-        public ResetPasswordStepViewModel()
-        {
-            ResetPasswordCommand = new RelayCommand(OnResetPassword);
-        }
+
+        // Commands
+        public ICommand ResetPasswordCmd { get; }
+
+
 
         /// <summary>
         /// Handles the logic of resetting the password. It verifies that the new password and confirmation match,
@@ -89,7 +104,7 @@ namespace ClientApp.ViewModels.ForgotPassword
             }
 
             // Create the request with the new password and username
-            ResetPasswordRequest request = new ResetPasswordRequest(trimmedNewPassword, Email, this.Tocken);
+            ResetPasswordRequest request = new ResetPasswordRequest(trimmedNewPassword, _state.Email, _state.Tocken);
             ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(request);
 
             // Handle server error response
@@ -105,7 +120,7 @@ namespace ClientApp.ViewModels.ForgotPassword
             if(response.Status == 0)
             {
                 // Navigate to the login page upon successful password reset
-                MyNavigationService.Navigate(new LoginPage());
+                _navigationService.NavigateTo<LoginViewModel>();
             }
             else
             {

@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using ClientApp.Services;
 using ClientApp.Views.Pages;
+using ClientApp.ViewModels;
 
 namespace ClientApp
 {
@@ -19,15 +20,16 @@ namespace ClientApp
         /// </summary>
         public MainWindow()
         {
+            MainWindowViewModel mainViewModel = new MainWindowViewModel();
             InitializeComponent();
+            DataContext = new MainWindowViewModel();
             initialPage = new LoginPage();
             SocketService.Initialize("127.0.0.1", 5554);
-            MyNavigationService.Initialize(MainFrame);
 
             try
             {
                 SocketService.Connect();
-                MainFrame.Navigate(initialPage);
+                mainViewModel.NavigateToLoginPage();
             }
             catch (Exception ex)
             {
@@ -44,6 +46,24 @@ namespace ClientApp
         {
             SocketService.CloseConnection();
         }
+
+
+        private void MainFrame_ContentRendered(object sender, EventArgs e)
+        {
+            var currentPage = MainFrame.Content as CustomPage;
+            BackButton.Visibility = currentPage?.ShowBackButton == true
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainFrame.CanGoBack)
+            {
+                MainFrame.GoBack();
+            }
+        }
+
 
         /// <summary>
         /// Attempts to establish a connection to the server. If the connection fails, 

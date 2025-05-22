@@ -2,6 +2,7 @@
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
+using ClientApp.Views.States;
 using System.Collections.ObjectModel;
 namespace ClientApp.ViewModels.ForgotPassword
 {
@@ -9,59 +10,59 @@ namespace ClientApp.ViewModels.ForgotPassword
     /// ViewModel for the code input step in the forgot password process. Handles user input for the verification code
     /// and manages navigation between steps in the forgot password flow.
     /// </summary>
-    class CodeStepViewModel : BaseViewModel
+    class CodeEntryViewModel : ViewModelBase
     {
-        /// <summary>
-        /// The parent ViewModel that controls the overall flow of the forgot password process.
-        /// </summary>
-        private readonly ForgotPasswordViewModel _parent;
+        INavigationService _navigationService;
+        PasswordResetState _state;
 
-        /// <summary>
-        /// Error message to display when the user enters an incorrect code.
-        /// </summary>
-        private string _errorMessage;
-        public string ErrorMessage
-        {
-            get => _errorMessage;
-            set { _errorMessage = value; OnPropertyChanged(); }
-        }
 
-        /// <summary>
-        /// Collection of code boxes that represent the input fields for the verification code.
-        /// </summary>
-        public ObservableCollection<CodeBox> CodeBoxes { get; set; }
-
-        /// <summary>
-        /// The username associated with the account that is undergoing the password reset process.
-        /// </summary>
-        public string Email { get; set; }
-
-        /// <summary>
-        /// Command to submit the entered code.
-        /// </summary>
-        public RelayCommand SubmitCodeCommand { get; }
-
-        /// <summary>
-        /// Command to retry the email verification step in case of an error.
-        /// </summary>
-        public RelayCommand RetryCommand { get; }
-
+        
         /// <summary>
         /// Initializes the ViewModel, setting up the code boxes and the associated commands.
         /// </summary>
         /// <param name="parent">The parent ViewModel that controls the overall flow of the forgot password process.</param>
-        public CodeStepViewModel(ForgotPasswordViewModel parent)
+        public CodeEntryViewModel(INavigationService navigationService, PasswordResetState state)
         {
-            this._parent = parent;
+            this._navigationService = navigationService;
+            this._state = state;
+
 
             // Initialize 6 code boxes for user input
             CodeBoxes = new ObservableCollection<CodeBox>(
                 Enumerable.Range(0, 6).Select(_ => new CodeBox()));
 
             // Setup commands for submitting the code and retrying the email verification
-            SubmitCodeCommand = new RelayCommand(SubmitCode);
-            RetryCommand = new RelayCommand(Retry);
+            SubmitCodeCmd = new RelayCommand(SubmitCode);
+            RetryCmd = new RelayCommand(Retry);
         }
+
+        // Error message field
+        private string _errorMessage;
+
+        // Error mesage property
+
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+
+        // Commands
+        public RelayCommand SubmitCodeCmd { get; }
+        public RelayCommand RetryCmd { get; }
+
+
+        /// <summary>
+        /// Collection of code boxes that represent the input fields for the verification code.
+        /// </summary>
+        public ObservableCollection<CodeBox> CodeBoxes { get; set; }
+
 
         /// <summary>
         /// Submits the entered verification code. If the code is correct, it proceeds to the password reset step.
@@ -83,7 +84,8 @@ namespace ClientApp.ViewModels.ForgotPassword
                 VerifyPasswordResetCodeResponse response = JsonResponseDeserialize.DeserializeResponse<VerifyPasswordResetCodeResponse>(responseInfo);
                 if (response.Status == 0)
                 {
-                    _parent.GoToResetPasswordStep(Email, response.PasswordResetTocken);
+                    this._state.Tocken = response.PasswordResetTocken;
+                    this._navigationService.NavigateTo<ResetPasswordViewModel>();
                 }
                 else
                 {
@@ -98,14 +100,14 @@ namespace ClientApp.ViewModels.ForgotPassword
         /// </summary>
         private void Retry()
         {
-            _parent.GoToEmailStep();
+            _navigationService.NavigateTo<EmailEntryViewModel>();
         }
     }
 
     /// <summary>
     /// Represents a single input field for the verification code.
     /// </summary>
-    public class CodeBox : BaseViewModel
+    public class CodeBox : ViewModelBase
     {
         /// <summary>
         /// The value entered by the user in the code input field.

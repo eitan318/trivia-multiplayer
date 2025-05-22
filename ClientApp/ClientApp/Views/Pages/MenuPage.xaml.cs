@@ -8,10 +8,9 @@ namespace ClientApp.Views.Pages
     /// </summary>
     public partial class MenuPage : Page
     {
-        public MenuPage(string user)
+        public MenuPage()
         {
             InitializeComponent();
-            DataContext = MenuPageViewModel.Instance(this, user);
         }
     }
 

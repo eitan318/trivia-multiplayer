@@ -1,7 +1,7 @@
 ﻿using ClientApp.ViewModels;
 using System.Windows.Controls;
 
-namespace ClientApp.Views
+namespace ClientApp.Views.Pages
 {
     /// <summary>
     /// Interaction logic for SignupPage.xaml
@@ -11,13 +11,12 @@ namespace ClientApp.Views
         public SignupPage()
         {
             InitializeComponent();
-            DataContext = AuthenticationViewModel.Instance();
             UsernameTB.Focus();
         }
 
         private void PasswordBox_PasswordChanged(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (DataContext is AuthenticationViewModel viewModel)
+            if (DataContext is SignupViewModel viewModel)
             {
                 viewModel.Password = ((PasswordBox)sender).Password;
             }

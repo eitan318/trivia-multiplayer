@@ -122,13 +122,13 @@ void Communicator::handleNewClient(SOCKET sock)
 
     while (handler != nullptr)
     {
-        RequestInfo requestInfo;
+
         int msgLen;
         std::string msgStr;
-
+        unsigned int requestCode;
         try
         {
-            requestInfo.code = SocketService::getLittleEndianIntFromSocket(sock, 1);
+            requestCode = SocketService::getLittleEndianIntFromSocket(sock, 1);
             msgLen = SocketService::getLittleEndianIntFromSocket(sock, sizeof(int));
             msgStr = SocketService::getStringPartFromSocket(sock, msgLen);
         }
@@ -137,10 +137,11 @@ void Communicator::handleNewClient(SOCKET sock)
             std::cerr << "Client " << sock << " probably exited ungracefully." << std::endl;
             break;
         }
-        requestInfo.receivalTime = time(nullptr);
+        time_t requestRecievalTime = time(nullptr);
         std::cout << "Received: " << msgStr << std::endl;
-        requestInfo.buffer = std::vector<char>(msgStr.begin(), msgStr.end());
+        std::vector<char> requestBuffer(msgStr.begin(), msgStr.end());
 
+        RequestInfo requestInfo(requestCode, requestRecievalTime, requestBuffer);
         RequestResult requestResult;
         if (handler->isRequestRelevant(requestInfo))
         {

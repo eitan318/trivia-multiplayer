@@ -7,12 +7,12 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for PersonalStatisticsPage.xaml
     /// </summary>
-    public partial class PersonalStatisticsPage : NavigablePage
+    public partial class PersonalStatisticsPage : CustomPage
     {
-        public PersonalStatisticsPage(Page parent) : base(parent)
+        public PersonalStatisticsPage() 
         {
             InitializeComponent();
-            DataContext = PersonalStatisticsPageViewModel.Instance(this);
+            DataContext = PersonalStatisticsViewModel.Instance(this);
         }
     }
 }
