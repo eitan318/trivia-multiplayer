@@ -6,23 +6,16 @@ using ClientApp.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ClientApp.Views.Pages;
-using ClientApp.Views.States;
+using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
     class MemberRoomViewModel : ViewModelBase
     {
-        private UserState _userState;
+        private UserStore _userState;
 
-        /// <summary>
-        /// Provides a singleton instance of the <see cref="MemberRoomViewModel"/>.
-        /// </summary>
-        public static MemberRoomViewModel Instance(INavigationService navigationService, RoomData roomData, UserState userState)
-        {
-            return GetInstance(() => new MemberRoomViewModel(navigationService, roomData, userState));
-        }
 
-        private MemberRoomViewModel(INavigationService navigationService, RoomData roomData, UserState userState) 
+        public MemberRoomViewModel(INavigationService navigationService, RoomData roomData, UserStore userState) 
         {
             this._userState = userState;
             this.RefreshCmd = new RelayCommand(RefreshPlayers);

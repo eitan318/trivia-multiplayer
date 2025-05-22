@@ -26,40 +26,6 @@ namespace ClientApp.ViewModels
         /// </summary>
         protected ViewModelBase() { }
 
-        /// <summary>
-        /// Provides a singleton instance of the specified view model type.
-        /// If no instance exists, a new one is created using the provided factory.
-        /// </summary>
-        /// <typeparam name="T">The type of the view model (must be derived from BaseViewModel).</typeparam>
-        /// <param name="factory">An optional factory function to create the view model instance. 
-        /// If not provided, an exception is thrown when no instance exists.</param>
-        /// <returns>The singleton instance of the view model.</returns>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown if no factory is provided and an instance for the specified type does not already exist.
-        /// </exception>
-        public static T GetInstance<T>(Func<T> factory = null) where T : ViewModelBase
-        {
-            var type = typeof(T);
-
-            // Check if instance already exists
-            if (!_instances.ContainsKey(type))
-            {
-                lock (_lock)
-                {
-                    // Double-check to avoid race conditions
-                    if (!_instances.ContainsKey(type))
-                    {
-                        if (factory == null)
-                        {
-                            throw new InvalidOperationException($"No factory provided for {type.Name}");
-                        }
-                        _instances[type] = factory();
-                    }
-                }
-            }
-
-            return (T)_instances[type];
-        }
 
 
         public virtual void Dispose() { }

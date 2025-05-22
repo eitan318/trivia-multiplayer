@@ -6,9 +6,9 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for LoginPage.xaml
     /// </summary>
-    public partial class LoginPage : Page
+    public partial class LoginView : Page
     {
-        public LoginPage()
+        public LoginView()
         {
             InitializeComponent();
             UsernameTB.Focus();

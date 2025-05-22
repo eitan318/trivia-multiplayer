@@ -3,8 +3,8 @@ using ClientApp.Services;
 using System.Windows.Input;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
-using ClientApp.Views.States;
 using System.Windows.Navigation;
+using ClientApp.Stores;
 
 namespace ClientApp.ViewModels.ForgotPassword
 {
@@ -15,12 +15,12 @@ namespace ClientApp.ViewModels.ForgotPassword
     class EmailEntryViewModel : ViewModelBase
     {
         INavigationService _navigationService;
-        PasswordResetState _state;
+        PasswordResetStore _state;
 
         /// <summary>
         /// Initializes the ViewModel, setting up the command for submitting the email.
         /// </summary>
-        public EmailEntryViewModel(INavigationService navigationService, PasswordResetState state)
+        public EmailEntryViewModel(INavigationService navigationService, PasswordResetStore state)
         {
             _navigationService = navigationService;
             _state = state;

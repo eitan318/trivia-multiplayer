@@ -10,16 +10,11 @@ namespace ClientApp.ViewModels
 
     class HighScoresViewModel : ViewModelBase
     {
-        private HighScoresViewModel()
+        public HighScoresViewModel()
         {
             RefreshTopCmd = new RelayCommand(RefreshTop);
             RefreshTop();
         }
-        public static HighScoresViewModel Instance()
-        {
-            return GetInstance(() => new HighScoresViewModel());
-        }
-
         // Fields
         private List<HighScoreInfo> responseList;
         

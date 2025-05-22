@@ -3,17 +3,17 @@ using ClientApp.Commands;
 using System.Windows.Input;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
-using ClientApp.Views.States;
 using ClientApp.ViewModels.ForgotPassword;
+using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
     class LoginViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
-        private UserState _userState;
+        private UserStore _userStore;
         
-        private LoginViewModel(INavigationService navigationService, UserState userState)
+        public LoginViewModel(INavigationService navigationService, UserStore userState)
         {
             this._navigationService = navigationService;
 
@@ -24,17 +24,9 @@ namespace ClientApp.ViewModels
 
         }
 
-        /// <summary>
-        /// Provides a singleton instance of the <see cref="LoginViewModel"/>.
-        /// </summary>
-        public static LoginViewModel Instance(INavigationService navigationService, UserState userState)
-        {
-            return GetInstance(() => new LoginViewModel(navigationService, userState));
-
-        }
-
         //Fields for account
         private string _password = "";
+        private string _username = "";
          
         //Fields for error messages
         private string _errorMessage;
@@ -45,10 +37,10 @@ namespace ClientApp.ViewModels
         // Properties for account
         public string Username
         {
-            get => this._userState.Username;
+            get => _username;
             set
             {
-                this._userState.Username = value;
+                _username = value;
                 OnPropertyChanged();
                 ((RelayCommand)LoginCmd).RaiseCanExecuteChanged();
             }
@@ -125,6 +117,8 @@ namespace ClientApp.ViewModels
                 // Trim input values
                 string trimmedUsername = Username?.Trim();
                 string trimmedPassword = Password?.Trim();
+
+                this._userStore.Username = Username;
 
                 // Prepare the login request and send it
                 LoginRequest loginRequest = new LoginRequest(trimmedUsername, trimmedPassword);

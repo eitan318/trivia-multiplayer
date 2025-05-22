@@ -5,12 +5,12 @@ using ClientApp.Models;
 using ClientApp.Services;
 using ClientApp.ViewModels;
 using System.Windows.Input;
-using ClientApp.Views.States;
+using ClientApp.Stores;
 
 public class JoinRoomViewModel : ViewModelBase
 {
     private INavigationService _navigationService;
-    private JoinRoomViewModel(INavigationService navigationService)
+    public JoinRoomViewModel(INavigationService navigationService)
     {
         this._navigationService = navigationService;
         RefreshCmd = new RelayCommand(async () => await Refresh());
@@ -18,10 +18,6 @@ public class JoinRoomViewModel : ViewModelBase
         _ = Refresh(); // Fire and forget
     }
 
-    public static JoinRoomViewModel Instance(INavigationService navigationService)
-    {
-        return GetInstance(() => new JoinRoomViewModel(navigationService));
-    }
 
     // Fields
     private List<RoomPreview> _rooms;

@@ -1,18 +1,17 @@
 ﻿using ClientApp.ViewModels;
+
 using System.Windows.Controls;
 
 namespace ClientApp.Views.Pages
 {
     /// <summary>
-    /// Interaction logic for HighScoresPage.xaml
+    /// Interaction logic for PersonalStatisticsPage.xaml
     /// </summary>
-    public partial class HighScoresPage : CustomPage
+    public partial class PersonalStatisticsView : CustomPage
     {
-        public HighScoresPage() 
+        public PersonalStatisticsView() 
         {
             InitializeComponent();
-            DataContext = HighScoresViewModel.Instance();
-
         }
     }
 }

@@ -6,9 +6,9 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for CreateRoomPage.xaml
     /// </summary>
-    public partial class CreateRoomPage : CustomPage
+    public partial class CreateRoomView : CustomPage
     {
-        public CreateRoomPage() 
+        public CreateRoomView() 
         {
             InitializeComponent();
             RoomName_TB.Focus(); 

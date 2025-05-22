@@ -3,15 +3,15 @@ using ClientApp.Commands;
 using System.Windows.Input;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
-using ClientApp.Views.States;
+using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
     class SignupViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
-        private UserState _userState;
-        private SignupViewModel(INavigationService navigationService, UserState userState)
+        private UserStore _userState;
+        public SignupViewModel(INavigationService navigationService, UserStore userState)
         {
             this._userState = userState;
             this._navigationService = navigationService;
@@ -19,15 +19,6 @@ namespace ClientApp.ViewModels
             // Initialize commands for different actions
             SignupCmd = new RelayCommand(PerformSignup);
             NavToLoginCmd = new NavigateCommand<LoginViewModel>(navigationService);
-        }
-
-        /// <summary>
-        /// Provides a singleton instance of the <see cref="SignupViewModel"/>.
-        /// </summary>
-        public static SignupViewModel Instance(INavigationService navigationService, UserState userState)
-        {
-            return GetInstance(() => new SignupViewModel(navigationService, userState));
-
         }
 
 

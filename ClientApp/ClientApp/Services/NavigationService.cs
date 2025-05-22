@@ -1,32 +1,39 @@
-﻿using ClientApp.ViewModels;
+﻿using ClientApp.Stores;
+using ClientApp.ViewModels;
+using System;
+using System.Windows;
 
 namespace ClientApp.Services
 {
-    public class NavigationService : INavigationService
+    class NavigationService : INavigationService
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly NavigationStore _navigationStore;
 
-        public NavigationService(IServiceProvider serviceProvider)
+        public NavigationService(IServiceProvider serviceProvider, NavigationStore navigationStore)
         {
             _serviceProvider = serviceProvider;
+            _navigationStore = navigationStore;
         }
 
         public void NavigateTo<TViewModel>() where TViewModel : ViewModelBase
         {
             var viewModel = _serviceProvider.GetService(typeof(TViewModel)) as TViewModel;
-
             if (viewModel == null)
                 throw new InvalidOperationException($"Service for {typeof(TViewModel).Name} could not be resolved.");
 
-            var viewType = Type.GetType(viewModel.GetType().Name.Replace("ViewModel", "View"));
-            if (viewType == null)
-                throw new InvalidOperationException($"View type for {viewModel.GetType().Name} could not be resolved.");
+            var viewTypeName = $"{typeof(TViewModel).Namespace?.Replace("ViewModels", "Views.Pages")}.{typeof(TViewModel).Name.Replace("ViewModel", "View")}";
+            var viewType = Type.GetType(viewTypeName);
 
-            var view = _serviceProvider.GetService(viewType);
+            if (viewType == null)
+                throw new InvalidOperationException($"View type for {typeof(TViewModel).Name} could not be resolved.");
+
+            var view = _serviceProvider.GetService(viewType) as FrameworkElement;
             if (view == null)
                 throw new InvalidOperationException($"Service for {viewType.Name} could not be resolved.");
 
-            App.Current.MainWindow.Content = view;
+            view.DataContext = viewModel;
+            _navigationStore.CurrentView = view;
         }
 
         public void GoBack()

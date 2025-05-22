@@ -1,19 +1,27 @@
 ﻿using ClientApp.Services;
-using ClientApp.Views.Pages;
+using ClientApp.Stores;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ClientApp.ViewModels
 {
-    class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase
     {
-        INavigationService _navigationService;
-        public MainWindowViewModel(INavigationService navigationService) { 
-            this._navigationService = navigationService;
-            
+        private readonly NavigationStore _navigationStore;
+        private readonly ErrorMessageStore _errorMessageStore;
+        private readonly INavigationService _navigationService;
+
+        public MainWindowViewModel(
+            NavigationStore navigationStore,
+            ErrorMessageStore errorMessageStore,
+            INavigationService navigationService)
+        {
+            _navigationStore = navigationStore;
+            _errorMessageStore = errorMessageStore;
+            _navigationService = navigationService;
+
+            _navigationStore.CurrentViewChanged += OnCurrentViewChanged;
+
             SocketService.Initialize("127.0.0.1", 5554);
 
             try
@@ -21,21 +29,24 @@ namespace ClientApp.ViewModels
                 SocketService.Connect();
                 _navigationService.NavigateTo<LoginViewModel>();
             }
-            catch (Exception ex)
+            catch
             {
                 AttemptConnectionAsync();
             }
         }
 
-        /// <summary>
-        /// Attempts to establish a connection to the server. If the connection fails, 
-        /// retries the connection every 2 seconds until successful.
-        /// Displays an error page while attempting to connect.
-        /// </summary>
+        private void OnCurrentViewChanged()
+        {
+            OnPropertyChanged(nameof(CurrentView));
+        }
+
+        public object CurrentView => _navigationStore.CurrentView;
+
         private async void AttemptConnectionAsync()
         {
             // Display the error page
-            var errorPage = new ErrorPage("Connection Error", "Unable to connect to Server. Trying...");
+            _errorMessageStore.ErrorMessage = "Connection Error";
+            _errorMessageStore.ErrorType = "Unable to connect to Server. Trying...";
             _navigationService.NavigateTo<ErrorViewModel>();
 
             while (true)
@@ -54,7 +65,4 @@ namespace ClientApp.ViewModels
             _navigationService.NavigateTo<LoginViewModel>();
         }
     }
-
-
-
 }

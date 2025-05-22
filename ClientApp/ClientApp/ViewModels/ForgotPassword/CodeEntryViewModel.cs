@@ -2,7 +2,7 @@
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
-using ClientApp.Views.States;
+using ClientApp.Stores;
 using System.Collections.ObjectModel;
 namespace ClientApp.ViewModels.ForgotPassword
 {
@@ -13,7 +13,7 @@ namespace ClientApp.ViewModels.ForgotPassword
     class CodeEntryViewModel : ViewModelBase
     {
         INavigationService _navigationService;
-        PasswordResetState _state;
+        PasswordResetStore _state;
 
 
         
@@ -21,7 +21,7 @@ namespace ClientApp.ViewModels.ForgotPassword
         /// Initializes the ViewModel, setting up the code boxes and the associated commands.
         /// </summary>
         /// <param name="parent">The parent ViewModel that controls the overall flow of the forgot password process.</param>
-        public CodeEntryViewModel(INavigationService navigationService, PasswordResetState state)
+        public CodeEntryViewModel(INavigationService navigationService, PasswordResetStore state)
         {
             this._navigationService = navigationService;
             this._state = state;

@@ -3,7 +3,7 @@ using ClientApp.Models;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
-using ClientApp.Views.States;
+using ClientApp.Stores;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -11,17 +11,9 @@ namespace ClientApp.ViewModels
 {
     class AdminRoomViewModel : ViewModelBase
     {
-        private UserState userState;
+        private UserStore userState;
 
-        /// <summary>
-        /// Provides a singleton instance of the <see cref="MemberRoomViewModel"/>.
-        /// </summary>
-        public static AdminRoomViewModel Instance(RoomData roomData, UserState userState)
-        {
-            return GetInstance(() => new AdminRoomViewModel(roomData, userState));
-        }
-
-        private AdminRoomViewModel(RoomData roomData, UserState userState)
+        public AdminRoomViewModel(RoomData roomData, UserStore userState)
         {
             this.userState = userState;
             this.RefreshCmd = new RelayCommand(RefreshPlayers);

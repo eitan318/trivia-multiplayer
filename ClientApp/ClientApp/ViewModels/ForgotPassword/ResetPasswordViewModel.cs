@@ -2,8 +2,8 @@
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
+using ClientApp.Stores;
 using ClientApp.Views;
-using ClientApp.Views.States;
 using System.Windows.Input;
 
 namespace ClientApp.ViewModels.ForgotPassword
@@ -16,9 +16,9 @@ namespace ClientApp.ViewModels.ForgotPassword
     {
 
         INavigationService _navigationService;
-        PasswordResetState _state;
+        PasswordResetStore _state;
 
-        public ResetPasswordViewModel(INavigationService navigationService, PasswordResetState state)
+        public ResetPasswordViewModel(INavigationService navigationService, PasswordResetStore state)
         {
             _navigationService = navigationService;
             _state = state;

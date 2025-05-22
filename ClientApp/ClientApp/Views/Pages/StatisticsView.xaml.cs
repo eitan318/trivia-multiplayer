@@ -3,9 +3,9 @@ using System.Windows.Controls;
 
 namespace ClientApp.Views.Pages
 {
-    public partial class StatisticsPage : CustomPage
+    public partial class StatisticsView : CustomPage
     {
-        public StatisticsPage() 
+        public StatisticsView() 
         {
             InitializeComponent();
         }

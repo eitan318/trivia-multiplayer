@@ -5,7 +5,7 @@ using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
 using ClientApp.Views.Pages;
-using ClientApp.Views.States;
+using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
@@ -19,7 +19,7 @@ namespace ClientApp.ViewModels
         /// <summary>
         /// Private constructor for initializing the ViewModel.
         /// </summary>
-        private CreateRoomViewModel(INavigationService navigationService)
+        public CreateRoomViewModel(INavigationService navigationService)
         {
             this._navigationService = navigationService;
             CreateRoomCmd = new RelayCommand(PerformCreateRoom, CanCreateRoom);
@@ -36,16 +36,6 @@ namespace ClientApp.ViewModels
             };
 
         }
-
-        /// <summary>
-        /// Creates or retrieves a singleton instance of the CreateRoomPageViewModel.
-        /// </summary>
-        /// <returns>An instance of CreateRoomPageViewModel.</returns>
-        public static CreateRoomViewModel Instance(INavigationService navigationService)
-        {
-            return GetInstance(() => new CreateRoomViewModel(navigationService));
-        }
-
 
 
 

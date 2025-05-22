@@ -1,16 +1,23 @@
-﻿
+﻿using ClientApp.Stores;
+
 namespace ClientApp.ViewModels
 {
     class ErrorViewModel : ViewModelBase
     {
-        public string StatusMessage { get; }
+        private ErrorMessageStore _errorMessageStore;
 
-        private ErrorViewModel(string initialMessage) { 
-            StatusMessage = initialMessage;
+        public ErrorViewModel(ErrorMessageStore errorMessageStore) {
+            this._errorMessageStore = errorMessageStore;
         }
-        public static ErrorViewModel Instance(string initialMessage)
+
+        public string StatusMessage
         {
-            return GetInstance(() => new ErrorViewModel(initialMessage));
+            get => _errorMessageStore.ErrorMessage;
+            set
+            {
+                _errorMessageStore.ErrorMessage = value;
+                OnPropertyChanged();
+            }
         }
 
     }

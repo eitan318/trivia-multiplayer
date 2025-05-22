@@ -15,10 +15,6 @@ namespace ClientApp.ViewModels
             this.RefreshCmd = new RelayCommand(Refresh);
             Refresh();
         }
-        public static PersonalStatisticsViewModel Instance()
-        {
-            return GetInstance(() => new PersonalStatisticsViewModel());
-        }
 
 
         // Fields

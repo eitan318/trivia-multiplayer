@@ -6,7 +6,7 @@ using ClientApp.Services;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Views;
-using ClientApp.Views.States;
+using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
@@ -21,7 +21,7 @@ namespace ClientApp.ViewModels
         /// <summary>
         /// Private constructor for the MenuPageViewModel. Initializes the commands for the actions available in the menu.
         /// </summary>
-        private MenuViewModel(INavigationService navigationService)
+        public MenuViewModel(INavigationService navigationService)
         {
             this._navigationService = navigationService;
             NavCreateRoomCmd = new NavigateCommand<CreateRoomViewModel>(navigationService);
@@ -29,14 +29,6 @@ namespace ClientApp.ViewModels
             LogoutCmd = new RelayCommand(LogOut);
         }
 
-        /// <summary>
-        /// Gets the singleton instance of the MenuPageViewModel.
-        /// </summary>
-        /// <returns>The singleton instance of MenuPageViewModel.</returns>
-        public static MenuViewModel Instance(INavigationService navigationService)
-        {
-            return GetInstance(() => new MenuViewModel(navigationService));
-        }
 
         // Error messages fields
         private string _errorMessage;

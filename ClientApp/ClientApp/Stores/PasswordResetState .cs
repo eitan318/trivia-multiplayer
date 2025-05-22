@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientApp.Views.States
+namespace ClientApp.Stores
 {
-    public class PasswordResetState : INotifyPropertyChanged
+    class PasswordResetStore : StoreBase
     {
         private string _email;
         private string _resetCode;
@@ -67,12 +67,6 @@ namespace ClientApp.Views.States
             }
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 
 }

@@ -6,9 +6,9 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for SignupPage.xaml
     /// </summary>
-    public partial class SignupPage : Page
+    public partial class SignupView : Page
     {
-        public SignupPage()
+        public SignupView()
         {
             InitializeComponent();
             UsernameTB.Focus();

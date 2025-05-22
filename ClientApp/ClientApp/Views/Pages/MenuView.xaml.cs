@@ -6,9 +6,9 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for MenuPage.xaml
     /// </summary>
-    public partial class MenuPage : Page
+    public partial class MenuView : Page
     {
-        public MenuPage()
+        public MenuView()
         {
             InitializeComponent();
         }

@@ -6,9 +6,9 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for RoomPage.xaml
     /// </summary>
-    partial class MemberRoomPage : Page
+    partial class MemberRoomView : Page
     {
-        public MemberRoomPage()
+        public MemberRoomView()
         {
             InitializeComponent();
         }

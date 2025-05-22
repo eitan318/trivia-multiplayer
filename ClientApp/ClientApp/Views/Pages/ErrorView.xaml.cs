@@ -1,17 +1,15 @@
 ﻿using System.Windows.Controls;
-using ClientApp.ViewModels;
 
 namespace ClientApp.Views.Pages
 {
     /// <summary>
     /// Interaction logic for ErrorPage.xaml
     /// </summary>
-    public partial class ErrorPage : Page
+    public partial class ErrorView : Page
     {
-        public ErrorPage(string title, string initialMessage)
+        public ErrorView()
         {
             InitializeComponent();
-            DataContext = ErrorViewModel.Instance(initialMessage);  
         }
     }
 }
