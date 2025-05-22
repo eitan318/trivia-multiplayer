@@ -81,8 +81,8 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const {
             requestInfo.buffer);
 
     auto errors =
-        LoginResponseErrors(this->m_handlerFactory.getLoginManager().login(
-            request.getUsername(), request.getPassword()));
+        this->m_handlerFactory.getLoginManager().login(
+            request.getUsername(), request.getPassword());
     LoginResponse loginResponse(&errors);
 
     auto response =
