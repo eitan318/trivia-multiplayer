@@ -56,17 +56,19 @@ namespace ClientApp.ViewModels
             try
             {
                 PersonalStatisticsRequest request = new PersonalStatisticsRequest();
-                var responseInfo = await _requestsExchangeService.ExchangeRequest(request);
+                var responseInfo = await _requestsExchangeService.ExchangeRequest<PersonalStatisticsResponse>(request);
 
-                if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+                if (responseInfo.NormalResponse)
                 {
-                    var error = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
-                    return;
+                      var personalStatisticsResponse = responseInfo.Response;
+                    this.PersonalInfo = personalStatisticsResponse.Statistics;
+                }
+                else
+                {
+
                 }
 
-                var personalStatisticsResponse =
-                    JsonResponseDeserialize.DeserializeResponse<PersonalStatisticsResponse>(responseInfo);
-                this.PersonalInfo = personalStatisticsResponse.Statistics;
+
             }
             catch (Exception ex)    
             {

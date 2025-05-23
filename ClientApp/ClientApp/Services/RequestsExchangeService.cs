@@ -7,18 +7,24 @@ namespace ClientApp.Services
     /// <summary>
     /// Provides services for exchanging requests with a server and handling responses.
     /// </summary>
-    public class RequestsExchangeService
+    internal class RequestsExchangeService
     {
         private readonly SocketService _socketService;
+        private readonly JsonResponseDeserializer _responseDiserializer;
+        private readonly JsonRequestSerializer _requestSerializer;
 
-        public RequestsExchangeService(SocketService socketService)
+        public RequestsExchangeService(SocketService socketService, 
+            JsonResponseDeserializer responseDiserializer,
+            JsonRequestSerializer requestSerializer)
         {
+            this._requestSerializer = requestSerializer;
+            this._responseDiserializer = responseDiserializer;
             _socketService = socketService;
         }
 
-        internal async Task<ResponseInfo> ExchangeRequest(IRequest request)
+        internal async Task<ResponseInfo<T>> ExchangeRequest<T>(IRequest request) where T : Response
         {
-            byte[] requestData = JsonRequestSerializer.SerializeRequest(request);
+            byte[] requestData = _requestSerializer.SerializeRequest(request);
 
             await _socketService.SendDataAsync(new ArraySegment<byte>(requestData));
             
@@ -27,7 +33,19 @@ namespace ClientApp.Services
             int length = BitConverter.ToInt32(lengthBuffer, 0);
             byte[] payloadBuffer = await _socketService.ReceiveDataAsync(length);
 
-            return new ResponseInfo(codeBuffer[0], payloadBuffer);
+            byte code = codeBuffer[0];
+
+            bool success = (byte)ResponsesCodes.ErrorResponse != code;
+
+            if (success)
+            {
+                return new ResponseInfo<T>(success, this._responseDiserializer.DeserializeResponse<T>(payloadBuffer), null);
+            }
+            else 
+            {
+                return new ResponseInfo<T>(success, null, this._responseDiserializer.DeserializeResponse<ErrorResponse>(payloadBuffer));
+            }
+            
         }
     }
 }

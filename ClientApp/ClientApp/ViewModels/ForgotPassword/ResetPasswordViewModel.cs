@@ -109,28 +109,31 @@ namespace ClientApp.ViewModels.ForgotPassword
 
             // Create the request with the new password and username
             ResetPasswordRequest request = new ResetPasswordRequest(trimmedNewPassword, _state.Email, _state.Tocken);
-            ResponseInfo responseInfo = await _requestsExchangeService.ExchangeRequest(request);
+            ResponseInfo<ResetPasswordResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<ResetPasswordResponse>(request);
 
             // Handle server error response
-            if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+            if (responseInfo.NormalResponse)
             {
-                ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
-                this.ErrorMessage = errorResponse.Message;
-                return;
-            }
+                // Handle successful response
+                ResetPasswordResponse response = responseInfo.Response;
+                if(response.Status == 0)
+                {
+                    // Navigate to the login page upon successful password reset
+                    _navigationService.NavigateTo<LoginViewModel>();
+                }
+                else
+                {
+                    this.ErrorMessage = response.Errors.GeneralError;
+                    this.NewPasswordErrorMessage = response.Errors.NewPasswordError;
+                }
 
-            // Handle successful response
-            ResetPasswordResponse response = JsonResponseDeserialize.DeserializeResponse<ResetPasswordResponse>(responseInfo);
-            if(response.Status == 0)
-            {
-                // Navigate to the login page upon successful password reset
-                _navigationService.NavigateTo<LoginViewModel>();
             }
             else
             {
-                this.ErrorMessage = response.Errors.GeneralError;
-                this.NewPasswordErrorMessage = response.Errors.NewPasswordError;
+                this.ErrorMessage = responseInfo.ErrorResponse.Message;
             }
+
+
 
         }
     }

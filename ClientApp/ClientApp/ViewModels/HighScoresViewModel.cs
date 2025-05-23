@@ -60,17 +60,19 @@ namespace ClientApp.ViewModels
             try
             {
                 HighScoresRequest request = new HighScoresRequest(3);
-                var responseInfo = await _requestsExchangeService.ExchangeRequest(request);
+                var responseInfo = await _requestsExchangeService.ExchangeRequest<HighScoresResponse>(request);
 
-                if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+                if (responseInfo.NormalResponse)
                 {
-                    var error = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
-                    return;
+                    var HighestScoresResponse = responseInfo.Response;
+                    this.ResponseList = HighestScoresResponse.Statistics;
+                }
+                else
+                {
+
                 }
 
-                var HighestScoresResponse = 
-                    JsonResponseDeserialize.DeserializeResponse<HighScoresResponse>(responseInfo);
-                this.ResponseList = HighestScoresResponse.Statistics;
+
             }
             catch (Exception ex)
             {

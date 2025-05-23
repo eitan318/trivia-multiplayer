@@ -52,26 +52,29 @@ namespace ClientApp.ViewModels
         private async void RefreshPlayers()
         {
             var getPlayersRequest = new GetPlayersInRoomRequest(RoomDataStore.CurrentRoomData.Id);
-            ResponseInfo responseInfo = await _requestsExchangeService.ExchangeRequest(getPlayersRequest);
+            ResponseInfo<GetPlayersInRoomResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<GetPlayersInRoomResponse>(getPlayersRequest);
 
-            if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+            if (responseInfo.NormalResponse)
+            {
+                GetPlayersInRoomResponse response = (GetPlayersInRoomResponse)responseInfo.Response;
+                Players.Clear();
+                if (response.Players != null && response.Players.Any())
+                {
+                    Admin = response.Players.First(); // Set Admin
+                    Admin.IsMe = Admin.Username == this._userStore.Username;
+                    foreach (var player in response.Players.Skip(1)) 
+                    {
+                        player.IsMe = player.Username == this._userStore.Username;
+                        Players.Add(player);
+                    }
+                }
+            }
+            else
             {
                 // Handle error appropriately.
                 return;
             }
 
-            var response = JsonResponseDeserialize.DeserializeResponse<GetPlayersInRoomResponse>(responseInfo);
-            Players.Clear();
-            if (response.Players != null && response.Players.Any())
-            {
-                Admin = response.Players.First(); // Set Admin
-                Admin.IsMe = Admin.Username == this._userStore.Username;
-                foreach (var player in response.Players.Skip(1)) 
-                {
-                    player.IsMe = player.Username == this._userStore.Username;
-                    Players.Add(player);
-                }
-            }
         }
 
     }

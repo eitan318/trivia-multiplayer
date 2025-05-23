@@ -13,6 +13,7 @@ namespace ClientApp.Stores
         {
             return this._navigationHistory.Count > 0;
         }
+
         public void GoBack()
         {
             if (CanGoBack())
@@ -29,8 +30,21 @@ namespace ClientApp.Stores
             {
                 if (_currentViewModel != null)
                 {
-                    _navigationHistory.Push(_currentViewModel);
+                    if (_navigationHistory.Contains(value))
+                    {
+                        // Remove all view models after the existing one in the stack
+                        while (_navigationHistory.Peek() != value)
+                        {
+                            _navigationHistory.Pop();
+                        }
+                    }
+                    else
+                    {
+                        // Push the current view model onto the stack
+                        _navigationHistory.Push(_currentViewModel);
+                    }
                 }
+
                 _currentViewModel = value;
                 CurrentViewModelChanged?.Invoke();
             }

@@ -14,7 +14,7 @@ namespace ClientApp.ViewModels
     /// ViewModel for the MenuPage in the client application. Handles user interactions with the menu options,
     /// such as creating a room, joining a room, viewing statistics, and logging out.
     /// </summary>
-    public class MenuViewModel : ViewModelBase
+    internal class MenuViewModel : ViewModelBase
     {
         private INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
@@ -57,16 +57,11 @@ namespace ClientApp.ViewModels
         private async void LogOut()
         {
             LogoutRequest request = new LogoutRequest();
-            ResponseInfo responseInfo = await _requestsExchangeService.ExchangeRequest(request);
+            ResponseInfo<LogoutResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<LogoutResponse>(request);
 
-            if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+            if (responseInfo.NormalResponse)
             {
-                ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
-                ErrorMessage = errorResponse.Message;
-            }
-            else
-            {
-                LogoutResponse logoutResponse = JsonResponseDeserialize.DeserializeResponse<LogoutResponse>(responseInfo);
+                LogoutResponse logoutResponse = responseInfo.Response;
 
                 if(logoutResponse.Status == 0)
                 {
@@ -75,7 +70,11 @@ namespace ClientApp.ViewModels
                 else
                 {
 
-                }
+                } 
+            }
+            else
+            {
+                ErrorMessage = responseInfo.ErrorResponse.Message;
             }
         }
     }

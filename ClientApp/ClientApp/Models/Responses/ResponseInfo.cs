@@ -1,14 +1,16 @@
 ﻿
 namespace ClientApp.Models.Responses
 {
-    public class ResponseInfo
+    class ResponseInfo<T> where T : Response
     {
-        public ResponseInfo(byte code, byte[] buffer)
+        public ResponseInfo(bool success, T? response, ErrorResponse? errorResponse)
         {
-            Code = code;
-            Buffer = buffer;
+            NormalResponse = success;
+            Response = response;
+            ErrorResponse = errorResponse;
         }
-        public byte Code { get; }
-        public byte[] Buffer { get; }
+        public bool NormalResponse { get; }
+        public T? Response { get; }
+        public ErrorResponse? ErrorResponse { get; }
     }
 }

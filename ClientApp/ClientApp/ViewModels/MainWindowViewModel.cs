@@ -9,7 +9,7 @@ using System.Windows.Navigation;
 
 namespace ClientApp.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    internal class MainWindowViewModel : ViewModelBase
     {
         private readonly NavigationStore _navigationStore;
         private readonly ErrorMessageStore _errorMessageStore;

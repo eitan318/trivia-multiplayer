@@ -80,26 +80,28 @@ namespace ClientApp.ViewModels.ForgotPassword
 
             // Create request for password reset with the entered email
             ForgotPasswordRequest request = new ForgotPasswordRequest(trimmedEmail);
-            ResponseInfo responseInfo = await _requestsExchangeService.ExchangeRequest(request);
+            ResponseInfo<PasswordResetCodeResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<PasswordResetCodeResponse>(request);
 
             // Handle potential error response
-            if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+            if (responseInfo.NormalResponse)
             {
-                ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
-                ErrorMessage = errorResponse.Message;
-                return;
-            }
-
-            // Process the response and move to the next step
-            PasswordResetCodeResponse response = JsonResponseDeserialize.DeserializeResponse<PasswordResetCodeResponse>(responseInfo);
-            if (response.Status == 0)
-            {
-                this._navigationService.NavigateTo<CodeEntryViewModel>();
+                // Process the response and move to the next step
+                PasswordResetCodeResponse response = responseInfo.Response;
+                if (response.Status == 0)
+                {
+                    this._navigationService.NavigateTo<CodeEntryViewModel>();
+                }
+                else
+                {
+                    ErrorMessage = response.Errors.EmailError;
+                }
             }
             else
             {
-                ErrorMessage = response.Errors.EmailError;
+                ErrorMessage = responseInfo.ErrorResponse.Message;
             }
+
+             
         }
     }
 }

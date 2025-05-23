@@ -53,26 +53,28 @@ namespace ClientApp.ViewModels
         private async void RefreshPlayers()
         {
             var getPlayersRequest = new GetPlayersInRoomRequest(RoomDataStore.CurrentRoomData.Id);
-            ResponseInfo responseInfo = await this._requestsExchangeService.ExchangeRequest(getPlayersRequest);
+            ResponseInfo<GetPlayersInRoomResponse> responseInfo = await this._requestsExchangeService.ExchangeRequest<GetPlayersInRoomResponse>(getPlayersRequest);
 
-            if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+            if (responseInfo.NormalResponse)
             {
-                // Handle error appropriately.
-                return;
-            }
-
-            var response = JsonResponseDeserialize.DeserializeResponse<GetPlayersInRoomResponse>(responseInfo);
-            Players.Clear();
-            if (response.Players != null && response.Players.Any())
-            {
-                Admin = response.Players.First(); // Set Admin
-                Admin.IsMe = Admin.Username == userStore.Username;
-                foreach (var player in response.Players.Skip(1)) // Add remaining players
+                var response = responseInfo.Response;
+                Players.Clear();
+                if (response.Players != null && response.Players.Any())
                 {
-                    player.IsMe = player.Username == userStore.Username;
-                    Players.Add(player);
+                    Admin = response.Players.First(); // Set Admin
+                    Admin.IsMe = Admin.Username == userStore.Username;
+                    foreach (var player in response.Players.Skip(1)) // Add remaining players
+                    {
+                        player.IsMe = player.Username == userStore.Username;
+                        Players.Add(player);
+                    }
                 }
             }
+            else
+            {
+
+            }
+
         }
 
         private void StartGame()

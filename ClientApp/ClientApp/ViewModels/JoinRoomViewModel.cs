@@ -11,7 +11,7 @@ using System.Printing;
 namespace ClientApp.ViewModels
 {
 
-    public class JoinRoomViewModel : ViewModelBase
+    class JoinRoomViewModel : ViewModelBase
     {
         private INavigationService _navigationService;
         private RoomDataStore _roomDataStore;
@@ -86,20 +86,20 @@ namespace ClientApp.ViewModels
             try
             {
                 var request = new GetRoomsRequest();
-                var responseInfo = await _requestsExchangeService.ExchangeRequest(request);
+                var responseInfo = await _requestsExchangeService.ExchangeRequest<GetRoomsResponse>(request);
 
-                if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+                if (responseInfo.NormalResponse)
                 {
-                    var error = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
-                    ErrorMessage = "SERVER ERROR: " + error.Message;
-                    return;
+                    Rooms = responseInfo.Response.Rooms;
+
+                    // Clear selection after refreshing to ensure consistency
+                    SelectedRoom = null; 
+                }
+                else
+                {
+                    ErrorMessage = "SERVER ERROR: " + responseInfo.ErrorResponse.Message;
                 }
 
-                var roomResponse = JsonResponseDeserialize.DeserializeResponse<GetRoomsResponse>(responseInfo);
-                Rooms = roomResponse.Rooms;
-
-                // Clear selection after refreshing to ensure consistency
-                SelectedRoom = null;
             }
             catch (Exception ex)
             {
@@ -124,24 +124,26 @@ namespace ClientApp.ViewModels
             {
                 var selectedRoomId = SelectedRoom.Value.RoomData.Id;
                 var request = new JoinRoomRequest(selectedRoomId);
-                var responseInfo = await _requestsExchangeService.ExchangeRequest(request);
+                ResponseInfo<JoinRoomResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<JoinRoomResponse>(request);
 
-                if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+                if (responseInfo.NormalResponse)
                 {
-                    var error = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
-                    ErrorMessage = "SERVER ERROR: " + error.Message;
-                    return;
-                }
-
-                var joinResponse = JsonResponseDeserialize.DeserializeResponse<JoinRoomResponse>(responseInfo);
-                if(joinResponse.Status == 0)
-                {
-                    _navigationService.NavigateTo<MemberRoomViewModel>();
+                    var joinResponse = responseInfo.Response;
+                    if(joinResponse.Status == 0)
+                    {
+                        _navigationService.NavigateTo<MemberRoomViewModel>();
+                    }
+                    else
+                    {
+                        ErrorMessage = joinResponse.Errors.GeneralError;
+                    }
                 }
                 else
                 {
-                    ErrorMessage = joinResponse.Errors.GeneralError;
+                    ErrorMessage = "SERVER ERROR: " + responseInfo.ErrorResponse.Message;
                 }
+  
+
             }
             catch (Exception ex)
             {

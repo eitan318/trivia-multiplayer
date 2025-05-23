@@ -175,26 +175,28 @@ namespace ClientApp.ViewModels
             string trimmedRoomName = RoomName?.Trim();
 
             var createRoomRequest = new CreateRoomRequest(trimmedRoomName, MaxPlayers, QuestionsCount, QuestionTimeout);
-            var responseInfo = await _requestsExchangeService.ExchangeRequest(createRoomRequest);
+            var responseInfo = await _requestsExchangeService.ExchangeRequest<CreateRoomResponse>(createRoomRequest);
 
-            if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+            if (responseInfo.NormalResponse)
             {
-                ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
-                ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
-                return null;
-            }
+                CreateRoomResponse createRoomResponse = responseInfo.Response;
+                if (createRoomResponse.Status == 0)
+                {
+                    return createRoomResponse.RoomData;
+                }
+                else
+                {
+                    this.QuestionCountError = createRoomResponse.Errors.QuestionCountError;
+                }
 
-            CreateRoomResponse createRoomResponse = JsonResponseDeserialize.DeserializeResponse<CreateRoomResponse>(responseInfo);
-            if (createRoomResponse.Status == 0)
-            {
-                return createRoomResponse.RoomData;
             }
             else
             {
-                this.QuestionCountError = createRoomResponse.Errors.QuestionCountError;
+                ErrorMessage = "SERVER ERROR: " + responseInfo.ErrorResponse.Message;
             }
 
-            return null;
+            return null; 
+
         }
     }
 }

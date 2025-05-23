@@ -7,7 +7,7 @@ namespace ClientApp.Services
     /// <summary>
     /// Provides functionality for deserializing JSON responses from the server.
     /// </summary>
-    class JsonResponseDeserialize
+    class JsonResponseDeserializer
     {
         /// <summary>
         /// Deserializes a JSON response into a specified type.
@@ -18,10 +18,10 @@ namespace ClientApp.Services
         /// <exception cref="JsonException">
         /// Thrown if the JSON response cannot be deserialized into the specified type.
         /// </exception>
-        public static T DeserializeResponse<T>(ResponseInfo responseInfo)
+        internal T DeserializeResponse<T>(byte[] buffer)
         {
             // Convert the raw response buffer to a JSON string
-            var json = Encoding.UTF8.GetString(responseInfo.Buffer, 0, responseInfo.Buffer.Length);
+            var json = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
 
             // Deserialize the JSON string into the specified type
             T data = JsonConvert.DeserializeObject<T>(json);

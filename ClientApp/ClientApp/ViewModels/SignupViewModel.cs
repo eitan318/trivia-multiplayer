@@ -256,17 +256,12 @@ namespace ClientApp.ViewModels
                         trimmedBirthDate
                     );
 
-                ResponseInfo responseInfo = await _requestsExchangeService.ExchangeRequest(signupRequest);
+                ResponseInfo<SignupResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<SignupResponse>(signupRequest);
 
                 // Handle server error response
-                if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+                if (responseInfo.NormalResponse)
                 {
-                    ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
-                    ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
-                }
-                else
-                {
-                    SignupResponse signupResponse = JsonResponseDeserialize.DeserializeResponse<SignupResponse>(responseInfo);
+                    SignupResponse signupResponse = responseInfo.Response;
                     if(signupResponse.Status == 0 && requiredNotEmpty)
                     {
                         // Navigate to the login page upon successful signup
@@ -283,7 +278,13 @@ namespace ClientApp.ViewModels
                         HouseAddressErrorMessage = signupResponse.Errors.HouseAddressError;
                         PhoneNumberErrorMessage = signupResponse.Errors.PhoneNumberError;
                         BirthDateErrorMessage = signupResponse.Errors.BirthDateError;
-                    }
+                    } 
+                }
+                else
+                {
+                    ErrorResponse errorResponse = responseInfo.ErrorResponse;
+                    ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
+
                 }
             }
             catch (Exception ex)

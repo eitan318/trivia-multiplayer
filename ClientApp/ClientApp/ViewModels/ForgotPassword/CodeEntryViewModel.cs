@@ -78,15 +78,10 @@ namespace ClientApp.ViewModels.ForgotPassword
             // Concatenate all values from the code boxes and process the code
             var code = string.Concat(CodeBoxes.Select(box => box.Value));
             VerifyPasswordResetCodeRequest request = new VerifyPasswordResetCodeRequest(code);
-            ResponseInfo responseInfo = await _requestsExchangeService.ExchangeRequest(request);
-            if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+            ResponseInfo<VerifyPasswordResetCodeResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<VerifyPasswordResetCodeResponse>(request);
+            if (responseInfo.NormalResponse)
             {
-                ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
-                ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
-            }
-            else
-            {
-                VerifyPasswordResetCodeResponse response = JsonResponseDeserialize.DeserializeResponse<VerifyPasswordResetCodeResponse>(responseInfo);
+                VerifyPasswordResetCodeResponse response = responseInfo.Response;
                 if (response.Status == 0)
                 {
                     this._state.Tocken = response.PasswordResetTocken;
@@ -96,6 +91,12 @@ namespace ClientApp.ViewModels.ForgotPassword
                 {
                     ErrorMessage = response.Errors.GeneralError;
                 }
+
+            }
+            else
+            {
+                ErrorResponse errorResponse = responseInfo.ErrorResponse;
+                ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
             }
 
         }

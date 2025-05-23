@@ -24,7 +24,7 @@ namespace ClientApp.Services
         /// - The request code identifies the type of request.
         /// </remarks>
         /// <exception cref="ArgumentNullException">Thrown if the <paramref name="request"/> is null.</exception>
-        static public byte[] SerializeRequest(IRequest request)
+        internal byte[] SerializeRequest(IRequest request)
         {
             string json = JsonConvert.SerializeObject(request);
             byte[] jsonBytes = Encoding.UTF8.GetBytes(json);

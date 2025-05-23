@@ -127,17 +127,12 @@ namespace ClientApp.ViewModels
 
                 // Prepare the login request and send it
                 LoginRequest loginRequest = new LoginRequest(trimmedUsername, trimmedPassword);
-                ResponseInfo responseInfo = await _requestsExchangeService.ExchangeRequest(loginRequest);
+                ResponseInfo<LoginResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<LoginResponse>(loginRequest);
 
                 // Handle server error response
-                if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
+                if (responseInfo.NormalResponse)
                 {
-                    ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
-                    ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
-                }
-                else
-                {
-                    LoginResponse loginResponse = JsonResponseDeserialize.DeserializeResponse<LoginResponse>(responseInfo);
+                    LoginResponse loginResponse = responseInfo.Response;
                     if(loginResponse.Status == 0)
                     {
                         this._navigationService.NavigateTo<MenuViewModel>();
@@ -149,6 +144,11 @@ namespace ClientApp.ViewModels
                         ErrorMessage = loginResponse.Errors.GeneralError;
                     }
 
+                }
+                else
+                {
+                    ErrorResponse errorResponse = responseInfo.ErrorResponse;
+                    ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
                 }
             }
             catch (Exception ex)
