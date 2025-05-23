@@ -72,8 +72,12 @@ JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
     JoinRoomResponseErrors errors;
     try {
         Room& room = this->getRoom(id);
-        if (room.getRoomPreview().roomData.maxPlayers ==
-            room.getAllUsers().size()) {
+        if (room.getUsersMap().find(loggedUser.getUsername()) != 
+            room.getUsersMap().end()) {
+            errors.generalError = "You are already inside this room.";
+        }
+        else if (room.getRoomPreview().roomData.maxPlayers ==
+            room.getUsersVector().size()) {
             errors.generalError = "Room is already full.";
         }
         else {

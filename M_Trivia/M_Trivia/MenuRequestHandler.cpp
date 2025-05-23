@@ -43,7 +43,7 @@ bool MenuRequestHandler::isRequestRelevant(
 }
 
 RequestResult
-MenuRequestHandler::handleRequest(const RequestInfo& requestInfo) {
+MenuRequestHandler::handleRequest(const RequestInfo& requestInfo, SOCKET socket) {
     try {
         switch (static_cast<RequestCodes>(requestInfo.code)) {
         case RequestCodes::CreateRoomRequest:
@@ -107,7 +107,7 @@ MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInfo) const {
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
 
     Room room = roomManager.getRoom(id);
-    GetPlayersInRoomResponse getPlayersInRoomResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, room.getAllUsers());
+    GetPlayersInRoomResponse getPlayersInRoomResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, room.getUsersVector());
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(getPlayersInRoomResponse),

@@ -3,6 +3,7 @@
 #include "LoggedUser.hpp"
 #include "RequestInfo.hpp"
 #include "RequestResult.hpp"
+#include <WinSock2.h>
 
 class RequestHandlerFactory;
 
@@ -101,5 +102,5 @@ public:
      * @return A RequestResult containing the serialized response and the next
      * handler.
      */
-    RequestResult handleRequest(const RequestInfo& requestInfo) override;
+    RequestResult handleRequest(const RequestInfo& requestInfo, SOCKET socket) override;
 };

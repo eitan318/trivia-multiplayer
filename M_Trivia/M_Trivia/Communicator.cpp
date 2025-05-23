@@ -135,6 +135,7 @@ void Communicator::handleNewClient(SOCKET sock)
         catch (std::exception &e)
         {
             std::cerr << "Client " << sock << " probably exited ungracefully." << std::endl;
+            this->m_handlerFactory.getLoginManager().logout(sock);
             break;
         }
         time_t requestRecievalTime = time(nullptr);
@@ -145,7 +146,7 @@ void Communicator::handleNewClient(SOCKET sock)
         RequestResult requestResult;
         if (handler->isRequestRelevant(requestInfo))
         {
-            requestResult = handler->handleRequest(requestInfo);
+            requestResult = handler->handleRequest(requestInfo, sock);
         }
         else
         {

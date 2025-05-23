@@ -45,11 +45,11 @@ bool LoginRequestHandler::isRequestRelevant(
 }
 
 RequestResult
-LoginRequestHandler::handleRequest(const RequestInfo& requestInfo) {
+LoginRequestHandler::handleRequest(const RequestInfo& requestInfo, SOCKET socket) {
     try {
         switch (static_cast<RequestCodes>(requestInfo.code)) {
         case RequestCodes::LoginRequest:
-            return login(requestInfo);
+            return login(requestInfo, socket);
         case RequestCodes::SignupRequest:
             return signup(requestInfo);
         case RequestCodes::SendPasswordResetCodeRequest:
@@ -74,7 +74,7 @@ LoginRequestHandler::handleRequest(const RequestInfo& requestInfo) {
     }
 }
 
-RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const {
+RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo, SOCKET socket) const {
 
     LoginRequest request =
         JsonRequestPacketDeserializer<LoginRequest>::deserializeRequest(
@@ -82,7 +82,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo) const {
 
     auto errors =
         this->m_handlerFactory.getLoginManager().login(
-            request.getUsername(), request.getPassword());
+            request.getUsername(), request.getPassword(), socket);
     LoginResponse loginResponse(&errors);
 
     auto response =

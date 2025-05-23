@@ -7,6 +7,7 @@
 #include "SignupResponseErrors.hpp"
 #include "VerifyPasswordResetCodeResponseErrors.hpp"
 #include <unordered_map>
+#include <WinSock2.h>
 
 /**
  * @brief Manages user authentication, registration, and session handling.
@@ -17,6 +18,8 @@ private:
     unsigned int prevRandomCode;
     std::string prevResetPasswordTocken;
     std::unordered_map<std::string, LoggedUser> m_loggedUsers; ///< List of currently logged-in users.
+    std::unordered_map<SOCKET, std::string> m_usernames;
+
 
     /**
        @brief Constructs a LoginManager instance.
@@ -56,7 +59,7 @@ public:
      * @return Status indicating the result of the login operation.
      */
     LoginResponseErrors login(const std::string username,
-        const std::string password);
+        const std::string password, SOCKET socket);
 
     /**
      * @brief Sends a password reset code to the user's email.
@@ -92,4 +95,10 @@ public:
      * @param username The username of the user to log out.
      */
     void logout(const std::string& user);
+
+    /**
+	 * @brief Logs out a user, removing them from the list of active sessions.
+	 * @param username The username of the user to log out.
+	 */
+    void logout(const SOCKET sock);
 };

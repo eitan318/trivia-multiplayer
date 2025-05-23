@@ -14,7 +14,7 @@ LoginManager& LoginManager::getInstance(IDatabase& database) {
 }
 
 LoginResponseErrors LoginManager::login(const std::string username,
-    const std::string password) {
+    const std::string password, SOCKET sock) {
     LoginResponseErrors errors;
 
     if (this->m_loggedUsers.find(username) != m_loggedUsers.end()) {
@@ -28,6 +28,7 @@ LoginResponseErrors LoginManager::login(const std::string username,
 
     if (errors.statusCode == 0) {
         m_loggedUsers.emplace(username, LoggedUser(username));
+        m_usernames.emplace(sock, username);
     }
     return errors;
 }
@@ -171,5 +172,23 @@ SignupResponseErrors LoginManager::signup(const UserRecord& userRecord) const {
 }
 
 void LoginManager::logout(const std::string& user) {
-    this->m_loggedUsers.erase(user);
+    auto it = m_loggedUsers.find(user);
+    if (it != m_loggedUsers.end()) {
+        // Remove the associated socket
+        auto socketIt = std::find_if(m_usernames.begin(), m_usernames.end(),
+            [&user](const auto& pair) { return pair.second == user; });
+        if (socketIt != m_usernames.end()) {
+            m_usernames.erase(socketIt);
+        }
+        m_loggedUsers.erase(it);
+    }
 }
+
+void LoginManager::logout(const SOCKET sock) {
+    auto it = m_usernames.find(sock);
+    if (it != m_usernames.end()) {
+        m_loggedUsers.erase(it->second); // Remove user from logged users
+        m_usernames.erase(it);          // Remove socket from usernames map
+    }
+}
+

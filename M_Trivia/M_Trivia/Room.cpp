@@ -27,7 +27,7 @@ void Room::removeUser(const LoggedUser& loggeduser)
 		}
 	}
 }
-std::vector<LoggedUser> Room::getAllUsers() const
+std::vector<LoggedUser> Room::getUsersVector() const
 {
 	std::vector<LoggedUser> users;
 	users.reserve(m_users.size()); // Reserve space for efficiency
@@ -37,6 +37,12 @@ std::vector<LoggedUser> Room::getAllUsers() const
 
 	return users;
 }
+
+const std::map<std::string, LoggedUser>& Room::getUsersMap() const
+{
+	return this->m_users;
+}
+
 
 bool Room::getRoomStatus() const
 {
@@ -51,7 +57,7 @@ void Room::setRoomData(const RoomData& roomdata)
 
 RoomPreview Room::getRoomPreview() const {
 	RoomPreview p;
-	p.currPlayersAmount = getAllUsers().size();
+	p.currPlayersAmount = getUsersVector().size();
 	p.status = getRoomStatus();
 	p.roomData = this->m_metadata;
 	return p;

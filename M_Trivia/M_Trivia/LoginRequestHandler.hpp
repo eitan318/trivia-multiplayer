@@ -10,6 +10,7 @@
 #include "RequestInfo.hpp"
 #include "RequestResult.hpp"
 #include <string>
+#include <WinSock2.h>
 
 #define CODE_DIGITS 6
 
@@ -46,7 +47,7 @@ public:
      * @param requestInfo The request information to handle.
      * @return The result of handling the request.
      */
-    RequestResult handleRequest(const RequestInfo& requestInfo) override;
+    RequestResult handleRequest(const RequestInfo& requestInfo, SOCKET socket) override;
 
 private:
     RequestHandlerFactory
@@ -57,7 +58,7 @@ private:
      * @param requestInfo The request information for login.
      * @return The result of the login process.
      */
-    RequestResult login(const RequestInfo& requestInfo) const;
+    RequestResult login(const RequestInfo& requestInfo, SOCKET) const;
 
     /**
      * @brief Handles signup requests.
