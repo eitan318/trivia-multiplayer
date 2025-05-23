@@ -33,10 +33,7 @@ namespace ClientApp.Stores
                     if (_navigationHistory.Contains(value))
                     {
                         // Remove all view models after the existing one in the stack
-                        while (_navigationHistory.Peek() != value)
-                        {
-                            _navigationHistory.Pop();
-                        }
+                        while (_navigationHistory.Pop() != value) { }
                     }
                     else
                     {
