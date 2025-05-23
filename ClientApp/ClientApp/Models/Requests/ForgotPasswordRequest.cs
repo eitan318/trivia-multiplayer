@@ -1,9 +1,7 @@
 ﻿
 namespace ClientApp.Models.Requests
 {
-    /// <summary>
-    /// Represents a request for forgot password attempt
-    /// </summary>
+    
     class ForgotPasswordRequest : IRequest
     {
         /// <summary>

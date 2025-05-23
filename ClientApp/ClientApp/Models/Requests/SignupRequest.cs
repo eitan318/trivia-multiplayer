@@ -1,9 +1,7 @@
 ﻿
 namespace ClientApp.Models.Requests
 {
-    /// <summary>
-    /// Represents a request for signing up
-    /// /// </summary>
+    
     class SignupRequest : IRequest
     {
         public SignupRequest(string username, string password, 

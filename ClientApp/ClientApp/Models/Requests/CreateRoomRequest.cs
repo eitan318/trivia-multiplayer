@@ -1,9 +1,7 @@
 ﻿
 namespace ClientApp.Models.Requests
 {
-    /// <summary>
-    /// Represents a request to create a new room.
-    /// </summary>
+    
     class CreateRoomRequest : IRequest
     {
         /// <summary>

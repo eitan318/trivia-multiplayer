@@ -2,7 +2,8 @@
 #include "RoomData.hpp"
 #include "LoggedUser.hpp"
 #include "RoomPreview.hpp"
-#include <vector>
+#include <map>
+#include <string>
 
 /**
  * @class Room
@@ -12,7 +13,7 @@ class Room {
 private:
     static unsigned int id;            
     RoomData m_metadata;               
-    std::vector<LoggedUser> m_users;   
+    std::map<std::string,LoggedUser> m_users;   
 
 public:
     /**
@@ -48,7 +49,7 @@ public:
      * @brief Retrieves the usernames of all users in the room.
      * @return A vector of strings containing the usernames of all users.
      */
-    std::vector<LoggedUser> getAllUsers() const;
+    std::map<std::string,LoggedUser> getAllUsers() const;
 
 
 

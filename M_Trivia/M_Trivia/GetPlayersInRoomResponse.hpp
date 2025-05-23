@@ -1,7 +1,7 @@
 #pragma once
 #include "Response.hpp"
 #include "LoggedUser.hpp"
-#include <vector>
+#include <map>
 
 /**
  * @class GetPlayersInRoomResponse
@@ -10,11 +10,11 @@
 class GetPlayersInRoomResponse : public Response {
 private:
     /// A list of player names in the room.
-    std::vector<LoggedUser> players;
+    std::map<std::string,LoggedUser> players;
 
 public:
     GetPlayersInRoomResponse() = delete;
-    GetPlayersInRoomResponse(unsigned int status, const std::vector<LoggedUser>& players) ;
+    GetPlayersInRoomResponse(unsigned int status, const std::map<std::string,LoggedUser>& players) ;
 
     /**
      * @brief Gets the response code for this response.
