@@ -5,7 +5,7 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for ErrorPage.xaml
     /// </summary>
-    public partial class ErrorView : Page
+    public partial class ErrorView : UserControl
     {
         public ErrorView()
         {

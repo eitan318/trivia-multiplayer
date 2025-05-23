@@ -6,7 +6,7 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for RoomPage.xaml
     /// </summary>
-    partial class MemberRoomView : Page
+    partial class MemberRoomView : UserControl
     {
         public MemberRoomView()
         {

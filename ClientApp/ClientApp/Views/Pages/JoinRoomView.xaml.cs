@@ -5,7 +5,7 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for JoinRoomPage.xaml
     /// </summary>
-    public partial class JoinRoomView : CustomPage
+    public partial class JoinRoomView : CustomUserControl
     {
         public JoinRoomView() 
         {

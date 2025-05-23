@@ -7,7 +7,7 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for PersonalStatisticsPage.xaml
     /// </summary>
-    public partial class PersonalStatisticsView : CustomPage
+    public partial class PersonalStatisticsView : CustomUserControl
     {
         public PersonalStatisticsView() 
         {

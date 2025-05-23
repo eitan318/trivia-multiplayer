@@ -17,8 +17,6 @@ public partial class App : Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        base.OnStartup(e);
-
         // Configure services
         var services = new ServiceCollection();
         ConfigureServices(services);
@@ -28,6 +26,8 @@ public partial class App : Application
         // Set the main window
         var mainWindow = _serviceProvider.GetService<MainWindow>();
         mainWindow.DataContext = _serviceProvider.GetService<MainWindowViewModel>();
+        mainWindow.Show();
+        base.OnStartup(e);
     }
 
     private void ConfigureServices(IServiceCollection services)

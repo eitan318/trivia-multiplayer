@@ -6,7 +6,7 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for LoginPage.xaml
     /// </summary>
-    public partial class LoginView : Page
+    public partial class LoginView : UserControl
     {
         public LoginView()
         {

@@ -6,7 +6,7 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for CreateRoomPage.xaml
     /// </summary>
-    public partial class CreateRoomView : CustomPage
+    public partial class CreateRoomView : CustomUserControl
     {
         public CreateRoomView() 
         {

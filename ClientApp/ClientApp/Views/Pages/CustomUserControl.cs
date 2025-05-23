@@ -3,10 +3,10 @@ using System.Windows.Controls;
 
 namespace ClientApp.Views.Pages
 {
-    public class CustomPage : Page
+    public class CustomUserControl : UserControl
     {
         public static readonly DependencyProperty ShowBackButtonProperty =
-            DependencyProperty.Register("ShowBackButton", typeof(bool), typeof(CustomPage), new PropertyMetadata(true));
+            DependencyProperty.Register("ShowBackButton", typeof(bool), typeof(CustomUserControl), new PropertyMetadata(true));
 
         public bool ShowBackButton
         {

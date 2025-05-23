@@ -6,7 +6,7 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for MenuPage.xaml
     /// </summary>
-    public partial class MenuView : Page
+    public partial class MenuView : UserControl
     {
         public MenuView()
         {

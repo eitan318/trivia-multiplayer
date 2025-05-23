@@ -5,7 +5,7 @@
              xmlns:local="clr-namespace:ClientApp"
              xmlns:converters="clr-namespace:ClientApp.Views.Converters"
              xmlns:controls="clr-namespace:ClientApp.Views.Controls"
-             StartupUri="MainWindow.xaml">
+             >
     <Application.Resources>
 
         
