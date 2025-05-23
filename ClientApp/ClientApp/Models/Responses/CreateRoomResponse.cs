@@ -8,7 +8,7 @@ namespace ClientApp.Models.Responses
         private CreateRoomResponse() { }
         public ResponsesCodes GetCode() => ResponsesCodes.CreateRoomResponse;
         [JsonProperty]
-        public RoomData RoomData { get; private set; }
+        public RoomDataModel RoomData { get; private set; }
         [JsonProperty]
         public CreateRoomResponseErrors Errors { get; private set; }
     }

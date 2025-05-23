@@ -7,12 +7,17 @@ using ClientApp.ViewModels;
 using System.Windows.Input;
 using ClientApp.Stores;
 
+namespace ClientApp.ViewModels
+{
+
 public class JoinRoomViewModel : ViewModelBase
 {
     private INavigationService _navigationService;
-    public JoinRoomViewModel(INavigationService navigationService)
+    private RoomDataStore _roomDataStore;
+    public JoinRoomViewModel(INavigationService navigationService, RoomDataStore roomDataStore)
     {
         this._navigationService = navigationService;
+            this._roomDataStore = roomDataStore;
         RefreshCmd = new RelayCommand(async () => await Refresh());
         JoinCmd = new RelayCommand(async () => await JoinRoom(), CanJoinRoom);
         _ = Refresh(); // Fire and forget
@@ -102,7 +107,7 @@ public class JoinRoomViewModel : ViewModelBase
 
     public async Task JoinRoom()
     {
-        if (SelectedRoom == null)
+        if (SelectedRoom == null) 
         {
             ErrorMessage = "Please select a room to join.";
             return;
@@ -124,7 +129,7 @@ public class JoinRoomViewModel : ViewModelBase
             var joinResponse = JsonResponseDeserialize.DeserializeResponse<JoinRoomResponse>(responseInfo);
             if(joinResponse.Status == 0)
             {
-                //SelectedRoom.Value.RoomData
+                this._roomDataStore.CurrentRoom = _selectedRoom.Value.RoomData;
                 _navigationService.NavigateTo<MemberRoomViewModel>();
             }
             else
@@ -138,3 +143,5 @@ public class JoinRoomViewModel : ViewModelBase
         }
     }
 }
+}
+

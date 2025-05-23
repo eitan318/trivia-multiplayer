@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace ClientApp.Views.Pages
 {
-    public partial class StatisticsView : CustomUserControl
+    public partial class StatisticsView : UserControl
     {
         public StatisticsView() 
         {

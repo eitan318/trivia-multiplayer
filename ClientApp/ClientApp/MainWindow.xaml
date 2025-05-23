@@ -1,12 +1,8 @@
 ﻿<Window x:Class="ClientApp.MainWindow"
        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
        xmlns:vm="clr-namespace:ClientApp.ViewModels"
-       xmlns:views="clr-namespace:ClientApp.Views.Pages"
        xmlns:local="clr-namespace:ClientApp"
-       mc:Ignorable="d"
        Title="MainWindow" Height="450" Width="800"
        TextElement.FontWeight="Medium"
        TextElement.FontSize="14"
@@ -15,22 +11,26 @@
        WindowStartupLocation="CenterScreen"
        ResizeMode="CanResizeWithGrip">
 
-   <DockPanel>
-       <!-- Back Button -->
-       <!--<Button x:Name="BackButton"
-               Content="Back"
-               DockPanel.Dock="Top"
-               Width="100"
-               Height="30"
-               Margin="5"
-               Click="BackButton_Click"
-               Visibility="Collapsed" />-->
 
-       <!-- Page Content -->
-       <Grid>
-           <!-- Dynamic content based on CurrentViewModel -->
-            <ContentControl Content="{Binding CurrentView}" />
-        </Grid>
-   </DockPanel>
+    <Window.Resources>
+        <!-- Template Selector -->
+        <local:ViewModelToPageTemplateSelector x:Key="ViewModelToPageTemplateSelector" />
+    </Window.Resources>
 
+    <DockPanel>
+        <!-- Back Button -->
+        <Button Content="Back"
+                DockPanel.Dock="Top"
+                Width="100"
+                Height="30"
+                HorizontalAlignment="Left"
+                Margin="5"
+                Command="{Binding BackCmd}"
+                Visibility="{Binding CanGoBack, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+        <!-- Frame for View Navigation -->
+        <Frame Content="{Binding CurrentViewModel}"
+               ContentTemplateSelector="{StaticResource ViewModelToPageTemplateSelector}" 
+               NavigationUIVisibility="Hidden" />
+    </DockPanel>
 </Window>

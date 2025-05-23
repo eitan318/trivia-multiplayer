@@ -15,12 +15,14 @@ namespace ClientApp.ViewModels
     class CreateRoomViewModel : ViewModelBase
     {
         private INavigationService _navigationService;
+        private RoomDataStore _roomDataStore;
         
         /// <summary>
         /// Private constructor for initializing the ViewModel.
         /// </summary>
-        public CreateRoomViewModel(INavigationService navigationService)
+        public CreateRoomViewModel(INavigationService navigationService, RoomDataStore roomDataStore)
         {
+            this._roomDataStore = roomDataStore;
             this._navigationService = navigationService;
             CreateRoomCmd = new RelayCommand(PerformCreateRoom, CanCreateRoom);
 
@@ -150,7 +152,8 @@ namespace ClientApp.ViewModels
         /// </summary>
         private async void PerformCreateRoom()
         {
-            RoomData? roomData = await CreateRoom();
+            RoomDataModel? roomData = await CreateRoom();
+            this._roomDataStore.CurrentRoom = roomData;
             if (roomData != null)
             {
                 this._navigationService.NavigateTo<AdminRoomViewModel>();
@@ -162,7 +165,7 @@ namespace ClientApp.ViewModels
         /// <summary>
         /// Sends a request to create a room with the specified parameters.
         /// </summary>
-        private async Task<RoomData?> CreateRoom()
+        private async Task<RoomDataModel?> CreateRoom()
         {
             string trimmedRoomName = RoomName?.Trim();
 

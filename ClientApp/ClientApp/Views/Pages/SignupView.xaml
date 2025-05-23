@@ -87,7 +87,7 @@
             
             <!-- Signup button bound to the Signup command -->
             <Button Content="Signup" Margin="0,20" Padding="10,5" 
-                    Command="{Binding SignupCommand}" />
+                    Command="{Binding SignupCmd}" />
 
             <!-- Navigate to Login button -->
             <TextBlock Text="Login" 
@@ -97,7 +97,7 @@
                VerticalAlignment="Center"
                Style="{DynamicResource MaterialDesignButtonTextBlock}">
                 <TextBlock.InputBindings>
-                    <MouseBinding Gesture="LeftClick" Command="{Binding NavigateToLoginCommand}" />
+                    <MouseBinding Gesture="LeftClick" Command="{Binding NavToLoginCmd}" />
                 </TextBlock.InputBindings>
             </TextBlock>
 

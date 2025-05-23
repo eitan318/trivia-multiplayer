@@ -1,4 +1,4 @@
-<local:CustomUserControl x:Class="ClientApp.Views.Pages.CreateRoomView"
+<UserControl x:Class="ClientApp.Views.Pages.CreateRoomView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,7 +8,7 @@
       xmlns:controls="clr-namespace:ClientApp.Views.Controls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}" ShowBackButton="True">
+      TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}" >
 
     <Grid Margin="20">
         <!-- Define rows for the layout -->
@@ -68,7 +68,7 @@
 
         <!-- Button for creating the room -->
         <Button Content="Create Room" 
-                Command="{Binding CreateRoomCommand}" 
+                Command="{Binding CreateRoomCmd}" 
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Grid.Row="1" 
@@ -82,4 +82,4 @@
                    Margin="0,10,0,0"
                    Grid.Row="2"/>
     </Grid>
-</local:CustomUserControl>
+</UserControl>

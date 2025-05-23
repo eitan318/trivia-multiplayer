@@ -5,10 +5,11 @@
              xmlns:local="clr-namespace:ClientApp"
              xmlns:converters="clr-namespace:ClientApp.Views.Converters"
              xmlns:controls="clr-namespace:ClientApp.Views.Controls"
+             xmlns:views="clr-namespace:ClientApp.Views.Pages"
+             xmlns:vm="clr-namespace:ClientApp.ViewModels"
              >
     <Application.Resources>
 
-        
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Purple" SecondaryColor="Lime" />
@@ -19,9 +20,13 @@
             </ResourceDictionary.MergedDictionaries>
 
             <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
 
             <SolidColorBrush x:Key="ErrorBrush" Color="Red" />
+
+
+
         </ResourceDictionary>
     </Application.Resources>
 

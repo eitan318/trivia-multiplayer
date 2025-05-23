@@ -13,12 +13,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ClientApp.Views.Pages
+namespace ClientApp.Views.Pages.ForgotPassword
 {
     /// <summary>
     /// Interaction logic for CodeEntryView.xaml
     /// </summary>
-    public partial class CodeEntryView : Page
+    public partial class CodeEntryView : UserControl
     {
         public CodeEntryView()
         {

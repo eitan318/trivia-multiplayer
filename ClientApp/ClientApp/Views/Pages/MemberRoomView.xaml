@@ -52,11 +52,11 @@
 
         <StackPanel Grid.Row="2" >
             <!-- Leave Button -->
-            <Button Content="Leave Room" Command="{Binding LeaveRoomCommand}"
+            <Button Content="Leave Room" Command="{Binding LeaveRoomCmd}"
                 HorizontalAlignment="Center" Padding="10,5" Margin="20"/>
             
             <!-- Refresh Button -->
-            <Button Content="Refresh" Command="{Binding RefreshCommand}" 
+            <Button Content="Refresh" Command="{Binding RefreshCmd}" 
                 HorizontalAlignment="Center" Padding="10,5" />
 
 

@@ -8,7 +8,7 @@ namespace ClientApp.Models.Responses
         public ResponsesCodes GetCode() => ResponsesCodes.HighScoresRespones;
 
         [JsonProperty]
-        public List<HighScoreInfo> Statistics { get; private set; }
+        public List<HighScoreInfoModel> Statistics { get; private set; }
 
 
     }

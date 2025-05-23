@@ -7,6 +7,6 @@ namespace ClientApp.Models.Responses
         private PersonalStatisticsResponse() {}
         public ResponsesCodes GetCode() => ResponsesCodes.GetPersonalStatsResponse;
         [JsonProperty]
-        public PersonalStatistics Statistics { get; private set; }
+        public PersonalStatisticsModel Statistics { get; private set; }
     }
 }

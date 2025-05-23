@@ -22,23 +22,15 @@ namespace ClientApp.Services
             if (viewModel == null)
                 throw new InvalidOperationException($"Service for {typeof(TViewModel).Name} could not be resolved.");
 
-            var viewTypeName = $"{typeof(TViewModel).Namespace?.Replace("ViewModels", "Views.Pages")}.{typeof(TViewModel).Name.Replace("ViewModel", "View")}";
-            var viewType = Type.GetType(viewTypeName);
-
-            if (viewType == null)
-                throw new InvalidOperationException($"View type for {typeof(TViewModel).Name} could not be resolved.");
-
-            var view = _serviceProvider.GetService(viewType) as FrameworkElement;
-            if (view == null)
-                throw new InvalidOperationException($"Service for {viewType.Name} could not be resolved.");
-
-            view.DataContext = viewModel;
-            _navigationStore.CurrentView = view;
+            _navigationStore.CurrentViewModel = viewModel;
         }
 
         public void GoBack()
         {
-            // Implement back navigation logic
+            if (_navigationStore.CanGoBack())
+            {
+                _navigationStore.GoBack();
+            }
         }
     }
 }

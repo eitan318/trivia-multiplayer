@@ -10,20 +10,20 @@ namespace ClientApp.ViewModels
 
     class HighScoresViewModel : ViewModelBase
     {
-        public HighScoresViewModel()
+        public HighScoresViewModel() : base(true)
         {
             RefreshTopCmd = new RelayCommand(RefreshTop);
             RefreshTop();
         }
         // Fields
-        private List<HighScoreInfo> responseList;
+        private List<HighScoreInfoModel> responseList;
         
         // Error mesasge fields
         private string _errorMessage;
 
         // Properties
 
-        public List<HighScoreInfo> ResponseList
+        public List<HighScoreInfoModel> ResponseList
         {
             get => responseList;
             set

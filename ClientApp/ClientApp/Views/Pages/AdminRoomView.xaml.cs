@@ -7,7 +7,7 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for AdminRoomPage.xaml
     /// </summary>
-    public partial class AdminRoomView : Page
+    public partial class AdminRoomView : UserControl
     {
         public AdminRoomView()
         {

@@ -1,7 +1,11 @@
-﻿using ClientApp.Services;
+﻿using ClientApp.Commands;
+using ClientApp.Services;
 using ClientApp.Stores;
+using Microsoft.Xaml.Behaviors.Core;
 using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace ClientApp.ViewModels
 {
@@ -10,6 +14,8 @@ namespace ClientApp.ViewModels
         private readonly NavigationStore _navigationStore;
         private readonly ErrorMessageStore _errorMessageStore;
         private readonly INavigationService _navigationService;
+
+
 
         public MainWindowViewModel(
             NavigationStore navigationStore,
@@ -20,8 +26,7 @@ namespace ClientApp.ViewModels
             _errorMessageStore = errorMessageStore;
             _navigationService = navigationService;
 
-            _navigationStore.CurrentViewChanged += OnCurrentViewChanged;
-
+            _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
             SocketService.Initialize("127.0.0.1", 5554);
 
             try
@@ -35,18 +40,33 @@ namespace ClientApp.ViewModels
             }
         }
 
-        private void OnCurrentViewChanged()
+        public ICommand BackCmd => new RelayCommand(
+            _ => _navigationStore.GoBack()
+        );
+
+
+        public bool CanGoBack
         {
-            OnPropertyChanged(nameof(CurrentView));
+            get => _navigationStore.CanGoBack() && _navigationStore.CurrentViewModel.HasBackBtn;
         }
 
-        public object CurrentView => _navigationStore.CurrentView;
+        
+        public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
+
+
+
+
+        private void OnCurrentViewModelChanged()
+        {
+            OnPropertyChanged(nameof(CurrentViewModel));
+            OnPropertyChanged(nameof(CanGoBack));
+        }
 
         private async void AttemptConnectionAsync()
         {
             // Display the error page
-            _errorMessageStore.ErrorMessage = "Connection Error";
-            _errorMessageStore.ErrorType = "Unable to connect to Server. Trying...";
+            _errorMessageStore.ErrorType = "Connection Error";
+            _errorMessageStore.ErrorMessage = "Unable to connect to Server. Trying...";
             _navigationService.NavigateTo<ErrorViewModel>();
 
             while (true)

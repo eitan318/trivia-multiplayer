@@ -13,22 +13,22 @@
 
             <!-- Create Room Button -->
             <Button Content="Create Room" 
-                    Command="{Binding CreateRoomCommand}" 
+                    Command="{Binding NavToCreateRoomCmd}" 
                     Margin="0,10"/>
 
             <!-- Join Room Button -->
             <Button Content="Join Room" 
-                    Command="{Binding JoinRoomCommand}" 
+                    Command="{Binding NavToJoinRoomCmd}" 
                     Margin="0,10"/>
 
             <!-- Statistics Button -->
             <Button Content="Statistics" 
-                    Command="{Binding ShowStatisticsCommand}" 
+                    Command="{Binding NavToStatisticsCmd}" 
                     Margin="0,10"/>
 
             <!-- Logout Button -->
             <Button Content="Logout" 
-                    Command="{Binding LogoutCommand}" 
+                    Command="{Binding LogoutCmd}" 
                     Margin="0,10"/>
 
             <!-- Error Message -->

@@ -13,12 +13,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ClientApp.Views.Pages
+namespace ClientApp.Views.Pages.ForgotPassword
 {
     /// <summary>
     /// Interaction logic for ResetPasswordView.xaml
     /// </summary>
-    public partial class ResetPasswordView : Page
+    public partial class ResetPasswordView : UserControl
     {
         public ResetPasswordView()
         {

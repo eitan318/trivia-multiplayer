@@ -12,7 +12,7 @@ class CreateRoomRequest {
   friend class JsonRequestPacketDeserializer<CreateRoomRequest>;
 
 private:
-  const std::string &roomName;
+  std::string roomName;
   unsigned int maxUsers;
   unsigned int questionCount;
   double answerTimeout;
@@ -20,7 +20,7 @@ private:
   CreateRoomRequest(const nlohmann::json &j);
 
 public:
-  const std::string &getRoomName() const;
+  std::string getRoomName() const;
   unsigned int getMaxUsers() const;
   unsigned int getQuestionCount() const;
   double getAnswerTimeout() const;

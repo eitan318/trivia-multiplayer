@@ -24,11 +24,16 @@ namespace ClientApp.ViewModels
         /// Protected constructor for derived classes to ensure that only classes inheriting from BaseViewModel 
         /// can be instantiated.
         /// </summary>
-        protected ViewModelBase() { }
+        protected ViewModelBase(bool hasBackBtn = false) 
+        {
+            this.HasBackBtn = hasBackBtn;
+        }
 
 
 
         public virtual void Dispose() { }
+
+        public bool HasBackBtn { get; private set; }
 
         /// <summary>
         /// Notifies subscribers that a property value has changed. This method is intended to be called in property setters.

@@ -9,22 +9,22 @@ namespace ClientApp.ViewModels
 {
     class PersonalStatisticsViewModel : ViewModelBase
     {
-        public PersonalStatisticsViewModel()
+        public PersonalStatisticsViewModel() : base(true)
         {
-            this.personalInfo = new PersonalStatistics();
+            this.personalInfo = new PersonalStatisticsModel();
             this.RefreshCmd = new RelayCommand(Refresh);
             Refresh();
         }
 
 
         // Fields
-        private PersonalStatistics personalInfo;
+        private PersonalStatisticsModel personalInfo;
 
         // Error message fields
         private string _errorMessage;
 
         // Properties
-        public PersonalStatistics PersonalInfo
+        public PersonalStatisticsModel PersonalInfo
         {
             get => personalInfo;
             set

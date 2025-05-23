@@ -13,12 +13,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ClientApp.Views.Pages
+namespace ClientApp.Views.Pages.ForgotPassword
 {
     /// <summary>
     /// Interaction logic for EmailEntryView.xaml
     /// </summary>
-    public partial class EmailEntryView : Page
+    public partial class EmailEntryView : UserControl
     {
         public EmailEntryView()
         {

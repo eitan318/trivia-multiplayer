@@ -24,8 +24,9 @@ namespace ClientApp.ViewModels
         public MenuViewModel(INavigationService navigationService)
         {
             this._navigationService = navigationService;
-            NavCreateRoomCmd = new NavigateCommand<CreateRoomViewModel>(navigationService);
+            NavToCreateRoomCmd = new NavigateCommand<CreateRoomViewModel>(navigationService);
             NavToJoinRoomCmd = new NavigateCommand<JoinRoomViewModel>(navigationService);
+            NavToStatisticsCmd = new NavigateCommand<StatisticsViewModel>(navigationService);
             LogoutCmd = new RelayCommand(LogOut);
         }
 
@@ -41,9 +42,9 @@ namespace ClientApp.ViewModels
         }
 
         // Commands
-        public ICommand NavCreateRoomCmd { get; }
+        public ICommand NavToCreateRoomCmd { get; }
         public ICommand NavToJoinRoomCmd { get; }
-        public ICommand NavToShowStatisticsCmd { get; }
+        public ICommand NavToStatisticsCmd { get; }
         public ICommand LogoutCmd { get; }
 
         /// <summary>

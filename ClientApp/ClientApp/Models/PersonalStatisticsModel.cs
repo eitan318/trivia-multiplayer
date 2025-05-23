@@ -1,6 +1,6 @@
 ﻿namespace ClientApp.Models
 {
-    public class PersonalStatistics
+    public class PersonalStatisticsModel
     {
         public string UserName {  get; set; }
         public double AvgAnswerTime { get; set; }

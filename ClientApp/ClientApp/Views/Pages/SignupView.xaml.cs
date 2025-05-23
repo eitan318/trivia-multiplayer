@@ -6,7 +6,7 @@ namespace ClientApp.Views.Pages
     /// <summary>
     /// Interaction logic for SignupPage.xaml
     /// </summary>
-    public partial class SignupView : Page
+    public partial class SignupView : UserControl
     {
         public SignupView()
         {

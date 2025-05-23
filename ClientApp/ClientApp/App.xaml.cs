@@ -2,6 +2,7 @@
 using ClientApp.ViewModels;
 using System.Windows;
 using ClientApp.Views.Pages;
+using ClientApp.Views.Pages.ForgotPassword;
 using Microsoft.Extensions.DependencyInjection;
 using ClientApp.ViewModels.ForgotPassword;
 using ClientApp.Stores;
@@ -68,11 +69,17 @@ public partial class App : Application
         services.AddTransient<JoinRoomView>();
         services.AddTransient<ErrorView>();
 
+        // Password reset Views
+        services.AddTransient<EmailEntryView>();
+        services.AddTransient<CodeEntryView>();
+        services.AddTransient<ResetPasswordView>();
+
         // Register stores
         services.AddSingleton<UserStore>();
         services.AddSingleton<PasswordResetStore>();
         services.AddSingleton<ErrorMessageStore>();
         services.AddSingleton<NavigationStore>();
+        services.AddSingleton<RoomDataStore>();
 
         // Register MainWindow
         services.AddTransient<MainWindow>();

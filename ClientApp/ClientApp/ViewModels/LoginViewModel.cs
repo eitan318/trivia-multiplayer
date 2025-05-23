@@ -13,9 +13,10 @@ namespace ClientApp.ViewModels
         private readonly INavigationService _navigationService;
         private UserStore _userStore;
         
-        public LoginViewModel(INavigationService navigationService, UserStore userState)
+        public LoginViewModel(INavigationService navigationService, UserStore userStore)
         {
             this._navigationService = navigationService;
+            this._userStore = userStore;
 
             // Initialize commands for different actions
             LoginCmd = new RelayCommand(PerformLogin, CanPerformLogin);

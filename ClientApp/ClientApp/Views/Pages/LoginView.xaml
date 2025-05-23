@@ -69,14 +69,14 @@
 
                 <!-- Forgot Password Hyperlink -->
                 <TextBlock>
-                    <Hyperlink Command="{Binding NavigateToForgotPasswordCommand}">
+                    <Hyperlink Command="{Binding NavToForgotPasswordCmd}">
                         Forgot My Password
                     </Hyperlink>
                 </TextBlock>
 
                 <!-- Login Button -->
                 <Button Content="Login" Margin="0,20" Padding="10,5" 
-                    Command="{Binding LoginCommand}"/>
+                    Command="{Binding LoginCmd}"/>
 
                 <!-- Sign Up Button -->
                 <TextBlock Text="Sign Up"                    
@@ -86,7 +86,7 @@
                    VerticalAlignment="Center"
                    Style="{DynamicResource MaterialDesignButtonTextBlock}">
                         <TextBlock.InputBindings>
-                            <MouseBinding Gesture="LeftClick" Command="{Binding NavigateToSignupCommand}"  />
+                            <MouseBinding Gesture="LeftClick" Command="{Binding NavToSignupCmd}"  />
                         </TextBlock.InputBindings>
                     </TextBlock>
 

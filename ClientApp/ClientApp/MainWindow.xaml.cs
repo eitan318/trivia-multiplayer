@@ -34,22 +34,6 @@ namespace ClientApp
         }
 
 
-        //private void MainFrame_ContentRendered(object sender, EventArgs e)
-        //{
-        //    var currentPage = MainFrame.Content as CustomPage;
-        //    BackButton.Visibility = currentPage?.ShowBackButton == true
-        //        ? Visibility.Visible
-        //        : Visibility.Collapsed;
-        //}
-
-        //private void BackButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (MainFrame.CanGoBack)
-        //    {
-        //        MainFrame.GoBack();
-        //    }
-        //}
-
 
 
     }

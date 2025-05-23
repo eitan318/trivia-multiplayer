@@ -13,17 +13,17 @@ namespace ClientApp.ViewModels
     {
         private UserStore userState;
 
-        public AdminRoomViewModel(RoomData roomData, UserStore userState)
+        public AdminRoomViewModel(RoomDataStore roomDataStore, UserStore userState)
         {
             this.userState = userState;
             this.RefreshCmd = new RelayCommand(RefreshPlayers);
             this.StartGameCmd = new RelayCommand(StartGame);
             this.CloseRoomCmd = new RelayCommand(CloseRoom);
-            this.RoomData = roomData;
+            this.RoomDataStore = roomDataStore;
             RefreshPlayers();
         }
 
-        public RoomData RoomData { get; set; }
+        public RoomDataStore RoomDataStore { get; set; }
         
 
         // Commands
@@ -47,7 +47,7 @@ namespace ClientApp.ViewModels
         /// </summary>
         private async void RefreshPlayers()
         {
-            var getPlayersRequest = new GetPlayersInRoomRequest(RoomData.Id);
+            var getPlayersRequest = new GetPlayersInRoomRequest(RoomDataStore.CurrentRoom.Id);
             ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(getPlayersRequest);
 
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)

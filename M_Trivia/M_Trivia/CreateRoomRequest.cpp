@@ -5,7 +5,10 @@ CreateRoomRequest::CreateRoomRequest(const nlohmann::json &j)
       questionCount(j.at("QuestionCount")),
       answerTimeout(j.at("AnswerTimeout")) {}
 
-const std::string &CreateRoomRequest::getRoomName() const { return roomName; }
+std::string CreateRoomRequest::getRoomName() const 
+{ 
+    return roomName;
+}
 
 unsigned int CreateRoomRequest::getMaxUsers() const { return maxUsers; }
 

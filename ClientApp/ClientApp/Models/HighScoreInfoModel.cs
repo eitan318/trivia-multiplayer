@@ -5,7 +5,7 @@ namespace ClientApp.Models
     * @struct HighScoreInfo
     * @brief A structure that holds information about a player's high score in a specific game.
     */
-    public class HighScoreInfo
+    public class HighScoreInfoModel
     {
         public string PlayerUsername {  get; set; }
         public string GameName {  get; set; }
