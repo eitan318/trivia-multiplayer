@@ -1,7 +1,7 @@
 ﻿
 namespace ClientApp.Models.Responses
 {
-    class ResponseInfo
+    public class ResponseInfo
     {
         public ResponseInfo(byte code, byte[] buffer)
         {

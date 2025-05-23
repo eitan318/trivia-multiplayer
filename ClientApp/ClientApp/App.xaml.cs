@@ -14,19 +14,20 @@ namespace ClientApp;
 /// </summary>
 public partial class App : Application
 {
-    private IServiceProvider? _serviceProvider;
+    private readonly IServiceProvider? _serviceProvider;
 
-    protected override void OnStartup(StartupEventArgs e)
+    public App()
     {
         // Configure services
         var services = new ServiceCollection();
         ConfigureServices(services);
 
         _serviceProvider = services.BuildServiceProvider();
-
+    }
+    protected override void OnStartup(StartupEventArgs e)
+    {
         // Set the main window
         var mainWindow = _serviceProvider.GetService<MainWindow>();
-        mainWindow.DataContext = _serviceProvider.GetService<MainWindowViewModel>();
         mainWindow.Show();
         base.OnStartup(e);
     }
@@ -35,11 +36,14 @@ public partial class App : Application
     {
         // Register services
         services.AddSingleton<INavigationService, NavigationService>();
+        services.AddSingleton(sp => new SocketService("127.0.0.1", 5554));
+        services.AddSingleton<RequestsExchangeService>();
+
 
         // Register ViewModels
         services.AddTransient<MainWindowViewModel>();
 
-        services.AddTransient<LoginViewModel>();
+        services.AddTransient<LoginViewModel>(s => CreateLoginViewModel(s));
         services.AddTransient<SignupViewModel>();
         services.AddTransient<MenuViewModel>();
         services.AddTransient<MemberRoomViewModel>();
@@ -82,7 +86,23 @@ public partial class App : Application
         services.AddSingleton<RoomDataStore>();
 
         // Register MainWindow
-        services.AddTransient<MainWindow>();
+        services.AddTransient<MainWindow>(sp =>
+        {
+            var viewModel = sp.GetRequiredService<MainWindowViewModel>();
+            return new MainWindow(viewModel);
+        });
+
+    }
+
+
+    private LoginViewModel CreateLoginViewModel(IServiceProvider serviceProvider)
+    {
+        return new LoginViewModel(
+            serviceProvider.GetRequiredService<INavigationService>(),
+            serviceProvider.GetRequiredService<UserStore>(),
+            serviceProvider.GetRequiredService<RequestsExchangeService>()
+
+            );
     }
 
 }

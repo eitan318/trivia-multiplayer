@@ -10,9 +10,11 @@ namespace ClientApp.ViewModels
 
     class HighScoresViewModel : ViewModelBase
     {
-        public HighScoresViewModel() : base(true)
+        private readonly RequestsExchangeService _requestsExchangeService;
+        public HighScoresViewModel(RequestsExchangeService requestsExchangeService) : base(true)
         {
             RefreshTopCmd = new RelayCommand(RefreshTop);
+            _requestsExchangeService = requestsExchangeService;
             RefreshTop();
         }
         // Fields
@@ -58,7 +60,7 @@ namespace ClientApp.ViewModels
             try
             {
                 HighScoresRequest request = new HighScoresRequest(3);
-                var responseInfo = await RequestsExchangeService.ExchangeRequest(request);
+                var responseInfo = await _requestsExchangeService.ExchangeRequest(request);
 
                 if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
                 {

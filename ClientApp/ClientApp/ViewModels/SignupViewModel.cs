@@ -10,10 +10,15 @@ namespace ClientApp.ViewModels
     class SignupViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
-        private UserStore _userState;
-        public SignupViewModel(INavigationService navigationService, UserStore userState)
+        private UserStore _userStore;
+        private readonly RequestsExchangeService _requestsExchangeService;
+        public SignupViewModel(
+            INavigationService navigationService,
+            RequestsExchangeService requestsExchangeService,
+            UserStore userStore)
         {
-            this._userState = userState;
+            _navigationService = navigationService;
+            this._userStore = userStore;
             this._navigationService = navigationService;
 
             // Initialize commands for different actions
@@ -42,17 +47,17 @@ namespace ClientApp.ViewModels
 
 
 
-        // Account properties
         public string Username
         {
-            get => this._userState.Username;
+            get => _userStore.Username??"";
             set
             {
-                this._userState.Username = value;
+                _userStore.Username = value;
                 OnPropertyChanged();
                 ((RelayCommand)SignupCmd).RaiseCanExecuteChanged();
             }
         }
+
 
         public string Password
         {
@@ -251,7 +256,7 @@ namespace ClientApp.ViewModels
                         trimmedBirthDate
                     );
 
-                ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(signupRequest);
+                ResponseInfo responseInfo = await _requestsExchangeService.ExchangeRequest(signupRequest);
 
                 // Handle server error response
                 if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)

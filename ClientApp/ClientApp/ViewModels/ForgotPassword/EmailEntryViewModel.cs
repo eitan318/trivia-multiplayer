@@ -14,15 +14,20 @@ namespace ClientApp.ViewModels.ForgotPassword
     /// </summary>
     class EmailEntryViewModel : ViewModelBase
     {
-        INavigationService _navigationService;
-        PasswordResetStore _state;
+        private readonly RequestsExchangeService _requestsExchangeService;
+        private readonly INavigationService _navigationService;
+        private PasswordResetStore _state;
 
         /// <summary>
         /// Initializes the ViewModel, setting up the command for submitting the email.
         /// </summary>
-        public EmailEntryViewModel(INavigationService navigationService, PasswordResetStore state)
+        public EmailEntryViewModel(
+            INavigationService navigationService,
+            PasswordResetStore state,
+            RequestsExchangeService requestsExchangeService) : base(true)
         {
             _navigationService = navigationService;
+            _requestsExchangeService = requestsExchangeService;
             _state = state;
             SubmitEmailCmd = new RelayCommand(SubmitEmail);
         }
@@ -75,7 +80,7 @@ namespace ClientApp.ViewModels.ForgotPassword
 
             // Create request for password reset with the entered email
             ForgotPasswordRequest request = new ForgotPasswordRequest(trimmedEmail);
-            ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(request);
+            ResponseInfo responseInfo = await _requestsExchangeService.ExchangeRequest(request);
 
             // Handle potential error response
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)

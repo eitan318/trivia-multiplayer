@@ -13,11 +13,16 @@ namespace ClientApp.ViewModels
     class MemberRoomViewModel : ViewModelBase
     {
         private UserStore _userState;
+        private readonly RequestsExchangeService _requestsExchangeService;
 
-
-        public MemberRoomViewModel(INavigationService navigationService, RoomDataStore roomDataStore, UserStore userState) 
+        public MemberRoomViewModel(
+            INavigationService navigationService,
+            RoomDataStore roomDataStore, 
+            UserStore userState,
+            RequestsExchangeService requestsExchangeService) 
         {
             this._userState = userState;
+            this._requestsExchangeService = requestsExchangeService;
             this.RefreshCmd = new RelayCommand(RefreshPlayers);
             this.LeaveRoomCmd = new NavigateCommand<JoinRoomViewModel>(navigationService);
             this.RoomDataStore = roomDataStore;
@@ -46,8 +51,8 @@ namespace ClientApp.ViewModels
         /// </summary>
         private async void RefreshPlayers()
         {
-            var getPlayersRequest = new GetPlayersInRoomRequest(RoomDataStore.CurrentRoom.Id);
-            ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(getPlayersRequest);
+            var getPlayersRequest = new GetPlayersInRoomRequest(RoomDataStore.CurrentRoomData.Id);
+            ResponseInfo responseInfo = await _requestsExchangeService.ExchangeRequest(getPlayersRequest);
 
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
             {

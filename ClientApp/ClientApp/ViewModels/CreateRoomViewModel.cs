@@ -16,14 +16,19 @@ namespace ClientApp.ViewModels
     {
         private INavigationService _navigationService;
         private RoomDataStore _roomDataStore;
+        private readonly RequestsExchangeService _requestsExchangeService;
         
         /// <summary>
         /// Private constructor for initializing the ViewModel.
         /// </summary>
-        public CreateRoomViewModel(INavigationService navigationService, RoomDataStore roomDataStore)
+        public CreateRoomViewModel(
+            RequestsExchangeService requestsExchangeService,
+            INavigationService navigationService,
+            RoomDataStore roomDataStore) : base(true)
         {
             this._roomDataStore = roomDataStore;
             this._navigationService = navigationService;
+            _requestsExchangeService = requestsExchangeService;
             CreateRoomCmd = new RelayCommand(PerformCreateRoom, CanCreateRoom);
 
             PropertyChanged += (sender, args) =>
@@ -153,7 +158,7 @@ namespace ClientApp.ViewModels
         private async void PerformCreateRoom()
         {
             RoomDataModel? roomData = await CreateRoom();
-            this._roomDataStore.CurrentRoom = roomData;
+            this._roomDataStore.CurrentRoomData = roomData;
             if (roomData != null)
             {
                 this._navigationService.NavigateTo<AdminRoomViewModel>();
@@ -170,7 +175,7 @@ namespace ClientApp.ViewModels
             string trimmedRoomName = RoomName?.Trim();
 
             var createRoomRequest = new CreateRoomRequest(trimmedRoomName, MaxPlayers, QuestionsCount, QuestionTimeout);
-            var responseInfo = await RequestsExchangeService.ExchangeRequest(createRoomRequest);
+            var responseInfo = await _requestsExchangeService.ExchangeRequest(createRoomRequest);
 
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
             {

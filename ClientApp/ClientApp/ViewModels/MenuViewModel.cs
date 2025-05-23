@@ -17,13 +17,17 @@ namespace ClientApp.ViewModels
     public class MenuViewModel : ViewModelBase
     {
         private INavigationService _navigationService;
+        private readonly RequestsExchangeService _requestsExchangeService;
 
         /// <summary>
         /// Private constructor for the MenuPageViewModel. Initializes the commands for the actions available in the menu.
         /// </summary>
-        public MenuViewModel(INavigationService navigationService)
+        public MenuViewModel(
+            INavigationService navigationService,
+            RequestsExchangeService requestsExchangeService)
         {
             this._navigationService = navigationService;
+            this._requestsExchangeService = requestsExchangeService;
             NavToCreateRoomCmd = new NavigateCommand<CreateRoomViewModel>(navigationService);
             NavToJoinRoomCmd = new NavigateCommand<JoinRoomViewModel>(navigationService);
             NavToStatisticsCmd = new NavigateCommand<StatisticsViewModel>(navigationService);
@@ -53,7 +57,7 @@ namespace ClientApp.ViewModels
         private async void LogOut()
         {
             LogoutRequest request = new LogoutRequest();
-            ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(request);
+            ResponseInfo responseInfo = await _requestsExchangeService.ExchangeRequest(request);
 
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
             {

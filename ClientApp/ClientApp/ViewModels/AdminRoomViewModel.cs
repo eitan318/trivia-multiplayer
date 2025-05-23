@@ -12,10 +12,15 @@ namespace ClientApp.ViewModels
     class AdminRoomViewModel : ViewModelBase
     {
         private UserStore userState;
+        private readonly RequestsExchangeService _requestsExchangeService;
 
-        public AdminRoomViewModel(RoomDataStore roomDataStore, UserStore userState)
+        public AdminRoomViewModel(
+            RequestsExchangeService requestsExchangeService, 
+            RoomDataStore roomDataStore, 
+            UserStore userState)
         {
             this.userState = userState;
+            this._requestsExchangeService = requestsExchangeService;
             this.RefreshCmd = new RelayCommand(RefreshPlayers);
             this.StartGameCmd = new RelayCommand(StartGame);
             this.CloseRoomCmd = new RelayCommand(CloseRoom);
@@ -47,8 +52,8 @@ namespace ClientApp.ViewModels
         /// </summary>
         private async void RefreshPlayers()
         {
-            var getPlayersRequest = new GetPlayersInRoomRequest(RoomDataStore.CurrentRoom.Id);
-            ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(getPlayersRequest);
+            var getPlayersRequest = new GetPlayersInRoomRequest(RoomDataStore.CurrentRoomData.Id);
+            ResponseInfo responseInfo = await this._requestsExchangeService.ExchangeRequest(getPlayersRequest);
 
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
             {

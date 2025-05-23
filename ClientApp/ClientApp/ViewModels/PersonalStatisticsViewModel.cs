@@ -9,8 +9,10 @@ namespace ClientApp.ViewModels
 {
     class PersonalStatisticsViewModel : ViewModelBase
     {
-        public PersonalStatisticsViewModel() : base(true)
+        private readonly RequestsExchangeService _requestsExchangeService;
+        public PersonalStatisticsViewModel(RequestsExchangeService requestsExchangeService) : base(true)
         {
+            _requestsExchangeService = requestsExchangeService;
             this.personalInfo = new PersonalStatisticsModel();
             this.RefreshCmd = new RelayCommand(Refresh);
             Refresh();
@@ -54,7 +56,7 @@ namespace ClientApp.ViewModels
             try
             {
                 PersonalStatisticsRequest request = new PersonalStatisticsRequest();
-                var responseInfo = await RequestsExchangeService.ExchangeRequest(request);
+                var responseInfo = await _requestsExchangeService.ExchangeRequest(request);
 
                 if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
                 {

@@ -11,7 +11,8 @@ namespace ClientApp.Views.Pages
         public CreateRoomView() 
         {
             InitializeComponent();
-            RoomName_TB.Focus(); 
+            // Use Loaded event to delay focus
+            Loaded += (s, e) => RoomName_TB.Focus();
         }
     }
 }

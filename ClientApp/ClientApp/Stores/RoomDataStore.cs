@@ -8,17 +8,17 @@ namespace ClientApp.Stores
     /// </summary>
     public class RoomDataStore : StoreBase
     {
-        private RoomDataModel? _currentRoom;
+        private RoomDataModel? _currentRoomData;
 
-        public RoomDataModel? CurrentRoom
+        public RoomDataModel? CurrentRoomData
         {
-            get => _currentRoom;
+            get => _currentRoomData;
             set
             {
-                if (_currentRoom != value)
+                if (_currentRoomData != value)
                 {
-                    _currentRoom = value;
-                    OnPropertyChanged(nameof(CurrentRoom));
+                    _currentRoomData = value;
+                    OnPropertyChanged(nameof(CurrentRoomData));
                 }
             }
         }

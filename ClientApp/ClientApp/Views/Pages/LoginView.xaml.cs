@@ -11,7 +11,9 @@ namespace ClientApp.Views.Pages
         public LoginView()
         {
             InitializeComponent();
-            UsernameTB.Focus();
+            
+            // Use Loaded event to delay focus
+            Loaded += (s, e) => UsernameTB.Focus();
         }
 
     }

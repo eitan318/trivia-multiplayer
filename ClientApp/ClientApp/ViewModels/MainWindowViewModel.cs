@@ -14,24 +14,28 @@ namespace ClientApp.ViewModels
         private readonly NavigationStore _navigationStore;
         private readonly ErrorMessageStore _errorMessageStore;
         private readonly INavigationService _navigationService;
+        private readonly SocketService _socketService;
+
 
 
 
         public MainWindowViewModel(
             NavigationStore navigationStore,
             ErrorMessageStore errorMessageStore,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            RequestsExchangeService requestsExchangeService,
+            SocketService socketService)
         {
+            _socketService = socketService;
             _navigationStore = navigationStore;
             _errorMessageStore = errorMessageStore;
             _navigationService = navigationService;
 
             _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
-            SocketService.Initialize("127.0.0.1", 5554);
 
             try
             {
-                SocketService.Connect();
+                _socketService.Connect();
                 _navigationService.NavigateTo<LoginViewModel>();
             }
             catch
@@ -73,7 +77,7 @@ namespace ClientApp.ViewModels
             {
                 try
                 {
-                    await Task.Run(() => SocketService.Connect());
+                    await Task.Run(() => _socketService.Connect());
                     break;
                 }
                 catch
@@ -83,6 +87,11 @@ namespace ClientApp.ViewModels
             }
 
             _navigationService.NavigateTo<LoginViewModel>();
+        }
+
+        internal void OnWindowClosed()
+        {
+            _socketService.CloseConnection();
         }
     }
 }

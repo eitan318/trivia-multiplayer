@@ -14,13 +14,17 @@ namespace ClientApp.ViewModels.ForgotPassword
     /// </summary>
     class ResetPasswordViewModel : ViewModelBase
     {
+        private readonly RequestsExchangeService _requestsExchangeService;
+        private readonly INavigationService _navigationService;
+        private PasswordResetStore _state;
 
-        INavigationService _navigationService;
-        PasswordResetStore _state;
-
-        public ResetPasswordViewModel(INavigationService navigationService, PasswordResetStore state)
+        public ResetPasswordViewModel(
+            INavigationService navigationService,
+            RequestsExchangeService requestsExchangeService,
+            PasswordResetStore state) : base(true)
         {
             _navigationService = navigationService;
+            _requestsExchangeService = requestsExchangeService;
             _state = state;
             ResetPasswordCmd = new RelayCommand(OnResetPassword);
         }
@@ -105,7 +109,7 @@ namespace ClientApp.ViewModels.ForgotPassword
 
             // Create the request with the new password and username
             ResetPasswordRequest request = new ResetPasswordRequest(trimmedNewPassword, _state.Email, _state.Tocken);
-            ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(request);
+            ResponseInfo responseInfo = await _requestsExchangeService.ExchangeRequest(request);
 
             // Handle server error response
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)

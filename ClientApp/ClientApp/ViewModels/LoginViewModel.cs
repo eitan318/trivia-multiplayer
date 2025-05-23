@@ -12,10 +12,15 @@ namespace ClientApp.ViewModels
     {
         private readonly INavigationService _navigationService;
         private UserStore _userStore;
+        private readonly RequestsExchangeService _requestsExchangeService;
         
-        public LoginViewModel(INavigationService navigationService, UserStore userStore)
+        public LoginViewModel(
+            INavigationService navigationService,
+            UserStore userStore,
+            RequestsExchangeService requestsExchangeService)
         {
             this._navigationService = navigationService;
+            this._requestsExchangeService = requestsExchangeService;
             this._userStore = userStore;
 
             // Initialize commands for different actions
@@ -27,7 +32,6 @@ namespace ClientApp.ViewModels
 
         //Fields for account
         private string _password = "";
-        private string _username = "";
          
         //Fields for error messages
         private string _errorMessage;
@@ -38,10 +42,10 @@ namespace ClientApp.ViewModels
         // Properties for account
         public string Username
         {
-            get => _username;
+            get => _userStore.Username??"";
             set
             {
-                _username = value;
+                _userStore.Username = value;
                 OnPropertyChanged();
                 ((RelayCommand)LoginCmd).RaiseCanExecuteChanged();
             }
@@ -123,7 +127,7 @@ namespace ClientApp.ViewModels
 
                 // Prepare the login request and send it
                 LoginRequest loginRequest = new LoginRequest(trimmedUsername, trimmedPassword);
-                ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(loginRequest);
+                ResponseInfo responseInfo = await _requestsExchangeService.ExchangeRequest(loginRequest);
 
                 // Handle server error response
                 if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)

@@ -11,7 +11,7 @@ namespace ClientApp.ViewModels
     /// to personal statistics and high scores pages.
     /// </summary>
     class StatisticsViewModel : ViewModelBase
-    {
+    {   
         /// <summary>
         /// Private constructor for the StatisticsPageViewModel. Initializes the commands for navigating to
         /// personal statistics and high scores pages.

@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace ClientApp.Services
@@ -7,19 +8,19 @@ namespace ClientApp.Services
     /// Provides socket-based communication services for connecting to a server,
     /// sending, and receiving data.
     /// </summary>
-    public class SocketService
+    public class SocketService : IDisposable
     {
-        private static Socket _socket;
-        private static string _ipAddress;
-        private static int _port;
+        private readonly Socket _socket;
+        private readonly string _ipAddress;
+        private readonly int _port;
+        private bool _disposed;
 
         /// <summary>
-        /// Initializes the socket service with the specified server IP address and
-        /// port number.
+        /// Initializes the socket service with the specified server IP address and port number.
         /// </summary>
         /// <param name="ipAddress">The IP address of the server.</param>
         /// <param name="port">The port number to connect to on the server.</param>
-        public static void Initialize(string ipAddress, int port)
+        public SocketService(string ipAddress, int port)
         {
             _ipAddress = ipAddress;
             _port = port;
@@ -27,11 +28,10 @@ namespace ClientApp.Services
         }
 
         /// <summary>
-        /// Establishes a connection to the server using the initialized IP address
-        /// and port.
+        /// Establishes a connection to the server using the initialized IP address and port.
         /// </summary>
         /// <exception cref="SocketException">Thrown if the connection fails.</exception>
-        public static void Connect()
+        public void Connect()
         {
             _socket.Connect(_ipAddress, _port);
         }
@@ -42,7 +42,7 @@ namespace ClientApp.Services
         /// <param name="data">The data to be sent as an <see cref="ArraySegment{T}"/> of bytes.</param>
         /// <returns>A task that represents the asynchronous send operation.</returns>
         /// <exception cref="InvalidOperationException">Thrown if the socket is not connected.</exception>
-        public static async Task SendDataAsync(ArraySegment<byte> data)
+        public async Task SendDataAsync(ArraySegment<byte> data)
         {
             if (_socket == null || !_socket.Connected)
                 throw new InvalidOperationException("Socket is not connected.");
@@ -57,7 +57,7 @@ namespace ClientApp.Services
         /// <returns>A task that represents the asynchronous receive operation. The task result contains the received data as a byte array.</returns>
         /// <exception cref="InvalidOperationException">Thrown if the socket is not connected.</exception>
         /// <exception cref="SocketException">Thrown if the connection is reset or closed by the server.</exception>
-        public static async Task<byte[]> ReceiveDataAsync(int amount)
+        public async Task<byte[]> ReceiveDataAsync(int amount)
         {
             if (_socket == null || !_socket.Connected)
                 throw new InvalidOperationException("Socket is not connected.");
@@ -82,9 +82,27 @@ namespace ClientApp.Services
         /// <summary>
         /// Closes the socket connection to the server.
         /// </summary>
-        public static void CloseConnection()
+        public void CloseConnection()
         {
             _socket.Close();
+        }
+
+        /// <summary>
+        /// Dispose pattern for releasing the socket resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed) return;
+
+            try
+            {
+                _socket.Shutdown(SocketShutdown.Both);
+            }
+            catch { /* ignore errors on shutdown */ }
+
+            _socket.Close();
+            _socket.Dispose();
+            _disposed = true;
         }
     }
 }

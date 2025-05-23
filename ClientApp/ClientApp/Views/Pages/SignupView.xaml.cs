@@ -11,7 +11,8 @@ namespace ClientApp.Views.Pages
         public SignupView()
         {
             InitializeComponent();
-            UsernameTB.Focus();
+            // Use Loaded event to delay focus
+            Loaded += (s, e) => UsernameTB.Focus();
         }
 
         private void PasswordBox_PasswordChanged(object sender, System.Windows.RoutedEventArgs e)

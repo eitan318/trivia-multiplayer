@@ -12,8 +12,9 @@ namespace ClientApp.ViewModels.ForgotPassword
     /// </summary>
     class CodeEntryViewModel : ViewModelBase
     {
-        INavigationService _navigationService;
-        PasswordResetStore _state;
+        private readonly INavigationService _navigationService;
+        private readonly RequestsExchangeService _requestsExchangeService;
+        private PasswordResetStore _state;
 
 
         
@@ -21,9 +22,13 @@ namespace ClientApp.ViewModels.ForgotPassword
         /// Initializes the ViewModel, setting up the code boxes and the associated commands.
         /// </summary>
         /// <param name="parent">The parent ViewModel that controls the overall flow of the forgot password process.</param>
-        public CodeEntryViewModel(INavigationService navigationService, PasswordResetStore state)
+        public CodeEntryViewModel(
+            INavigationService navigationService, 
+            PasswordResetStore state,
+            RequestsExchangeService requestsExchangeService) : base(true)
         {
             this._navigationService = navigationService;
+            this._requestsExchangeService = requestsExchangeService;
             this._state = state;
 
 
@@ -68,12 +73,12 @@ namespace ClientApp.ViewModels.ForgotPassword
         /// Submits the entered verification code. If the code is correct, it proceeds to the password reset step.
         /// If the code is incorrect, an error message is displayed.
         /// </summary>
-        private async void SubmitCode()
+        private async void SubmitCode() 
         {
             // Concatenate all values from the code boxes and process the code
             var code = string.Concat(CodeBoxes.Select(box => box.Value));
             VerifyPasswordResetCodeRequest request = new VerifyPasswordResetCodeRequest(code);
-            ResponseInfo responseInfo = await RequestsExchangeService.ExchangeRequest(request);
+            ResponseInfo responseInfo = await _requestsExchangeService.ExchangeRequest(request);
             if (responseInfo.Code == (byte)ResponsesCodes.ErrorResponse)
             {
                 ErrorResponse errorResponse = JsonResponseDeserialize.DeserializeResponse<ErrorResponse>(responseInfo);
