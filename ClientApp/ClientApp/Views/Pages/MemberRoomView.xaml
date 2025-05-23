@@ -23,7 +23,7 @@
         <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,20">
             <TextBlock Text="Admin:" FontSize="16" FontWeight="Bold" Margin="0,0,10,0" VerticalAlignment="Center"/>
             <controls:PlayerUserControl DataContext="{Binding Admin}"  Margin="0,0,100,0"/>
-            <controls:RoomDataUserControl DataContext="{Binding RoomData}"/>
+            <controls:RoomDataUserControl DataContext="{Binding RoomDataStore.CurrentRoomData}"/>
         </StackPanel>
 
         <!-- List of Players -->

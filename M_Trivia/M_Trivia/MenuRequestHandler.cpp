@@ -90,7 +90,7 @@ RequestResult
 MenuRequestHandler::getRooms(const RequestInfo& requestInfo) const {
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
     std::vector<RoomPreview> rooms = roomManager.getRooms();
-    GetRoomsResponse getRoomsResponse(0, rooms);
+    GetRoomsResponse getRoomsResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, rooms);
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(getRoomsResponse),
@@ -107,8 +107,7 @@ MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInfo) const {
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
 
     Room room = roomManager.getRoom(id);
-    std::map<std::string, LoggedUser> players = room.getAllUsers();
-    GetPlayersInRoomResponse getPlayersInRoomResponse(0, players);
+    GetPlayersInRoomResponse getPlayersInRoomResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, room.getAllUsers());
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(getPlayersInRoomResponse),
@@ -122,7 +121,7 @@ MenuRequestHandler::getPersonalStats(const RequestInfo& requestInfo) const {
         this->m_handlerFactory.getStatisticsManger();
     PersonalStatistics ps =
         statsManager.getPlayerStatistics(this->m_user.getUsername());
-    GetPersonalStatisticsResponse personalStatsResponse(ps, 0);
+    GetPersonalStatisticsResponse personalStatsResponse(ps, (unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS);
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(personalStatsResponse),
@@ -141,7 +140,7 @@ MenuRequestHandler::getHighScore(const RequestInfo& requestInfo) const {
     std::vector<HighScoreInfo> highestScores =
         statsManager.getBestScores(request.getTopPlayersLimit());
 
-    GetHighScoreResponse highScoreResponse(0, highestScores);
+    GetHighScoreResponse highScoreResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, highestScores);
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(highScoreResponse),

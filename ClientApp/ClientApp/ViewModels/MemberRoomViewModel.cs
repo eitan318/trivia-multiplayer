@@ -12,16 +12,16 @@ namespace ClientApp.ViewModels
 {
     class MemberRoomViewModel : ViewModelBase
     {
-        private UserStore _userState;
+        private UserStore _userStore;
         private readonly RequestsExchangeService _requestsExchangeService;
 
         public MemberRoomViewModel(
             INavigationService navigationService,
             RoomDataStore roomDataStore, 
-            UserStore userState,
+            UserStore userStore,
             RequestsExchangeService requestsExchangeService) 
         {
-            this._userState = userState;
+            this._userStore = userStore;
             this._requestsExchangeService = requestsExchangeService;
             this.RefreshCmd = new RelayCommand(RefreshPlayers);
             this.LeaveRoomCmd = new NavigateCommand<JoinRoomViewModel>(navigationService);
@@ -65,10 +65,10 @@ namespace ClientApp.ViewModels
             if (response.Players != null && response.Players.Any())
             {
                 Admin = response.Players.First(); // Set Admin
-                Admin.IsMe = Admin.Username == this._userState.Username;
+                Admin.IsMe = Admin.Username == this._userStore.Username;
                 foreach (var player in response.Players.Skip(1)) 
                 {
-                    player.IsMe = player.Username == this._userState.Username;
+                    player.IsMe = player.Username == this._userStore.Username;
                     Players.Add(player);
                 }
             }

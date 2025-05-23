@@ -35,25 +35,29 @@ CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser& player,
     {
         int roomid = ids++;
         roomData.id = roomid;
+        std::lock_guard<std::mutex> lock(this->m_roomsMutex);
         this->m_rooms[roomid] = Room(roomData, player);
     }
     return createRoonResponseErrors;
 }
 
 void RoomManager::deleteRoom(int ID) {
+    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     auto it = this->m_rooms.find(ID);
     if (it != this->m_rooms.end()) {
         this->m_rooms.erase(it);
     }
 }
 
-bool RoomManager::getRoomState(int ID) {
+bool RoomManager::getRoomState(int ID) const {
+    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     auto it = this->m_rooms.find(ID);
     if (it != this->m_rooms.end()) {
         return it->second.getRoomStatus();
     }
     return false;
 }
+
 
 std::vector<RoomPreview> RoomManager::getRooms() const {
     std::vector<RoomPreview> roomsvec;
@@ -65,29 +69,26 @@ std::vector<RoomPreview> RoomManager::getRooms() const {
 
 JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
     const LoggedUser& loggedUser) {
-    std::mutex mtx;
     JoinRoomResponseErrors errors;
-    {
-        std::lock_guard<std::mutex> mutx(mtx);
-        try {
-            Room& room = this->getRoom(id);
-            if (room.getRoomPreview().roomData.maxPlayers ==
-                room.getAllUsers().size()) {
-                errors.generalError = "Room is already full.";
-            }
-            else {
-                room.addUser(loggedUser);
-            }
+    try {
+        Room& room = this->getRoom(id);
+        if (room.getRoomPreview().roomData.maxPlayers ==
+            room.getAllUsers().size()) {
+            errors.generalError = "Room is already full.";
         }
-        catch (MyException err) {
-            errors.generalError = "room does not exist.";
+        else {
+            room.addUser(loggedUser);
         }
-        errors.statusCode = !errors.noErrors();
     }
+    catch (MyException err) {
+        errors.generalError = "room does not exist.";
+    }
+    errors.statusCode = !errors.noErrors();
     return errors;
 }
 
 Room& RoomManager::getRoom(int ID) {
+    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     auto it = this->m_rooms.find(ID);
     if (it != this->m_rooms.end())
     {

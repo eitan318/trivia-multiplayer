@@ -103,8 +103,8 @@ LoginRequestHandler::signup(const RequestInfo& requestInfo) const {
     SignupRequest request =
         JsonRequestPacketDeserializer<SignupRequest>::deserializeRequest(
             requestInfo.buffer);
-    auto errors = SignupResponseErrors(
-        this->m_handlerFactory.getLoginManager().signup(request.getUserRecord()));
+    auto errors = 
+        this->m_handlerFactory.getLoginManager().signup(request.getUserRecord());
 
     SignupResponse signupResponse(&errors);
     RequestResult requestResult(

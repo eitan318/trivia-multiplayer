@@ -23,6 +23,9 @@ enum class ResponseCodes : unsigned char {
   C_VerifyPasswordResetCodeResponse = 12,
 };
 
+#define GENERAL_SUCCESS_RESPONSE_STATUS 0
+
+
 class Response {
 private:
   IResponseErrors *errors;

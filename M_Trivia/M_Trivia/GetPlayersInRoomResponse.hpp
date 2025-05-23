@@ -10,11 +10,11 @@
 class GetPlayersInRoomResponse : public Response {
 private:
     /// A list of player names in the room.
-    std::map<std::string,LoggedUser> players;
+    std::vector<LoggedUser> players;
 
 public:
     GetPlayersInRoomResponse() = delete;
-    GetPlayersInRoomResponse(unsigned int status, const std::map<std::string,LoggedUser>& players) ;
+    GetPlayersInRoomResponse(unsigned int status, const std::vector<LoggedUser>& players) ;
 
     /**
      * @brief Gets the response code for this response.

@@ -11,7 +11,7 @@ namespace ClientApp.ViewModels
 {
     class AdminRoomViewModel : ViewModelBase
     {
-        private UserStore userState;
+        private UserStore userStore;
         private readonly RequestsExchangeService _requestsExchangeService;
 
         public AdminRoomViewModel(
@@ -19,7 +19,7 @@ namespace ClientApp.ViewModels
             RoomDataStore roomDataStore, 
             UserStore userState)
         {
-            this.userState = userState;
+            this.userStore = userState;
             this._requestsExchangeService = requestsExchangeService;
             this.RefreshCmd = new RelayCommand(RefreshPlayers);
             this.StartGameCmd = new RelayCommand(StartGame);
@@ -66,10 +66,10 @@ namespace ClientApp.ViewModels
             if (response.Players != null && response.Players.Any())
             {
                 Admin = response.Players.First(); // Set Admin
-                Admin.IsMe = Admin.Username == userState.Username;
+                Admin.IsMe = Admin.Username == userStore.Username;
                 foreach (var player in response.Players.Skip(1)) // Add remaining players
                 {
-                    player.IsMe = player.Username == userState.Username;
+                    player.IsMe = player.Username == userStore.Username;
                     Players.Add(player);
                 }
             }

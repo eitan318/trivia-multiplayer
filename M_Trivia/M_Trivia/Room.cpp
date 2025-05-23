@@ -27,10 +27,17 @@ void Room::removeUser(const LoggedUser& loggeduser)
 		}
 	}
 }
-std::map<std::string, LoggedUser> Room::getAllUsers() const
+std::vector<LoggedUser> Room::getAllUsers() const
 {
-	return this->m_users;
+	std::vector<LoggedUser> users;
+	users.reserve(m_users.size()); // Reserve space for efficiency
+
+	std::transform(m_users.begin(), m_users.end(), std::back_inserter(users),
+		[](const auto& pair) { return pair.second; });
+
+	return users;
 }
+
 bool Room::getRoomStatus() const
 {
 	return true;
