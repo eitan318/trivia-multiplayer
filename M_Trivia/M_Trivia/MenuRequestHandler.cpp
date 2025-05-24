@@ -106,8 +106,9 @@ MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInfo) const {
     int id = request.getRoomId();
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
 
-    Room room = roomManager.getRoom(id);
-    GetPlayersInRoomResponse getPlayersInRoomResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, room.getUsersVector());
+    Room* room = roomManager.getRoom(id);
+    
+    GetPlayersInRoomResponse getPlayersInRoomResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, room->getUsersVector());
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(getPlayersInRoomResponse),

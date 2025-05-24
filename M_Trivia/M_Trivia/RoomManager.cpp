@@ -5,6 +5,7 @@
 #include "MyException.hpp"
 #include <mutex>
 
+
 unsigned int RoomManager::ids = 0;
 
 RoomManager& RoomManager::getInstance(IDatabase& database) {
@@ -70,33 +71,33 @@ std::vector<RoomPreview> RoomManager::getRooms() const {
 JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
     const LoggedUser& loggedUser) {
     JoinRoomResponseErrors errors;
-    try {
-        Room& room = this->getRoom(id);
-        if (room.getUsersMap().find(loggedUser.getUsername()) != 
-            room.getUsersMap().end()) {
+    Room* room = this->getRoom(id);
+    if (room != nullptr) {
+        if (room->getUsersMap().find(loggedUser.getUsername()) !=
+            room->getUsersMap().end()) {
             errors.generalError = "You are already inside this room.";
         }
-        else if (room.getRoomPreview().roomData.maxPlayers ==
-            room.getUsersVector().size()) {
+        else if (room->getRoomPreview().roomData.maxPlayers ==
+            room->getUsersVector().size()) {
             errors.generalError = "Room is already full.";
         }
         else {
-            room.addUser(loggedUser);
+            room->addUser(loggedUser);
         }
     }
-    catch (MyException err) {
+    else {
         errors.generalError = "room does not exist.";
     }
     errors.statusCode = !errors.noErrors();
     return errors;
 }
 
-Room& RoomManager::getRoom(int ID) {
+Room* RoomManager::getRoom(int ID) {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     auto it = this->m_rooms.find(ID);
     if (it != this->m_rooms.end())
     {
-        return it->second;
+        return &it->second;
     }
-    throw MyException("Room not exist");
+    return nullptr;
 }

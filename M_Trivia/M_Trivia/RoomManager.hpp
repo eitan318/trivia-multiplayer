@@ -80,5 +80,5 @@ public:
      * @return A reference to the Room object.
      * @throws MyException if the room does not exist.
      */
-    Room& getRoom(int ID);
+    Room* getRoom(int ID);
 };
