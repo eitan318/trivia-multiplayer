@@ -14,7 +14,7 @@ namespace ClientApp
 
             // Extract the ViewModel name (e.g., LoginViewModel -> LoginView)
             var viewModelName = item.GetType().FullName;
-            var viewName = viewModelName.Replace("ViewModels", "Views.Pages").Replace("ViewModel", "View");
+            var viewName = viewModelName.Replace("ViewModels", "Views.Screens").Replace("ViewModel", "View");
 
             // Dynamically find the View by name in the same namespace
             var viewType = Type.GetType(viewName);
@@ -28,7 +28,7 @@ namespace ClientApp
                 return dataTemplate;
             }
 
-            // Fallback: Look for a DataTemplate with a matching key
+            // Fallback: Look for a DataTemplate with a matching key (Look for view)
             return frameworkElement?.FindResource(viewModelName) as DataTemplate;
         }
     }

@@ -1,6 +1,6 @@
 ﻿using ClientApp.Commands;
 using ClientApp.Services;
-using ClientApp.Views.Pages;
+using ClientApp.Views.Screens;
 using System.Windows.Controls;
 using System.Windows.Input;
 

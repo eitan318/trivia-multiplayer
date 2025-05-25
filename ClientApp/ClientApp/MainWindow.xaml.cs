@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using ClientApp.Services;
-using ClientApp.Views.Pages;
+using ClientApp.Views.Screens;
 using ClientApp.ViewModels;
 
 namespace ClientApp

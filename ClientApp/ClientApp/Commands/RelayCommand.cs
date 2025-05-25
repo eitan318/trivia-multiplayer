@@ -5,7 +5,7 @@ namespace ClientApp.Commands
 /// <summary>
 /// Represents a command that can be bound to user interface actions.
 /// </summary>
-public class RelayCommand : ICommand
+public class RelayCommand : CommandBase
 {
     private readonly Action<object> _execute;
     private readonly Func<object, bool> _canExecute;
@@ -49,13 +49,13 @@ public class RelayCommand : ICommand
     /// </summary>
     /// <param name="parameter">An optional parameter for the command. Can be <c>null</c>.</param>
     /// <returns><c>true</c> if the command can execute; otherwise, <c>false</c>.</returns>
-    public bool CanExecute(object parameter) => _canExecute?.Invoke(parameter) ?? true;
+    public override bool CanExecute(object parameter) => _canExecute?.Invoke(parameter) ?? true;
 
     /// <summary>
     /// Executes the command.
     /// </summary>
     /// <param name="parameter">An optional parameter for the command. Can be <c>null</c>.</param>
-    public void Execute(object parameter) => _execute(parameter);
+    public override void Execute(object parameter) => _execute(parameter);
 
     /// <summary>
     /// Raises the <see cref="CanExecuteChanged"/> event to notify the UI of changes in the command's execution status.

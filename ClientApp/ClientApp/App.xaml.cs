@@ -1,8 +1,8 @@
 ﻿using ClientApp.Services;
 using ClientApp.ViewModels;
 using System.Windows;
-using ClientApp.Views.Pages;
-using ClientApp.Views.Pages.ForgotPassword;
+using ClientApp.Views.Screens;
+using ClientApp.Views.Screens.ForgotPassword;
 using Microsoft.Extensions.DependencyInjection;
 using ClientApp.ViewModels.ForgotPassword;
 using ClientApp.Stores;
@@ -45,7 +45,7 @@ public partial class App : Application
         // Register ViewModels
         services.AddTransient<MainWindowViewModel>();
 
-        services.AddTransient<LoginViewModel>(s => CreateLoginViewModel(s));
+        services.AddTransient<LoginViewModel>();
         services.AddTransient<SignupViewModel>();
         services.AddTransient<MenuViewModel>();
         services.AddTransient<MemberRoomViewModel>();
@@ -93,19 +93,6 @@ public partial class App : Application
             var viewModel = sp.GetRequiredService<MainWindowViewModel>();
             return new MainWindow(viewModel);
         });
-
     }
-
-
-    private LoginViewModel CreateLoginViewModel(IServiceProvider serviceProvider)
-    {
-        return new LoginViewModel(
-            serviceProvider.GetRequiredService<INavigationService>(),
-            serviceProvider.GetRequiredService<UserStore>(),
-            serviceProvider.GetRequiredService<RequestsExchangeService>()
-
-            );
-    }
-
 }
 

@@ -13,7 +13,6 @@ namespace ClientApp.ViewModels
 
     class JoinRoomViewModel : ViewModelBase
     {
-        private INavigationService _navigationService;
         private RoomDataStore _roomDataStore;
         private readonly RequestsExchangeService _requestsExchangeService;
         public JoinRoomViewModel(
@@ -21,13 +20,17 @@ namespace ClientApp.ViewModels
             RequestsExchangeService requestsExchangeService,
             RoomDataStore roomDataStore) : base(true)
         {
-            this._navigationService = navigationService;
             this._requestsExchangeService = requestsExchangeService;
             this._roomDataStore = roomDataStore;
             RefreshCmd = new RelayCommand(async () => await Refresh());
-            JoinCmd = new RelayCommand(async () => await JoinRoom(), CanJoinRoom);
+            JoinCmd = new JoinCommand(this, navigationService, requestsExchangeService, roomDataStore);
             _ = Refresh(); // Fire and forget
         }
+
+
+        // Commands
+        public ICommand RefreshCmd { get; }
+        public ICommand JoinCmd { get; }
 
 
         // Fields
@@ -59,7 +62,7 @@ namespace ClientApp.ViewModels
                 _roomDataStore.CurrentRoomData = value?.RoomData;
                 OnPropertyChanged();
                 // Notify JoinCommand that its state may have changed
-                ((RelayCommand)JoinCmd).RaiseCanExecuteChanged();
+                ((CommandBase)JoinCmd).RaiseCanExecuteChanged();
             }
         }
 
@@ -76,9 +79,7 @@ namespace ClientApp.ViewModels
         }
 
 
-        // Commands
-        public ICommand RefreshCmd { get; }
-        public ICommand JoinCmd { get; }
+
 
 
         public async Task Refresh()
@@ -107,49 +108,6 @@ namespace ClientApp.ViewModels
             }
         }
 
-        private bool CanJoinRoom()
-        {
-            return SelectedRoom != null;
-        }
-
-        public async Task JoinRoom()
-        {
-            if (SelectedRoom == null) 
-            {
-                ErrorMessage = "Please select a room to join.";
-                return;
-            }
-
-            try
-            {
-                var selectedRoomId = SelectedRoom.Value.RoomData.Id;
-                var request = new JoinRoomRequest(selectedRoomId);
-                ResponseInfo<JoinRoomResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<JoinRoomResponse>(request);
-
-                if (responseInfo.NormalResponse)
-                {
-                    var joinResponse = responseInfo.Response;
-                    if(joinResponse.Status == 0)
-                    {
-                        _navigationService.NavigateTo<MemberRoomViewModel>();
-                    }
-                    else
-                    {
-                        ErrorMessage = joinResponse.Errors.GeneralError;
-                    }
-                }
-                else
-                {
-                    ErrorMessage = "SERVER ERROR: " + responseInfo.ErrorResponse.Message;
-                }
-  
-
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = $"Failed to join room: {ex.Message}";
-            }
-        }
     }
 }
 

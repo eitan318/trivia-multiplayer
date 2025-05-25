@@ -9,22 +9,25 @@ namespace ClientApp.ViewModels
 {
     class SignupViewModel : ViewModelBase
     {
-        private readonly INavigationService _navigationService;
         private UserStore _userStore;
-        private readonly RequestsExchangeService _requestsExchangeService;
         public SignupViewModel(
             INavigationService navigationService,
             RequestsExchangeService requestsExchangeService,
             UserStore userStore)
         {
-            _navigationService = navigationService;
             this._userStore = userStore;
-            this._navigationService = navigationService;
 
             // Initialize commands for different actions
-            SignupCmd = new RelayCommand(PerformSignup);
+            SignupCmd = new SignupCommand(this, navigationService, requestsExchangeService);
             NavToLoginCmd = new NavigateCommand<LoginViewModel>(navigationService);
         }
+
+
+        // Commands definition
+        public ICommand SignupCmd { get; }
+        public ICommand NavToLoginCmd { get; }
+
+
 
 
 
@@ -54,7 +57,7 @@ namespace ClientApp.ViewModels
             {
                 _userStore.Username = value;
                 OnPropertyChanged();
-                ((RelayCommand)SignupCmd).RaiseCanExecuteChanged();
+                ((CommandBase)SignupCmd).RaiseCanExecuteChanged();
             }
         }
 
@@ -66,7 +69,7 @@ namespace ClientApp.ViewModels
             {
                 _password = value;
                 OnPropertyChanged();
-                ((RelayCommand)SignupCmd).RaiseCanExecuteChanged();
+                ((CommandBase)SignupCmd).RaiseCanExecuteChanged();
             }
         }
 
@@ -77,7 +80,7 @@ namespace ClientApp.ViewModels
             {
                 _email = value;
                 OnPropertyChanged();
-                ((RelayCommand)SignupCmd).RaiseCanExecuteChanged();
+                ((CommandBase)SignupCmd).RaiseCanExecuteChanged();
             }
         }
 
@@ -88,7 +91,7 @@ namespace ClientApp.ViewModels
             {
                 _phoneNumber = value;
                 OnPropertyChanged();
-                ((RelayCommand)SignupCmd).RaiseCanExecuteChanged();
+                ((CommandBase)SignupCmd).RaiseCanExecuteChanged();
             }
         }
 
@@ -99,7 +102,7 @@ namespace ClientApp.ViewModels
             {
                 _houseAddress = value;
                 OnPropertyChanged();
-                ((RelayCommand)SignupCmd).RaiseCanExecuteChanged();
+                ((CommandBase)SignupCmd).RaiseCanExecuteChanged();
             }
         }
 
@@ -113,7 +116,7 @@ namespace ClientApp.ViewModels
                 {
                     _birthDate = value?.Date;
                     OnPropertyChanged(nameof(BirthDate));
-                    ((RelayCommand)SignupCmd).RaiseCanExecuteChanged();
+                    ((CommandBase)SignupCmd).RaiseCanExecuteChanged();
                 }
             }
         }
@@ -192,105 +195,7 @@ namespace ClientApp.ViewModels
 
 
 
-        // Commands definition
-        public ICommand SignupCmd { get; }
-        public ICommand NavToLoginCmd { get; }
 
-
-        /// <summary>
-        /// Attempts to sign up the user by validating the input fields and sending the signup request.
-        /// If the signup is successful, navigates to the login page. If there are errors, displays error messages.
-        /// </summary>
-        private async void PerformSignup()
-        {
-            const string cannotBeEmptyString = "Cannot be empty";
-
-            // Reset error messages
-            ErrorMessage = "";
-            UsernameErrorMessage = "";
-            PasswordErrorMessage = "";
-            EmailErrorMessage = "";
-            PhoneNumberErrorMessage = "";
-            HouseAddressErrorMessage = "";
-            BirthDateErrorMessage = "";
-
-            bool requiredNotEmpty = true;
-
-            // Trim input values
-            string trimmedUsername = Username?.Trim();
-            string trimmedPassword = Password?.Trim();
-            string trimmedEmail = Email?.Trim();
-            string trimmedPhoneNumber = PhoneNumber?.Trim();
-            string trimmedHouseAddress = HouseAddress?.Trim();
-            string trimmedBirthDate = BirthDate?.ToString("dd/MM/yyyy")??"";
-
-
-            // Validate each field
-            if (string.IsNullOrWhiteSpace(Username))
-            {
-                UsernameErrorMessage = cannotBeEmptyString;
-                requiredNotEmpty = false;
-            }
-
-            if (string.IsNullOrWhiteSpace(Password))
-            {
-                PasswordErrorMessage = cannotBeEmptyString;
-                requiredNotEmpty = false;
-            }
-
-            if (string.IsNullOrWhiteSpace(Email))
-            {
-                EmailErrorMessage = cannotBeEmptyString;
-                requiredNotEmpty = false;
-            }
-
-            try
-            {
-                // Prepare the signup request and send it
-                SignupRequest signupRequest = new SignupRequest(
-                        trimmedUsername,
-                        trimmedPassword,
-                        trimmedEmail,
-                        trimmedPhoneNumber,
-                        trimmedHouseAddress,
-                        trimmedBirthDate
-                    );
-
-                ResponseInfo<SignupResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<SignupResponse>(signupRequest);
-
-                // Handle server error response
-                if (responseInfo.NormalResponse)
-                {
-                    SignupResponse signupResponse = responseInfo.Response;
-                    if(signupResponse.Status == 0 && requiredNotEmpty)
-                    {
-                        // Navigate to the login page upon successful signup
-                        this._navigationService.NavigateTo<LoginViewModel>();
-                    }
-                    else
-                    {
-                        if(UsernameErrorMessage == "")
-                            UsernameErrorMessage = signupResponse.Errors.UsernameError;
-                        if (PasswordErrorMessage == "") 
-                            PasswordErrorMessage = signupResponse.Errors.PasswordError;
-                        if (EmailErrorMessage == "")
-                            EmailErrorMessage = signupResponse.Errors.EmailError;
-                        HouseAddressErrorMessage = signupResponse.Errors.HouseAddressError;
-                        PhoneNumberErrorMessage = signupResponse.Errors.PhoneNumberError;
-                        BirthDateErrorMessage = signupResponse.Errors.BirthDateError;
-                    } 
-                }
-                else
-                {
-                    ErrorResponse errorResponse = responseInfo.ErrorResponse;
-                    ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
-
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = $"Signup failed (sent from client side): {ex.Message}";
-            }
-        }
+        
     }
 }

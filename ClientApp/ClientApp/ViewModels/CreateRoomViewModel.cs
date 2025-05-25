@@ -4,7 +4,7 @@ using ClientApp.Models;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
-using ClientApp.Views.Pages;
+using ClientApp.Views.Screens;
 using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
@@ -14,9 +14,6 @@ namespace ClientApp.ViewModels
     /// </summary>
     class CreateRoomViewModel : ViewModelBase
     {
-        private INavigationService _navigationService;
-        private RoomDataStore _roomDataStore;
-        private readonly RequestsExchangeService _requestsExchangeService;
         
         /// <summary>
         /// Private constructor for initializing the ViewModel.
@@ -26,10 +23,10 @@ namespace ClientApp.ViewModels
             INavigationService navigationService,
             RoomDataStore roomDataStore) : base(true)
         {
-            this._roomDataStore = roomDataStore;
-            this._navigationService = navigationService;
-            _requestsExchangeService = requestsExchangeService;
-            CreateRoomCmd = new RelayCommand(PerformCreateRoom, CanCreateRoom);
+            CreateRoomCmd = new CreateRoomCommand(this, 
+                requestsExchangeService,
+                navigationService,
+                roomDataStore);
 
             PropertyChanged += (sender, args) =>
             {
@@ -38,12 +35,14 @@ namespace ClientApp.ViewModels
                     args.PropertyName == nameof(QuestionsCount) ||
                     args.PropertyName == nameof(QuestionTimeout))
                 {
-                    ((RelayCommand)CreateRoomCmd).RaiseCanExecuteChanged();
+                    ((BaseCommand)CreateRoomCmd).RaiseCanExecuteChanged();
                 }
             };
 
         }
 
+        // Commands
+        public ICommand CreateRoomCmd { get; }
 
 
         // Room fields
@@ -136,67 +135,8 @@ namespace ClientApp.ViewModels
 
 
 
-        // Commands
-        public ICommand CreateRoomCmd { get; }
 
 
-        /// <summary>
-        /// Determines whether the room can be created based on input validation.
-        /// </summary>
-        /// <returns>True if the room can be created, otherwise false.</returns>
-        private bool CanCreateRoom()
-        {
-            return !string.IsNullOrWhiteSpace(RoomName?.Trim())
-                   && MaxPlayers > 0
-                   && QuestionsCount > 0
-                   && QuestionTimeout > 0;
-        }
-
-        /// <summary>
-        /// Executes the process of creating a room and fetching players.
-        /// </summary>
-        private async void PerformCreateRoom()
-        {
-            RoomDataModel? roomData = await CreateRoom();
-            this._roomDataStore.CurrentRoomData = roomData;
-            if (roomData != null)
-            {
-                this._navigationService.NavigateTo<AdminRoomViewModel>();
-            }
-
-        }
-
-
-        /// <summary>
-        /// Sends a request to create a room with the specified parameters.
-        /// </summary>
-        private async Task<RoomDataModel?> CreateRoom()
-        {
-            string trimmedRoomName = RoomName?.Trim();
-
-            var createRoomRequest = new CreateRoomRequest(trimmedRoomName, MaxPlayers, QuestionsCount, QuestionTimeout);
-            var responseInfo = await _requestsExchangeService.ExchangeRequest<CreateRoomResponse>(createRoomRequest);
-
-            if (responseInfo.NormalResponse)
-            {
-                CreateRoomResponse createRoomResponse = responseInfo.Response;
-                if (createRoomResponse.Status == 0)
-                {
-                    return createRoomResponse.RoomData;
-                }
-                else
-                {
-                    this.QuestionCountError = createRoomResponse.Errors.QuestionCountError;
-                }
-
-            }
-            else
-            {
-                ErrorMessage = "SERVER ERROR: " + responseInfo.ErrorResponse.Message;
-            }
-
-            return null; 
-
-        }
+        
     }
 }

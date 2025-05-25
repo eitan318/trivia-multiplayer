@@ -1,5 +1,6 @@
 ﻿using ClientApp.Stores;
 using ClientApp.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -36,6 +37,7 @@ namespace ClientApp.Services
             // Set the current ViewModel
             _navigationStore.CurrentViewModel = viewModel;
         }
+
 
         public void GoBack()
         {
