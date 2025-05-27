@@ -13,4 +13,8 @@ enum class RequestCodes : unsigned char {
   GetRoomsRequest = 10,
   PersonalStatisticsRequest = 11,
   VerifyPasswordResetCodeRequest = 12,
+  CloseRoomRequest = 13,
+  StartGameRequest = 14,
+  GetRoomStateRequest = 15,
+  LeaveRoomRequest = 16,
 };
