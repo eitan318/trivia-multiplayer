@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CloseRoomResponse.hpp" />
     <ClInclude Include="Communicator.hpp" />
     <ClInclude Include="CreateRoomRequest.hpp" />
     <ClInclude Include="CreateRoomResponse.hpp" />
@@ -135,9 +136,11 @@
     <ClInclude Include="EmailSender.hpp" />
     <ClInclude Include="GetHighScoreRequest.hpp" />
     <ClInclude Include="GetPlayersInRoomRequest.hpp" />
+    <ClInclude Include="GetRoomStateResponse.hpp" />
     <ClInclude Include="IResponseErrors.hpp" />
     <ClInclude Include="JoinRoomResponse.hpp" />
     <ClInclude Include="JoinRoomResponseErrors.hpp" />
+    <ClInclude Include="LeaveRoomResponse.hpp" />
     <ClInclude Include="LoginResponse.hpp" />
     <ClInclude Include="LoginResponseErrors.hpp" />
     <ClInclude Include="LogoutResponse.hpp" />
@@ -184,6 +187,7 @@
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDatabase.hpp" />
     <ClInclude Include="ApiClient.hpp" />
+    <ClInclude Include="StartGameResponse.hpp" />
     <ClInclude Include="StatisticsManager.hpp" />
     <ClInclude Include="StatusEnum.hpp" />
     <ClInclude Include="UserRecord.hpp" />
@@ -193,6 +197,7 @@
     <ClInclude Include="WSAInitializer.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CloseRoomResponse.cpp" />
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="CreateRoomRequest.cpp" />
     <ClCompile Include="CreateRoomResponse.cpp" />
@@ -204,10 +209,12 @@
     <ClCompile Include="GetPlayersInRoomRequest.cpp" />
     <ClCompile Include="GetPlayersInRoomResponse.cpp" />
     <ClCompile Include="GetRoomsResponse.cpp" />
+    <ClCompile Include="GetRoomStateResponse.cpp" />
     <ClCompile Include="JoinRoomRequest.cpp" />
     <ClCompile Include="JoinRoomResponse.cpp" />
     <ClCompile Include="JoinRoomResponseErrors.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.hpp" />
+    <ClCompile Include="LeaveRoomResponse.cpp" />
     <ClCompile Include="LoggedUser.cpp" />
     <ClCompile Include="LoginRequest.cpp" />
     <ClCompile Include="LoginResponse.cpp" />
@@ -243,6 +250,7 @@
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDatabase.cpp" />
     <ClCompile Include="ApiClient.cpp" />
+    <ClCompile Include="StartGameResponse.cpp" />
     <ClCompile Include="StatisticsManager.cpp" />
     <ClCompile Include="VerifyPasswordResetCodeRequest.cpp" />
     <ClCompile Include="VerifyPasswordResetCodeResponse.cpp" />
