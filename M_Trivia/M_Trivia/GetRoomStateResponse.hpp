@@ -1,6 +1,7 @@
 #pragma once
 #include "Response.hpp"
 #include "RoomData.hpp"
+#include "LoggedUser.hpp"
 #include <vector>
 
 /**
@@ -10,7 +11,7 @@
 class GetRoomStateResponse : public Response {
 private:
     bool m_hasGameBegun;
-    const std::vector<std::string>& m_players;
+    const std::vector<LoggedUser>& m_players;
     unsigned int m_answerCount;
     double m_answerTimeOut;
 
@@ -23,7 +24,7 @@ public:
     GetRoomStateResponse(
         unsigned int status,
 		bool hasGameBegun,
-		const std::vector<std::string>& players,
+		const std::vector<LoggedUser>& players,
 		unsigned int answerCount,
 		double answerTimeOut);
 
