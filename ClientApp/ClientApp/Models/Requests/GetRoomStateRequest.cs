@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace ClientApp.Models.Requests
 {
-    class GetRoomStateRequest
+    class GetRoomStateRequest : IRequest
     {
-        public RequestsCodes GetCode() => RequestsCodes.GetRoomsRequest;
+        public RequestsCodes GetCode() => RequestsCodes.GetRoomStateRequest;
 
     }
 }
