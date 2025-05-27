@@ -2,7 +2,7 @@
 #include "Response.hpp"
 
 /**
- * @class StartRoomResponse
+ * @class StartGameResponse
  * @brief Represents a response containing Status only and no data
  */
 class StartGameResponse : public Response {
@@ -19,5 +19,5 @@ public:
 	/**
 	 * @brief Deleted default constructor to enforce proper initialization.
 	 */
-	LeaveRoomResponse() = delete;
+	StartGameResponse() = delete;
 };	
