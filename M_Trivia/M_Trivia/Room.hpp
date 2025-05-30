@@ -49,7 +49,7 @@ public:
      * @brief Retrieves the usernames of all users in the room.
      * @return A vector of strings containing the usernames of all users.
      */
-    std::vector<LoggedUser> getUsersVector() const;
+    const std::vector<LoggedUser>& getUsersVector() const;
 
 
     /**
