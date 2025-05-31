@@ -6,7 +6,7 @@
 struct RoomPreview {
     RoomData roomData;
     unsigned int currPlayersAmount;
-    bool status;
+    RoomStatus status;
 };
 
 

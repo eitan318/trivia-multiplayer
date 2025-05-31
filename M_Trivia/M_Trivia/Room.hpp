@@ -2,8 +2,17 @@
 #include "RoomData.hpp"
 #include "LoggedUser.hpp"
 #include "RoomPreview.hpp"
+#include "CloseRoomResponseErrors.hpp"
+#include "StartGameResponseErrors.hpp"
 #include <map>
 #include <string>
+
+
+enum RoomStatus {
+    Closed,
+    InGame,
+    NotInGame 
+};
 
 /**
  * @class Room
@@ -14,6 +23,7 @@ private:
     static unsigned int id;            
     RoomData m_metadata;               
     std::map<std::string,LoggedUser> m_users;   
+    RoomStatus status;
 
 public:
     /**
@@ -60,14 +70,34 @@ public:
 
 
     /**
-     * @brief Updates the metadata of the room.
+     * @brief Initialy sets the metadata of the room.
      * @param roomdata The new RoomData object to set as the room's metadata.
      */
     void setRoomData(const RoomData& roomdata);
 
-
-    bool getRoomStatus() const;
     /**
+     * Attempts to close the current room.
+     *
+     * @return A CloseRoomResponseErrors indicating the result of the operation.
+     */
+    CloseRoomResponseErrors close();
+
+    /**
+     * Attempts to start the game in the current room.
+     *
+     * @return A StartGameResponseErrors indicating the result of the operation.
+     */
+    StartGameResponseErrors startGame();
+
+    /**
+     * Retrieves the current status of the room.
+     *
+     * @return A RoomStatus representing the room's current state.
+     */
+    RoomStatus getRoomStatus();
+
+
+     /**
      * @brief Retrieves the metadata associated with the room.
      * @return The RoomPreview object containing the room's metadata.
      */

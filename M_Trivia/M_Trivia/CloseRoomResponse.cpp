@@ -2,8 +2,8 @@
 #include "json.hpp"
 
 
-CloseRoomResponse::CloseRoomResponse(unsigned int status)
-	: Response(status)
+CloseRoomResponse::CloseRoomResponse(CloseRoomResponseErrors* errors)
+	: Response(errors)
 {
 }
 

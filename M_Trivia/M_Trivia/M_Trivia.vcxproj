@@ -129,6 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CloseRoomResponse.hpp" />
+    <ClInclude Include="CloseRoomResponseErrors.hpp" />
     <ClInclude Include="Communicator.hpp" />
     <ClInclude Include="CreateRoomRequest.hpp" />
     <ClInclude Include="CreateRoomResponse.hpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="ResetPasswordRequest.hpp" />
     <ClInclude Include="ResetPasswordResponse.hpp" />
     <ClInclude Include="PasswordCodeResponseErrors.hpp" />
+    <ClInclude Include="RoomAdminRequestHandler.hpp" />
     <ClInclude Include="RoomPreview.hpp" />
     <ClInclude Include="RoomRequestHandler.hpp" />
     <ClInclude Include="RoomState.hpp" />
@@ -190,6 +192,7 @@
     <ClInclude Include="SqliteDatabase.hpp" />
     <ClInclude Include="ApiClient.hpp" />
     <ClInclude Include="StartGameResponse.hpp" />
+    <ClInclude Include="StartGameResponseErrors.hpp" />
     <ClInclude Include="StatisticsManager.hpp" />
     <ClInclude Include="StatusEnum.hpp" />
     <ClInclude Include="UserRecord.hpp" />
@@ -200,6 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CloseRoomResponse.cpp" />
+    <ClCompile Include="CloseRoomResponseErrors.cpp" />
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="CreateRoomRequest.cpp" />
     <ClCompile Include="CreateRoomResponse.cpp" />
@@ -233,6 +237,7 @@
     <ClCompile Include="ResetPasswordResponse.cpp" />
     <ClCompile Include="ResetPasswordResponseErrors.cpp" />
     <ClCompile Include="Response.cpp" />
+    <ClCompile Include="RoomAdminRequestHandler.cpp" />
     <ClCompile Include="RoomRequestHandler.cpp" />
     <ClCompile Include="SendPasswordResetCodeRequest.cpp" />
     <ClCompile Include="ServerErrorResponse.cpp" />
@@ -254,6 +259,7 @@
     <ClCompile Include="SqliteDatabase.cpp" />
     <ClCompile Include="ApiClient.cpp" />
     <ClCompile Include="StartGameResponse.cpp" />
+    <ClCompile Include="StartGameResponseErrors.cpp" />
     <ClCompile Include="StatisticsManager.cpp" />
     <ClCompile Include="VerifyPasswordResetCodeRequest.cpp" />
     <ClCompile Include="VerifyPasswordResetCodeResponse.cpp" />

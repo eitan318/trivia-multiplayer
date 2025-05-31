@@ -1,10 +1,12 @@
 #include "Room.hpp"
+#include "Response.hpp"
 
 Room::Room(const RoomData& roomdata, const LoggedUser& user) 
 {
 	this->m_metadata = roomdata;
 	this->m_users = std::map<std::string,LoggedUser>();
 	this->m_users.insert({ user.getUsername(),user });
+	this->status = RoomStatus::Closed;
 }
 Room::Room() {
 }
@@ -44,21 +46,57 @@ const std::map<std::string, LoggedUser>& Room::getUsersMap() const
 }
 
 
-bool Room::getRoomStatus() const
-{
-	return true;
-}
 
 void Room::setRoomData(const RoomData& roomdata)
 {
 	this->m_metadata = roomdata;
 }
 
+CloseRoomResponseErrors Room::close()
+{
+	CloseRoomResponseErrors errors;
+	if (this->status == RoomStatus::Closed) {
+		errors.generalError = "Room already closed";
+	}
+
+	errors.statusCode = !errors.noErrors();
+	if (errors.statusCode == GENERAL_SUCCESS_RESPONSE_STATUS) {
+		this->status = RoomStatus::Closed;
+	}
+	return errors;
+}
+
+StartGameResponseErrors Room::startGame()
+{
+	StartGameResponseErrors errors;
+	if (this->status == RoomStatus::Closed) {
+		errors.generalError = "Cannot start game of a closed room.";
+	}
+	else if (this->status == RoomStatus::InGame) {
+		errors.generalError = "Room is already in game.";
+	}
+
+	errors.statusCode = !errors.noErrors();
+	if (errors.statusCode == GENERAL_SUCCESS_RESPONSE_STATUS) {
+		this->status = RoomStatus::InGame;
+	}
+	return errors;
+}
+
+
+RoomStatus Room::getRoomStatus()
+{
+	return this->status;
+}
+
 
 RoomPreview Room::getRoomPreview() const {
 	RoomPreview p;
 	p.currPlayersAmount = getUsersVector().size();
-	p.status = getRoomStatus();
+	p.status =  this->status;
 	p.roomData = this->m_metadata;
 	return p;
 }
+
+
+
