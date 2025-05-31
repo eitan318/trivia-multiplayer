@@ -3,6 +3,7 @@
 #include "JoinRoomResponseErrors.hpp"
 #include "LoggedUser.hpp"
 #include "MyException.hpp"
+#include "Response.hpp"
 #include <mutex>
 
 
@@ -67,6 +68,46 @@ std::vector<RoomPreview> RoomManager::getRooms() const {
     }
     return roomsvec;
 }
+
+CloseRoomResponseErrors RoomManager::closeRoom(int roomId)
+{
+    auto it = this->m_rooms.find(roomId);
+    Room* room = &it->second;
+    CloseRoomResponseErrors errors;
+    if (room->getRoomStatus() == RoomStatus::Closed) {
+        errors.generalError = "Room already closed";
+    }
+
+    errors.statusCode = !errors.noErrors();
+    if (errors.statusCode == GENERAL_SUCCESS_RESPONSE_STATUS) {
+        room->close();
+    }
+    return errors;
+}
+
+StartGameResponseErrors RoomManager::startGameOfRoom(int roomId)
+{
+    auto it = this->m_rooms.find(roomId);
+    Room* room = &it->second;
+    StartGameResponseErrors errors;
+    if (room->getRoomStatus() == RoomStatus::Closed) {
+        errors.generalError = "Cannot start game of a closed room.";
+    }
+    else if (room->getRoomStatus() == RoomStatus::InGame) {
+        errors.generalError = "Room is already in game.";
+    }
+    else if (room->getUsersVector().size() < 2) {
+        errors.generalError = "Not enougth palyers.";
+    }
+
+    errors.statusCode = !errors.noErrors();
+    if (errors.statusCode == GENERAL_SUCCESS_RESPONSE_STATUS) {
+        room->startGame();
+    }
+    return errors;
+}
+
+
 
 JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
     const LoggedUser& loggedUser) {

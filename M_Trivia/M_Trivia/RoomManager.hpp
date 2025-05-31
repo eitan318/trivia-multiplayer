@@ -75,6 +75,20 @@ public:
     std::vector<RoomPreview> getRooms() const;
 
     /**
+	 * Attempts to close the current room.
+	 *
+	 * @return A CloseRoomResponseErrors indicating the result of the operation.
+	 */
+    CloseRoomResponseErrors closeRoom(int roomId);
+
+    /**
+     * Attempts to start the game in the current room.
+     *
+     * @return A StartGameResponseErrors indicating the result of the operation.
+     */
+    StartGameResponseErrors startGameOfRoom(int roomId);
+
+    /**
      * @brief Retrieves a reference to a specific room.
      * @param ID The ID of the room to retrieve.
      * @return A reference to the Room object.

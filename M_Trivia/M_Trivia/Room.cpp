@@ -52,35 +52,19 @@ void Room::setRoomData(const RoomData& roomdata)
 	this->m_metadata = roomdata;
 }
 
-CloseRoomResponseErrors Room::close()
+void Room::close()
 {
-	CloseRoomResponseErrors errors;
-	if (this->status == RoomStatus::Closed) {
-		errors.generalError = "Room already closed";
-	}
-
-	errors.statusCode = !errors.noErrors();
-	if (errors.statusCode == GENERAL_SUCCESS_RESPONSE_STATUS) {
-		this->status = RoomStatus::Closed;
-	}
-	return errors;
+	this->status = RoomStatus::Closed;
 }
 
-StartGameResponseErrors Room::startGame()
+void Room::startGame()
 {
-	StartGameResponseErrors errors;
-	if (this->status == RoomStatus::Closed) {
-		errors.generalError = "Cannot start game of a closed room.";
-	}
-	else if (this->status == RoomStatus::InGame) {
-		errors.generalError = "Room is already in game.";
-	}
+	this->status = RoomStatus::InGame;
+}
 
-	errors.statusCode = !errors.noErrors();
-	if (errors.statusCode == GENERAL_SUCCESS_RESPONSE_STATUS) {
-		this->status = RoomStatus::InGame;
-	}
-	return errors;
+unsigned int Room::getId()
+{
+	return this->id;
 }
 
 

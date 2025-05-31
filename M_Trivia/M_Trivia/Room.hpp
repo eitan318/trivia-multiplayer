@@ -75,19 +75,14 @@ public:
      */
     void setRoomData(const RoomData& roomdata);
 
-    /**
-     * Attempts to close the current room.
-     *
-     * @return A CloseRoomResponseErrors indicating the result of the operation.
-     */
-    CloseRoomResponseErrors close();
+    // closes the room
+    void close();
 
-    /**
-     * Attempts to start the game in the current room.
-     *
-     * @return A StartGameResponseErrors indicating the result of the operation.
-     */
-    StartGameResponseErrors startGame();
+    // starting a game in the room
+    void startGame();
+
+    //returning the id of the room
+    unsigned int getId();
 
     /**
      * Retrieves the current status of the room.

@@ -60,7 +60,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
 
 RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& requestInfo)
 {
-	CloseRoomResponseErrors errors = this->m_room->close();
+	CloseRoomResponseErrors errors = this->m_roomManager.closeRoom(this->m_room->getId());
 
 	CloseRoomResponse closeRoomResponse(&errors);
 	RequestResult result;
@@ -71,7 +71,7 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& requestInfo)
 
 RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& requestInfo)
 {
-	StartGameResponseErrors errors = this->m_room->startGame();
+	StartGameResponseErrors errors = this->m_roomManager.startGameOfRoom(this->m_room->getId());
 
 	StartGameResponse startGameResponse(&errors);
 	RequestResult result;

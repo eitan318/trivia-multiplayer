@@ -194,7 +194,6 @@
     <ClInclude Include="StartGameResponse.hpp" />
     <ClInclude Include="StartGameResponseErrors.hpp" />
     <ClInclude Include="StatisticsManager.hpp" />
-    <ClInclude Include="StatusEnum.hpp" />
     <ClInclude Include="UserRecord.hpp" />
     <ClInclude Include="VerifyPasswordResetCodeRequest.hpp" />
     <ClInclude Include="VerifyPasswordResetCodeResponse.hpp" />
