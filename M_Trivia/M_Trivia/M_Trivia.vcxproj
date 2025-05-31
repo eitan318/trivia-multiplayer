@@ -153,6 +153,7 @@
     <ClInclude Include="ResetPasswordResponse.hpp" />
     <ClInclude Include="PasswordCodeResponseErrors.hpp" />
     <ClInclude Include="RoomAdminRequestHandler.hpp" />
+    <ClInclude Include="RoomMemberRequestHandler.hpp" />
     <ClInclude Include="RoomPreview.hpp" />
     <ClInclude Include="RoomRequestHandler.hpp" />
     <ClInclude Include="RoomState.hpp" />
@@ -237,6 +238,7 @@
     <ClCompile Include="ResetPasswordResponseErrors.cpp" />
     <ClCompile Include="Response.cpp" />
     <ClCompile Include="RoomAdminRequestHandler.cpp" />
+    <ClCompile Include="RoomMemberRequestHandler.cpp" />
     <ClCompile Include="RoomRequestHandler.cpp" />
     <ClCompile Include="SendPasswordResetCodeRequest.cpp" />
     <ClCompile Include="ServerErrorResponse.cpp" />
