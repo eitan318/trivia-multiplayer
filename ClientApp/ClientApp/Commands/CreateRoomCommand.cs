@@ -51,7 +51,7 @@ namespace ClientApp.Commands
             this._roomDataStore.CurrentRoomData = roomData;
             if (roomData != null)
             {
-                this._navigationService.NavigateTo<AdminRoomViewModel>();
+                this._navigationService.NavigateTo<RoomAdminViewModel>();
             }
 
         }

@@ -49,7 +49,7 @@ public partial class App : Application
         services.AddTransient<SignupViewModel>();
         services.AddTransient<MenuViewModel>();
         services.AddTransient<MemberRoomViewModel>();
-        services.AddTransient<AdminRoomViewModel>();
+        services.AddTransient<RoomAdminViewModel>();
         services.AddTransient<StatisticsViewModel>();
         services.AddTransient<HighScoresViewModel>();
         services.AddTransient<PersonalStatisticsViewModel>();
@@ -67,7 +67,7 @@ public partial class App : Application
         services.AddTransient<SignupView>();
         services.AddTransient<MenuView>();
         services.AddTransient<MemberRoomView>();
-        services.AddTransient<AdminRoomView>();
+        services.AddTransient<RoomAdminView>();
         services.AddTransient<StatisticsView>();
         services.AddTransient<HighScoresView>();
         services.AddTransient<PersonalStatisticsView>();

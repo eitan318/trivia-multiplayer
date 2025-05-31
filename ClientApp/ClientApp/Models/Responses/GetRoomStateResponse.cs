@@ -8,15 +8,6 @@ namespace ClientApp.Models.Responses
 
 
         [JsonProperty]
-        public bool HasGameBegun { get; private set; }
-
-        [JsonProperty]
-        public uint AnswerCount { get; private set; }
-
-        [JsonProperty]
-        public double AnswerTimeOut { get; private set; }
-
-        [JsonProperty]
-        public List<LoggedUser> Players { get; private set; }
+        public RoomState RoomState{ get; private set; }
     }
 }

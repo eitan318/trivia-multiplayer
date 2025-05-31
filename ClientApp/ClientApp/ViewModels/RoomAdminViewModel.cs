@@ -9,12 +9,13 @@ using System.Windows.Input;
 
 namespace ClientApp.ViewModels
 {
-    class AdminRoomViewModel : ViewModelBase
+    class RoomAdminViewModel : ViewModelBase
     {
         private UserStore userStore;
         private readonly RequestsExchangeService _requestsExchangeService;
 
-        public AdminRoomViewModel(
+        public RoomAdminViewModel(
+            INavigationService navigationService,
             RequestsExchangeService requestsExchangeService, 
             RoomDataStore roomDataStore, 
             UserStore userState)
@@ -22,7 +23,7 @@ namespace ClientApp.ViewModels
             this.userStore = userState;
             this._requestsExchangeService = requestsExchangeService;
             this.RefreshCmd = new RelayCommand(RefreshPlayers);
-            this.StartGameCmd = new RelayCommand(StartGame);
+            this.StartGameCmd = new StartGameCommand(navigationService, requestsExchangeService, this);
             this.CloseRoomCmd = new RelayCommand(CloseRoom);
             this.RoomDataStore = roomDataStore;
             RefreshPlayers();
@@ -44,6 +45,7 @@ namespace ClientApp.ViewModels
 
         public LoggedUser Admin { get; set; }
 
+        public string ErrorMessage { get; set; }
 
 
 
@@ -74,11 +76,6 @@ namespace ClientApp.ViewModels
             {
 
             }
-
-        }
-
-        private void StartGame()
-        {
 
         }
 
