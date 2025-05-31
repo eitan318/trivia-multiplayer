@@ -1,5 +1,6 @@
 #pragma once
 #include "Response.hpp"
+#include "CloseRoomResponseErrors.hpp"
 
 /**
  * @class CloseRoomResponse
@@ -7,7 +8,7 @@
  */
 class CloseRoomResponse : public Response {
 public:
-	CloseRoomResponse(unsigned int status);
+	CloseRoomResponse(CloseRoomResponseErrors* errors);
 
 	/**
 	 * @brief Gets the response code for this response.

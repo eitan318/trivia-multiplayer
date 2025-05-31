@@ -1,7 +1,8 @@
 #include "StartGameResponse.hpp"
 
-StartGameResponse::StartGameResponse(unsigned int status) :
-	Response(status)
+
+StartGameResponse::StartGameResponse(StartGameResponseErrors* errors) : 
+	Response(errors)
 {
 }
 

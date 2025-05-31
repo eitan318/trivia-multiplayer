@@ -1,10 +1,12 @@
 #include "Room.hpp"
+#include "Response.hpp"
 
 Room::Room(const RoomData& roomdata, const LoggedUser& user) 
 {
 	this->m_metadata = roomdata;
 	this->m_users = std::map<std::string,LoggedUser>();
 	this->m_users.insert({ user.getUsername(),user });
+	this->status = RoomStatus::Closed;
 }
 Room::Room() {
 }
@@ -44,21 +46,41 @@ const std::map<std::string, LoggedUser>& Room::getUsersMap() const
 }
 
 
-bool Room::getRoomStatus() const
-{
-	return true;
-}
 
 void Room::setRoomData(const RoomData& roomdata)
 {
 	this->m_metadata = roomdata;
 }
 
+void Room::close()
+{
+	this->status = RoomStatus::Closed;
+}
+
+void Room::startGame()
+{
+	this->status = RoomStatus::InGame;
+}
+
+unsigned int Room::getId()
+{
+	return this->id;
+}
+
+
+RoomStatus Room::getRoomStatus()
+{
+	return this->status;
+}
+
 
 RoomPreview Room::getRoomPreview() const {
 	RoomPreview p;
 	p.currPlayersAmount = getUsersVector().size();
-	p.status = getRoomStatus();
+	p.status =  this->status;
 	p.roomData = this->m_metadata;
 	return p;
 }
+
+
+

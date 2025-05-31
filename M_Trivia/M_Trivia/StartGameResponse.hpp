@@ -1,5 +1,6 @@
 #pragma once
 #include "Response.hpp"
+#include "StartGameResponseErrors.hpp"
 
 /**
  * @class StartGameResponse
@@ -7,7 +8,7 @@
  */
 class StartGameResponse : public Response {
 public:
-	StartGameResponse(unsigned int status);
+	StartGameResponse(StartGameResponseErrors* errors);
 
 	/**
 	 * @brief Gets the response code for this response.

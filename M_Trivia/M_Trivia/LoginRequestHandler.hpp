@@ -1,9 +1,3 @@
-/**
- * @file LoginRequestHandler.h
- * @brief Declaration of the LoginRequestHandler class responsible for handling
- * login-related requests.
- */
-
 #pragma once
 #include "IRequestHandler.hpp"
 #include "RequestHandlerFactory.hpp"

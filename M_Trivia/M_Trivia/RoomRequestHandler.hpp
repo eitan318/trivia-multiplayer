@@ -9,10 +9,11 @@
 
 class RoomRequestHandler : IRequestHandler {
 public:
-	RequestResult getRoomState(RequestInfo requestinfo);
-	RoomRequestHandler(Room room,LoggedUser user, RoomManager& roomManager,RequestHandlerFactory& requestHandlerFactory);
-private:
-	Room m_room;
+	RequestResult getRoomState(const RequestInfo& requestinfo);
+	RoomRequestHandler(Room* room,LoggedUser user, RoomManager& roomManager,RequestHandlerFactory& requestHandlerFactory);
+
+protected:
+	Room* m_room;
 	LoggedUser m_user;
 	RoomManager& m_roomManager;
 	RequestHandlerFactory& m_requestHandlerFactory;
