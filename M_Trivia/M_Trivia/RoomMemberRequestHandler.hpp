@@ -30,5 +30,10 @@ public:
 	 */
 	RequestResult handleRequest(const RequestInfo& requestInfo, SOCKET socket) override;
 private:
-	RequestResult LeaveRoomRequest(RequestInfo requestInfo);
+	/**
+	 * @brief Handles a given request and produces a result.
+	 * @param requestInfo The request information to handle.
+	 * @return The result request of leaving room, succesfull or not.
+	 */
+	RequestResult leaveRoomRequest(RequestInfo requestInfo);
 };

@@ -34,7 +34,7 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
 	try {
 		switch (static_cast<RequestCodes>(requestInfo.code)) {
 		case RequestCodes::LeaveRoomRequest:
-			return this->LeaveRoomRequest(requestInfo);
+			return this->leaveRoomRequest(requestInfo);
 		case RequestCodes::GetRoomStateRequest:
 			return this->getRoomState(requestInfo);
 		default:
@@ -53,7 +53,7 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
 	}
 }
 
-RequestResult RoomMemberRequestHandler::LeaveRoomRequest(RequestInfo requestInfo) 
+RequestResult RoomMemberRequestHandler::leaveRoomRequest(RequestInfo requestInfo) 
 {
 	this->m_room->removeUser(this->m_user);
 	LeaveRoomResponse leaveRoomResponse(GENERAL_SUCCESS_RESPONSE_STATUS);
