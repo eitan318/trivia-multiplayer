@@ -48,10 +48,17 @@ namespace ClientApp.ViewModels
 
         private async void PeriodiclyCheckRoomState()
         {
+            //Check get room status from server.
+            var getRoomStatusRequest = new GetRoomStateRequest();
+            ResponseInfo<GetRoomStateResponse> responseInfo =
+                await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(getRoomStatusRequest);
+            GetRoomStateResponse response = (GetRoomStateResponse)responseInfo.Response;
 
+            if (response.RoomState.RoomStatus == RoomStatus.Closed) //if status of room is closed
+            {
+                LeaveRoomCmd.Execute(null);
+            }
         }
-
-
 
 
         /// <summary>
