@@ -10,9 +10,9 @@ namespace ClientApp.Commands
     {
         private INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
-        private JoinRoomViewModel _joinRoomViewModel;
+        private MemberRoomViewModel _memberRoomViewModel;
         public LeaveRoomCommand(
-            JoinRoomViewModel joinRoomViewModel,
+            MemberRoomViewModel memberRoomViewModel,
             INavigationService navigationService,
             RequestsExchangeService requestsExchangeService,
             RoomDataStore roomDataStore
@@ -20,15 +20,26 @@ namespace ClientApp.Commands
         {
             this._navigationService = navigationService;
             this._requestsExchangeService = requestsExchangeService;
-            this._joinRoomViewModel = joinRoomViewModel;
+            this._memberRoomViewModel = memberRoomViewModel;
         }
         public override async void Execute(object parameter)
         {
-            var leaverRoomRequest = new LeaveRoomRequest();
-            ResponseInfo<LeaveRoomResponse> responseInfo =
-                await _requestsExchangeService.ExchangeRequest<LeaveRoomResponse>(leaverRoomRequest);
-            LeaveRoomResponse response = (LeaveRoomResponse)responseInfo.Response;
-            if (response.Status == 0)
+            try
+            {
+                var leaverRoomRequest = new LeaveRoomRequest();
+                ResponseInfo<LeaveRoomResponse> responseInfo =
+                    await _requestsExchangeService.ExchangeRequest<LeaveRoomResponse>(leaverRoomRequest);
+                LeaveRoomResponse response = (LeaveRoomResponse)responseInfo.Response;
+                if (response.Status == 0)
+                {
+                    this._navigationService.NavigateTo<MenuViewModel>();
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch(Exception ex)
             {
                 this._navigationService.NavigateTo<MenuViewModel>();
             }

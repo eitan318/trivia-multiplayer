@@ -6,6 +6,8 @@ using ClientApp.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ClientApp.Views.Screens;
+using System.Threading;
+using System.Threading.Tasks;
 using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
@@ -14,6 +16,7 @@ namespace ClientApp.ViewModels
     {
         private UserStore _userStore;
         private readonly RequestsExchangeService _requestsExchangeService;
+        private CancellationTokenSource _cts;
 
         public MemberRoomViewModel(
             INavigationService navigationService,
@@ -24,9 +27,12 @@ namespace ClientApp.ViewModels
             this._userStore = userStore;
             this._requestsExchangeService = requestsExchangeService;
             this.RefreshCmd = new RelayCommand(RefreshPlayers);
-            this.LeaveRoomCmd = new NavigateCommand<JoinRoomViewModel>(navigationService);
+            this.LeaveRoomCmd = new LeaveRoomCommand(this,navigationService,requestsExchangeService,null);
             this.RoomDataStore = roomDataStore;
             RefreshPlayers();
+
+            this._cts = new CancellationTokenSource();
+            Task.Run(() => PeriodicallyCheckRoomStateLoop(_cts.Token));
         }
 
         /// <summary>
@@ -44,9 +50,26 @@ namespace ClientApp.ViewModels
         public ICommand LeaveRoomCmd { get; }
 
 
+        /// <summary>
+        /// runs as a thread in the background, runs with a while loop and calls PeriodicallyCheckRoomState to check on room,
+        /// stops if cancellation token is canceled.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        private async Task PeriodicallyCheckRoomStateLoop(CancellationToken token)
+        {
+            while (!token.IsCancellationRequested)
+            {
+                await PeriodicallyCheckRoomState();
+                await Task.Delay(300, token); // 0.3 seconds
+            }
+        }
 
-
-        private async void PeriodiclyCheckRoomState()
+        /// <summary>
+        /// Periodically checks the room state, if room is closed than calling the leave room command.
+        /// </summary>
+        /// <returns></returns>
+        private async Task PeriodicallyCheckRoomState()
         {
             //Check get room status from server.
             var getRoomStatusRequest = new GetRoomStateRequest();
@@ -57,6 +80,7 @@ namespace ClientApp.ViewModels
             if (response.RoomState.RoomStatus == RoomStatus.Closed) //if status of room is closed
             {
                 LeaveRoomCmd.Execute(null);
+                _cts.Cancel();
             }
         }
 
