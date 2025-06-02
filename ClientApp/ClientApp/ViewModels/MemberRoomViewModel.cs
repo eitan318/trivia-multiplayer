@@ -46,6 +46,14 @@ namespace ClientApp.ViewModels
 
 
 
+        private async void PeriodiclyCheckRoomState()
+        {
+
+        }
+
+
+
+
         /// <summary>
         /// Sends a request to retrieve and populate the player list for the room.
         /// </summary>
