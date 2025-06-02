@@ -10,88 +10,99 @@ using System.Threading;
 using System.Threading.Tasks;
 using ClientApp.Stores;
 
+
 namespace ClientApp.ViewModels
 {
     class MemberRoomViewModel : ViewModelBase
     {
         private UserStore _userStore;
         private readonly RequestsExchangeService _requestsExchangeService;
-        private CancellationTokenSource _cts;
+        private readonly INavigationService _navigationService;
+        private CancellationTokenSource _checkRoomStateCTS;
 
         public MemberRoomViewModel(
             INavigationService navigationService,
-            RoomDataStore roomDataStore, 
+            RoomDataStore roomDataStore,
             UserStore userStore,
-            RequestsExchangeService requestsExchangeService) 
+            RequestsExchangeService requestsExchangeService)
         {
+            this._navigationService = navigationService;
             this._userStore = userStore;
             this._requestsExchangeService = requestsExchangeService;
-            this.LeaveRoomCmd = new LeaveRoomCommand(this,navigationService,requestsExchangeService,null);
+            this.LeaveRoomCmd = new LeaveRoomCommand(navigationService, requestsExchangeService, null);
             this.RoomDataStore = roomDataStore;
-
-            this._cts = new CancellationTokenSource();
-            Task.Run(() => PeriodicallyCheckRoomStateLoop());
         }
 
-        /// <summary>
-        /// Collection of players currently in the room.
-        /// </summary>
+        public override void OnNavigatedTo()
+        {
+            this._checkRoomStateCTS = new CancellationTokenSource();
+            Task.Run(() => PeriodicallyCheckRoomStateLoop(_checkRoomStateCTS.Token));
+        }
+
+        public override void OnNavigatedAway()
+        {
+            _checkRoomStateCTS.Cancel();
+            _checkRoomStateCTS.Dispose();
+        }
+
         public ObservableCollection<LoggedUser> Players { get; set; } = new ObservableCollection<LoggedUser>();
 
         public LoggedUser Admin { get; set; }
 
         public RoomDataStore RoomDataStore { get; set; }
 
-
-        //Commands
         public ICommand LeaveRoomCmd { get; }
 
-
-        /// <summary>
-        /// runs as a thread in the background, runs with a while loop and calls PeriodicallyCheckRoomState to check on room,
-        /// stops if cancellation token is canceled.
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        private async Task PeriodicallyCheckRoomStateLoop()
+        private async Task PeriodicallyCheckRoomStateLoop(CancellationToken token)
         {
-            while (true)
+            try
             {
-                PeriodicallyCheckRoomState();
-                await Task.Delay(5000); // 0.3 seconds
+                while (!token.IsCancellationRequested)
+                {
+                    await PeriodicallyCheckRoomState();
+                    await Task.Delay(5000, token); // Pass the token to allow cancellation
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Task was canceled; clean up if necessary
             }
         }
 
-        /// <summary>
-        /// Periodically checks the room state, if room is closed than calling the leave room command.
-        /// </summary>
-        /// <returns></returns>
         private async Task PeriodicallyCheckRoomState()
         {
-            //Check get room status from server.
             var getRoomStatusRequest = new GetRoomStateRequest();
             ResponseInfo<GetRoomStateResponse> responseInfo =
                 await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(getRoomStatusRequest);
             GetRoomStateResponse response = (GetRoomStateResponse)responseInfo.Response;
             RoomState roomState = response.RoomState;
 
-            Players.Clear();
-            if (roomState.Players != null && roomState.Players.Any())
+            // Update Players on the UI thread
+            App.Current.Dispatcher.Invoke(() =>
             {
-                Admin = roomState.Players.First(); // Set Admin
-                Admin.IsMe = Admin.Username == this._userStore.Username;
-                foreach (var player in roomState.Players.Skip(1))
+                Players.Clear();
+                if (roomState.Players != null && roomState.Players.Any())
                 {
-                    player.IsMe = player.Username == this._userStore.Username;
-                    Players.Add(player);
+                    Admin = roomState.Players.First();
+                    Admin.IsMe = Admin.Username == _userStore.Username;
+                    foreach (var player in roomState.Players.Skip(1))
+                    {
+                        player.IsMe = player.Username == _userStore.Username;
+                        Players.Add(player);
+                    }
                 }
-            }
-            //if (response.RoomState.RoomStatus == RoomStatus.Closed) //if status of room is closed
-            //{
-            //    LeaveRoomCmd.Execute(null);
-            //    _cts.Cancel();
-            //}
-        }
+            });
 
+            if (roomState.RoomStatus == RoomStatus.Closed)
+            {
+                LeaveRoomCmd.Execute(null);
+            }
+
+            if (roomState.RoomStatus == RoomStatus.InGame)
+            {
+                _navigationService.NavigateTo<GameViewModel>();
+            }
+        }
     }
 }
+

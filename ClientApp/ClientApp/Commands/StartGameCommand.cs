@@ -2,11 +2,6 @@
 using ClientApp.Models.Responses;
 using ClientApp.Services;
 using ClientApp.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClientApp.Commands
 {
@@ -23,6 +18,7 @@ namespace ClientApp.Commands
             _navigationService = navigationService;
             _requestsExchangeService = requestsExchangeService;
             _roomAdminViewModel = roomAdminViewModel;
+
         }
 
         public override async void Execute(object parameter)

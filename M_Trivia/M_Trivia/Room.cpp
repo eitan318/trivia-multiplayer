@@ -6,7 +6,7 @@ Room::Room(const RoomData& roomdata, const LoggedUser& user)
 	this->m_metadata = roomdata;
 	this->m_users = std::map<std::string,LoggedUser>();
 	this->m_users.insert({ user.getUsername(),user });
-	this->status = RoomStatus::Closed;
+	this->status = RoomStatus::NotInGame;
 }
 Room::Room() {
 }

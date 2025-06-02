@@ -10,9 +10,7 @@ namespace ClientApp.Commands
     {
         private INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
-        private MemberRoomViewModel _memberRoomViewModel;
         public LeaveRoomCommand(
-            MemberRoomViewModel memberRoomViewModel,
             INavigationService navigationService,
             RequestsExchangeService requestsExchangeService,
             RoomDataStore roomDataStore
@@ -20,7 +18,6 @@ namespace ClientApp.Commands
         {
             this._navigationService = navigationService;
             this._requestsExchangeService = requestsExchangeService;
-            this._memberRoomViewModel = memberRoomViewModel;
         }
         public override async void Execute(object parameter)
         {

@@ -61,6 +61,10 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
 RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& requestInfo)
 {
 	CloseRoomResponseErrors errors = this->m_roomManager.closeRoom(this->m_room->getId());
+	this->m_room->removeUser(this->m_user);
+	if (this->m_room->getUsersVector().empty()) {
+		this->m_roomManager.deleteRoom(this->m_room->getId());
+	}
 
 	CloseRoomResponse closeRoomResponse(&errors);
 	RequestResult result;
