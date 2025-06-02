@@ -173,7 +173,7 @@ MenuRequestHandler::joinRoom(const RequestInfo& requestInfo) const {
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(joinRoomResponse),
-        std::move(this->m_handlerFactory.createMenuRequestHandler(this->m_user)));
+        nextHandler);
 
     return requestResult;
 }
@@ -207,6 +207,6 @@ MenuRequestHandler::createRoom(const RequestInfo& requestInfo) const {
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(createRoomResponse),
-        std::move(this->m_handlerFactory.createMenuRequestHandler(this->m_user)));
+        nextHandler);
     return requestResult;
 }

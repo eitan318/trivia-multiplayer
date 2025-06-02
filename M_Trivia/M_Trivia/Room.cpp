@@ -29,7 +29,7 @@ void Room::removeUser(const LoggedUser& loggeduser)
 		}
 	}
 }
-const std::vector<LoggedUser>& Room::getUsersVector() const
+std::vector<LoggedUser> Room::getUsersVector() const
 {
 	std::vector<LoggedUser> users;
 	users.reserve(m_users.size()); // Reserve space for efficiency
