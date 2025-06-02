@@ -26,13 +26,11 @@ namespace ClientApp.ViewModels
         {
             this._userStore = userStore;
             this._requestsExchangeService = requestsExchangeService;
-            this.RefreshCmd = new RelayCommand(RefreshPlayers);
             this.LeaveRoomCmd = new LeaveRoomCommand(this,navigationService,requestsExchangeService,null);
             this.RoomDataStore = roomDataStore;
-            RefreshPlayers();
 
             this._cts = new CancellationTokenSource();
-            Task.Run(() => PeriodicallyCheckRoomStateLoop(_cts.Token));
+            Task.Run(() => PeriodicallyCheckRoomStateLoop());
         }
 
         /// <summary>
@@ -46,7 +44,6 @@ namespace ClientApp.ViewModels
 
 
         //Commands
-        public ICommand RefreshCmd { get; }
         public ICommand LeaveRoomCmd { get; }
 
 
@@ -56,12 +53,12 @@ namespace ClientApp.ViewModels
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        private async Task PeriodicallyCheckRoomStateLoop(CancellationToken token)
+        private async Task PeriodicallyCheckRoomStateLoop()
         {
-            while (!token.IsCancellationRequested)
+            while (true)
             {
-                await PeriodicallyCheckRoomState();
-                await Task.Delay(300, token); // 0.3 seconds
+                PeriodicallyCheckRoomState();
+                await Task.Delay(5000); // 0.3 seconds
             }
         }
 
@@ -76,44 +73,24 @@ namespace ClientApp.ViewModels
             ResponseInfo<GetRoomStateResponse> responseInfo =
                 await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(getRoomStatusRequest);
             GetRoomStateResponse response = (GetRoomStateResponse)responseInfo.Response;
+            RoomState roomState = response.RoomState;
 
-            if (response.RoomState.RoomStatus == RoomStatus.Closed) //if status of room is closed
+            Players.Clear();
+            if (roomState.Players != null && roomState.Players.Any())
             {
-                LeaveRoomCmd.Execute(null);
-                _cts.Cancel();
-            }
-        }
-
-
-        /// <summary>
-        /// Sends a request to retrieve and populate the player list for the room.
-        /// </summary>
-        private async void RefreshPlayers()
-        {
-            var getPlayersRequest = new GetPlayersInRoomRequest(RoomDataStore.CurrentRoomData.Id);
-            ResponseInfo<GetPlayersInRoomResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<GetPlayersInRoomResponse>(getPlayersRequest);
-
-            if (responseInfo.NormalResponse)
-            {
-                GetPlayersInRoomResponse response = (GetPlayersInRoomResponse)responseInfo.Response;
-                Players.Clear();
-                if (response.Players != null && response.Players.Any())
+                Admin = roomState.Players.First(); // Set Admin
+                Admin.IsMe = Admin.Username == this._userStore.Username;
+                foreach (var player in roomState.Players.Skip(1))
                 {
-                    Admin = response.Players.First(); // Set Admin
-                    Admin.IsMe = Admin.Username == this._userStore.Username;
-                    foreach (var player in response.Players.Skip(1)) 
-                    {
-                        player.IsMe = player.Username == this._userStore.Username;
-                        Players.Add(player);
-                    }
+                    player.IsMe = player.Username == this._userStore.Username;
+                    Players.Add(player);
                 }
             }
-            else
-            {
-                // Handle error appropriately.
-                return;
-            }
-
+            //if (response.RoomState.RoomStatus == RoomStatus.Closed) //if status of room is closed
+            //{
+            //    LeaveRoomCmd.Execute(null);
+            //    _cts.Cancel();
+            //}
         }
 
     }

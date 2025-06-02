@@ -55,11 +55,7 @@
             <Button Content="Leave Room" Command="{Binding LeaveRoomCmd}"
                 HorizontalAlignment="Center" Padding="10,5" Margin="20"/>
             
-            <!-- Refresh Button -->
-            <Button Content="Refresh" Command="{Binding RefreshCmd}" 
-                HorizontalAlignment="Center" Padding="10,5" />
-
-
+            
         </StackPanel>
     </Grid>
 </UserControl>

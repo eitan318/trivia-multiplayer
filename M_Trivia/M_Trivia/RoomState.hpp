@@ -11,7 +11,7 @@ struct RoomState{
         m_roomStatus(roomStatus)
     {}
     bool m_roomStatus;
-    const std::vector<LoggedUser>& m_players;
+    std::vector<LoggedUser> m_players;
     unsigned int m_answerCount;
     double m_answerTimeOut;
 };
