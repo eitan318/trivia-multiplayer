@@ -1,7 +1,12 @@
 #include "RequestHandlerFactory.hpp"
 
+
 #include "LoginRequestHandler.hpp"
 #include "MenuRequestHandler.hpp"
+#include "RoomAdminRequestHandler.hpp"
+#include "RoomMemberRequestHandler.hpp"
+
+
 
 
 RequestHandlerFactory::RequestHandlerFactory(IDatabase& database)
@@ -27,6 +32,16 @@ std::shared_ptr<IRequestHandler> RequestHandlerFactory::createLoginRequestHandle
 std::shared_ptr<IRequestHandler> RequestHandlerFactory::createMenuRequestHandler(const LoggedUser& loggedUser) const
 {
 	return std::make_shared<MenuRequestHandler>(loggedUser, const_cast<RequestHandlerFactory&>(*this));
+}
+
+std::shared_ptr<IRequestHandler> RequestHandlerFactory::createRoomAdminRequestHandler(const LoggedUser& loggedUser, Room* room) const
+{
+	return std::make_shared<RoomAdminRequestHandler>(const_cast<RequestHandlerFactory&>(*this), loggedUser, room);
+}
+
+std::shared_ptr<IRequestHandler> RequestHandlerFactory::createRoomMemberRequestHandler(const LoggedUser& loggedUser, Room* room) const
+{
+	return std::make_shared<RoomMemberRequestHandler>(const_cast<RequestHandlerFactory&>(*this), loggedUser, room);
 }
 
 LoginManager& RequestHandlerFactory::getLoginManager() const

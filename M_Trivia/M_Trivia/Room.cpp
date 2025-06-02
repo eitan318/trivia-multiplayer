@@ -62,13 +62,13 @@ void Room::startGame()
 	this->status = RoomStatus::InGame;
 }
 
-unsigned int Room::getId()
+unsigned int Room::getId() const
 {
-	return this->id;
+	return this->m_metadata.id;
 }
 
 
-RoomStatus Room::getRoomStatus()
+RoomStatus Room::getRoomStatus() const
 {
 	return this->status;
 }

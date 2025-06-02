@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "LoggedUser.hpp"
+#include "RoomStatus.h"
 
 struct RoomState{
     RoomState(RoomStatus roomStatus, const std::vector<LoggedUser>& players, unsigned int answerCount, double answerTimeOut)

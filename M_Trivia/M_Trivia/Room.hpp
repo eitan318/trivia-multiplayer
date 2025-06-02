@@ -6,13 +6,10 @@
 #include "StartGameResponseErrors.hpp"
 #include <map>
 #include <string>
+#include "RoomStatus.h"
 
 
-enum RoomStatus {
-    Closed,
-    InGame,
-    NotInGame 
-};
+
 
 /**
  * @class Room
@@ -20,7 +17,6 @@ enum RoomStatus {
  */
 class Room {
 private:
-    static unsigned int id;            
     RoomData m_metadata;               
     std::map<std::string,LoggedUser> m_users;   
     RoomStatus status;
@@ -82,14 +78,14 @@ public:
     void startGame();
 
     //returning the id of the room
-    unsigned int getId();
+    unsigned int getId() const;
 
     /**
      * Retrieves the current status of the room.
      *
      * @return A RoomStatus representing the room's current state.
      */
-    RoomStatus getRoomStatus();
+    RoomStatus getRoomStatus() const;
 
 
      /**

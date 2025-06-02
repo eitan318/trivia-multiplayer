@@ -7,10 +7,10 @@
 #include "RequestInfo.hpp"
 #include "RequestResult.hpp"
 
-class RoomRequestHandler : IRequestHandler {
+class RoomRequestHandler : public IRequestHandler {
 public:
 	RequestResult getRoomState(const RequestInfo& requestinfo);
-	RoomRequestHandler(Room* room,LoggedUser user, RoomManager& roomManager,RequestHandlerFactory& requestHandlerFactory);
+	RoomRequestHandler(Room* room, LoggedUser user, RoomManager& roomManager,RequestHandlerFactory& requestHandlerFactory);
 
 protected:
 	Room* m_room;

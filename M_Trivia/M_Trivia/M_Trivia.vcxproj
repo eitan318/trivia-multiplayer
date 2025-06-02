@@ -157,6 +157,7 @@
     <ClInclude Include="RoomPreview.hpp" />
     <ClInclude Include="RoomRequestHandler.hpp" />
     <ClInclude Include="RoomState.hpp" />
+    <ClInclude Include="RoomStatus.h" />
     <ClInclude Include="SendPasswordResetCodeRequest.hpp" />
     <ClInclude Include="PasswordCodeResponse.hpp" />
     <ClInclude Include="ServerErrorResponse.hpp" />

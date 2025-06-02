@@ -1,6 +1,6 @@
 #include "RoomRequestHandler.hpp"
 
-class RoomAdminRequestHandler : RoomRequestHandler {
+class RoomAdminRequestHandler : public RoomRequestHandler {
 public:
 	/**
 	 * @brief Constructs a RoomAdminRequestHandler instance.

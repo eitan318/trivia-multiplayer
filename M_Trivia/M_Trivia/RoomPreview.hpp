@@ -1,6 +1,7 @@
 #pragma once
 #include "json.hpp"
 #include "RoomData.hpp"
+#include "RoomStatus.h"
 
 
 struct RoomPreview {

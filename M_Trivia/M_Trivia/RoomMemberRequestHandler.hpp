@@ -1,7 +1,7 @@
 #pragma once
 #include "RoomRequestHandler.hpp"
 
-class RoomMemberRequestHandler : RoomRequestHandler {
+class RoomMemberRequestHandler :  public RoomRequestHandler {
 public:
 	/**
 	 * @brief Constructs a RoomMemeberRequestHandler instance.
