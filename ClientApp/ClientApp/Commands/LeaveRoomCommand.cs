@@ -3,11 +3,6 @@ using ClientApp.Models.Responses;
 using ClientApp.Services;
 using ClientApp.Stores;
 using ClientApp.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClientApp.Commands
 {
@@ -33,7 +28,10 @@ namespace ClientApp.Commands
             ResponseInfo<LeaveRoomResponse> responseInfo =
                 await _requestsExchangeService.ExchangeRequest<LeaveRoomResponse>(leaverRoomRequest);
             LeaveRoomResponse response = (LeaveRoomResponse)responseInfo.Response;
-
+            if (response.Status == 0)
+            {
+                this._navigationService.NavigateTo<MenuViewModel>();
+            }
 
         }
 
