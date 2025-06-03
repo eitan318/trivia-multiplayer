@@ -3,7 +3,6 @@ using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Models;
 using ClientApp.Services;
-using System.Windows.Input;
 
 namespace ClientApp.ViewModels
 {
@@ -11,12 +10,27 @@ namespace ClientApp.ViewModels
     class HighScoresViewModel : ViewModelBase
     {
         private readonly RequestsExchangeService _requestsExchangeService;
+        private readonly int amountTopPlayers = 3;
+        private CancellationTokenSource _refreshTopPlayersCTS;
+
         public HighScoresViewModel(RequestsExchangeService requestsExchangeService) : base(true)
         {
-            RefreshTopCmd = new RelayCommand(RefreshTop);
             _requestsExchangeService = requestsExchangeService;
-            RefreshTop();
         }
+
+        
+        public override void OnNavigatedTo()
+        {
+            _refreshTopPlayersCTS = new CancellationTokenSource();
+            Task.Run(() => PeriodicallyRefreshTopPlayers(_refreshTopPlayersCTS.Token)); 
+        }
+
+        public override void OnNavigatedAway()
+        {
+            _refreshTopPlayersCTS?.Cancel();
+            _refreshTopPlayersCTS?.Dispose();
+        }
+
         // Fields
         private List<HighScoreInfoModel> responseList;
         
@@ -36,6 +50,7 @@ namespace ClientApp.ViewModels
         }
         
         
+        
         // Error message properties
         public string ErrorMessage
         {
@@ -47,19 +62,31 @@ namespace ClientApp.ViewModels
             }
         }
 
-        //Commands
-        public ICommand RefreshTopCmd { get; }
-
+        private async Task PeriodicallyRefreshTopPlayers(CancellationToken token)
+        {
+            try
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    await RefreshTop();
+                    await Task.Delay(5000, token); // Pass the token to enable cancellation
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Task was canceled; no further action needed
+            }
+        }
 
 
         /// <summary>
         /// This function refreshes the top leading players
         /// </summary>
-        public async void RefreshTop()
+        public async Task RefreshTop()
         { 
             try
             {
-                HighScoresRequest request = new HighScoresRequest(3);
+                HighScoresRequest request = new HighScoresRequest(this.amountTopPlayers);
                 var responseInfo = await _requestsExchangeService.ExchangeRequest<HighScoresResponse>(request);
 
                 if (responseInfo.NormalResponse)
