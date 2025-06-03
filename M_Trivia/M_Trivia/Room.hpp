@@ -18,7 +18,7 @@
 class Room {
 private:
     RoomData m_metadata;               
-    std::map<std::string,LoggedUser> m_users;   
+    std::vector<LoggedUser> m_users;   
     RoomStatus status;
 
 public:
@@ -59,13 +59,6 @@ public:
 
 
     /**
-     * @brief Retrieves the usernames of all users in the room.
-     * @return A vector of strings containing the usernames of all users.
-     */
-    const std::map<std::string, LoggedUser>& getUsersMap() const;
-
-
-    /**
      * @brief Initialy sets the metadata of the room.
      * @param roomdata The new RoomData object to set as the room's metadata.
      */
@@ -93,4 +86,6 @@ public:
      * @return The RoomPreview object containing the room's metadata.
      */
     RoomPreview getRoomPreview() const;
+
+    bool hasUser(const std::string& username) const;
 };
