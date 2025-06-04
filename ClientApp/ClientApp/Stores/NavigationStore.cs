@@ -18,8 +18,7 @@ namespace ClientApp.Stores
         {
             if (CanGoBack())
             {
-                _currentViewModel = _navigationHistory.Pop();
-                CurrentViewModelChanged?.Invoke();
+                CurrentViewModel = _navigationHistory.Peek();
             }
         }
 
@@ -42,9 +41,17 @@ namespace ClientApp.Stores
                     }
                 }
 
+                _currentViewModel?.OnNavigatedAway();
+
+                // Update the ViewModel
                 _currentViewModel = value;
+
+                // Call OnNavigatedTo for the new ViewModel
+                _currentViewModel?.OnNavigatedTo();
+
                 CurrentViewModelChanged?.Invoke();
             }
+
         }
 
         public event Action CurrentViewModelChanged;

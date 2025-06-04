@@ -14,65 +14,58 @@ RoomManager& RoomManager::getInstance(IDatabase& database) {
     return instance;
 }
 
-RoomManager::RoomManager(IDatabase& database) : m_database(database) {
-    this->m_rooms = std::map<int, Room>();
-}
-
 RoomManager::~RoomManager() {}
+
+
+RoomManager::RoomManager(IDatabase& database) : m_database(database) {
+    this->m_rooms = std::vector<Room>();
+}
 
 CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser& player,
     RoomData& roomData) {
     CreateRoomResponseErrors createRoonResponseErrors;
     unsigned int totalQuestionCount = this->m_database.getQuestionsCount();
 
-    if (roomData.numOfQuestionsInGame > totalQuestionCount)
-    {
+    if (roomData.numOfQuestionsInGame > totalQuestionCount) {
         createRoonResponseErrors.questionCountError =
             "Too many questions, there are only: " +
             std::to_string(totalQuestionCount);
     }
     createRoonResponseErrors.statusCode = !createRoonResponseErrors.noErrors();
 
-    if (createRoonResponseErrors.statusCode == 0)
-    {
+    if (createRoonResponseErrors.statusCode == 0) {
         int roomid = ids++;
         roomData.id = roomid;
         std::lock_guard<std::mutex> lock(this->m_roomsMutex);
-        this->m_rooms[roomid] = Room(roomData, player);
+        this->m_rooms.emplace_back(roomData, player);
     }
     return createRoonResponseErrors;
 }
 
+
 void RoomManager::deleteRoom(int ID) {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
-    auto it = this->m_rooms.find(ID);
-    if (it != this->m_rooms.end()) {
-        this->m_rooms.erase(it);
+    auto it = std::find_if(m_rooms.begin(), m_rooms.end(), [ID](const Room& room) {
+        return room.getRoomPreview().roomData.id == ID;
+        });
+    if (it != m_rooms.end()) {
+        m_rooms.erase(it);
     }
-}
-
-bool RoomManager::getRoomState(int ID) const {
-    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
-    auto it = this->m_rooms.find(ID);
-    if (it != this->m_rooms.end()) {
-        return it->second.getRoomStatus();
-    }
-    return false;
 }
 
 
 std::vector<RoomPreview> RoomManager::getRooms() const {
     std::vector<RoomPreview> roomsvec;
-    for (auto& room : this->m_rooms) {
-        roomsvec.push_back(room.second.getRoomPreview());
+    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
+    for (const auto& room : m_rooms) {
+        roomsvec.push_back(room.getRoomPreview());
     }
     return roomsvec;
 }
 
-CloseRoomResponseErrors RoomManager::closeRoom(int roomId)
+
+CloseRoomResponseErrors RoomManager::closeRoom(Room* room)
 {
-    auto it = this->m_rooms.find(roomId);
-    Room* room = &it->second;
     CloseRoomResponseErrors errors;
     if (room->getRoomStatus() == RoomStatus::Closed) {
         errors.generalError = "Room already closed";
@@ -85,10 +78,8 @@ CloseRoomResponseErrors RoomManager::closeRoom(int roomId)
     return errors;
 }
 
-StartGameResponseErrors RoomManager::startGameOfRoom(int roomId)
+StartGameResponseErrors RoomManager::startGameOfRoom(Room* room)
 {
-    auto it = this->m_rooms.find(roomId);
-    Room* room = &it->second;
     StartGameResponseErrors errors;
     if (room->getRoomStatus() == RoomStatus::Closed) {
         errors.generalError = "Cannot start game of a closed room.";
@@ -114,8 +105,7 @@ JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
     JoinRoomResponseErrors errors;
     Room* room = this->getRoom(id);
     if (room != nullptr) {
-        if (room->getUsersMap().find(loggedUser.getUsername()) !=
-            room->getUsersMap().end()) {
+        if (room->hasUser(loggedUser.getUsername())) {
             errors.generalError = "You are already inside this room.";
         }
         else if (room->getRoomPreview().roomData.maxPlayers ==
@@ -133,12 +123,23 @@ JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
     return errors;
 }
 
+
+
 Room* RoomManager::getRoom(int ID) {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
-    auto it = this->m_rooms.find(ID);
-    if (it != this->m_rooms.end())
-    {
-        return &it->second;
+    auto it = std::find_if(m_rooms.begin(), m_rooms.end(), [ID](const Room& room) {
+        return room.getRoomPreview().roomData.id == ID;
+        });
+    if (it != m_rooms.end()) {
+        return &(*it);
     }
     return nullptr;
 }
+
+bool Room::hasUser(const std::string& username) const {
+    auto it = std::find_if(m_users.begin(), m_users.end(), [&username](const LoggedUser& user) {
+        return user.getUsername() == username;
+        });
+    return it != m_users.end();
+}
+

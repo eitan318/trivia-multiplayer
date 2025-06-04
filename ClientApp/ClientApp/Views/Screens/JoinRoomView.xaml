@@ -35,7 +35,6 @@
 
 
         <StackPanel Grid.Row="1" Grid.Column="1">
-            <Button Content="Refresh" Margin="8" Command="{Binding RefreshCmd}"/>
             <Button Content="Join" Margin="8" Command="{Binding JoinCmd}"/>
             <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" />
         </StackPanel>

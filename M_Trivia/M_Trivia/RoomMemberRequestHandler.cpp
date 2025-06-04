@@ -56,6 +56,9 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
 RequestResult RoomMemberRequestHandler::leaveRoomRequest(RequestInfo requestInfo) 
 {
 	this->m_room->removeUser(this->m_user);
+	if (this->m_room->getUsersVector().empty()) {
+		this->m_roomManager.deleteRoom(this->m_room->getId());
+	}
 	LeaveRoomResponse leaveRoomResponse(GENERAL_SUCCESS_RESPONSE_STATUS);
 	RequestResult result;
 	result.response = JsonResponsePacketSerializer::serializeResponse(leaveRoomResponse);

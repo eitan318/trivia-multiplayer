@@ -14,8 +14,7 @@ namespace ClientApp.ViewModels
         {
             _requestsExchangeService = requestsExchangeService;
             this.personalInfo = new PersonalStatisticsModel();
-            this.RefreshCmd = new RelayCommand(Refresh);
-            Refresh();
+            SetStats();
         }
 
 
@@ -48,10 +47,8 @@ namespace ClientApp.ViewModels
         }
 
 
-        // Commands
-        public ICommand RefreshCmd { get; }
 
-        public async void Refresh()
+        public async void SetStats()
         {
             try
             {

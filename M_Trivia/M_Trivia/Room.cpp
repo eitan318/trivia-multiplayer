@@ -1,86 +1,64 @@
 #include "Room.hpp"
 #include "Response.hpp"
+#include <algorithm>
 
-Room::Room(const RoomData& roomdata, const LoggedUser& user) 
-{
-	this->m_metadata = roomdata;
-	this->m_users = std::map<std::string,LoggedUser>();
-	this->m_users.insert({ user.getUsername(),user });
-	this->status = RoomStatus::Closed;
-}
-Room::Room() {
-}
-Room::~Room() {
+Room::Room(const RoomData& roomdata, const LoggedUser& user) {
+    this->m_metadata = roomdata;
+    this->m_users = std::vector<LoggedUser>();
+    this->m_users.push_back(user);
+    this->status = RoomStatus::NotInGame;
 }
 
-void Room::addUser(const LoggedUser& loggeduser)
-{
-	this->m_users.insert({ loggeduser.getUsername(), loggeduser });
+Room::Room() {}
+
+Room::~Room() {}
+
+void Room::addUser(const LoggedUser& loggeduser) {
+    auto it = std::find_if(m_users.begin(), m_users.end(), [&loggeduser](const LoggedUser& u) {
+        return u.getUsername() == loggeduser.getUsername();
+        });
+    if (it == m_users.end()) {
+        m_users.push_back(loggeduser);
+    }
 }
 
-void Room::removeUser(const LoggedUser& loggeduser)
-{
-	for (auto player = this->m_users.begin(); player != this->m_users.end(); ++player) 
-	{
-		if (player->first == loggeduser.getUsername())
-		{
-			this->m_users.erase(player);
-			return;
-		}
-	}
-}
-const std::vector<LoggedUser>& Room::getUsersVector() const
-{
-	std::vector<LoggedUser> users;
-	users.reserve(m_users.size()); // Reserve space for efficiency
-
-	std::transform(m_users.begin(), m_users.end(), std::back_inserter(users),
-		[](const auto& pair) { return pair.second; });
-
-	return users;
+void Room::removeUser(const LoggedUser& loggeduser) {
+    auto it = std::find_if(m_users.begin(), m_users.end(), [&loggeduser](const LoggedUser& u) {
+        return u.getUsername() == loggeduser.getUsername();
+        });
+    if (it != m_users.end()) {
+        m_users.erase(it);
+    }
 }
 
-const std::map<std::string, LoggedUser>& Room::getUsersMap() const
-{
-	return this->m_users;
+std::vector<LoggedUser> Room::getUsersVector() const {
+    return m_users;
 }
 
-
-
-void Room::setRoomData(const RoomData& roomdata)
-{
-	this->m_metadata = roomdata;
+void Room::setRoomData(const RoomData& roomdata) {
+    this->m_metadata = roomdata;
 }
 
-void Room::close()
-{
-	this->status = RoomStatus::Closed;
+void Room::close() {
+    this->status = RoomStatus::Closed;
 }
 
-void Room::startGame()
-{
-	this->status = RoomStatus::InGame;
+void Room::startGame() {
+    this->status = RoomStatus::InGame;
 }
 
-unsigned int Room::getId() const
-{
-	return this->m_metadata.id;
+unsigned int Room::getId() const {
+    return this->m_metadata.id;
 }
 
-
-RoomStatus Room::getRoomStatus() const
-{
-	return this->status;
+RoomStatus Room::getRoomStatus() const {
+    return this->status;
 }
-
 
 RoomPreview Room::getRoomPreview() const {
-	RoomPreview p;
-	p.currPlayersAmount = getUsersVector().size();
-	p.status =  this->status;
-	p.roomData = this->m_metadata;
-	return p;
+    RoomPreview p;
+    p.currPlayersAmount = static_cast<unsigned int>(m_users.size());
+    p.status = this->status;
+    p.roomData = this->m_metadata;
+    return p;
 }
-
-
-

@@ -34,10 +34,6 @@
                            HorizontalAlignment="Center" 
                            Margin="0,20,0,0"/>
 
-                     <!-- Refresh Button -->
-                    <Button Content="Refresh"
-                            Command="{Binding RefreshCmd}"
-                            FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"/>
             </StackPanel>
         </materialDesign:Card>
     </Grid>

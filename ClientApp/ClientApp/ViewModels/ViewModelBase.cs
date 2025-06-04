@@ -29,7 +29,8 @@ namespace ClientApp.ViewModels
             this.HasBackBtn = hasBackBtn;
         }
 
-
+        public virtual void OnNavigatedTo() { }
+        public virtual void OnNavigatedAway() { }
 
         public virtual void Dispose() { }
 
@@ -43,5 +44,7 @@ namespace ClientApp.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
     }
 }

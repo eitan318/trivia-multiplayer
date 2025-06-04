@@ -13,77 +13,87 @@ namespace ClientApp.ViewModels
     {
         private UserStore userStore;
         private readonly RequestsExchangeService _requestsExchangeService;
+        private CancellationTokenSource _checkRoomStateCTS;
 
         public RoomAdminViewModel(
             INavigationService navigationService,
-            RequestsExchangeService requestsExchangeService, 
-            RoomDataStore roomDataStore, 
+            RequestsExchangeService requestsExchangeService,
+            RoomDataStore roomDataStore,
             UserStore userState)
         {
+
             this.userStore = userState;
             this._requestsExchangeService = requestsExchangeService;
-            this.RefreshCmd = new RelayCommand(RefreshPlayers);
             this.StartGameCmd = new StartGameCommand(navigationService, requestsExchangeService, this);
-            this.CloseRoomCmd = new RelayCommand(CloseRoom);
+            this.CloseRoomCmd = new CloseRoomCommand(navigationService, requestsExchangeService, this);
             this.RoomDataStore = roomDataStore;
-            RefreshPlayers();
         }
 
+        public override void OnNavigatedTo()
+        {
+            this._checkRoomStateCTS = new CancellationTokenSource();
+            Task.Run(() => PeriodicallyCheckRoomStateLoop(_checkRoomStateCTS.Token));
+        }
+
+        public override void OnNavigatedAway()
+        {
+            _checkRoomStateCTS.Cancel();
+            _checkRoomStateCTS.Dispose();
+        }
+
+
         public RoomDataStore RoomDataStore { get; set; }
-        
 
         // Commands
-
-        public ICommand RefreshCmd { get; }
         public ICommand StartGameCmd { get; }
         public ICommand CloseRoomCmd { get; }
 
-        /// <summary>
-        /// Collection of players currently in the room.
-        /// </summary>
         public ObservableCollection<LoggedUser> Players { get; set; } = new ObservableCollection<LoggedUser>();
 
         public LoggedUser Admin { get; set; }
 
         public string ErrorMessage { get; set; }
 
-
-
-        /// <summary>
-        /// Sends a request to retrieve and populate the player list for the room.
-        /// </summary>
-        private async void RefreshPlayers()
+        private async Task PeriodicallyCheckRoomStateLoop(CancellationToken token)
         {
-            var getPlayersRequest = new GetPlayersInRoomRequest(RoomDataStore.CurrentRoomData.Id);
-            ResponseInfo<GetPlayersInRoomResponse> responseInfo = await this._requestsExchangeService.ExchangeRequest<GetPlayersInRoomResponse>(getPlayersRequest);
-
-            if (responseInfo.NormalResponse)
+            try
             {
-                var response = responseInfo.Response;
-                Players.Clear();
-                if (response.Players != null && response.Players.Any())
+                while (!token.IsCancellationRequested)
                 {
-                    Admin = response.Players.First(); // Set Admin
+                    await PeriodicallyCheckRoomState();
+                    await Task.Delay(5000, token);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Handle cancellation (optional)
+            }
+        }
+
+        private async Task PeriodicallyCheckRoomState()
+        {
+            var getRoomStatusRequest = new GetRoomStateRequest();
+            ResponseInfo<GetRoomStateResponse> responseInfo =
+                await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(getRoomStatusRequest);
+            GetRoomStateResponse response = responseInfo.Response;
+            RoomState roomState = response.RoomState;
+
+            // Update Players on the UI thread
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                this.Players.Clear();
+                if (roomState.Players != null && roomState.Players.Any())
+                {
+                    Admin = roomState.Players.First(); // Set Admin
                     Admin.IsMe = Admin.Username == userStore.Username;
-                    foreach (var player in response.Players.Skip(1)) // Add remaining players
+                    foreach (var player in roomState.Players.Skip(1)) // Add remaining players
                     {
                         player.IsMe = player.Username == userStore.Username;
                         Players.Add(player);
                     }
                 }
-            }
-            else
-            {
-
-            }
-
+            });
         }
-
-
-        private void CloseRoom()
-        {
-
-        }
-
     }
+
 }

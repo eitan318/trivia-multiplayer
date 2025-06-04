@@ -51,7 +51,6 @@
 
         <!-- Action Buttons -->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,10,0,10" VerticalAlignment="Top">
-            <Button Content="Refresh" Command="{Binding RefreshCmd}" Margin="0,0,0,10"/>
             <Button Content="Start Game" Command="{Binding StartGameCmd}" Margin="0,0,0,10" />
             <Button Content="Close Room" Command="{Binding CloseRoomCmd}" />
             <TextBlock Text="{Binding ErrorMessage}" 

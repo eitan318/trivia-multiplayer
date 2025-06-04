@@ -18,11 +18,9 @@ public:
     GetRoomStateResponse(unsigned int status,
         RoomState roomState);
 
+    GetRoomStateResponse();
 
-    /**
-     * @brief Deleted default constructor to enforce proper initialization.
-     */
-    GetRoomStateResponse() = delete;
+
 
     /**
      * @brief Gets the response code for this response.
