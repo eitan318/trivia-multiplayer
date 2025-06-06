@@ -14,6 +14,7 @@ namespace ClientApp.ViewModels
         private UserStore userStore;
         private readonly RequestsExchangeService _requestsExchangeService;
         private CancellationTokenSource _checkRoomStateCTS;
+        private LoggedUser _admin;
 
         public RoomAdminViewModel(
             INavigationService navigationService,
@@ -50,7 +51,18 @@ namespace ClientApp.ViewModels
 
         public ObservableCollection<LoggedUser> Players { get; set; } = new ObservableCollection<LoggedUser>();
 
-        public LoggedUser Admin { get; set; }
+        public LoggedUser Admin
+        {
+            get => _admin;
+            set
+            {
+                if (_admin != value)
+                {
+                    _admin = value;
+                    OnPropertyChanged(nameof(Admin));
+                }
+            }
+        }
 
         public string ErrorMessage { get; set; }
 
