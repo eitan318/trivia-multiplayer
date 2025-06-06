@@ -20,6 +20,7 @@ namespace ClientApp.Commands
             RequestsExchangeService requestsExchangeService,    
             PasswordResetStore state)
         {
+            this._resetPasswordViewModel = resetPasswordViewModel;
             _navigationService = navigationService;
             _requestsExchangeService = requestsExchangeService;
             _state = state;
