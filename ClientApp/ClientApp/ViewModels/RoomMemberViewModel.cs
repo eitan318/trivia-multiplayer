@@ -13,14 +13,16 @@ using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
-    class MemberRoomViewModel : ViewModelBase
+    class RoomMemberViewModel : ViewModelBase
     {
         private UserStore _userStore;
         private readonly RequestsExchangeService _requestsExchangeService;
         private readonly INavigationService _navigationService;
         private CancellationTokenSource _checkRoomStateCTS;
+        private LoggedUser _admin;
+        private readonly int refreshMS = 300;
 
-        public MemberRoomViewModel(
+        public RoomMemberViewModel(
             INavigationService navigationService,
             RoomDataStore roomDataStore,
             UserStore userStore,
@@ -47,7 +49,18 @@ namespace ClientApp.ViewModels
 
         public ObservableCollection<LoggedUser> Players { get; set; } = new ObservableCollection<LoggedUser>();
 
-        public LoggedUser Admin { get; set; }
+        public LoggedUser Admin
+        {
+            get => _admin;
+            set
+            {
+                if (_admin != value)
+                {
+                    _admin = value;
+                    OnPropertyChanged(nameof(Admin));
+                }
+            }
+        }
 
         public RoomDataStore RoomDataStore { get; set; }
 
@@ -60,7 +73,7 @@ namespace ClientApp.ViewModels
                 while (!token.IsCancellationRequested)
                 {
                     await PeriodicallyCheckRoomState();
-                    await Task.Delay(5000, token); // Pass the token to allow cancellation
+                    await Task.Delay(refreshMS, token); // Pass the token to allow cancellation
                 }
             }
             catch (OperationCanceledException)

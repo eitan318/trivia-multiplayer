@@ -46,7 +46,7 @@ namespace ClientApp.Commands
                     var joinResponse = responseInfo.Response;
                     if(joinResponse.Status == 0)
                     {
-                        _navigationService.NavigateTo<MemberRoomViewModel>();
+                        _navigationService.NavigateTo<RoomMemberViewModel>();
                     }
                     else
                     {

@@ -13,6 +13,7 @@ namespace ClientApp.ViewModels
         private RoomDataStore _roomDataStore;
         private readonly RequestsExchangeService _requestsExchangeService;
         private CancellationTokenSource _refreshRoomsCTS;
+        private readonly int refreshMS = 300;
 
         public JoinRoomViewModel(
             INavigationService navigationService,
@@ -88,7 +89,7 @@ namespace ClientApp.ViewModels
                 while (!token.IsCancellationRequested)
                 {
                     await Refresh();
-                    await Task.Delay(5000, token); // Pass the token to enable cancellation
+                    await Task.Delay(refreshMS, token); // Pass the token to enable cancellation
                 }
             }
             catch (OperationCanceledException)
@@ -108,10 +109,14 @@ namespace ClientApp.ViewModels
                 {
                     if (responseInfo.NormalResponse)
                     {
-                        Rooms = responseInfo.Response.Rooms;
+                        var refreshedRooms = responseInfo.Response.Rooms;
 
-                        // Clear selection after refreshing to ensure consistency
-                        SelectedRoom = null;
+                        var currentlySelectedRoomId = SelectedRoom?.RoomData.Id;
+                        var matchingRoom = refreshedRooms.FirstOrDefault(r => r.RoomData.Id == currentlySelectedRoomId);
+
+                        Rooms = refreshedRooms;
+
+                        SelectedRoom = matchingRoom;
                     }
                     else
                     {
@@ -124,6 +129,7 @@ namespace ClientApp.ViewModels
                 ErrorMessage = $"Error retrieving room list: {ex.Message}";
             }
         }
+
 
     }
 }

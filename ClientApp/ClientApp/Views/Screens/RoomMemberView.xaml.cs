@@ -6,9 +6,9 @@ namespace ClientApp.Views.Screens
     /// <summary>
     /// Interaction logic for RoomPage.xaml
     /// </summary>
-    partial class MemberRoomView : UserControl
+    partial class RoomMemberView : UserControl
     {
-        public MemberRoomView()
+        public RoomMemberView()
         {
             InitializeComponent();
         }

@@ -14,6 +14,7 @@ namespace ClientApp.ViewModels
         private UserStore userStore;
         private readonly RequestsExchangeService _requestsExchangeService;
         private CancellationTokenSource _checkRoomStateCTS;
+        private readonly int refreshMS = 300;
         private LoggedUser _admin;
 
         public RoomAdminViewModel(
@@ -73,7 +74,7 @@ namespace ClientApp.ViewModels
                 while (!token.IsCancellationRequested)
                 {
                     await PeriodicallyCheckRoomState();
-                    await Task.Delay(5000, token);
+                    await Task.Delay(refreshMS, token);
                 }
             }
             catch (OperationCanceledException)
