@@ -1,9 +1,16 @@
-#include "RequestHandlerFactory.h"
+#include "RequestHandlerFactory.hpp"
+
+#include "LoginRequestHandler.hpp"
+#include "MenuRequestHandler.hpp"
 
 
 RequestHandlerFactory::RequestHandlerFactory(IDatabase& database)
-	: m_database(&database), m_loginManager(LoginManager::getInstance(database))
+	: m_database(database),
+	m_loginManager(LoginManager::getInstance(database)),
+	m_statisticsManager(StatisticsManager::getInstance(database)),
+	m_roomManager(RoomManager::getInstance(database))
 {}
+
 
 
 RequestHandlerFactory& RequestHandlerFactory::getInstance(IDatabase& database)
@@ -12,12 +19,27 @@ RequestHandlerFactory& RequestHandlerFactory::getInstance(IDatabase& database)
 	return instance;
 }
 
-LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
+std::shared_ptr<IRequestHandler> RequestHandlerFactory::createLoginRequestHandler() const 
 {
-	return new LoginRequestHandler(*this);
+	return std::make_shared<LoginRequestHandler>(const_cast<RequestHandlerFactory&>(*this));
 }
 
-LoginManager& RequestHandlerFactory::getLoginManager()
+std::shared_ptr<IRequestHandler> RequestHandlerFactory::createMenuRequestHandler(const LoggedUser& loggedUser) const
+{
+	return std::make_shared<MenuRequestHandler>(loggedUser, const_cast<RequestHandlerFactory&>(*this));
+}
+
+LoginManager& RequestHandlerFactory::getLoginManager() const
 {
 	return this->m_loginManager;
+}
+
+RoomManager& RequestHandlerFactory::getRoomManger() const
+{
+	return this->m_roomManager;
+}
+
+StatisticsManager& RequestHandlerFactory::getStatisticsManger() const
+{
+	return this->m_statisticsManager;
 }

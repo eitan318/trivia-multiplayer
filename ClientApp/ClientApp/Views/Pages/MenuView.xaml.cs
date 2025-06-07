@@ -1,0 +1,17 @@
+﻿using ClientApp.ViewModels;
+using System.Windows.Controls;
+
+namespace ClientApp.Views.Pages
+{
+    /// <summary>
+    /// Interaction logic for MenuPage.xaml
+    /// </summary>
+    public partial class MenuView : UserControl
+    {
+        public MenuView()
+        {
+            InitializeComponent();
+        }
+    }
+
+}

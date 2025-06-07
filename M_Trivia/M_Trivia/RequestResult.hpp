@@ -1,11 +1,17 @@
 #pragma once
 #include <vector>
-#include <string>
-#include "IRequestHandler.h"
+#include <memory>
 
-struct IRequestHandler;
+class IRequestHandler;
 
-struct RequestResult {
+/**
+ * @struct RequestResult
+ * @brief response and the next handler
+ */
+class RequestResult {
+public:
+    RequestResult(const std::vector<char>& response, std::shared_ptr<IRequestHandler> newHandler);
+    RequestResult();
     std::vector<char> response;
-    IRequestHandler* newHandler = nullptr; 
+    std::shared_ptr<IRequestHandler> newHandler; 
 };

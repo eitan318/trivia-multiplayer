@@ -1,34 +1,33 @@
-#include "Server.h"
+#include "Server.hpp"
+
+#include "SqliteDatabase.hpp"
+#include <iostream>
+#include <string>
+#include <thread>
 
 Server::Server()
-	: m_database(SqliteDatabase::getInstance()),
-	m_handlerFactory(RequestHandlerFactory::getInstance(*m_database)),
-	m_communicator(Communicator::getInstance(m_handlerFactory))
-{
+    : m_database(SqliteDatabase::getInstance()),
+      m_handlerFactory(RequestHandlerFactory::getInstance(m_database)),
+      m_communicator(Communicator::getInstance(m_handlerFactory)) {}
+
+Server::~Server() {}
+
+Server &Server::getInstance() {
+  static Server instance;
+  return instance;
 }
 
-Server::~Server()
-{
-	// Do NOT delete m_database since it's a singleton.
-}
+void Server::run() const {
+  m_database.open();
+  m_communicator.bindAndListen();
 
-Server& Server::getInstance()
-{
-	static Server instance;
-	return instance;
-}
+  std::thread t_connector(&Communicator::startHandleRequest, &m_communicator);
+  t_connector.detach();
 
-void Server::run()
-{
-	m_database->open();
-	m_communicator.bindAndListen();
-	std::thread t_connector(&Communicator::startHandleRequest, &m_communicator);
-	t_connector.detach();
-
-	std::cout << "Write to server:" << std::endl;
-	std::string input;
-	do {
-		std::cout << ">>> ";
-		std::getline(std::cin, input);
-	} while (input != "EXIT");
+  std::cout << "Write to server:" << std::endl;
+  std::string input;
+  do {
+    std::cout << ">>> ";
+    std::getline(std::cin, input);
+  } while (input != "EXIT");
 }

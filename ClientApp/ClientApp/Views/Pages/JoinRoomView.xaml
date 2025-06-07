@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="ClientApp.Views.Pages.JoinRoomView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ClientApp.Views.Pages"
+      xmlns:controls="clr-namespace:ClientApp.Views.Controls"
+      mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="800"
+      TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2.5*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!-- ComboBox with custom DataTemplate -->
+        <ComboBox 
+            Grid.Column="1" 
+            ItemsSource="{Binding Rooms}" 
+            SelectedItem="{Binding SelectedRoom}" >
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <controls:RoomPreviewUserControl/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+
+        </ComboBox>
+
+
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <Button Content="Refresh" Margin="8" Command="{Binding RefreshCmd}"/>
+            <Button Content="Join" Margin="8" Command="{Binding JoinCmd}"/>
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" />
+        </StackPanel>
+    </Grid>
+</UserControl>
