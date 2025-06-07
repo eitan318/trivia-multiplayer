@@ -5,7 +5,7 @@ using ClientApp.Models.Responses;
 using ClientApp.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using ClientApp.Views.Pages;
+using ClientApp.Views.Screens;
 using ClientApp.Stores;
 
 namespace ClientApp.ViewModels

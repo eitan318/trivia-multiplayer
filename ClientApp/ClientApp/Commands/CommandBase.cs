@@ -15,7 +15,7 @@ namespace ClientApp.Commands
 
         public abstract void Execute(object parameter);
 
-        protected void OnCanExecuteChanged()
+        public void RaiseCanExecuteChanged()
         {
             CanExecuteChanged?.Invoke(this, new EventArgs());
         }

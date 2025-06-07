@@ -5,7 +5,7 @@
              xmlns:local="clr-namespace:ClientApp"
              xmlns:converters="clr-namespace:ClientApp.Views.Converters"
              xmlns:controls="clr-namespace:ClientApp.Views.Controls"
-             xmlns:views="clr-namespace:ClientApp.Views.Pages"
+             xmlns:views="clr-namespace:ClientApp.Views.Screens"
              xmlns:vm="clr-namespace:ClientApp.ViewModels"
              >
     <Application.Resources>

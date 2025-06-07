@@ -14,8 +14,6 @@ namespace ClientApp.ViewModels.ForgotPassword
     /// </summary>
     class EmailEntryViewModel : ViewModelBase
     {
-        private readonly RequestsExchangeService _requestsExchangeService;
-        private readonly INavigationService _navigationService;
         private PasswordResetStore _state;
 
         /// <summary>
@@ -26,11 +24,17 @@ namespace ClientApp.ViewModels.ForgotPassword
             PasswordResetStore state,
             RequestsExchangeService requestsExchangeService) : base(true)
         {
-            _navigationService = navigationService;
-            _requestsExchangeService = requestsExchangeService;
             _state = state;
-            SubmitEmailCmd = new RelayCommand(SubmitEmail);
+            SubmitEmailCmd = new SubmitPasswordResetEmailCommand(this, 
+                navigationService,
+                state,
+                requestsExchangeService);
         }
+
+        //Commands
+        public ICommand SubmitEmailCmd { get; }
+
+
 
         // Error fields
         private string _errorMessage;
@@ -58,50 +62,8 @@ namespace ClientApp.ViewModels.ForgotPassword
             }
         }
 
-        //Commands
-        public ICommand SubmitEmailCmd { get; }
 
 
 
-        /// <summary>
-        /// Submits the entered email address to initiate the password recovery process. 
-        /// If the email is valid, the process moves to the next step; otherwise, an error message is displayed.
-        /// </summary>
-        private async void SubmitEmail()
-        {
-            string trimmedEmail = this._state.Email?.Trim();
-
-            // Ensure email is not empty
-            if (string.IsNullOrEmpty(trimmedEmail))
-            {
-                ErrorMessage = "Email field cannot be empty";
-                return;
-            }
-
-            // Create request for password reset with the entered email
-            ForgotPasswordRequest request = new ForgotPasswordRequest(trimmedEmail);
-            ResponseInfo<PasswordResetCodeResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<PasswordResetCodeResponse>(request);
-
-            // Handle potential error response
-            if (responseInfo.NormalResponse)
-            {
-                // Process the response and move to the next step
-                PasswordResetCodeResponse response = responseInfo.Response;
-                if (response.Status == 0)
-                {
-                    this._navigationService.NavigateTo<CodeEntryViewModel>();
-                }
-                else
-                {
-                    ErrorMessage = response.Errors.EmailError;
-                }
-            }
-            else
-            {
-                ErrorMessage = responseInfo.ErrorResponse.Message;
-            }
-
-             
-        }
     }
 }

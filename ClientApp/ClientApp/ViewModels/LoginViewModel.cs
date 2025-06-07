@@ -1,8 +1,6 @@
 ﻿using ClientApp.Services;
 using ClientApp.Commands;
 using System.Windows.Input;
-using ClientApp.Models.Requests;
-using ClientApp.Models.Responses;
 using ClientApp.ViewModels.ForgotPassword;
 using ClientApp.Stores;
 
@@ -10,25 +8,28 @@ namespace ClientApp.ViewModels
 {
     class LoginViewModel : ViewModelBase
     {
-        private readonly INavigationService _navigationService;
         private UserStore _userStore;
-        private readonly RequestsExchangeService _requestsExchangeService;
         
         public LoginViewModel(
             INavigationService navigationService,
             UserStore userStore,
             RequestsExchangeService requestsExchangeService)
         {
-            this._navigationService = navigationService;
-            this._requestsExchangeService = requestsExchangeService;
             this._userStore = userStore;
 
             // Initialize commands for different actions
-            LoginCmd = new RelayCommand(PerformLogin, CanPerformLogin);
+            LoginCmd = new LoginCommand(this, navigationService, userStore, requestsExchangeService);
             NavToSignupCmd = new NavigateCommand<SignupViewModel>(navigationService);
             NavToForgotPasswordCmd = new NavigateCommand<EmailEntryViewModel>(navigationService);
 
         }
+
+        // Commands
+        public ICommand LoginCmd { get; }
+        public ICommand NavToSignupCmd { get; }
+        public ICommand NavToForgotPasswordCmd { get; }
+
+
 
         //Fields for account
         private string _password = "";
@@ -47,7 +48,7 @@ namespace ClientApp.ViewModels
             {
                 _userStore.Username = value;
                 OnPropertyChanged();
-                ((RelayCommand)LoginCmd).RaiseCanExecuteChanged();
+                ((CommandBase)LoginCmd).RaiseCanExecuteChanged();
             }
         }
 
@@ -58,7 +59,7 @@ namespace ClientApp.ViewModels
             {
                 _password = value;
                 OnPropertyChanged();
-                ((RelayCommand)LoginCmd).RaiseCanExecuteChanged();
+                ((CommandBase)LoginCmd).RaiseCanExecuteChanged();
             }
         }
 
@@ -95,66 +96,8 @@ namespace ClientApp.ViewModels
         }
 
 
-        public ICommand LoginCmd { get; }
-        public ICommand NavToSignupCmd { get; }
-        public ICommand NavToForgotPasswordCmd { get; }
 
 
-
-        private bool CanPerformLogin()
-        {
-            return !string.IsNullOrWhiteSpace(Username) &&
-                !string.IsNullOrWhiteSpace(Password);
-        }
-
-        /// <summary>
-        /// Attempts to log in the user by validating the username and password.
-        /// If successful, navigates to the menu page. If there is an error, shows the error messages.
-        /// </summary>
-        private async void PerformLogin()
-        {
-            ErrorMessage = "";
-            UsernameErrorMessage = "";
-            PasswordErrorMessage = "";
-
-            try
-            {
-                // Trim input values
-                string trimmedUsername = Username?.Trim();
-                string trimmedPassword = Password?.Trim();
-
-                this._userStore.Username = Username;
-
-                // Prepare the login request and send it
-                LoginRequest loginRequest = new LoginRequest(trimmedUsername, trimmedPassword);
-                ResponseInfo<LoginResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<LoginResponse>(loginRequest);
-
-                // Handle server error response
-                if (responseInfo.NormalResponse)
-                {
-                    LoginResponse loginResponse = responseInfo.Response;
-                    if(loginResponse.Status == 0)
-                    {
-                        this._navigationService.NavigateTo<MenuViewModel>();
-                    }
-                    else
-                    {
-                        UsernameErrorMessage = loginResponse.Errors.UsernameError;
-                        PasswordErrorMessage = loginResponse.Errors.PasswordError;
-                        ErrorMessage = loginResponse.Errors.GeneralError;
-                    }
-
-                }
-                else
-                {
-                    ErrorResponse errorResponse = responseInfo.ErrorResponse;
-                    ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = $"Login failed: {ex.Message}";
-            }
-        }
+        
     }
 }
