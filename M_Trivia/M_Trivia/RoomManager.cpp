@@ -21,8 +21,14 @@ RoomManager::~RoomManager() {}
 
 CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser& player,
     RoomData& roomData) {
+
     CreateRoomResponseErrors createRoonResponseErrors;
-    unsigned int totalQuestionCount = this->m_database.getQuestionsCount();
+    unsigned int totalQuestionCount;
+
+    {
+        std::lock_guard<std::mutex> lock(this->m_roomsMutex);
+        totalQuestionCount = this->m_database.getQuestionsCount();
+    }
 
     if (roomData.numOfQuestionsInGame > totalQuestionCount)
     {
@@ -34,9 +40,9 @@ CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser& player,
 
     if (createRoonResponseErrors.statusCode == 0)
     {
+        std::lock_guard<std::mutex> lock(this->m_roomsMutex);
         int roomid = ids++;
         roomData.id = roomid;
-        std::lock_guard<std::mutex> lock(this->m_roomsMutex);
         this->m_rooms[roomid] = Room(roomData, player);
     }
     return createRoonResponseErrors;
@@ -61,6 +67,7 @@ bool RoomManager::getRoomState(int ID) const {
 
 
 std::vector<RoomPreview> RoomManager::getRooms() const {
+    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     std::vector<RoomPreview> roomsvec;
     for (auto& room : this->m_rooms) {
         roomsvec.push_back(room.second.getRoomPreview());
@@ -70,6 +77,7 @@ std::vector<RoomPreview> RoomManager::getRooms() const {
 
 JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
     const LoggedUser& loggedUser) {
+    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     JoinRoomResponseErrors errors;
     Room* room = this->getRoom(id);
     if (room != nullptr) {
