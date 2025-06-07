@@ -25,10 +25,7 @@ CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser& player,
     CreateRoomResponseErrors createRoonResponseErrors;
     unsigned int totalQuestionCount;
 
-    {
-        std::lock_guard<std::mutex> lock(this->m_roomsMutex);
-        totalQuestionCount = this->m_database.getQuestionsCount();
-    }
+    totalQuestionCount = this->m_database.getQuestionsCount();
 
     if (roomData.numOfQuestionsInGame > totalQuestionCount)
     {
