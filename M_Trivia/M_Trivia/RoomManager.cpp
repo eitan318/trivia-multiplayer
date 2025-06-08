@@ -60,7 +60,6 @@ void RoomManager::deleteRoom(int ID) {
 std::vector<RoomPreview> RoomManager::getRooms() const {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     std::vector<RoomPreview> roomsvec;
-    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     for (const auto& room : m_rooms) {
         roomsvec.push_back(room.getRoomPreview());
     }
@@ -106,9 +105,10 @@ StartGameResponseErrors RoomManager::startGameOfRoom(Room* room)
 
 JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
     const LoggedUser& loggedUser) {
-    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
+
     JoinRoomResponseErrors errors;
     Room* room = this->getRoom(id);
+    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     if (room != nullptr) {
         if (room->hasUser(loggedUser.getUsername())) {
             errors.generalError = "You are already inside this room.";

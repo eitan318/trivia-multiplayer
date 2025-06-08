@@ -5,9 +5,6 @@ using ClientApp.Models.Responses;
 using ClientApp.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using ClientApp.Views.Screens;
-using System.Threading;
-using System.Threading.Tasks;
 using ClientApp.Stores;
 
 
