@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Models
 {
-    enum RoomStatus
+    public enum RoomStatus
     {
         Closed,
         InGame,

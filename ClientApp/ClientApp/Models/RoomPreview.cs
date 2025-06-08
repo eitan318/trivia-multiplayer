@@ -4,10 +4,22 @@
     {
         public RoomDataModel RoomData { get; set; }
         public uint CurrPlayersAmount { get; set; }
-        public bool Status { get; set; }
-
+        public RoomStatus Status { get; set; }
 
         public string PlayersInfo => $"{CurrPlayersAmount}/{RoomData.MaxPlayers}";
-    }
 
+        public string StatusInfo
+        {
+            get
+            {
+                return Status switch
+                {
+                    RoomStatus.Closed => "Closed - something went wrong",
+                    RoomStatus.InGame => "InGame",
+                    RoomStatus.NotInGame => "Available",
+                    _ => "Unknown Status"
+                };
+            }
+        }
+    }
 }

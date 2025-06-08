@@ -117,6 +117,9 @@ JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
             room->getUsersVector().size()) {
             errors.generalError = "Room is already full.";
         }
+        else if (room->getRoomStatus() == RoomStatus::InGame) {
+            errors.generalError = "Room is inGame.";
+        }
         else {
             room->addUser(loggedUser);
         }
