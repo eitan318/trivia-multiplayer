@@ -3,13 +3,12 @@
 #include "GeneralResponseErrors.hpp"
 
 /**
- * @class LeaveRoomResponse
+ * @class CloseRoomResponse
  * @brief Represents a response containing Status only and no data
  */
-class LeaveRoomResponse : public Response {
+class LeaveGameResponse : public Response {
 public:
-
-	LeaveRoomResponse(GeneralResponseErrors* errors);
+	LeaveGameResponse(GeneralResponseErrors* errors);
 
 	/**
 	 * @brief Gets the response code for this response.
@@ -17,9 +16,8 @@ public:
 	 */
 	ResponseCodes getCode() const override;
 
-
 	/**
 	 * @brief Deleted default constructor to enforce proper initialization.
 	 */
-	LeaveRoomResponse() = delete;
+	LeaveGameResponse() = delete;
 };

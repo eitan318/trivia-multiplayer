@@ -1,26 +1,19 @@
 #pragma once
 #include "Response.hpp"
-#include "RoomState.hpp"
+#include "PlayerResults.hpp"
+#include <vector>
+
 
 /**
- * @class GetRoomStateResponse
- * @brief Represents a response for geting a room's state.
+ * @class GetHighScoreResponse
+ * @brief Represents a response status, statistics
  */
-class GetRoomStateResponse : public Response {
+class GetGameResultsResponse : public Response {
 private:
-    RoomState m_roomState;
+    std::vector<PlayerResults> _results;
 
 public:
-    /**
-	* @brief Constructor for CreateRoomResponse.
-	* @param errors The error details for the response.
-	*/
-    GetRoomStateResponse(unsigned int status,
-        RoomState roomState);
-
-    GetRoomStateResponse(){}
-
-
+    GetGameResultsResponse(unsigned int status, const std::vector<PlayerResults>& results);
 
     /**
      * @brief Gets the response code for this response.
@@ -28,9 +21,12 @@ public:
      */
     ResponseCodes getCode() const override;
 
+
     /**
      * @brief Converts the response to a JSON object.
      * @return A JSON representation of the response.
      */
     nlohmann::json getJson() const override;
 };
+
+

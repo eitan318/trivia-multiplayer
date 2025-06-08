@@ -1,7 +1,8 @@
 #include "LeaveRoomResponse.hpp"
 
-LeaveRoomResponse::LeaveRoomResponse(unsigned int status) :
-	Response(status)
+
+LeaveRoomResponse::LeaveRoomResponse(GeneralResponseErrors* errors) :
+	Response(errors)
 {
 
 }

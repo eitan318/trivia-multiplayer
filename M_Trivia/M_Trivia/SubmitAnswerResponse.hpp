@@ -3,13 +3,14 @@
 #include "GeneralResponseErrors.hpp"
 
 /**
- * @class LeaveRoomResponse
+ * @class CloseRoomResponse
  * @brief Represents a response containing Status only and no data
  */
-class LeaveRoomResponse : public Response {
+class SubmitAnswerResponse : public Response {
+private:
+	unsigned int m_correctAnswerId;
 public:
-
-	LeaveRoomResponse(GeneralResponseErrors* errors);
+	SubmitAnswerResponse(GeneralResponseErrors* errors, unsigned int correctAnswerId);
 
 	/**
 	 * @brief Gets the response code for this response.
@@ -17,9 +18,14 @@ public:
 	 */
 	ResponseCodes getCode() const override;
 
-
 	/**
 	 * @brief Deleted default constructor to enforce proper initialization.
 	 */
-	LeaveRoomResponse() = delete;
+	SubmitAnswerResponse() = delete;
+
+	/**
+	 * @brief Converts the response to a JSON object.
+	 * @return A JSON representation of the response.
+	 */
+	nlohmann::json getJson() const override;
 };
