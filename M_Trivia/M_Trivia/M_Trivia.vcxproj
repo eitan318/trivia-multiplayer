@@ -196,6 +196,7 @@
     <ClInclude Include="StartGameResponse.hpp" />
     <ClInclude Include="StartGameResponseErrors.hpp" />
     <ClInclude Include="StatisticsManager.hpp" />
+    <ClInclude Include="SubmitAnswerRequest.hpp" />
     <ClInclude Include="UserRecord.hpp" />
     <ClInclude Include="VerifyPasswordResetCodeRequest.hpp" />
     <ClInclude Include="VerifyPasswordResetCodeResponse.hpp" />
@@ -263,6 +264,7 @@
     <ClCompile Include="StartGameResponse.cpp" />
     <ClCompile Include="StartGameResponseErrors.cpp" />
     <ClCompile Include="StatisticsManager.cpp" />
+    <ClCompile Include="SubmitAnswerRequest.cpp" />
     <ClCompile Include="VerifyPasswordResetCodeRequest.cpp" />
     <ClCompile Include="VerifyPasswordResetCodeResponse.cpp" />
     <ClCompile Include="VerifyPasswordResetCodeResponseErrors.cpp" />
