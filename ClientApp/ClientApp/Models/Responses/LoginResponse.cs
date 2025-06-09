@@ -8,6 +8,6 @@ namespace ClientApp.Models.Responses
         private LoginResponse() { }
         [JsonProperty]
         public LoginResponseErrors Errors { get; private set; }
-        public ResponsesCodes GetCode() => ResponsesCodes.LoginResponse;
+        public override ResponsesCodes GetCode() => ResponsesCodes.LoginResponse;
     }
 }

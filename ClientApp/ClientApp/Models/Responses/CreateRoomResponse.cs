@@ -6,7 +6,7 @@ namespace ClientApp.Models.Responses
     class CreateRoomResponse : Response
     {
         private CreateRoomResponse() { }
-        public ResponsesCodes GetCode() => ResponsesCodes.CreateRoomResponse;
+        public override ResponsesCodes GetCode() => ResponsesCodes.CreateRoomResponse;
         [JsonProperty]
         public RoomDataModel RoomData { get; private set; }
         [JsonProperty]

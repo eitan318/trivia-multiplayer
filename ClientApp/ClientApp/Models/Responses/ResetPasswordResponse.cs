@@ -8,6 +8,6 @@ namespace ClientApp.Models.Responses
         private ResetPasswordResponse() { }
         [JsonProperty]
         public ResetPasswordErrors Errors { get; private set; }
-        public ResponsesCodes GetCode() => ResponsesCodes.ResetPasswordResponse;
+        public override ResponsesCodes GetCode() => ResponsesCodes.ResetPasswordResponse;
     }
 }

@@ -18,5 +18,10 @@ enum ResponsesCodes {
   LeaveRoomResponse = 15,
   GetRoomStatusResponse = 16,
   CloseRoomResponse = 17,
-}
+        GetQuestionResponse = 18,
+        LeaveGameResponse = 19,
+        GetGameResultsResponse = 20,
+        SubmitAnswerResponse = 21,
+        GetRoomStateRespones = 22,
+    }
 }

@@ -14,6 +14,6 @@ namespace ClientApp.Models.Responses
         
         [JsonProperty]
         public CloseRoomResponseErrors Errors { get; private set; }
-        public ResponsesCodes GetCode() => ResponsesCodes.CloseRoomResponse;
+        public override ResponsesCodes GetCode() => ResponsesCodes.CloseRoomResponse;
     }
 }

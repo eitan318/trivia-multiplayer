@@ -5,6 +5,7 @@ namespace ClientApp.Models.Responses
     class GetRoomStateResponse : Response
     {
         private GetRoomStateResponse() { }
+        public override ResponsesCodes GetCode() => ResponsesCodes.GetRoomStateRespones;
 
 
         [JsonProperty]

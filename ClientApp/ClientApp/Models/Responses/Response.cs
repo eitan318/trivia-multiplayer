@@ -6,5 +6,7 @@ namespace ClientApp.Models.Responses
     {
         [JsonProperty]
         public uint Status { get; private set; }
+
+        public abstract ResponsesCodes GetCode();
     }
 }

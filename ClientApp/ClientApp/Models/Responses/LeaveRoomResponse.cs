@@ -3,6 +3,6 @@
     class LeaveRoomResponse : Response
     {
         private LeaveRoomResponse() { }
-        public ResponsesCodes GetCode() => ResponsesCodes.LeaveRoomResponse;
+        public override ResponsesCodes GetCode() => ResponsesCodes.LeaveRoomResponse;
     }
 }
