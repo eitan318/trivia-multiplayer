@@ -10,6 +10,6 @@ namespace ClientApp.Models.Responses {
           public string  PasswordResetTocken { get; private set; }
           [JsonProperty]
           public VerifyPasswordResetCodeResponseErrors Errors { get; private set; }
-          public ResponsesCodes GetCode() => ResponsesCodes.VerifyPasswordCodeResponse;
+          public override ResponsesCodes GetCode() => ResponsesCodes.VerifyPasswordCodeResponse;
     }
 }

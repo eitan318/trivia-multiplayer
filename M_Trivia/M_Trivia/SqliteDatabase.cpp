@@ -501,9 +501,11 @@ std::list<Question> SqliteDatabase::getQuestions(int amount) const {
     std::list<Question> questions;
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         // Create the Question object using data from the database
-        Question q(std::string(reinterpret_cast<const char*>(
+        Question q(
+            std::string(reinterpret_cast<const char*>(
             sqlite3_column_text(stmt, 0))), // difficulty
-            sqlite3_column_int(stmt, 1),        // category
+            std::string(reinterpret_cast<const char*>(
+                sqlite3_column_text(stmt, 1))), // category
             std::string(reinterpret_cast<const char*>(
                 sqlite3_column_text(stmt, 2))), // question
             std::string(reinterpret_cast<const char*>(

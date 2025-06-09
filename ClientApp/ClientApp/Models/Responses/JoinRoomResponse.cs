@@ -6,7 +6,7 @@ namespace ClientApp.Models.Responses
     class JoinRoomResponse : Response
     {
         private JoinRoomResponse() { }
-        public ResponsesCodes GetCode() => ResponsesCodes.JoinRoomResponse;
+        public override ResponsesCodes GetCode() => ResponsesCodes.JoinRoomResponse;
         [JsonProperty]
         public JoinRoomResponseErrors Errors { get; private set; }
 

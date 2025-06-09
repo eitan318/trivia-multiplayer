@@ -10,6 +10,6 @@ namespace ClientApp.Models.Responses
         
         [JsonProperty]
         public StartGameResponseErrors Errors { get; private set; }
-        public ResponsesCodes GetCode() => ResponsesCodes.StartGameResponse;
+        public override ResponsesCodes GetCode() => ResponsesCodes.StartGameResponse;
     }
 }

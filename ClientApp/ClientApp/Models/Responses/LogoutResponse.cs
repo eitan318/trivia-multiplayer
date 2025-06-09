@@ -4,6 +4,6 @@ namespace ClientApp.Models.Responses
     class LogoutResponse : Response
     {
         private LogoutResponse() { }
-        public ResponsesCodes GetCode() => ResponsesCodes.LogoutResponse;
+        public  override ResponsesCodes GetCode() => ResponsesCodes.LogoutResponse;
     }
 }

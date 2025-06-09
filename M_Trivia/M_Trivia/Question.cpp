@@ -1,27 +1,45 @@
 #include "Question.hpp"
+#include <random>
 
-Question::Question(const std::string & difficulty, int categoryId, const std::string & question,
+Question::Question(const std::string& difficulty, const std::string& category, const std::string& question,
     const std::string& correctAnswer, const std::string& ans1, const std::string& ans2,
     const std::string& ans3)
-    : m_difficulty(difficulty), m_categoryId(categoryId), m_question(question)
+    : m_difficulty(difficulty), m_category(category), m_question(question)
 {
+    // Add answers to the vector
     m_possibleAnswers.push_back(correctAnswer);
     m_possibleAnswers.push_back(ans1);
     m_possibleAnswers.push_back(ans2);
     m_possibleAnswers.push_back(ans3);
+
+    // Shuffle the answers while tracking the index of the correct answer
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::vector<int> indices = { 0, 1, 2, 3 }; // Track original indices
+    std::shuffle(indices.begin(), indices.end(), g);
+
+    // Reorder answers and update the correct answer index
+    std::vector<std::string> shuffledAnswers(4);
+    for (size_t i = 0; i < indices.size(); ++i) {
+        shuffledAnswers[i] = m_possibleAnswers[indices[i]];
+        if (indices[i] == 0) { // Original index of the correct answer
+            m_correctAnswerIdx = i;
+        }
+    }
+    m_possibleAnswers = shuffledAnswers;
 }
 
-std::string Question::getQuestion()
+std::string Question::getQuestion() const
 {
-	return m_question;
+    return m_question;
 }
 
-std::vector<std::string> Question::getPossibleAnswers()
+std::vector<std::string> Question::getPossibleAnswers() const
 {
-	return m_possibleAnswers;
+    return m_possibleAnswers;
 }
 
-int Question::getCorrectAnswerId()
+int Question::getCorrectAnswerId() const
 {
-    return 0;
+    return m_correctAnswerIdx;
 }
