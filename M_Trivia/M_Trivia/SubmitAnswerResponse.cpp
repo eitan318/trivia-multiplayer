@@ -13,6 +13,6 @@ ResponseCodes SubmitAnswerResponse::getCode() const
 nlohmann::json SubmitAnswerResponse::getJson() const
 {
 	nlohmann::json j = Response::getJson();
-	j["CurrectAnswerId"] = m_correctAnswerId;
+	j["CorrectAnswerId"] = m_correctAnswerId;
 	return j;
 }
