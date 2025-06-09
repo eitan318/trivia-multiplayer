@@ -18,7 +18,7 @@ public:
     GetRoomStateResponse(unsigned int status,
         RoomState roomState);
 
-    GetRoomStateResponse(){}
+    GetRoomStateResponse() = delete;
 
 
 

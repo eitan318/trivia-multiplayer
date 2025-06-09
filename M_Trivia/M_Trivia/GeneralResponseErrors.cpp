@@ -1,4 +1,4 @@
-#include "GeneralResponseError.hpp"
+#include "GeneralResponseErrors.hpp"
 
 bool GeneralResponseErrors::noErrors() const
 {
