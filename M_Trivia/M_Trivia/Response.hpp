@@ -20,15 +20,20 @@ enum class ResponseCodes : unsigned char {
 	C_JoinRoomResponse = 9,
 	C_CreateRoomResponse = 10,
 	C_LogoutResponse = 11,
-	C_VerifyPasswordResetCodeResponse = 12,
-	C_CloseRoomResponse = 13,
+	C_HighScoresRespones = 12,
+	C_VerifyPasswordResetCodeResponse = 13,
 	C_StartGameResponse = 14,
 	C_LeaveRoomResponse = 15,
-	C_GetRoomStateResponse = 16,
-	C_LeaveGameResponse = 17,
-	C_GetGameResultsResponse = 18,
-	C_GetQuestionResponse = 19,
-	C_SubmitAnswerResponse = 20,
+	C_GetRoomStatusResponse = 16,
+	C_CloseRoomResponse = 17,
+	C_GetQuestionResponse = 18,
+	C_LeaveGameResponse = 19,
+	C_GetGameResultsResponse = 20,
+	C_SubmitAnswerResponse = 21,
+	C_GetRoomStateResponse = 22,
+
+
+
 };
 
 #define GENERAL_SUCCESS_RESPONSE_STATUS 0
