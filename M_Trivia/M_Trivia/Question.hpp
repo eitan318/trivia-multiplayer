@@ -64,9 +64,9 @@ public:
  */
 inline void to_json(nlohmann::json& j, const Question& q) {
     j = nlohmann::json{
-        {"difficulty", q.m_difficulty},
-        {"category", q.m_category},   
-        {"question", q.m_question},
-        {"possibleAnswers", q.m_possibleAnswers},
+        {"Difficulty", q.m_difficulty},
+        {"Category", q.m_category},   
+        {"Question", q.m_question},
+        {"PossibleAnswers", q.m_possibleAnswers},
     };
 }
