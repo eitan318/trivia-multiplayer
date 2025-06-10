@@ -4,9 +4,9 @@ namespace ClientApp.Models.Requests
     class SubmitAnswerRequest : IRequest
     {
         public uint correctAnswerId { get; }
-        public SubmitAnswerRequest(uint CorrectAnswerID)
+        public SubmitAnswerRequest(uint correctAnswerID)
         {
-            this.correctAnswerId = CorrectAnswerID;
+            this.correctAnswerId = correctAnswerID;
         }
         public RequestsCodes GetCode() => RequestsCodes.SubmitAnswerRequest;
 
