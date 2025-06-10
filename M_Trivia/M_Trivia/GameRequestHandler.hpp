@@ -1,6 +1,7 @@
 #pragma once
 #include "IRequestHandler.hpp"
 #include "LoggedUser.hpp"
+#include "Question.hpp"
 //#include "GameManager.hpp"
 #include "RequestHandlerFactory.hpp"
 

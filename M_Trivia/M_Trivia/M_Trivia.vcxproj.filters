@@ -200,6 +200,7 @@
     <ClCompile Include="StartGameResponseErrors.cpp">
       <Filter>Model\ResponseErrors</Filter>
     </ClCompile>
+    <ClCompile Include="Game.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CreateRoomResponseErrors.hpp">
@@ -437,9 +438,7 @@
     <ClInclude Include="GameData.hpp">
       <Filter>Model</Filter>
     </ClInclude>
-    <ClInclude Include="Quetion.hpp">
-      <Filter>Model</Filter>
-    </ClInclude>
+    <ClInclude Include="Game.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External Libs">

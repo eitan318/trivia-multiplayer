@@ -135,6 +135,7 @@
     <ClInclude Include="CreateRoomResponse.hpp" />
     <ClInclude Include="CreateRoomResponseErrors.hpp" />
     <ClInclude Include="EmailSender.hpp" />
+    <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameData.hpp" />
     <ClInclude Include="GameRequestHandler.hpp" />
     <ClInclude Include="GeneralResponseErrors.hpp" />
@@ -154,7 +155,6 @@
     <ClInclude Include="MenuRequestHandler.hpp" />
     <ClInclude Include="PersonalStatisticsRequest.hpp" />
     <ClInclude Include="PlayerResults.hpp" />
-    <ClInclude Include="Quetion.hpp" />
     <ClInclude Include="RegexValidator.hpp" />
     <ClInclude Include="ResetPasswordResponseErrors.hpp" />
     <ClInclude Include="ResetPasswordRequest.hpp" />
@@ -219,6 +219,7 @@
     <ClCompile Include="CreateRoomResponse.cpp" />
     <ClCompile Include="CreateRoomResponseErrors.cpp" />
     <ClCompile Include="EmailSender.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GeneralResponseErrors.cpp" />
     <ClCompile Include="GetGameResultsResponse.cpp" />
     <ClCompile Include="GetHighScoreRequest.cpp" />
