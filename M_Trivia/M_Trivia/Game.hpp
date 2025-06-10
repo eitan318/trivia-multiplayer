@@ -5,6 +5,7 @@
 
 class Game {
 public:
+	std::map<LoggedUser, GameData> getPlayers();
 	Question getQuestionForUser(LoggedUser user);
 	void submitAnswer();
 	void removePlayer();
