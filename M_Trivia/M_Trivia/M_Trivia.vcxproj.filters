@@ -434,6 +434,12 @@
     <ClInclude Include="GameRequestHandler.hpp">
       <Filter>Model\ResponseErrors\RequestHandlers</Filter>
     </ClInclude>
+    <ClInclude Include="GameData.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Quetion.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External Libs">

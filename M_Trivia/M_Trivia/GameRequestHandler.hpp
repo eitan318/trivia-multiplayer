@@ -15,6 +15,18 @@
 class GameRequestHandler : IRequestHandler {
 public:
     /**
+     * @brief Constructor for the GameRequestHandler class.
+     * @param user The currently logged-in user.
+     * @param handlerFactory The factory for creating other request handlers.
+     */
+    GameRequestHandler(const LoggedUser& user,
+        RequestHandlerFactory& handlerFactory); // eeeeeeexxxxxxxxxpppppppaaaaaaannnnnnndddddddd when game and gamemanager are finished
+
+    /**
+     * @brief Default destructor.
+     */
+    ~GameRequestHandler() = default;
+    /**
      * @brief Checks if a given request is relevant for this handler.
      * @param requestInfo The request information.
      * @return True if the request is relevant, otherwise false.
