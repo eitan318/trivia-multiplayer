@@ -80,7 +80,7 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& requestInfo)
 	StartGameResponse startGameResponse(&errors);
 	RequestResult result;
 	result.response = JsonResponsePacketSerializer::serializeResponse(startGameResponse);
-	result.newHandler = nullptr;
+	result.newHandler = this->m_requestHandlerFactory.createGameRequestHandler(m_user,m_room);
 	return result;
 }
 

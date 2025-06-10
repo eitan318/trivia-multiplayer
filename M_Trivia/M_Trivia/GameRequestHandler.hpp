@@ -21,9 +21,7 @@ public:
      * @param handlerFactory The factory for creating other request handlers.
      */
     GameRequestHandler(const LoggedUser& user,
-        RequestHandlerFactory& handlerFactory,
-        std::shared_ptr<Game> game,
-        GameManager& gameManager); 
+        RequestHandlerFactory& handlerFactory,Room* room); 
 
     /**
      * @brief Default destructor.
@@ -44,10 +42,10 @@ public:
      */
     RequestResult handleRequest(const RequestInfo& requestInfo, SOCKET socket) override;
 private:
-    std::shared_ptr<Game> m_game;
 	LoggedUser m_user;
+    RequestHandlerFactory& m_handlerFactory;
     GameManager& m_gameManager;
-	RequestHandlerFactory& m_handlerFactory;
+    std::shared_ptr<Game> m_game;
 
     /**
      * @brief gets a the current question and sends to clients.

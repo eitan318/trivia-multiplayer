@@ -8,13 +8,13 @@
 #include "GetQuestionResponse.hpp"
 
 GameRequestHandler::GameRequestHandler(const LoggedUser& user,
-    RequestHandlerFactory& handlerFactory,
-    std::shared_ptr<Game> game,
-    GameManager& gameManager) : m_game(std::move(game)),
-    m_gameManager(gameManager),
+    RequestHandlerFactory& handlerFactory,Room* room) : 
+    m_gameManager(handlerFactory.getGameManager()),
     m_handlerFactory(handlerFactory),
     m_user(user)
-{}
+{
+    this->m_game = this->m_gameManager.createGame(room);
+}
 
 GameRequestHandler::~GameRequestHandler() = default;
 
