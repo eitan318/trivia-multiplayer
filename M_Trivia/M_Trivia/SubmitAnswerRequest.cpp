@@ -1,12 +1,12 @@
 #include "SubmitAnswerRequest.hpp"
 
 SubmitAnswerRequest::SubmitAnswerRequest(const nlohmann::json& j) {
-	const unsigned int answerid = j.at("AnswerID");
+	const unsigned int correctAnswerid = j.at("CorrectAnswerID");
 
-	this->answerId = answerid;
+	this->correctAnswerId = correctAnswerid;
 }
 
 const unsigned int SubmitAnswerRequest::getAnswerId() const
 {
-	return answerId;
+	return correctAnswerId;
 }

@@ -3,10 +3,10 @@ namespace ClientApp.Models.Requests
 {
     class SubmitAnswerRequest : IRequest
     {
-        public uint correctAnswerId { get; set; }
-        public SubmitAnswerRequest(uint correctAnswerID)
+        public uint correctAnswerId { get; }
+        public SubmitAnswerRequest(uint CorrectAnswerID)
         {
-            this.correctAnswerId = correctAnswerID;
+            this.correctAnswerId = CorrectAnswerID;
         }
         public RequestsCodes GetCode() => RequestsCodes.SubmitAnswerRequest;
 
