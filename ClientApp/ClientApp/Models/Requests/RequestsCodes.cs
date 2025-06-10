@@ -18,6 +18,10 @@ namespace ClientApp.Models.Requests
         StartGameRequest = 14,
         GetRoomStateRequest = 15,
         LeaveRoomRequest = 16, 
+        LeaveGameRequest = 17, 
+        GetQuestionRequest = 18,
+        SubmitAnswerRequest = 19,
+        GetGameResultRequest = 20, 
 
     }
 }
