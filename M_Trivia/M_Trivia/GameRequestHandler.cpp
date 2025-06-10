@@ -60,12 +60,18 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& requestInfo, 
 
 RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
 {
+    Question quetionForUser = this->m_game.getQuestionForUser(m_user);
+    GetQuestionResponse getQuestionResponse(GENERAL_SUCCESS_RESPONSE_STATUS, quetionForUser);
 
+    RequestResult requestResult(
+        JsonResponsePacketSerializer::serializeResponse(getQuestionResponse),
+        std::move(this->m_handlerFactory.createMenuRequestHandler(this->m_user)));
+    return requestResult;
 }
 
 RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 {
-
+    
 }
 
 RequestResult GameRequestHandler::getGamesResult(RequestInfo requestInfo)
@@ -93,5 +99,12 @@ RequestResult GameRequestHandler::getGamesResult(RequestInfo requestInfo)
 
 RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
 {
+    this->m_game.removePlayer();
+    GeneralResponseErrors* errors;
+    LeaveGameResponse leaveGameResponse(errors);
 
+    RequestResult requestResult(
+        JsonResponsePacketSerializer::serializeResponse(leaveGameResponse),
+        std::move(this->m_handlerFactory.createMenuRequestHandler(this->m_user)));
+    return requestResult;
 }
