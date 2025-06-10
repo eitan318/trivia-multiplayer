@@ -9,8 +9,8 @@
 
 GameRequestHandler::GameRequestHandler(const LoggedUser& user,
     RequestHandlerFactory& handlerFactory,
-    Game& game,
-    GameManager& gameManager) : m_game(game),
+    std::shared_ptr<Game> game,
+    GameManager& gameManager) : m_game(std::move(game)),
     m_gameManager(gameManager),
     m_handlerFactory(handlerFactory),
     m_user(user)
@@ -60,7 +60,7 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& requestInfo, 
 
 RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
 {
-    Question quetionForUser = this->m_game.getQuestionForUser(m_user);
+    Question quetionForUser = this->m_game->getQuestionForUser(m_user);
     GetQuestionResponse getQuestionResponse(GENERAL_SUCCESS_RESPONSE_STATUS, quetionForUser);
 
     RequestResult requestResult(
@@ -71,12 +71,20 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
 
 RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 {
-    
+    this->m_game->submitAnswer();
+    Question questionUserChose = this->m_game->getQuestionForUser(m_user);
+    GeneralResponseErrors* errors;
+    SubmitAnswerResponse submitAnswerResponse(errors,questionUserChose.getCorrectAnswerId());
+
+    RequestResult requestResult(
+        JsonResponsePacketSerializer::serializeResponse(submitAnswerResponse),
+        std::move(this->m_handlerFactory.createMenuRequestHandler(this->m_user)));
+    return requestResult;
 }
 
 RequestResult GameRequestHandler::getGamesResult(RequestInfo requestInfo)
 {
-    std::map<LoggedUser,GameData> allUsers = this->m_game.getPlayers();
+    std::map<LoggedUser,GameData> allUsers = this->m_game->getPlayers();
     std::vector<PlayerResults> playersResults;
     for (auto it = allUsers.begin(); it != allUsers.end(); ++it) {
         const LoggedUser& user = it->first;
@@ -99,7 +107,7 @@ RequestResult GameRequestHandler::getGamesResult(RequestInfo requestInfo)
 
 RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
 {
-    this->m_game.removePlayer();
+    this->m_game->removePlayer();
     GeneralResponseErrors* errors;
     LeaveGameResponse leaveGameResponse(errors);
 

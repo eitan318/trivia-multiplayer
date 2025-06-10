@@ -6,7 +6,7 @@
 
 class GameManager {
 public:
-	Game createGame(Room room);
+	std::shared_ptr<Game> createGame(Room room);
 	void deleteGame(int gameId);
 private:
 

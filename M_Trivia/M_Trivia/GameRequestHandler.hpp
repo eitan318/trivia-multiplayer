@@ -13,7 +13,7 @@
  * submitting your answer, getting the game's result and leaving game. It routes
  * requests to the appropriate methods based on their type.
  */
-class GameRequestHandler : IRequestHandler {
+class GameRequestHandler : public IRequestHandler {
 public:
     /**
      * @brief Constructor for the GameRequestHandler class.
@@ -22,7 +22,7 @@ public:
      */
     GameRequestHandler(const LoggedUser& user,
         RequestHandlerFactory& handlerFactory,
-        Game& game,
+        std::shared_ptr<Game> game,
         GameManager& gameManager); 
 
     /**
@@ -44,7 +44,7 @@ public:
      */
     RequestResult handleRequest(const RequestInfo& requestInfo, SOCKET socket) override;
 private:
-    Game& m_game;
+    std::shared_ptr<Game> m_game;
 	LoggedUser m_user;
     GameManager& m_gameManager;
 	RequestHandlerFactory& m_handlerFactory;
