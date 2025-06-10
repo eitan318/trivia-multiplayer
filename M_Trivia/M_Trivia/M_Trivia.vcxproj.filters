@@ -431,6 +431,9 @@
     <ClInclude Include="RoomState.hpp">
       <Filter>Model</Filter>
     </ClInclude>
+    <ClInclude Include="GameRequestHandler.hpp">
+      <Filter>Model\ResponseErrors\RequestHandlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External Libs">

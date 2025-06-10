@@ -135,6 +135,7 @@
     <ClInclude Include="CreateRoomResponse.hpp" />
     <ClInclude Include="CreateRoomResponseErrors.hpp" />
     <ClInclude Include="EmailSender.hpp" />
+    <ClInclude Include="GameRequestHandler.hpp" />
     <ClInclude Include="GeneralResponseErrors.hpp" />
     <ClInclude Include="GetGameResultsResponse.hpp" />
     <ClInclude Include="GetHighScoreRequest.hpp" />
