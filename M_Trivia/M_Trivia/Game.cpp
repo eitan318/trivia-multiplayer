@@ -13,12 +13,17 @@ void Game::submitAnswer()
 {
     /*for (auto& [user, data] : this->m_players) {
         if (data.currentQuestion == this->m_questions) {
+=======
+    for (auto& [user, data] : this->m_players) {
+        if (data.currentQuestion == this->m_questions.) {
+>>>>>>> f605d58875001ef24f822cf19100f8f066a63174
             data.correctAnswerCount++;
         }
         else 
         {
             data.wrongAnswerCount++;
         }
+<<<<<<< HEAD
     }*/
 }
 void Game::removePlayer()

@@ -204,6 +204,9 @@
     <ClCompile Include="RoomRequestHandler.cpp">
       <Filter>RequestHandlers</Filter>
     </ClCompile>
+    <ClCompile Include="StartGameResponseErrors.cpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CreateRoomResponseErrors.hpp">
@@ -398,6 +401,11 @@
     <ClInclude Include="GetRoomStateResponse.hpp">
       <Filter>Model\Responses</Filter>
     </ClInclude>
+    <ClInclude Include="CloseRoomResponseErrors.hpp" />
+    <ClInclude Include="RoomAdminRequestHandler.hpp" />
+    <ClInclude Include="RoomMemberRequestHandler.hpp" />
+    <ClInclude Include="RoomRequestHandler.hpp" />
+    <ClInclude Include="RoomState.hpp" />
     <ClInclude Include="RoomStatus.h" />
     <ClInclude Include="CloseRoomResponseErrors.hpp">
       <Filter>Model\ResponseErrors</Filter>
@@ -448,8 +456,11 @@
     <ClInclude Include="RoomState.hpp">
       <Filter>Model</Filter>
     </ClInclude>
-    <ClInclude Include="CloseRoomResponseErrors.hpp">
-      <Filter>Model\ResponseErrors</Filter>
+    <ClInclude Include="GameRequestHandler.hpp">
+      <Filter>Model\ResponseErrors\RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameData.hpp">
+      <Filter>Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
