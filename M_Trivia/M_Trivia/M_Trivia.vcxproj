@@ -137,6 +137,7 @@
     <ClInclude Include="EmailSender.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameData.hpp" />
+    <ClInclude Include="GameManager.hpp" />
     <ClInclude Include="GameRequestHandler.hpp" />
     <ClInclude Include="GeneralResponseErrors.hpp" />
     <ClInclude Include="GetGameResultsResponse.hpp" />
@@ -220,6 +221,7 @@
     <ClCompile Include="CreateRoomResponseErrors.cpp" />
     <ClCompile Include="EmailSender.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameRequestHandler.cpp" />
     <ClCompile Include="GeneralResponseErrors.cpp" />
     <ClCompile Include="GetGameResultsResponse.cpp" />
     <ClCompile Include="GetHighScoreRequest.cpp" />

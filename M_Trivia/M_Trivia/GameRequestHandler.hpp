@@ -2,7 +2,7 @@
 #include "IRequestHandler.hpp"
 #include "LoggedUser.hpp"
 #include "Question.hpp"
-//#include "GameManager.hpp"
+#include "GameManager.hpp"
 #include "RequestHandlerFactory.hpp"
 
 /**
@@ -21,7 +21,9 @@ public:
      * @param handlerFactory The factory for creating other request handlers.
      */
     GameRequestHandler(const LoggedUser& user,
-        RequestHandlerFactory& handlerFactory); // eeeeeeexxxxxxxxxpppppppaaaaaaannnnnnndddddddd when game and gamemanager are finished
+        RequestHandlerFactory& handlerFactory,
+        Game& game,
+        GameManager& gameManager); 
 
     /**
      * @brief Default destructor.
@@ -42,7 +44,40 @@ public:
      */
     RequestResult handleRequest(const RequestInfo& requestInfo, SOCKET socket) override;
 private:
+    Game& m_game;
 	LoggedUser m_user;
-
+    GameManager& m_gameManager;
 	RequestHandlerFactory& m_handlerFactory;
+
+    /**
+     * @brief gets a the current question and sends to clients.
+     * @param requestInfo The request information.
+     * @return A RequestResult containing the serialized response and the next
+     * handler.
+     */
+    RequestResult getQuestion(RequestInfo requestInfo);
+
+    /**
+     * @brief submitting the answers for the players.
+     * @param requestInfo The request information.
+     * @return A RequestResult containing the serialized response and the next
+     * handler.
+     */
+    RequestResult submitAnswer(RequestInfo requestInfo);
+
+    /**
+     * @brief sends Game's Result.
+     * @param requestInfo The request information.
+     * @return A RequestResult containing the serialized response and the next
+     * handler.
+     */
+    RequestResult getGamesResult(RequestInfo requestInfo);
+
+    /**
+     * @brief removes the player who requested to leave the game.
+     * @param requestInfo The request information.
+     * @return A RequestResult containing the serialized response and the next
+     * handler.
+     */
+    RequestResult leaveGame(RequestInfo requestInfo);
 };

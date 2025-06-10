@@ -201,6 +201,9 @@
       <Filter>Model\ResponseErrors</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameRequestHandler.cpp">
+      <Filter>Model\ResponseErrors\RequestHandlers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CreateRoomResponseErrors.hpp">
@@ -439,6 +442,9 @@
       <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="Game.hpp" />
+    <ClInclude Include="GameManager.hpp">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External Libs">
