@@ -5,10 +5,16 @@
 
 struct PlayerResults {
     std::string username;
-    unsigned int correctAnswerCount;
-    unsigned int wrongAnswerCount;
-    double averageAnswerTime;
+    unsigned int correctAnswerCount = 0;
+    unsigned int wrongAnswerCount = 0;
+    double averageAnswerTime = 0.0;
+
+    // Parameterized constructor
+    PlayerResults(const std::string& uname, unsigned int correct, unsigned int wrong, double avgTime)
+        : username(uname), correctAnswerCount(correct), wrongAnswerCount(wrong), averageAnswerTime(avgTime) {
+    }
 };
+
 
 
 

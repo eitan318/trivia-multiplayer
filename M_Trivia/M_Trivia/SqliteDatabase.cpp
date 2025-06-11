@@ -120,6 +120,45 @@ int SqliteDatabase::addNewUser(const UserRecord& userRecord) const {
     }
 }
 
+void SqliteDatabase::addUserAnswer(const std::string& username, unsigned int gameId,
+    unsigned int questionId, bool isCorrect, int score, double answerTimeSec) const {
+
+    const char* query = R"(
+    INSERT INTO answers (username, question_id, game_id, correct, score, answer_time)
+    VALUES (?, ?, ?, ?, ?, ?)
+    )";
+
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+        throw MyException(std::string("Failed to prepare statement: ") +
+            sqlite3_errmsg(db));
+    }
+
+    // Bind the parameters to the query
+    if (sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_STATIC) != SQLITE_OK ||
+        sqlite3_bind_int(stmt, 2, questionId) != SQLITE_OK ||
+        sqlite3_bind_int(stmt, 3, gameId) != SQLITE_OK ||
+        sqlite3_bind_int(stmt, 4, isCorrect ? 1 : 0) != SQLITE_OK ||
+        sqlite3_bind_int(stmt, 5, score) != SQLITE_OK ||
+        sqlite3_bind_double(stmt, 6, answerTimeSec) != SQLITE_OK) {
+        sqlite3_finalize(stmt);
+        throw MyException(std::string("Failed to bind parameters: ") +
+            sqlite3_errmsg(db));
+    }
+
+    // Execute the statement
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        sqlite3_finalize(stmt);
+        throw MyException(std::string("Failed to execute statement: ") +
+            sqlite3_errmsg(db));
+    }
+
+    // Finalize the statement
+    sqlite3_finalize(stmt);
+}
+
+
+
 bool SqliteDatabase::createInitialDB() const {
     return createUsersTable() && createQuestionsTable() && addQuestions(50) &&
         createAnswersTable() && createGamesTable();
@@ -174,8 +213,7 @@ bool SqliteDatabase::createQuestionsTable() const {
 bool SqliteDatabase::createGamesTable() const {
     const char* query = R"(
         CREATE TABLE Games (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL
+            id INTEGER PRIMARY KEY AUTOINCREMENT
         )
     )";
     sqlite3_stmt* stmt;
@@ -291,6 +329,72 @@ bool SqliteDatabase::addQuestions(int amount) const {
     sqlite3_finalize(stmt);
     return true;
 }
+
+std::optional<PlayerResults> SqliteDatabase::getPlayerResults(const std::string& username, unsigned int gameId) const {
+    const char* query = R"(
+        SELECT 
+            username,
+            SUM(correct) AS correctAnswerCount,
+            COUNT(*) - SUM(correct) AS wrongAnswerCount,
+            AVG(answer_time) AS averageAnswerTime
+        FROM answers
+        WHERE username = ? AND game_id = ?
+        GROUP BY username
+    )";
+
+    sqlite3_stmt* stmt;
+
+    if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+        throw MyException(std::string("Failed to prepare statement: ") + sqlite3_errmsg(db));
+    }
+
+    // Bind parameters
+    sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 2, gameId);
+
+    // Execute the query and process the result
+    std::optional<PlayerResults> result;
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        result = PlayerResults(
+            reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)), // username
+            sqlite3_column_int(stmt, 1),                                // correctAnswerCount
+            sqlite3_column_int(stmt, 2),                                // wrongAnswerCount
+            sqlite3_column_double(stmt, 3)                              // averageAnswerTime
+        );
+    }
+
+    sqlite3_finalize(stmt);
+    return result;
+}
+
+
+unsigned int SqliteDatabase::createGame() const {
+    const char* query = R"(
+    INSERT INTO Games DEFAULT VALUES
+    )";
+
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+        throw MyException(std::string("Failed to prepare statement: ") +
+            sqlite3_errmsg(db));
+    }
+
+    // Execute the statement
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        sqlite3_finalize(stmt);
+        throw MyException(std::string("Failed to execute statement: ") +
+            sqlite3_errmsg(db));
+    }
+
+    // Get the last inserted row ID (gameId)
+    unsigned int gameId = static_cast<unsigned int>(sqlite3_last_insert_rowid(db));
+
+    // Finalize the statement
+    sqlite3_finalize(stmt);
+
+    return gameId;
+}
+
 
 int SqliteDatabase::getNumOfTotalAnswers(const std::string& username) const {
     const char* query = "SELECT COUNT(*) FROM answers WHERE username = ?";
@@ -484,9 +588,9 @@ std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit) const {
     return results;
 }
 
-std::list<Question> SqliteDatabase::getQuestions(int amount) const {
+std::vector<Question> SqliteDatabase::getQuestions(int amount) const {
     const char* query = R"(
-    SELECT difficulty, category, question, answer, incorrect_answer_1,
+    SELECT id, difficulty, category, question, answer, incorrect_answer_1,
     incorrect_answer_2, incorrect_answer_3 FROM questions LIMIT ?)";
 
     sqlite3_stmt* stmt;
@@ -498,33 +602,35 @@ std::list<Question> SqliteDatabase::getQuestions(int amount) const {
 
     sqlite3_bind_int(stmt, 1, amount);
 
-    std::list<Question> questions;
+    std::vector<Question> questions;
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         // Create the Question object using data from the database
         Question q(
+            sqlite3_column_int(stmt, 0), // id
             std::string(reinterpret_cast<const char*>(
-            sqlite3_column_text(stmt, 0))), // difficulty
+                sqlite3_column_text(stmt, 1))), // difficulty
             std::string(reinterpret_cast<const char*>(
-                sqlite3_column_text(stmt, 1))), // category
+                sqlite3_column_text(stmt, 2))), // category
             std::string(reinterpret_cast<const char*>(
-                sqlite3_column_text(stmt, 2))), // question
+                sqlite3_column_text(stmt, 3))), // question
             std::string(reinterpret_cast<const char*>(
-                sqlite3_column_text(stmt, 3))), // correct_answer
+                sqlite3_column_text(stmt, 4))), // correct_answer
             std::string(reinterpret_cast<const char*>(
-                sqlite3_column_text(stmt, 4))), // incorrect_answer_1
+                sqlite3_column_text(stmt, 5))), // incorrect_answer_1
             std::string(reinterpret_cast<const char*>(
-                sqlite3_column_text(stmt, 5))), // incorrect_answer_2
+                sqlite3_column_text(stmt, 6))), // incorrect_answer_2
             std::string(reinterpret_cast<const char*>(
-                sqlite3_column_text(stmt, 6))) // incorrect_answer_3
+                sqlite3_column_text(stmt, 7)))  // incorrect_answer_3
         );
 
-        questions.push_back(q);
+        questions.emplace_back(q);
     }
 
     sqlite3_finalize(stmt);
 
     return questions;
 }
+
 
 unsigned int SqliteDatabase::getQuestionsCount() const {
     const char* query = R"(

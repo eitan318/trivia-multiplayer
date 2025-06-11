@@ -2,16 +2,19 @@
 #include "RequestsCodes.hpp"
 #include "ServerErrorResponse.hpp"
 #include "JsonResponsePacketSerializer.hpp"
+#include "JsonRequestPacketDeserializer.hpp"
 #include "GetGameResultsResponse.hpp"
 #include "SubmitAnswerResponse.hpp"
 #include "LeaveGameResponse.hpp"
 #include "GetQuestionResponse.hpp"
+#include "SubmitAnswerRequest.hpp"
 
 GameRequestHandler::GameRequestHandler(const LoggedUser& user,
     RequestHandlerFactory& handlerFactory,Room* room) : 
     m_gameManager(handlerFactory.getGameManager()),
     m_handlerFactory(handlerFactory),
-    m_user(user)
+    m_user(user),
+    m_room(room)
 {
     this->m_game = this->m_gameManager.createGame(room);
 }
@@ -60,8 +63,13 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& requestInfo, 
 
 RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
 {
-    Question quetionForUser = this->m_game->getQuestionForUser(m_user);
-    GetQuestionResponse getQuestionResponse(GENERAL_SUCCESS_RESPONSE_STATUS, quetionForUser);
+    GeneralResponseErrors errors;
+    std::optional<Question> quetionForUser = this->m_game->getQuestionForUser(m_user);
+    if (!quetionForUser.has_value()) {
+        errors.generalError = "User does not exist in game";
+    }
+    errors.statusCode = !errors.noErrors();
+    GetQuestionResponse getQuestionResponse(&errors, quetionForUser.value());
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(getQuestionResponse),
@@ -71,10 +79,16 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
 
 RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 {
-    this->m_game->submitAnswer();
-    Question questionUserChose = this->m_game->getQuestionForUser(m_user);
-    GeneralResponseErrors* errors;
-    SubmitAnswerResponse submitAnswerResponse(errors,questionUserChose.getCorrectAnswerId());
+    SubmitAnswerRequest request =
+        JsonRequestPacketDeserializer<SubmitAnswerRequest>::deserializeRequest(
+            requestInfo.buffer);
+
+    int answerId = request.getAnswerId();
+    GeneralResponseErrors errors = this->m_gameManager.submitAnswer(this->m_user, this->m_game, answerId);
+
+    std::optional<Question> questionUserChose = this->m_game->getQuestionForUser(m_user);
+
+    SubmitAnswerResponse submitAnswerResponse(&errors, questionUserChose.value().getCorrectAnswerId());
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(submitAnswerResponse),
@@ -84,32 +98,21 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 
 RequestResult GameRequestHandler::getGameResults(RequestInfo requestInfo)
 {
-    std::map<LoggedUser,GameData> allUsers = this->m_game->getPlayers();
-    std::vector<PlayerResults> playersResults;
-    for (auto it = allUsers.begin(); it != allUsers.end(); ++it) {
-        const LoggedUser& user = it->first;
-        const GameData& data = it->second;
-        PlayerResults currPlayer;
-        currPlayer.averageAnswerTime = data.averageAnswerTime;
-        currPlayer.correctAnswerCount = data.correctAnswerCount;
-        currPlayer.wrongAnswerCount = data.wrongAnswerCount;
-        currPlayer.username = user.getUsername();
-        playersResults.emplace_back(currPlayer);
-    }
+    std::vector<PlayerResults> playersResults = this->m_gameManager.getGameResults(this->m_game);
 
     GetGameResultsResponse getGameResults(GENERAL_SUCCESS_RESPONSE_STATUS, playersResults);
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(getGameResults),
-        std::move(this->m_handlerFactory.createMenuRequestHandler(this->m_user)));
+        nullptr);
     return requestResult;
 }
 
 RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
 {
-    this->m_game->removePlayer();
-    GeneralResponseErrors* errors;
-    LeaveGameResponse leaveGameResponse(errors);
+    this->m_room->removeUser(this->m_user);
+    GeneralResponseErrors errors;
+    LeaveGameResponse leaveGameResponse(&errors);
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(leaveGameResponse),

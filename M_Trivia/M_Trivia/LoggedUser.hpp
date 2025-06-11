@@ -9,6 +9,11 @@ private:
 public:
 	LoggedUser(const std::string& username);
 	std::string getUsername() const;
+
+	// Define < operator for comparison
+	bool operator<(const LoggedUser& other) const {
+		return m_username < other.m_username; 
+	}
 };
 
 /**

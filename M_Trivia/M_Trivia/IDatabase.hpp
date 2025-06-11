@@ -5,6 +5,7 @@
 #include <list>
 #include <string>
 #include <vector>
+#include "PlayerResults.hpp"
 
 /**
  * @brief Interface for a database handling user and game-related data.
@@ -60,7 +61,7 @@ public:
      * @param amount The number of questions to retrieve.
      * @return A list of questions.
      */
-    virtual std::list<Question> getQuestions(int amount) const = 0;
+    virtual std::vector<Question> getQuestions(int amount) const = 0;
 
     /**
      * @brief Retrieves the total number of answers submitted by a user.
@@ -126,6 +127,37 @@ public:
      */
     virtual unsigned int getQuestionsCount() const = 0;
 
+
+
+    /**
+	 * Adds a user's answer to the database.
+	 *
+	 * @param username The username of the player.
+	 * @param gameId The ID of the game the answer belongs to.
+	 * @param questionId The ID of the question being answered.
+	 * @param isCorrect True if the answer is correct, otherwise false.
+	 * @param score The score awarded for the answer.
+	 * @param answerTimeSec The time taken by the user to answer, in seconds.
+	 */
+    virtual void addUserAnswer(const std::string& username, unsigned int gameId, unsigned int questionId,
+        bool isCorrect, int score, double answerTimeSec) const = 0;
+
+    /**
+     * Creates a new game entry in the database.
+     *
+     * @return The ID of the newly created game.
+     */
+    virtual unsigned int createGame() const = 0;
+
+    /**
+     * Retrieves the results of a player for a specific game.
+     *
+     * @param username The username of the player.
+     * @param gameId The ID of the game to retrieve results for.
+     * @return An optional containing the player's results if found, or std::nullopt if no results are available.
+     */
+    virtual std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId) const = 0;
+    
     /**
      * @brief Virtual destructor for proper cleanup of derived classes.
      */
