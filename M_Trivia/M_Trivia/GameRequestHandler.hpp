@@ -26,7 +26,7 @@ public:
     /**
      * @brief Default destructor.
      */
-    ~GameRequestHandler() = default;
+    ~GameRequestHandler();
     /**
      * @brief Checks if a given request is relevant for this handler.
      * @param requestInfo The request information.
@@ -41,8 +41,10 @@ public:
      * handler.
      */
     RequestResult handleRequest(const RequestInfo& requestInfo, SOCKET socket) override;
+
 private:
-	LoggedUser m_user;
+    LoggedUser m_user;
+    Room* m_room;
     RequestHandlerFactory& m_handlerFactory;
     GameManager& m_gameManager;
     std::shared_ptr<Game> m_game;

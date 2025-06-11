@@ -3,6 +3,7 @@
 #include "Response.hpp"
 #include <vector>
 #include "Question.hpp"
+#include "GeneralResponseErrors.hpp"
 
 
 /**
@@ -14,7 +15,7 @@ private:
     Question m_question;
 
 public:
-    GetQuestionResponse(unsigned int status, const Question& question);
+    GetQuestionResponse(GeneralResponseErrors* errors, const Question& question);
 
     /**
      * @brief Gets the response code for this response.

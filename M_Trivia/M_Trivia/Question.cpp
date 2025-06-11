@@ -1,11 +1,28 @@
 #include "Question.hpp"
 #include <random>
 
-Question::Question(const std::string& difficulty, const std::string& category, const std::string& question,
+QuestionDifficultyLevelScores Question::getMatchingDifficultyLevel(const std::string& difficultyStr)
+{
+    if (difficultyStr == "easy") {
+        return QuestionDifficultyLevelScores::Easy;
+    }
+    else if (difficultyStr == "medium") {
+        return QuestionDifficultyLevelScores::Medium;
+    }
+    else if (difficultyStr == "hard") {
+        return QuestionDifficultyLevelScores::Hard;
+    }
+    else {
+        throw std::invalid_argument("Invalid difficulty level: " + difficultyStr);
+    }
+}
+
+Question::Question(unsigned int id, const std::string& difficulty, const std::string& category, const std::string& question,
     const std::string& correctAnswer, const std::string& ans1, const std::string& ans2,
     const std::string& ans3)
-    : m_difficulty(difficulty), m_category(category), m_question(question)
+    :  m_id(id), m_difficulty(getMatchingDifficultyLevel(difficulty)), m_category(category), m_question(question)
 {
+
     // Add answers to the vector
     m_possibleAnswers.push_back(correctAnswer);
     m_possibleAnswers.push_back(ans1);
@@ -29,6 +46,11 @@ Question::Question(const std::string& difficulty, const std::string& category, c
     m_possibleAnswers = shuffledAnswers;
 }
 
+unsigned int Question::getId() const
+{
+    return this->m_id;
+}
+
 std::string Question::getQuestion() const
 {
     return m_question;
@@ -42,4 +64,9 @@ std::vector<std::string> Question::getPossibleAnswers() const
 int Question::getCorrectAnswerId() const
 {
     return m_correctAnswerIdx;
+}
+
+QuestionDifficultyLevelScores Question::getDifficultyLevel()
+{
+    return m_difficulty;
 }

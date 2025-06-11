@@ -1,7 +1,7 @@
 #include "GetQuestionResponse.hpp"
 
-GetQuestionResponse::GetQuestionResponse(unsigned int status, const Question& question) :
-	Response(status), m_question(question)
+GetQuestionResponse::GetQuestionResponse(GeneralResponseErrors* errors, const Question& question) :
+	Response(errors), m_question(question)
 {
 }
 

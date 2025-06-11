@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "json.hpp"
+#include "QuestionDificultyLevel.h"
 
 /**
  * @class Question
@@ -11,10 +12,13 @@ class Question
 {
 private:
     std::string m_question;              /**< The text of the question. */
-    std::string m_difficulty;            /**< The difficulty level of the question. */
+    QuestionDifficultyLevelScores m_difficulty;            /**< The difficulty level of the question. */
     std::string m_category;                    /**< The category ID of the question. */
     std::vector<std::string> m_possibleAnswers; /**< The list of possible answers, with the correct answer at index 0. */
     int m_correctAnswerIdx;
+    unsigned int m_id;
+
+    QuestionDifficultyLevelScores getMatchingDifficultyLevel(const std::string& difficultyStr);
 
 public:
     /**
@@ -27,9 +31,15 @@ public:
      * @param ans2 An incorrect answer option.
      * @param ans3 An incorrect answer option.
      */
-    Question(const std::string& difficulty, const std::string& category, const std::string& question,
+    Question(unsigned int id, const std::string& difficulty, const std::string& category, const std::string& question,
         const std::string& correctAnswer, const std::string& ans1, const std::string& ans2,
         const std::string& ans3);
+
+    Question() {}
+
+
+
+    unsigned int getId() const;
 
     /**
      * @brief Gets the text of the question.
@@ -48,6 +58,8 @@ public:
      * @return The index of the correct answer, always 0 in this implementation.
      */
     int getCorrectAnswerId() const;
+
+    QuestionDifficultyLevelScores getDifficultyLevel();
 
     /**
      * @brief Serializes the Question object to JSON.

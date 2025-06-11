@@ -5,6 +5,7 @@
 #include <list>
 #include <string>
 #include <vector>
+#include "PlayerResults.hpp"
 
 /**
  * @brief Interface for a database handling user and game-related data.
@@ -60,7 +61,7 @@ public:
      * @param amount The number of questions to retrieve.
      * @return A list of questions.
      */
-    virtual std::list<Question> getQuestions(int amount) const = 0;
+    virtual std::vector<Question> getQuestions(int amount) const = 0;
 
     /**
      * @brief Retrieves the total number of answers submitted by a user.
@@ -125,6 +126,13 @@ public:
      * @return The total number of questions.
      */
     virtual unsigned int getQuestionsCount() const = 0;
+
+
+
+    virtual void addUserAnswer(const std::string& username, unsigned int gameId, unsigned int questionId,
+        bool isCorrect, int score, double answerTimeSec) const = 0;
+    virtual unsigned int createGame() const = 0;
+    virtual std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId) const = 0;
 
     /**
      * @brief Virtual destructor for proper cleanup of derived classes.

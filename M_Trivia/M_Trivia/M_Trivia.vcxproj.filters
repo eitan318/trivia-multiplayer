@@ -207,6 +207,16 @@
     <ClCompile Include="StartGameResponseErrors.cpp">
       <Filter>Model\ResponseErrors</Filter>
     </ClCompile>
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GetQuestionResponse.cpp">
+      <Filter>Model\Responses</Filter>
+    </ClCompile>
+    <ClCompile Include="SubmitAnswerResponse.cpp">
+      <Filter>Model\Responses</Filter>
+    </ClCompile>
+    <ClCompile Include="LeaveGameResponse.cpp">
+      <Filter>Model\Responses</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CreateRoomResponseErrors.hpp">
@@ -406,7 +416,6 @@
     <ClInclude Include="RoomMemberRequestHandler.hpp" />
     <ClInclude Include="RoomRequestHandler.hpp" />
     <ClInclude Include="RoomState.hpp" />
-    <ClInclude Include="RoomStatus.h" />
     <ClInclude Include="CloseRoomResponseErrors.hpp">
       <Filter>Model\ResponseErrors</Filter>
     </ClInclude>
@@ -429,9 +438,6 @@
       <Filter>Model\ResponseErrors</Filter>
     </ClInclude>
     <ClInclude Include="RoomState.hpp">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="GameData.hpp">
       <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="Game.hpp" />
@@ -461,6 +467,21 @@
     </ClInclude>
     <ClInclude Include="GameData.hpp">
       <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomStatus.h">
+      <Filter>enums</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionDificultyLevel.h">
+      <Filter>enums</Filter>
+    </ClInclude>
+    <ClInclude Include="GetQuestionResponse.hpp">
+      <Filter>Model\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="SubmitAnswerResponse.hpp">
+      <Filter>Model\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="LeaveGameResponse.hpp">
+      <Filter>Model\Responses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -493,6 +514,9 @@
     </Filter>
     <Filter Include="Services">
       <UniqueIdentifier>{c1f6983e-b397-4c17-a9cd-3472a93aaa76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="enums">
+      <UniqueIdentifier>{f81da6dc-a234-4e62-9d09-a94f70aa02bd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
