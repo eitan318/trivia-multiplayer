@@ -42,7 +42,7 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& requestInfo, 
         case RequestCodes::SubmitAnswerRequest:
             return this->submitAnswer(requestInfo);
         case RequestCodes::GetGameResultRequest:
-            return this->getGamesResult(requestInfo);
+            return this->getGameResults(requestInfo);
         default:
             ServerErrorResponse errorResponse("Invalid msg code.");
             RequestResult requestResult(
@@ -65,7 +65,7 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(getQuestionResponse),
-        std::move(this->m_handlerFactory.createMenuRequestHandler(this->m_user)));
+        nullptr);
     return requestResult;
 }
 
@@ -78,11 +78,11 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(submitAnswerResponse),
-        std::move(this->m_handlerFactory.createMenuRequestHandler(this->m_user)));
+        nullptr);
     return requestResult;
 }
 
-RequestResult GameRequestHandler::getGamesResult(RequestInfo requestInfo)
+RequestResult GameRequestHandler::getGameResults(RequestInfo requestInfo)
 {
     std::map<LoggedUser,GameData> allUsers = this->m_game->getPlayers();
     std::vector<PlayerResults> playersResults;

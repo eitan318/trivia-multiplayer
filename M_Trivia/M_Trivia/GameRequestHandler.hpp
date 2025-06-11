@@ -69,7 +69,7 @@ private:
      * @return A RequestResult containing the serialized response and the next
      * handler.
      */
-    RequestResult getGamesResult(RequestInfo requestInfo);
+    RequestResult getGameResults(RequestInfo requestInfo);
 
     /**
      * @brief removes the player who requested to leave the game.
