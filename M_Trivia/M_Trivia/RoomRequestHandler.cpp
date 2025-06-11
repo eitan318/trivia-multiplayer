@@ -11,10 +11,15 @@ RequestResult RoomRequestHandler::getRoomState(const RequestInfo& requestinfo)
         roomData.numOfQuestionsInGame, roomData.timePerQuestion);
 
     GetRoomStateResponse roomStateResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, roomState);
+    std::shared_ptr<IRequestHandler> nextHandler = nullptr;
+    if (prevStatus == RoomStatus::NotInGame && (RoomStatus)roomState.m_roomStatus == RoomStatus::InGame) {
+        nextHandler = this->m_requestHandlerFactory.createGameRequestHandler(m_user, m_room);
+    }
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(roomStateResponse),
-        nullptr);
+        nextHandler);
+    this->prevStatus = (RoomStatus)roomState.m_roomStatus;
     return requestResult;
 }
 RoomRequestHandler::RoomRequestHandler(Room* room, LoggedUser user, 

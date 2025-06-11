@@ -17,4 +17,7 @@ protected:
 	LoggedUser m_user;
 	RoomManager& m_roomManager;
 	RequestHandlerFactory& m_requestHandlerFactory;
+	
+private:
+	RoomStatus prevStatus;
 };
