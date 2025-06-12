@@ -154,6 +154,7 @@
     <ClInclude Include="LogoutResponse.hpp" />
     <ClInclude Include="MenuRequestHandler.hpp" />
     <ClInclude Include="PersonalStatisticsRequest.hpp" />
+    <ClInclude Include="PlayerGameData.hpp" />
     <ClInclude Include="QuestionDificultyLevel.h" />
     <ClInclude Include="RegexValidator.hpp" />
     <ClInclude Include="ResetPasswordResponseErrors.hpp" />

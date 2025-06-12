@@ -43,9 +43,9 @@ namespace ClientApp.ViewModels
 
         // Room fields
         private string _roomName;
-        private double _questionTimeout = 1; //Min val from xaml
-        private uint _maxPlayers = 1; //Min val from xaml
-        private uint _questionsCount = 1; //Min val from xaml
+        private double _questionTimeout = 10;
+        private uint _maxPlayers = 2; //Start val
+        private uint _questionsCount = 10; //Start val
 
         // Error message fields
         private string _questionCountError;

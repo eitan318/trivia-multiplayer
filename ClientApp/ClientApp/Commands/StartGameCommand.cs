@@ -40,11 +40,6 @@ namespace ClientApp.Commands
                         _roomAdminViewModel.ErrorMessage = startGameResponse.Errors.GeneralError;
                     }
                 }
-                else
-                {
-                    _roomAdminViewModel.ErrorMessage = "SERVER ERROR: " + responseInfo.ErrorResponse.Message;
-                }
-  
 
             }
             catch (Exception ex)

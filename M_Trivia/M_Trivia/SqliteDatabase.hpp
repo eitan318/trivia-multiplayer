@@ -31,6 +31,7 @@ public:
     void updatePassword(const std::string& username,
         const std::string& newPassword) const;
     unsigned int getQuestionsCount() const;
+    bool addExampleUsers() const;
 
 private:
     ~SqliteDatabase() { close(); };

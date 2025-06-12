@@ -3,6 +3,7 @@ using ClientApp.Services;
 using ClientApp.Stores;
 using Microsoft.Xaml.Behaviors.Core;
 using System;
+using System.DirectoryServices.ActiveDirectory;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -33,6 +34,14 @@ namespace ClientApp.ViewModels
 
             _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
 
+            _errorMessageStore.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(ErrorMessageStore.ErrorMessage))
+                {
+                    OnPropertyChanged(nameof(ServerErrorMessage));
+                }
+            };
+
             try
             {
                 _socketService.Connect();
@@ -58,7 +67,7 @@ namespace ClientApp.ViewModels
         public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
 
 
-
+        public string ServerErrorMessage => _errorMessageStore.ErrorMessage;
 
         private void OnCurrentViewModelChanged()
         {
@@ -85,6 +94,8 @@ namespace ClientApp.ViewModels
                     await Task.Delay(2000); // Wait for 2 seconds before retrying
                 }
             }
+            _errorMessageStore.ErrorType = "";
+            _errorMessageStore.ErrorMessage = "";
 
             _navigationService.NavigateTo<LoginViewModel>();
         }

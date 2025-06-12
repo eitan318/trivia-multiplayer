@@ -139,7 +139,7 @@ void Communicator::handleNewClient(SOCKET sock)
             break;
         }
         time_t requestRecievalTime = time(nullptr);
-        std::cout << "Received: " << msgStr << std::endl;
+        std::cout << "Received: " << "("<< requestCode << ")" << msgStr << std::endl;
         std::vector<char> requestBuffer(msgStr.begin(), msgStr.end());
 
         RequestInfo requestInfo(requestCode, requestRecievalTime, requestBuffer);

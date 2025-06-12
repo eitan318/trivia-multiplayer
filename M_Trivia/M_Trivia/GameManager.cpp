@@ -2,8 +2,7 @@
 
 std::shared_ptr<Game> GameManager::createGame(Room* room)
 {
-
-    std::vector<Question> questions = this->m_database.getQuestions(10);
+    std::vector<Question> questions = this->m_database.getQuestions(room->getRoomPreview().roomData.numOfQuestionsInGame);
     unsigned int gameId = this->m_database.createGame();
     std::shared_ptr<Game> game = std::make_shared<Game>(questions, room->getUsersVector(), gameId, room->getRoomPreview().roomData.timePerQuestion);
     this->m_games[gameId] = game;
@@ -27,9 +26,8 @@ GameManager& GameManager::getInstance(IDatabase& database) {
 
 
 
-
-
-GeneralResponseErrors GameManager::submitAnswer(const LoggedUser& user, std::shared_ptr<Game> game,  unsigned int answerId)
+GeneralResponseErrors GameManager::submitAnswer(const LoggedUser& user, std::shared_ptr<Game> game,  
+    unsigned int answerId, int* answerScore)
 {
     std::optional<Question> oq = game->getQuestionForUser(user);
     GeneralResponseErrors errors;
@@ -39,8 +37,9 @@ GeneralResponseErrors GameManager::submitAnswer(const LoggedUser& user, std::sha
     Question q = oq.value();
 
     bool isCorrect = q.getCorrectAnswerId() == answerId;
-    double ansTime = 0;
+    double ansTime = std::time(nullptr) - game->getPlayers()[user].lastStartTime;
     int score = calcAnswerScore(q.getDifficultyLevel(), ansTime, isCorrect, game->getQuestionTimeLimit());
+    *answerScore = score;
     this->m_database.addUserAnswer(user.getUsername(), game->getId(), q.getId(), isCorrect, score, ansTime);
 
     errors.statusCode = !errors.noErrors();
@@ -64,8 +63,9 @@ std::vector<PlayerResults> GameManager::getGameResults(std::shared_ptr<Game> gam
 
 int GameManager::calcAnswerScore(QuestionDifficultyLevelScores diffLevel, double answerTime, bool isCurrect, double timeLimit) const{
 
+    double precentFromMaxScore = 1 - (answerTime / timeLimit) / 2.0;
     unsigned int maxAnsScore = diffLevel;
-    return isCurrect ? maxAnsScore * (0.5 + answerTime / timeLimit) : 0;
+    return isCurrect ? maxAnsScore * precentFromMaxScore : 0;
 }
 
 

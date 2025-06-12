@@ -66,10 +66,18 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
     GeneralResponseErrors errors;
     std::optional<Question> quetionForUser = this->m_game->getQuestionForUser(m_user);
     if (!quetionForUser.has_value()) {
-        errors.generalError = "User does not exist in game";
+        if (this->m_game->userExistsInGame(m_user)) {
+            errors.generalError = "Finished all questions";
+        }
+        else {
+            errors.generalError = "User does not exist in game";
+        }
     }
+
     errors.statusCode = !errors.noErrors();
-    GetQuestionResponse getQuestionResponse(&errors, quetionForUser.value());
+    
+    GetQuestionResponse getQuestionResponse(&errors, 
+        quetionForUser.has_value() ? quetionForUser.value() : Question());
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(getQuestionResponse),
@@ -84,11 +92,16 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
             requestInfo.buffer);
 
     int answerId = request.getAnswerId();
-    GeneralResponseErrors errors = this->m_gameManager.submitAnswer(this->m_user, this->m_game, answerId);
+    int answerScore = 0;
+    GeneralResponseErrors errors;
+    if (answerId != -1) {
+        errors = this->m_gameManager.submitAnswer(this->m_user, this->m_game, answerId, &answerScore);
+    }
+    this->m_game->setNextQuestionForUser(this->m_user);
 
     std::optional<Question> questionUserChose = this->m_game->getQuestionForUser(m_user);
 
-    SubmitAnswerResponse submitAnswerResponse(&errors, questionUserChose.value().getCorrectAnswerId());
+    SubmitAnswerResponse submitAnswerResponse(&errors, questionUserChose.value().getCorrectAnswerId(), answerScore);
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(submitAnswerResponse),

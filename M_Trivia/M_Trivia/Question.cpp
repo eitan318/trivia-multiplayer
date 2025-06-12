@@ -20,7 +20,7 @@ QuestionDifficultyLevelScores Question::getMatchingDifficultyLevel(const std::st
 Question::Question(unsigned int id, const std::string& difficulty, const std::string& category, const std::string& question,
     const std::string& correctAnswer, const std::string& ans1, const std::string& ans2,
     const std::string& ans3)
-    :  m_id(id), m_difficulty(getMatchingDifficultyLevel(difficulty)), m_category(category), m_question(question)
+    :  m_id(id), m_difficultyStr(difficulty), m_difficulty(getMatchingDifficultyLevel(difficulty)), m_category(category), m_question(question)
 {
 
     // Add answers to the vector

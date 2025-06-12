@@ -1,7 +1,8 @@
 #include "SubmitAnswerResponse.hpp"
 
-SubmitAnswerResponse::SubmitAnswerResponse(GeneralResponseErrors* errors, unsigned int correctAnswerId)
-    : Response(errors), m_correctAnswerId(correctAnswerId)
+SubmitAnswerResponse::SubmitAnswerResponse(GeneralResponseErrors* errors, 
+	unsigned int correctAnswerId, int answerScore)
+    : Response(errors), m_correctAnswerId(correctAnswerId), m_answerScore(answerScore)
 {
 }
 
@@ -14,5 +15,6 @@ nlohmann::json SubmitAnswerResponse::getJson() const
 {
 	nlohmann::json j = Response::getJson();
 	j["CorrectAnswerId"] = m_correctAnswerId;
+	j["AnswerScore"] = this->m_answerScore;
 	return j;
 }

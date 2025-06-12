@@ -13,6 +13,7 @@ class Question
 private:
     std::string m_question;              /**< The text of the question. */
     QuestionDifficultyLevelScores m_difficulty;            /**< The difficulty level of the question. */
+    std::string m_difficultyStr;
     std::string m_category;                    /**< The category ID of the question. */
     std::vector<std::string> m_possibleAnswers; /**< The list of possible answers, with the correct answer at index 0. */
     int m_correctAnswerIdx;
@@ -76,7 +77,7 @@ public:
  */
 inline void to_json(nlohmann::json& j, const Question& q) {
     j = nlohmann::json{
-        {"Difficulty", q.m_difficulty},
+        {"Difficulty", q.m_difficultyStr},
         {"Category", q.m_category},   
         {"Question", q.m_question},
         {"PossibleAnswers", q.m_possibleAnswers},

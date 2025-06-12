@@ -9,8 +9,10 @@
 class SubmitAnswerResponse : public Response {
 private:
 	unsigned int m_correctAnswerId;
+	int m_answerScore;
 public:
-	SubmitAnswerResponse(GeneralResponseErrors* errors, unsigned int correctAnswerId);
+	SubmitAnswerResponse(GeneralResponseErrors* errors, unsigned int correctAnswerId,
+	 int answerScore);
 
 	/**
 	 * @brief Gets the response code for this response.

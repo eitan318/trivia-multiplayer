@@ -5,11 +5,11 @@ Game::Game(std::vector<Question> questions, std::vector<LoggedUser> players, uns
 {
     for (auto it = players.begin(); it != players.end(); it++)
     {
-        this->m_players[it->getUsername()] = questions[0];
+        this->m_players[it->getUsername()] = PlayerGameData{ 0, 0};
     }
 }
 
-std::map<LoggedUser, Question> Game::getPlayers()
+std::map<LoggedUser, PlayerGameData> Game::getPlayers()
 {
     return this->m_players;
 }
@@ -19,9 +19,23 @@ std::optional<Question> Game::getQuestionForUser(const LoggedUser& user)
     if (m_players.find(user) == m_players.end()) {
         return std::nullopt;
     }
-    Question currentQuestion = m_players[user];
+    else if (m_players[user].questionIdx >= this->m_questions.size()) {
+        return std::nullopt;
+    }
+    Question currentQuestion = this->m_questions[m_players[user].questionIdx];
     return currentQuestion;    
 
+}
+
+bool Game::userExistsInGame(const LoggedUser& user) const
+{
+    return m_players.find(user) != m_players.end();
+}
+
+void Game::setNextQuestionForUser(const LoggedUser& user)
+{
+    this->m_players[user].questionIdx++;
+    this->m_players[user].lastStartTime = std::time(nullptr);;
 }
 
 unsigned int Game::getQuestionTimeLimit() const
