@@ -3,6 +3,7 @@
 #include "GetRoomStateResponse.hpp"
 #include "RoomState.hpp"
 #include "RoomData.hpp"
+#include "RoomStatus.h"
 
 RequestResult RoomRequestHandler::getRoomState(const RequestInfo& requestinfo)
 {

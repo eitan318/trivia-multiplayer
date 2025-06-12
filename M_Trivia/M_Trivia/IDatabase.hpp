@@ -159,6 +159,14 @@ public:
     virtual std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId) const = 0;
     
     /**
+     * Creates users for example for us to test the db and the game.
+     *
+     * @return Succesful or not.
+     */
+    virtual bool addExampleUsers() const = 0;
+
+
+    /**
      * @brief Virtual destructor for proper cleanup of derived classes.
      */
     virtual ~IDatabase() = default;

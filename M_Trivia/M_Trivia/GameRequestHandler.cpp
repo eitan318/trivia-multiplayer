@@ -99,6 +99,13 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 RequestResult GameRequestHandler::getGameResults(RequestInfo requestInfo)
 {
     std::vector<PlayerResults> playersResults = this->m_gameManager.getGameResults(this->m_game);
+    PlayerResults d1("GUGUGAGA",12,21,12);
+    PlayerResults d2("zaza", 12, 13, 14);
+    PlayerResults d3("dawwfw",534,34,322);
+    playersResults.emplace_back(d1);
+    playersResults.emplace_back(d2);
+    playersResults.emplace_back(d3);
+
 
     GetGameResultsResponse getGameResults(GENERAL_SUCCESS_RESPONSE_STATUS, playersResults);
 

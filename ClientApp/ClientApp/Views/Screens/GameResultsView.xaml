@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="ClientApp.Views.Screens.GameResultsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ClientApp.Views.Screens"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <TextBlock Text="The winner is: "/>
+        <DataGrid Grid.Column="0" ItemsSource="{Binding Players}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="User's Name" Binding="{Binding Username}" />
+                <DataGridTextColumn Header="Correct Answers" Binding="{Binding CorrectAnswerCount}" />
+                <DataGridTextColumn Header="Average Answer Time" Binding="{Binding AverageAnswerTime}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</UserControl>

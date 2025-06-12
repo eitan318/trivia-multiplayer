@@ -57,6 +57,7 @@ public partial class App : Application
         services.AddTransient<JoinRoomViewModel>();
         services.AddTransient<ErrorViewModel>();
         services.AddTransient<GameViewModel>();
+        services.AddTransient<GameResultsViewModel>();
 
         //   Password reset ViewModels
         services.AddTransient<EmailEntryViewModel>();
@@ -76,6 +77,7 @@ public partial class App : Application
         services.AddTransient<JoinRoomView>();
         services.AddTransient<ErrorView>();
         services.AddTransient<GameView>();
+        services.AddTransient<GameResultsView>();
 
         // Password reset Views
         services.AddTransient<EmailEntryView>();

@@ -161,7 +161,7 @@ void SqliteDatabase::addUserAnswer(const std::string& username, unsigned int gam
 
 bool SqliteDatabase::createInitialDB() const {
     return createUsersTable() && createQuestionsTable() && addQuestions(50) &&
-        createAnswersTable() && createGamesTable();
+        createAnswersTable() && createGamesTable() && addExampleUsers();
 }
 
 bool SqliteDatabase::createUsersTable() const {
@@ -552,7 +552,7 @@ UserRecord SqliteDatabase::getUserRecord(const std::string& email) const {
 
 std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit) const {
     const char* query = R"(
-        SELECT a.username, a.game_id, g.name AS game_name, SUM(a.score) AS total_score
+        SELECT a.username, a.game_id, SUM(a.score) AS total_score
         FROM answers a
         JOIN Games g ON a.game_id = g.id
         GROUP BY a.game_id, a.username
@@ -696,4 +696,32 @@ bool SqliteDatabase::emailExists(const std::string& email) const {
     bool res = sqlite3_step(stmt) == SQLITE_ROW;
     sqlite3_finalize(stmt);
     return res;
+}
+
+bool SqliteDatabase::addExampleUsers() const {
+    UserRecord d;
+    d.username = '1';
+    d.password = 'a';
+    UserRecord d2;
+    d2.username = '2';
+    d2.password = 'a';
+    UserRecord d1;
+    d1.username = '3';
+    d1.password = 'a';
+    UserRecord d3;
+    d3.username = '4';
+    d3.password = 'a';
+    UserRecord d4;
+    d4.username = '5';
+    d4.password = 'a';
+    UserRecord d5;
+    d5.username = '6';
+    d5.password = 'a';
+    addNewUser(d);
+    addNewUser(d1);
+    addNewUser(d2);
+    addNewUser(d3);
+    addNewUser(d4);
+    addNewUser(d5);
+    return true;
 }

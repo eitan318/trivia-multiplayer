@@ -33,7 +33,7 @@ namespace ClientApp.Commands
                     var startGameResponse = responseInfo.Response;
                     if(startGameResponse.Status == 0)
                     {
-                        _navigationService.NavigateTo<GameViewModel>(); //Will be game in next version
+                        _navigationService.NavigateTo<GameResultsViewModel>(); //Will be game in next version
                     }
                     else
                     {
