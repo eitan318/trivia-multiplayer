@@ -47,10 +47,6 @@ namespace ClientApp.Commands
 
                 } 
             }
-            else
-            {
-                 this._menuViewModel.ErrorMessage = responseInfo.ErrorResponse.Message;
-            }
         }
     }
 }

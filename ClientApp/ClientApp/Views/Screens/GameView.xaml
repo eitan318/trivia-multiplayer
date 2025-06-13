@@ -10,14 +10,14 @@
     <Grid Margin="10">
         <!-- Define Grid Rows and Columns -->
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <!-- Game Info -->
             <RowDefinition Height="Auto" />
             <!-- Question -->
-            <RowDefinition Height="*" />
-            <!-- Answers -->
             <RowDefinition Height="Auto" />
+            <!-- Answers -->
+            <RowDefinition Height="*" />
             <!-- Submit Button -->
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -36,6 +36,7 @@
                        FontWeight="Bold" FontSize="16" Margin="10,0" />
             <TextBlock Text="{Binding QDisplay, StringFormat='Q: {0}'}" 
                        FontWeight="Bold" FontSize="16" Margin="10,0" />
+            <Button Content="LeaveGame" Command="{Binding LeaveGameCmd}"/>
         </StackPanel>
 
         <!-- Question Text -->
@@ -64,6 +65,8 @@
                 FontWeight="Bold" FontSize="16" 
                 HorizontalAlignment="Center"
                 Margin="10" Padding="10" 
+                Height="40"
+                Width="80"
                 Style="{StaticResource MaterialDesignFlatButton}" />
     </Grid>
 </UserControl>

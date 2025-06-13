@@ -30,7 +30,7 @@
         <!-- Error Message -->
         <TextBlock Text="{Binding ServerErrorMessage}"
                    Foreground="{DynamicResource ErrorBrush}" 
-                   Visibility="{Binding HasError, Converter={StaticResource BoolToVisibilityConverter}}"
+                   Visibility="{Binding ServerErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"
                    DockPanel.Dock="Bottom"
                    HorizontalAlignment="Center"
                    Margin="10" />

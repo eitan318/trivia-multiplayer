@@ -42,7 +42,7 @@ public:
      * @param answerId The ID of the selected answer.
      * @return A GeneralResponseErrors value indicating the result of the submission (e.g., success or specific error).
      */
-    GeneralResponseErrors submitAnswer(const LoggedUser& user, std::shared_ptr<Game> game, 
+    GeneralResponseErrors submitAnswer(const LoggedUser& user, std::shared_ptr<Game> game,
         unsigned int answerId, int* answerScore);
 
     /**
@@ -79,4 +79,6 @@ private:
 
     std::map<unsigned int, std::shared_ptr<Game>> m_games;
     IDatabase& m_database;
+    mutable std::mutex m_gamesMutex; // Mutex to protect m_games
+
 };

@@ -1,13 +1,7 @@
 ﻿using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
-using ClientApp.Stores;
 using ClientApp.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClientApp.Commands
 {
@@ -15,47 +9,37 @@ namespace ClientApp.Commands
     {
         private readonly RequestsExchangeService _requestsExchangeService;
         private readonly GameViewModel _gameViewModel;
-        private readonly RoomDataStore _roomDataStore;
         private readonly INavigationService _navigationService;
-        public SubmitAnswerCommand(
-            RequestsExchangeService requestsExchangeService,
-            GameViewModel gameViewModel,
-            RoomDataStore roomDataStore,
-            INavigationService navigationService
-            ) {
-            this._requestsExchangeService = requestsExchangeService;
-            this._gameViewModel = gameViewModel;
-            this._roomDataStore = roomDataStore;
-            this._navigationService = navigationService;
+
+        public SubmitAnswerCommand(RequestsExchangeService requestsExchangeService,
+                                   GameViewModel gameViewModel,
+                                   INavigationService navigationService)
+        {
+            _requestsExchangeService = requestsExchangeService;
+            _gameViewModel = gameViewModel;
+            _navigationService = navigationService;
         }
+
         public override async void Execute(object parameter)
         {
-            _gameViewModel.Timer.Pause();
+            //_gameViewModel.Timer.Stop();
 
-            // Prepare the login request and send it
-            SubmitAnswerRequest submitAnswerRequests = new SubmitAnswerRequest(_gameViewModel.SelectedAnswerIndex);
-            ResponseInfo<SubmitAnswerResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<SubmitAnswerResponse>(submitAnswerRequests);
-            if (responseInfo.NormalResponse)
+            SubmitAnswerRequest request = new SubmitAnswerRequest(_gameViewModel.SelectedAnswerIndex);
+            ResponseInfo<SubmitAnswerResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<SubmitAnswerResponse>(request);
+
+            if (responseInfo.NormalResponse && responseInfo.Response?.Status == 0)
             {
-                SubmitAnswerResponse submitAnswerResponse = responseInfo.Response;
-                if(submitAnswerResponse.Status == 0)
-                {
-                    _gameViewModel.Score += submitAnswerResponse.AnswerScore;
-                }
-                else
-                {
-                }
-
+                _gameViewModel.Score += responseInfo.Response.AnswerScore;
             }
 
-            if (_gameViewModel.QuestionNumber == _gameViewModel.TotalQuestions) 
+            if (_gameViewModel.QuestionNumber == _gameViewModel.TotalQuestions)
             {
                 _navigationService.NavigateTo<MenuViewModel>();
             }
-
-            _gameViewModel.NextQuestion();
-
-              
+            else
+            {
+                await _gameViewModel.NextQuestion();
+            }
         }
 
         public override bool CanExecute(object parameter)
@@ -67,10 +51,5 @@ namespace ClientApp.Commands
         {
             base.RaiseCanExecuteChanged();
         }
-
-
-
-
-
     }
 }

@@ -89,7 +89,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo, SOCKET 
         JsonResponsePacketSerializer::serializeResponse(loginResponse);
     std::shared_ptr<IRequestHandler> newHandler;
     LoggedUser user(request.getUsername());
-    if (errors.statusCode != 0) {
+    if (errors.statusCode() != 0) {
         newHandler = this->m_handlerFactory.createLoginRequestHandler();
     }
     else {

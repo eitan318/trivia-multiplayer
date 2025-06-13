@@ -18,6 +18,10 @@ namespace ClientApp.ViewModels
         private CancellationTokenSource _checkRoomStateCTS;
         private LoggedUser _admin;
         private readonly int refreshMS = 300;
+        private RoomStatus prevRoomStatus;
+
+        private readonly CountdownTimerViewModel _countdownTimerViewModel;
+        public CountdownTimerViewModel Timer => _countdownTimerViewModel;
 
         public RoomMemberViewModel(
             INavigationService navigationService,
@@ -30,6 +34,10 @@ namespace ClientApp.ViewModels
             this._requestsExchangeService = requestsExchangeService;
             this.LeaveRoomCmd = new LeaveRoomCommand(navigationService, requestsExchangeService, null);
             this.RoomDataStore = roomDataStore;
+
+                        _countdownTimerViewModel = new CountdownTimerViewModel();
+            Timer.Reset(TimeSpan.FromSeconds(10));
+            Timer.Start();
         }
 
         public override void OnNavigatedTo()
@@ -108,10 +116,12 @@ namespace ClientApp.ViewModels
                 LeaveRoomCmd.Execute(null);
             }
 
-            if (roomState.RoomStatus == RoomStatus.InGame)
+            if (roomState.RoomStatus == RoomStatus.InGame && prevRoomStatus == RoomStatus.NotInGame)
             {
                 _navigationService.NavigateTo<GameViewModel>();
             }
+
+            prevRoomStatus = roomState.RoomStatus;
         }
     }
 }

@@ -122,7 +122,6 @@ void Communicator::handleNewClient(SOCKET sock)
 
     while (handler != nullptr)
     {
-
         int msgLen;
         std::string msgStr;
         unsigned int requestCode;

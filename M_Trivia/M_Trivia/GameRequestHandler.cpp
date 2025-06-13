@@ -74,7 +74,6 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
         }
     }
 
-    errors.statusCode = !errors.noErrors();
     
     GetQuestionResponse getQuestionResponse(&errors, 
         quetionForUser.has_value() ? quetionForUser.value() : Question());
@@ -123,12 +122,18 @@ RequestResult GameRequestHandler::getGameResults(RequestInfo requestInfo)
 
 RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
 {
-    this->m_room->removeUser(this->m_user);
     GeneralResponseErrors errors;
     LeaveGameResponse leaveGameResponse(&errors);
+    std::shared_ptr<IRequestHandler> nextHandler = std::move(this->m_room->isAdmin(this->m_user) ?
+        this->m_handlerFactory.createRoomAdminRequestHandler(this->m_user, this->m_room) :
+        this->m_handlerFactory.createRoomMemberRequestHandler(this->m_user, this->m_room));
+
+    this->m_game->removePlayer(this->m_user);
+    if(this->m_game->getPlayers().size() == 0)
+        this->m_room->closeGame();
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(leaveGameResponse),
-        std::move(this->m_handlerFactory.createMenuRequestHandler(this->m_user)));
+        nextHandler);
     return requestResult;
 }

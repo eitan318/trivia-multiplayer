@@ -9,13 +9,14 @@ namespace ClientApp.ViewModels
     class LoginViewModel : ViewModelBase
     {
         private UserStore _userStore;
-        
+
         public LoginViewModel(
             INavigationService navigationService,
             UserStore userStore,
             RequestsExchangeService requestsExchangeService)
         {
             this._userStore = userStore;
+
 
             // Initialize commands for different actions
             LoginCmd = new LoginCommand(this, navigationService, userStore, requestsExchangeService);

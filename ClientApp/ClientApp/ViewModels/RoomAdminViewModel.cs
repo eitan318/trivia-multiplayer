@@ -18,6 +18,10 @@ namespace ClientApp.ViewModels
         private LoggedUser _admin;
         private string _errorMessage;
 
+        
+        private readonly CountdownTimerViewModel _countdownTimerViewModel;
+        public CountdownTimerViewModel Timer => _countdownTimerViewModel;
+
         public RoomAdminViewModel(
             INavigationService navigationService,
             RequestsExchangeService requestsExchangeService,
@@ -30,6 +34,10 @@ namespace ClientApp.ViewModels
             this.StartGameCmd = new StartGameCommand(navigationService, requestsExchangeService, this);
             this.CloseRoomCmd = new CloseRoomCommand(navigationService, requestsExchangeService, this);
             this.RoomDataStore = roomDataStore;
+
+                        _countdownTimerViewModel = new CountdownTimerViewModel();
+            Timer.Reset(TimeSpan.FromSeconds(10));
+            Timer.Start();
         }
 
         public override void OnNavigatedTo()

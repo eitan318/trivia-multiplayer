@@ -16,7 +16,6 @@
         <TextBlock Text="{Binding}" 
                    FontWeight="SemiBold" 
                    FontSize="16" 
-                   Foreground="{DynamicResource MaterialDesign.Body}"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center" />
     </Border>
