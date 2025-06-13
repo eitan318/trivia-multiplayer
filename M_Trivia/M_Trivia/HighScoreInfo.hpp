@@ -1,6 +1,14 @@
 #pragma once
 #include <string>
 #include "json.hpp"
+#include <string>
+#include <ctime>
+#include <iomanip>
+#include <sstream>
+
+
+inline std::string timeStr(time_t time);
+
 
 /**
  * @struct HighScoreInfo
@@ -8,7 +16,8 @@
  */
 struct HighScoreInfo {
     std::string username; 
-    std::string gameName; 
+    std::string roomName; 
+    time_t startTime;
     int totalScore;      
     unsigned int gameId;    
     unsigned int rank;
@@ -23,10 +32,23 @@ struct HighScoreInfo {
  */
 inline void to_json(nlohmann::json& j, const HighScoreInfo& highScoreInfo) {
     j = nlohmann::json{
-        {"GameName", highScoreInfo.gameName},  
+        {"RoomName", highScoreInfo.roomName},
+        {"StartTime", timeStr(highScoreInfo.startTime)},
         {"PlayerUsername", highScoreInfo.username},
         {"TotalScore", highScoreInfo.totalScore},
         {"GameId", highScoreInfo.gameId},
         {"Rank", highScoreInfo.rank}
     };
+}
+
+inline std::string timeStr(time_t time) {
+    // Convert time_t to tm structure
+    struct tm timeInfo;
+    localtime_s(&timeInfo, &time);
+
+    // Create a string stream to format the time
+    std::ostringstream oss;
+    oss << std::put_time(&timeInfo, "%Y-%m-%d %H:%M:%S"); // ISO 8601 format
+
+    return oss.str();
 }

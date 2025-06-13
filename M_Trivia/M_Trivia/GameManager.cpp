@@ -11,7 +11,7 @@ std::shared_ptr<Game> GameManager::createGame(Room* room)
 {
     std::lock_guard<std::mutex> lock(m_gamesMutex); // Lock m_games
     std::vector<Question> questions = this->m_database.getQuestions(room->getRoomPreview().roomData.numOfQuestionsInGame);
-    unsigned int gameId = this->m_database.createGame();
+    unsigned int gameId = this->m_database.createGame(room->getRoomPreview().roomData.name, std::time(nullptr));
     std::shared_ptr<Game> game = std::make_shared<Game>(questions, room->getUsersVector(), gameId, room->getRoomPreview().roomData.timePerQuestion);
     this->m_gamesByRoomId[room->getId()] = game;
     return game;

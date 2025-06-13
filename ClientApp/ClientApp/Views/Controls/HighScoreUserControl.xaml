@@ -30,7 +30,9 @@
                     <TextBlock Text="{Binding PlayerUsername, StringFormat='User: {0}'}" 
                            FontSize="15" 
                            FontWeight="Bold" />
-                    <TextBlock Text="{Binding GameName, StringFormat='Game: {0}'}" 
+                    <TextBlock Text="{Binding RoomName, StringFormat='Game Room: {0}'}" 
+                           FontSize="13"  />
+                    <TextBlock Text="{Binding StartTime, StringFormat='Start time: {0}'}" 
                            FontSize="13"  />
                 </StackPanel>
 

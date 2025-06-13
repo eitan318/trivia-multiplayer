@@ -147,7 +147,7 @@ public:
      *
      * @return The ID of the newly created game.
      */
-    virtual unsigned int createGame() const = 0;
+    virtual unsigned int createGame(const std::string& roomName, time_t startTime) const = 0;
 
     /**
      * Retrieves the results of a player for a specific game.

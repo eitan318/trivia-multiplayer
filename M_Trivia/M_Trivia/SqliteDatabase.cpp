@@ -213,7 +213,9 @@ bool SqliteDatabase::createQuestionsTable() const {
 bool SqliteDatabase::createGamesTable() const {
     const char* query = R"(
         CREATE TABLE Games (
-            id INTEGER PRIMARY KEY AUTOINCREMENT
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            room_name TEXT NOT NULL,
+            start_time INTEGER NOT NULL
         )
     )";
     sqlite3_stmt* stmt;
@@ -368,14 +370,33 @@ std::optional<PlayerResults> SqliteDatabase::getPlayerResults(const std::string&
 }
 
 
-unsigned int SqliteDatabase::createGame() const {
+
+unsigned int SqliteDatabase::createGame(const std::string& roomName, time_t startTime) const {
+
+    // Corrected SQL query string
     const char* query = R"(
-    INSERT INTO Games DEFAULT VALUES
+        INSERT INTO Games (room_name, start_time) VALUES (?, ?)
     )";
 
     sqlite3_stmt* stmt;
+
+    // Prepare the statement
     if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
         throw MyException(std::string("Failed to prepare statement: ") +
+            sqlite3_errmsg(db));
+    }
+
+    // Bind the roomName parameter
+    if (sqlite3_bind_text(stmt, 1, roomName.c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK) {
+        sqlite3_finalize(stmt);
+        throw MyException(std::string("Failed to bind roomName parameter: ") +
+            sqlite3_errmsg(db));
+    }
+
+    // Bind the formatted startTime parameter
+    if (sqlite3_bind_int64(stmt, 2, static_cast<sqlite3_int64>(startTime)) != SQLITE_OK) {
+        sqlite3_finalize(stmt);
+        throw MyException(std::string("Failed to bind startTime parameter: ") +
             sqlite3_errmsg(db));
     }
 
@@ -552,7 +573,7 @@ UserRecord SqliteDatabase::getUserRecord(const std::string& email) const {
 
 std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit) const {
     const char* query = R"(
-        SELECT a.username, a.game_id, SUM(a.score) AS total_score
+        SELECT a.username, a.game_id, g.room_name, g.start_time, SUM(a.score) AS total_score
         FROM answers a
         JOIN Games g ON a.game_id = g.id
         GROUP BY a.game_id, a.username
@@ -576,8 +597,9 @@ std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit) const {
         HighScoreInfo bsi;
         bsi.username = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
         bsi.gameId = sqlite3_column_int(stmt, 1);
-        bsi.gameName = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-        bsi.totalScore = sqlite3_column_int(stmt, 3);
+        bsi.roomName = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+        bsi.startTime = sqlite3_column_int64(stmt, 3);
+        bsi.totalScore = sqlite3_column_int(stmt, 4);
         bsi.rank = i;
 
         results.push_back(bsi);

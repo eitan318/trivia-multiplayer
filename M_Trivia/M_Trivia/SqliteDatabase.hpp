@@ -19,7 +19,7 @@ public:
     void addUserAnswer(const std::string& username, unsigned int gameId, unsigned int questionId,
         bool isCorrect, int score, double answerTimeSec) const;
     std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId) const;
-    unsigned int createGame() const;
+    unsigned int createGame(const std::string& roomName, time_t startTime) const;
     int getNumOfTotalAnswers(const std::string& username) const;
     int getNumOfTotalCorrectAnswers(const std::string& username) const;
     int getNumOfPlayerGames(const std::string& username) const;
