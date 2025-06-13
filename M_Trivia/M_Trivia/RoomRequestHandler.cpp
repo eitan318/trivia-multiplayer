@@ -13,7 +13,8 @@ RequestResult RoomRequestHandler::getRoomState(const RequestInfo& requestinfo)
     GetRoomStateResponse roomStateResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, roomState);
     std::shared_ptr<IRequestHandler> nextHandler = nullptr;
     if (prevStatus == RoomStatus::NotInGame && (RoomStatus)roomState.m_roomStatus == RoomStatus::InGame) {
-        nextHandler = this->m_requestHandlerFactory.createGameRequestHandler(m_user, m_room);
+        std::shared_ptr<Game> game = this->m_requestHandlerFactory.getGameManager().getGame(m_room->getId());
+        nextHandler = this->m_requestHandlerFactory.createGameRequestHandler(m_user, game, m_room);
     }
 
     RequestResult requestResult(

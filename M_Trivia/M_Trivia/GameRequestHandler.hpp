@@ -21,7 +21,7 @@ public:
      * @param handlerFactory The factory for creating other request handlers.
      */
     GameRequestHandler(const LoggedUser& user,
-        RequestHandlerFactory& handlerFactory,Room* room); 
+        RequestHandlerFactory& handlerFactory, std::shared_ptr<Game> game, Room* room);
 
     /**
      * @brief Default destructor.

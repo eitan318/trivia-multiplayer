@@ -34,6 +34,8 @@ public:
      */
     void deleteGame(int gameId);
 
+    std::shared_ptr<Game> getGame(unsigned int gameId);
+
     /**
      * Submits an answer for a user in a specified game.
      *
@@ -77,7 +79,7 @@ private:
      */
     int calcAnswerScore(QuestionDifficultyLevelScores diffLevel, double answerTime, bool isCurrect, double timeLimit) const;
 
-    std::map<unsigned int, std::shared_ptr<Game>> m_games;
+    std::map<unsigned int, std::shared_ptr<Game>> m_gamesByRoomId;
     IDatabase& m_database;
     mutable std::mutex m_gamesMutex; // Mutex to protect m_games
 

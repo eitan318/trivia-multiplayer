@@ -76,11 +76,12 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& requestInfo)
 RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& requestInfo)
 {
 	StartGameResponseErrors errors = this->m_roomManager.startGameOfRoom(this->m_room);
+	std::shared_ptr<Game> game = this->m_requestHandlerFactory.getGameManager().createGame(this->m_room);
 
 	StartGameResponse startGameResponse(&errors);
 	RequestResult result;
 	result.response = JsonResponsePacketSerializer::serializeResponse(startGameResponse);
-	result.newHandler = errors.statusCode() == 0 ? this->m_requestHandlerFactory.createGameRequestHandler(m_user, m_room) : nullptr;
+	result.newHandler = errors.statusCode() == 0 ? this->m_requestHandlerFactory.createGameRequestHandler(m_user, game, m_room) : nullptr;
 	return result;
 }
 

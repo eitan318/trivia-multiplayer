@@ -13,14 +13,20 @@ std::shared_ptr<Game> GameManager::createGame(Room* room)
     std::vector<Question> questions = this->m_database.getQuestions(room->getRoomPreview().roomData.numOfQuestionsInGame);
     unsigned int gameId = this->m_database.createGame();
     std::shared_ptr<Game> game = std::make_shared<Game>(questions, room->getUsersVector(), gameId, room->getRoomPreview().roomData.timePerQuestion);
-    this->m_games[gameId] = game;
+    this->m_gamesByRoomId[room->getId()] = game;
     return game;
 }
 
 void GameManager::deleteGame(int gameId)
 {
     std::lock_guard<std::mutex> lock(m_gamesMutex); // Lock m_games
-    this->m_games.erase(gameId);
+    this->m_gamesByRoomId.erase(gameId);
+}
+
+std::shared_ptr<Game> GameManager::getGame(unsigned int gameId)
+{
+    std::lock_guard<std::mutex> lock(m_gamesMutex); // Lock m_games
+    return this->m_gamesByRoomId[gameId];
 }
 
 GeneralResponseErrors GameManager::submitAnswer(const LoggedUser& user, std::shared_ptr<Game> game,
@@ -73,5 +79,5 @@ int GameManager::calcAnswerScore(QuestionDifficultyLevelScores diffLevel, double
 GameManager::~GameManager()
 {
     std::lock_guard<std::mutex> lock(m_gamesMutex); // Lock m_games during destruction
-    m_games.clear();
+    m_gamesByRoomId.clear();
 }

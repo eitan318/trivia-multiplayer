@@ -36,8 +36,7 @@ namespace ClientApp.ViewModels
             _countdownTimerViewModel = new CountdownTimerViewModel();
 
 
-            _questionNumber = 0;
-            _totalQuestions = _roomDataStore.CurrentRoomData.NumOfQuestionsInGame;
+
             PossibleAnswers = new List<string>();
         }
 
@@ -102,6 +101,8 @@ namespace ClientApp.ViewModels
 
         public override async void OnNavigatedTo()
         {
+            _questionNumber = 0;
+            _totalQuestions = _roomDataStore.CurrentRoomData.NumOfQuestionsInGame;
              //_countdownTimerViewModel.TimerEnded += async (sender, args) => await HandleTimerEndAsync();
 
             Timer.Reset(TimeSpan.FromSeconds(10));

@@ -10,13 +10,13 @@
 #include "SubmitAnswerRequest.hpp"
 
 GameRequestHandler::GameRequestHandler(const LoggedUser& user,
-    RequestHandlerFactory& handlerFactory,Room* room) : 
+    RequestHandlerFactory& handlerFactory, std::shared_ptr<Game> game, Room* room) :
     m_gameManager(handlerFactory.getGameManager()),
     m_handlerFactory(handlerFactory),
     m_user(user),
+    m_game(std::move(game)),
     m_room(room)
 {
-    this->m_game = this->m_gameManager.createGame(room);
 }
 
 GameRequestHandler::~GameRequestHandler() = default;

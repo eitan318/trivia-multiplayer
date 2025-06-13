@@ -1,7 +1,7 @@
 #include "Game.hpp"
 
-Game::Game(std::vector<Question> questions, std::vector<LoggedUser> players, unsigned int roomId, unsigned int questionTimeLimit)
-    : m_gameId(roomId), m_questions(questions), m_questionTimeLimit(questionTimeLimit)
+Game::Game(std::vector<Question> questions, std::vector<LoggedUser> players, unsigned int gameId, unsigned int questionTimeLimit)
+    : m_gameId(gameId), m_questions(std::move(questions)), m_questionTimeLimit(questionTimeLimit)
 {
     std::lock_guard<std::mutex> lock(m_playersMutex);
     for (const auto& player : players) {
@@ -17,17 +17,23 @@ std::map<LoggedUser, PlayerGameData> Game::getPlayers()
 
 std::optional<Question> Game::getQuestionForUser(const LoggedUser& user)
 {
-    std::lock_guard<std::mutex> lock(m_playersMutex);
-    if (m_players.find(user) == m_players.end()) {
+    unsigned int questionIdx;
+    {
+        std::lock_guard<std::mutex> playersLock(m_playersMutex);
+        if (m_players.find(user) == m_players.end()) {
+            return std::nullopt;
+        }
+
+        questionIdx = m_players[user].questionIdx;
+    }
+
+
+    std::lock_guard<std::mutex> questionsLock(m_questionsMutex);
+    if (questionIdx >= m_questions.size()) {
         return std::nullopt;
     }
 
-    std::lock_guard<std::mutex> questionLock(m_questionsMutex);
-    if (m_players[user].questionIdx >= m_questions.size()) {
-        return std::nullopt;
-    }
-
-    return m_questions[m_players[user].questionIdx];
+    return m_questions[questionIdx];
 }
 
 bool Game::userExistsInGame(const LoggedUser& user) const
@@ -39,15 +45,16 @@ bool Game::userExistsInGame(const LoggedUser& user) const
 void Game::setNextQuestionForUser(const LoggedUser& user)
 {
     std::lock_guard<std::mutex> lock(m_playersMutex);
-    if (m_players.find(user) != m_players.end()) {
-        m_players[user].questionIdx++;
-        m_players[user].lastStartTime = std::time(nullptr);
+    auto it = m_players.find(user);
+    if (it != m_players.end()) {
+        it->second.questionIdx++;
+        it->second.lastStartTime = std::time(nullptr);
     }
 }
 
 unsigned int Game::getQuestionTimeLimit() const
 {
-    return m_questionTimeLimit; // This does not need protection as it's immutable.
+    return m_questionTimeLimit; 
 }
 
 void Game::removePlayer(const LoggedUser& user)
@@ -58,5 +65,5 @@ void Game::removePlayer(const LoggedUser& user)
 
 unsigned int Game::getId() const
 {
-    return m_gameId; // This does not need protection as it's immutable.
+    return m_gameId; // Immutable, no need for a lock.
 }
