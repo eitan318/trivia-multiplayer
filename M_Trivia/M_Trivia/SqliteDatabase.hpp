@@ -17,22 +17,21 @@ public:
     int doesPasswordMatch(const std::string&, const std::string&) const override;
     int addNewUser(const UserRecord&) const override;
     void addUserAnswer(const std::string& username, unsigned int gameId, unsigned int questionId,
-        bool isCorrect, int score, double answerTimeSec) const override;
-    std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId) const override;
-    unsigned int createGame() const override;
-    int getNumOfTotalAnswers(const std::string& username) const override;
-    int getNumOfTotalCorrectAnswers(const std::string& username) const override;
-    int getNumOfPlayerGames(const std::string& username) const override;
-    float getAvgAnswerTime(const std::string& username) const override;
-    bool emailExists(const std::string& email) const override;
-    UserRecord getUserRecord(const std::string& email) const override;
-    std::vector<HighScoreInfo> getBestScores(int limit) const override;
-    std::vector<Question> getQuestions(int amount) const override;
+        int chosenAnswerInQuestion, int score, double answerTimeSec) const;
+    std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId) const;
+    unsigned int createGame(const std::string& roomName, time_t startTime) const;
+    int getNumOfTotalAnswers(const std::string& username) const;
+    int getNumOfTotalCorrectAnswers(const std::string& username) const;
+    int getNumOfPlayerGames(const std::string& username) const;
+    float getAvgAnswerTime(const std::string& username) const;
+    bool emailExists(const std::string& email) const;
+    UserRecord getUserRecord(const std::string& email) const;
+    std::vector<HighScoreInfo> getBestScores(int limit) const;
+    std::vector<Question> getQuestions(int amount) const;
     void updatePassword(const std::string& username,
-        const std::string& newPassword) const override;
-    unsigned int getQuestionsCount() const override;
-    virtual bool addExampleUsers() const override;
-
+        const std::string& newPassword) const;
+    unsigned int getQuestionsCount() const;
+    bool addExampleUsers() const;
 
 private:
     ~SqliteDatabase() { close(); };

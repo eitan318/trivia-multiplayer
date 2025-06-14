@@ -70,6 +70,8 @@ public:
     // starting a game in the room
     void startGame();
 
+    void closeGame();
+
     //returning the id of the room
     unsigned int getId() const;
 
@@ -88,4 +90,6 @@ public:
     RoomPreview getRoomPreview() const;
 
     bool hasUser(const std::string& username) const;
+
+    bool isAdmin(const LoggedUser& username) const;
 };

@@ -16,6 +16,11 @@ namespace ClientApp.ViewModels
         private CancellationTokenSource _checkRoomStateCTS;
         private readonly int refreshMS = 300;
         private LoggedUser _admin;
+        private string _errorMessage;
+
+        
+        private readonly CountdownTimerViewModel _countdownTimerViewModel;
+        public CountdownTimerViewModel Timer => _countdownTimerViewModel;
 
         public RoomAdminViewModel(
             INavigationService navigationService,
@@ -29,6 +34,10 @@ namespace ClientApp.ViewModels
             this.StartGameCmd = new StartGameCommand(navigationService, requestsExchangeService, this);
             this.CloseRoomCmd = new CloseRoomCommand(navigationService, requestsExchangeService, this);
             this.RoomDataStore = roomDataStore;
+
+                        _countdownTimerViewModel = new CountdownTimerViewModel();
+            Timer.Reset(TimeSpan.FromSeconds(10));
+            Timer.Start();
         }
 
         public override void OnNavigatedTo()
@@ -65,7 +74,15 @@ namespace ClientApp.ViewModels
             }
         }
 
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set
+            { 
+                _errorMessage = value;
+                OnPropertyChanged();
+            }
+        }
 
         private async Task PeriodicallyCheckRoomStateLoop(CancellationToken token)
         {
@@ -89,6 +106,10 @@ namespace ClientApp.ViewModels
             ResponseInfo<GetRoomStateResponse> responseInfo =
                 await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(getRoomStatusRequest);
             GetRoomStateResponse response = responseInfo.Response;
+            if(responseInfo.Response == null)
+            {
+                return;
+            }
             RoomState roomState = response.RoomState;
 
             // Update Players on the UI thread

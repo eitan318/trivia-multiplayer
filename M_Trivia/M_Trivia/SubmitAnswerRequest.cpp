@@ -1,10 +1,10 @@
 #include "SubmitAnswerRequest.hpp"
 
-SubmitAnswerRequest::SubmitAnswerRequest(const nlohmann::json& j) : correctAnswerId(j.at("CorrectAnswerID")) 
+SubmitAnswerRequest::SubmitAnswerRequest(const nlohmann::json& j) : m_chosenAnswerId(j.at("ChosenAnswerId")) 
 {
 }
 
-const unsigned int SubmitAnswerRequest::getAnswerId() const
+const int SubmitAnswerRequest::getAnswerId() const
 {
-	return correctAnswerId;
+	return m_chosenAnswerId;
 }

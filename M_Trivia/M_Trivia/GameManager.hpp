@@ -34,6 +34,8 @@ public:
      */
     void deleteGame(int gameId);
 
+    std::shared_ptr<Game> getGame(unsigned int gameId);
+
     /**
      * Submits an answer for a user in a specified game.
      *
@@ -42,7 +44,8 @@ public:
      * @param answerId The ID of the selected answer.
      * @return A GeneralResponseErrors value indicating the result of the submission (e.g., success or specific error).
      */
-    GeneralResponseErrors submitAnswer(const LoggedUser& user, std::shared_ptr<Game> game, unsigned int answerId);
+    GeneralResponseErrors submitAnswer(const LoggedUser& user, std::shared_ptr<Game> game,
+        int answerId, int* answerScore);
 
     /**
      * Retrieves the results for all players in a specified game.
@@ -76,6 +79,8 @@ private:
      */
     int calcAnswerScore(QuestionDifficultyLevelScores diffLevel, double answerTime, bool isCurrect, double timeLimit) const;
 
-    std::map<unsigned int, std::shared_ptr<Game>> m_games;
+    std::map<unsigned int, std::shared_ptr<Game>> m_gamesByRoomId;
     IDatabase& m_database;
+    mutable std::mutex m_gamesMutex; // Mutex to protect m_games
+
 };

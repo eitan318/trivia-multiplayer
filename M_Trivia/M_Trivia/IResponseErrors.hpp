@@ -3,7 +3,14 @@
 
 class IResponseErrors {
 public:
-    unsigned int statusCode;
+    /**
+	 * @brief Retrieves the status code.
+	 *
+	 * @return 0 if there are no errors; otherwise, a non-zero value indicating the presence of errors.
+	 */
+    unsigned int statusCode() const {
+        return noErrors() ? 0 : 1;
+    }
 
     /**
      * @brief Checks if all error fields are not set (empty).

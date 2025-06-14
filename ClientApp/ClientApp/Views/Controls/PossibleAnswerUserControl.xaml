@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="ClientApp.Views.Controls.PossibleAnswerUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="400"
+             TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+             >
+
+    <Border BorderBrush="{DynamicResource MaterialDesign.Divider}"
+            BorderThickness="5"
+            CornerRadius="50"
+            Padding="5"
+            Margin="5">
+        <TextBlock Text="{Binding}" 
+                   FontWeight="SemiBold" 
+                   FontSize="16" 
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center" />
+    </Border>
+</UserControl>

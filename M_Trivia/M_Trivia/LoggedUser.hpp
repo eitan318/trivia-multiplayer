@@ -14,6 +14,10 @@ public:
 	bool operator<(const LoggedUser& other) const {
 		return m_username < other.m_username; 
 	}
+	// Define < operator for comparison
+	bool operator==(const LoggedUser& other) const {
+		return m_username == other.m_username;
+	}
 };
 
 /**

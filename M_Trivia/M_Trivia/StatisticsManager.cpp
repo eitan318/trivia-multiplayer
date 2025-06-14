@@ -16,7 +16,7 @@ PersonalStatistics StatisticsManager::getPlayerStatistics(const std::string& use
 	return PersonalStatistics(
 		username,
 		this->m_db.getNumOfTotalCorrectAnswers(username),
-		this->m_db.getNumOfTotalAnswers(username),
 		this->m_db.getNumOfPlayerGames(username),
+		this->m_db.getNumOfTotalAnswers(username),
 		this->m_db.getAvgAnswerTime(username));
 }

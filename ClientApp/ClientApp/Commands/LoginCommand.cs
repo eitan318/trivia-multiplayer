@@ -76,11 +76,7 @@ namespace ClientApp.Commands
                     }
 
                 }
-                else
-                {
-                    ErrorResponse errorResponse = responseInfo.ErrorResponse;
-                    _loginViewModel.ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
-                }
+
             }
             catch (Exception ex)
             {

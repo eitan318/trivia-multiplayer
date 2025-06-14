@@ -428,15 +428,6 @@
     <ClInclude Include="GetGameResultsResponse.hpp">
       <Filter>Model\Responses</Filter>
     </ClInclude>
-    <ClInclude Include="RoomMemberRequestHandler.hpp">
-      <Filter>Model\ResponseErrors\RequestHandlers</Filter>
-    </ClInclude>
-    <ClInclude Include="RoomAdminRequestHandler.hpp">
-      <Filter>Model\ResponseErrors\RequestHandlers</Filter>
-    </ClInclude>
-    <ClInclude Include="RoomRequestHandler.hpp">
-      <Filter>Model\ResponseErrors\RequestHandlers</Filter>
-    </ClInclude>
     <ClInclude Include="StartGameResponseErrors.hpp">
       <Filter>Model\ResponseErrors</Filter>
     </ClInclude>
@@ -468,9 +459,6 @@
     <ClInclude Include="GameRequestHandler.hpp">
       <Filter>Model\ResponseErrors\RequestHandlers</Filter>
     </ClInclude>
-    <ClInclude Include="GameData.hpp">
-      <Filter>Model</Filter>
-    </ClInclude>
     <ClInclude Include="RoomStatus.h">
       <Filter>enums</Filter>
     </ClInclude>
@@ -499,6 +487,12 @@
       <Filter>RequestHandlers</Filter>
     </ClInclude>
     <ClInclude Include="RoomState.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomAdminRequestHandler.hpp" />
+    <ClInclude Include="RoomMemberRequestHandler.hpp" />
+    <ClInclude Include="RoomRequestHandler.hpp" />
+    <ClInclude Include="PlayerGameData.hpp">
       <Filter>Model</Filter>
     </ClInclude>
   </ItemGroup>

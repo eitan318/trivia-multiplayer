@@ -1,41 +1,65 @@
 #include "Game.hpp"
 
-Game::Game(std::vector<Question> questions, std::vector<LoggedUser> players, unsigned int roomId, unsigned int questionTimeLimit)
-    : m_gameId(roomId), m_questions(questions), m_questionTimeLimit(questionTimeLimit)
+Game::Game(std::vector<Question> questions, std::vector<LoggedUser> players, unsigned int gameId, unsigned int questionTimeLimit)
+    : m_gameId(gameId), m_questions(std::move(questions)), m_questionTimeLimit(questionTimeLimit)
 {
-    for (auto it = players.begin(); it != players.end(); it++)
-    {
-        this->m_players[it->getUsername()] = questions[0];
+    std::lock_guard<std::mutex> lock(m_playersMutex);
+    for (const auto& player : players) {
+        Question shuffledCopy = Question(this->m_questions[0]);
+        shuffledCopy.shuffle();
+        m_players.emplace(player, PlayerGameData(0, shuffledCopy, std::time(nullptr)));
     }
 }
 
-std::map<LoggedUser, Question> Game::getPlayers()
+std::map<LoggedUser, PlayerGameData> Game::getPlayers()
 {
-    return this->m_players;
+    std::lock_guard<std::mutex> lock(m_playersMutex);
+    return m_players;
 }
 
 std::optional<Question> Game::getQuestionForUser(const LoggedUser& user)
 {
+    std::lock_guard<std::mutex> playersLock(m_playersMutex);
     if (m_players.find(user) == m_players.end()) {
         return std::nullopt;
     }
-    Question currentQuestion = m_players[user];
-    return currentQuestion;    
+    return m_players.find(user)->second.question;
+}
 
+bool Game::userExistsInGame(const LoggedUser& user) const
+{
+    std::lock_guard<std::mutex> lock(m_playersMutex);
+    return m_players.find(user) != m_players.end();
+}
+
+bool Game::setNextQuestionForUser(const LoggedUser& user)
+{
+    std::lock_guard<std::mutex> lock(m_playersMutex);
+    auto it = m_players.find(user);
+    if (it != m_players.end()) {
+        if (it->second.questionIdx + 1 >= this->m_questions.size()) {
+            return false;
+        }
+        it->second.questionIdx++;
+        Question nextQuestionShuffledCopy(this->m_questions[it->second.questionIdx]);
+        nextQuestionShuffledCopy.shuffle();
+        it->second.question = nextQuestionShuffledCopy;
+        it->second.lastStartTime = std::time(nullptr);
+    }
 }
 
 unsigned int Game::getQuestionTimeLimit() const
 {
-    return this->m_questionTimeLimit;
+    return m_questionTimeLimit; 
 }
 
 void Game::removePlayer(const LoggedUser& user)
 {
-    this->m_players.erase(user);
+    std::lock_guard<std::mutex> lock(m_playersMutex);
+    m_players.erase(user);
 }
 
 unsigned int Game::getId() const
 {
-    return this->m_gameId;
+    return m_gameId; 
 }
-

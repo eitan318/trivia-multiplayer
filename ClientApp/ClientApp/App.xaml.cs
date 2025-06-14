@@ -16,8 +16,13 @@ public partial class App : Application
 {
     private readonly IServiceProvider? _serviceProvider;
 
+    [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+    private static extern bool AllocConsole();
+
     public App()
     {
+         //AllocConsole();
+
         // Configure services
         var services = new ServiceCollection();
         ConfigureServices(services);
