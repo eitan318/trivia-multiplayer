@@ -140,7 +140,7 @@ public:
 	 * @param answerTimeSec The time taken by the user to answer, in seconds.
 	 */
     virtual void addUserAnswer(const std::string& username, unsigned int gameId, unsigned int questionId,
-        bool isCorrect, int score, double answerTimeSec) const = 0;
+        int chosenAnswerInQuestion, int score, double answerTimeSec) const = 0;
 
     /**
      * Creates a new game entry in the database.

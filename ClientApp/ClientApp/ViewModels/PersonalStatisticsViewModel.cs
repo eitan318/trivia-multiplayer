@@ -68,8 +68,6 @@ namespace ClientApp.ViewModels
                 {
 
                 }
-
-
             }
             catch (Exception ex)    
             {

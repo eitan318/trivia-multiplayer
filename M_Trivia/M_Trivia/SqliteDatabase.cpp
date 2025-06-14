@@ -121,10 +121,10 @@ int SqliteDatabase::addNewUser(const UserRecord& userRecord) const {
 }
 
 void SqliteDatabase::addUserAnswer(const std::string& username, unsigned int gameId,
-    unsigned int questionId, bool isCorrect, int score, double answerTimeSec) const {
+    unsigned int questionId, int chosenAnswerInQuestion, int score, double answerTimeSec) const {
 
     const char* query = R"(
-    INSERT INTO answers (username, question_id, game_id, correct, score, answer_time)
+    INSERT INTO answers (username, question_id, game_id, chosen_answer, score, answer_time)
     VALUES (?, ?, ?, ?, ?, ?)
     )";
 
@@ -138,7 +138,7 @@ void SqliteDatabase::addUserAnswer(const std::string& username, unsigned int gam
     if (sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_STATIC) != SQLITE_OK ||
         sqlite3_bind_int(stmt, 2, questionId) != SQLITE_OK ||
         sqlite3_bind_int(stmt, 3, gameId) != SQLITE_OK ||
-        sqlite3_bind_int(stmt, 4, isCorrect ? 1 : 0) != SQLITE_OK ||
+        sqlite3_bind_int(stmt, 4, chosenAnswerInQuestion) != SQLITE_OK ||
         sqlite3_bind_int(stmt, 5, score) != SQLITE_OK ||
         sqlite3_bind_double(stmt, 6, answerTimeSec) != SQLITE_OK) {
         sqlite3_finalize(stmt);
@@ -235,7 +235,7 @@ bool SqliteDatabase::createAnswersTable() const {
         username TEXT NOT NULL,
         question_id INTEGER NOT NULL,
         game_id INTEGER NOT NULL,
-        correct INTEGER NOT NULL, -- 1 for true, 0 for false
+        chosen_answer INTEGER NOT NULL, -- 0 for true ans, then 1,2,3
         score INTEGER NOT NULL,
         answer_time REAL NOT NULL, -- Floating-point value for answer time
         PRIMARY KEY (username, game_id, question_id), -- Composite primary key
@@ -336,11 +336,11 @@ std::optional<PlayerResults> SqliteDatabase::getPlayerResults(const std::string&
     const char* query = R"(
         SELECT 
             username,
-            SUM(correct) AS correctAnswerCount,
-            COUNT(*) - SUM(correct) AS wrongAnswerCount,
+            COUNT(*) WHERE chosen_answer = 0 AS correctAnswerCount,
+            COUNT(*) WHERE NOT chosen_answer = 0 AS wrongAnswerCount,
             AVG(answer_time) AS averageAnswerTime
         FROM answers
-        WHERE username = ? AND game_id = ?
+        WHERE username = ? AND game_id = ? AND NOT chosen_answer = -1
         GROUP BY username
     )";
 
@@ -418,13 +418,11 @@ unsigned int SqliteDatabase::createGame(const std::string& roomName, time_t star
 
 
 int SqliteDatabase::getNumOfTotalAnswers(const std::string& username) const {
-    const char* query = "SELECT COUNT(*) FROM answers WHERE username = ?";
+    const char* query = "SELECT COUNT(*) FROM answers WHERE username = ? AND NOT chosen_answer = -1";
     sqlite3_stmt* stmt;
 
     if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db)
-            << std::endl;
-        throw std::runtime_error("Failed to prepare SQL statement.");
+        throw std::runtime_error(std::string("Failed to prepare SQL statement:") + sqlite3_errmsg(db));
     }
 
     sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
@@ -441,13 +439,11 @@ int SqliteDatabase::getNumOfTotalAnswers(const std::string& username) const {
 int SqliteDatabase::getNumOfTotalCorrectAnswers(
     const std::string& username) const {
     const char* query =
-        "SELECT COUNT(*) FROM answers WHERE username = ? AND correct = 1";
+        "SELECT COUNT(*) FROM answers WHERE username = ? AND chosen_answer = 0";
     sqlite3_stmt* stmt;
 
     if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db)
-            << std::endl;
-        throw std::runtime_error("Failed to prepare SQL statement.");
+        throw std::runtime_error(std::string("Failed to prepare SQL statement: ") + sqlite3_errmsg(db));
     }
 
     sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
@@ -467,9 +463,7 @@ int SqliteDatabase::getNumOfPlayerGames(const std::string& username) const {
     sqlite3_stmt* stmt;
 
     if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db)
-            << std::endl;
-        throw std::runtime_error("Failed to prepare SQL statement.");
+        throw std::runtime_error(std::string("Failed to prepare SQL statement: ") + sqlite3_errmsg(db));
     }
 
     sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
@@ -484,13 +478,11 @@ int SqliteDatabase::getNumOfPlayerGames(const std::string& username) const {
 }
 
 float SqliteDatabase::getAvgAnswerTime(const std::string& username) const {
-    const char* query = "SELECT AVG(answer_time) FROM answers WHERE username = ?";
+    const char* query = "SELECT AVG(answer_time) FROM answers WHERE username = ? AND NOT chosen_answer = -1";
     sqlite3_stmt* stmt;
 
     if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db)
-            << std::endl;
-        throw std::runtime_error("Failed to prepare SQL statement.");
+        throw std::runtime_error(std::string("Failed to prepare SQL statement: ") + sqlite3_errmsg(db));
     }
 
     sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
@@ -586,9 +578,7 @@ std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit) const {
 
     // Prepare the SQL query
     if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db)
-            << std::endl;
-        throw std::runtime_error("Failed to prepare SQL statement.");
+        throw std::runtime_error(std::string("Failed to prepare SQL statement: ") + sqlite3_errmsg(db));
     }
 
     sqlite3_bind_int(stmt, 1, limit);

@@ -1,5 +1,6 @@
 #include "Question.hpp"
 #include <random>
+#include <stdexcept>
 
 QuestionDifficultyLevelScores Question::getMatchingDifficultyLevel(const std::string& difficultyStr)
 {
@@ -20,9 +21,8 @@ QuestionDifficultyLevelScores Question::getMatchingDifficultyLevel(const std::st
 Question::Question(unsigned int id, const std::string& difficulty, const std::string& category, const std::string& question,
     const std::string& correctAnswer, const std::string& ans1, const std::string& ans2,
     const std::string& ans3)
-    :  m_id(id), m_difficultyStr(difficulty), m_difficulty(getMatchingDifficultyLevel(difficulty)), m_category(category), m_question(question)
+    : m_id(id), m_difficultyStr(difficulty), m_difficulty(getMatchingDifficultyLevel(difficulty)), m_category(category), m_question(question)
 {
-
     // Add answers to the vector
     m_possibleAnswers.push_back(correctAnswer);
     m_possibleAnswers.push_back(ans1);
@@ -37,18 +37,38 @@ Question::Question(unsigned int id, const std::string& difficulty, const std::st
 
     // Reorder answers and update the correct answer index
     std::vector<std::string> shuffledAnswers(4);
+    m_originalToShuffledMap.resize(4); // Resize map to store mappings
+
     for (size_t i = 0; i < indices.size(); ++i) {
         shuffledAnswers[i] = m_possibleAnswers[indices[i]];
+        m_originalToShuffledMap[indices[i]] = i; // Map original to shuffled index
         if (indices[i] == 0) { // Original index of the correct answer
             m_correctAnswerIdx = i;
         }
     }
+
     m_possibleAnswers = shuffledAnswers;
 }
 
 unsigned int Question::getId() const
 {
     return this->m_id;
+}
+
+int Question::getOriginalAnswerNum(int shuffledAnswerId) const
+{
+    if (shuffledAnswerId < 0 || shuffledAnswerId >= m_originalToShuffledMap.size()) {
+        throw std::out_of_range("Invalid shuffledAnswerId");
+    }
+
+    // Find the original index that maps to the given shuffled index
+    for (size_t originalIdx = 0; originalIdx < m_originalToShuffledMap.size(); ++originalIdx) {
+        if (m_originalToShuffledMap[originalIdx] == shuffledAnswerId) {
+            return originalIdx;
+        }
+    }
+
+    throw std::logic_error("Mapping inconsistency detected");
 }
 
 std::string Question::getQuestion() const

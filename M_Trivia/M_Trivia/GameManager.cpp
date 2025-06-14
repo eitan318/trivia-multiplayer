@@ -30,7 +30,7 @@ std::shared_ptr<Game> GameManager::getGame(unsigned int gameId)
 }
 
 GeneralResponseErrors GameManager::submitAnswer(const LoggedUser& user, std::shared_ptr<Game> game,
-    unsigned int answerId, int* answerScore)
+    int answerId, int* answerScore)
 {
     std::optional<Question> oq = game->getQuestionForUser(user);
     GeneralResponseErrors errors;
@@ -38,12 +38,15 @@ GeneralResponseErrors GameManager::submitAnswer(const LoggedUser& user, std::sha
         errors.generalError = "User not in game.";
     }
     Question q = oq.value();
-
+    
+    int answerOriginalNumber = answerId == -1 ? -1 : q.getOriginalAnswerNum(answerId);
     bool isCorrect = q.getCorrectAnswerId() == answerId;
     double ansTime = std::time(nullptr) - game->getPlayers()[user].lastStartTime;
-    int score = calcAnswerScore(q.getDifficultyLevel(), ansTime, isCorrect, game->getQuestionTimeLimit());
+    int score = answerId == -1 ? 0 : calcAnswerScore(q.getDifficultyLevel(), ansTime, isCorrect, game->getQuestionTimeLimit());
     *answerScore = score;
-    this->m_database.addUserAnswer(user.getUsername(), game->getId(), q.getId(), isCorrect, score, ansTime);
+
+    this->m_database.addUserAnswer(user.getUsername(), game->getId(), q.getId(), 
+        answerOriginalNumber, score, ansTime);
 
     return errors;
 }

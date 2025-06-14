@@ -17,7 +17,7 @@ public:
     int doesPasswordMatch(const std::string&, const std::string&) const;
     int addNewUser(const UserRecord&) const;
     void addUserAnswer(const std::string& username, unsigned int gameId, unsigned int questionId,
-        bool isCorrect, int score, double answerTimeSec) const;
+        int chosenAnswerInQuestion, int score, double answerTimeSec) const;
     std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId) const;
     unsigned int createGame(const std::string& roomName, time_t startTime) const;
     int getNumOfTotalAnswers(const std::string& username) const;

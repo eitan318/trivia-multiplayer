@@ -93,9 +93,7 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
     int answerId = request.getAnswerId();
     int answerScore = 0;
     GeneralResponseErrors errors;
-    if (answerId != -1) {
-        errors = this->m_gameManager.submitAnswer(this->m_user, this->m_game, answerId, &answerScore);
-    }
+    errors = this->m_gameManager.submitAnswer(this->m_user, this->m_game, answerId, &answerScore);
     this->m_game->setNextQuestionForUser(this->m_user);
 
     std::optional<Question> questionUserChose = this->m_game->getQuestionForUser(m_user);
