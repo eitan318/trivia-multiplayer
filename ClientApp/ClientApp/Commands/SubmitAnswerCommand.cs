@@ -34,7 +34,7 @@ namespace ClientApp.Commands
 
             if (_gameViewModel.QuestionNumber == _gameViewModel.TotalQuestions)
             {
-                _navigationService.NavigateTo<MenuViewModel>();
+                _navigationService.NavigateTo<GameResultsViewModel>();
             }
             else
             {

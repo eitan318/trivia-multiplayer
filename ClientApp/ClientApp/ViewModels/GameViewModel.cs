@@ -11,6 +11,7 @@ namespace ClientApp.ViewModels
     class GameViewModel : ViewModelBase
     {
         private readonly RequestsExchangeService _requestsExchangeService;
+
         private readonly RoomDataStore _roomDataStore;
 
         private uint _totalQuestions;
@@ -99,9 +100,9 @@ namespace ClientApp.ViewModels
         {
             _questionNumber = 0;
             _totalQuestions = _roomDataStore.CurrentRoomData.NumOfQuestionsInGame;
-            _countdownTimerViewModel.TimerEnded += async (sender, args) => await HandleTimerEndAsync();
+             _countdownTimerViewModel.TimerEnded += async (sender, args) => await HandleTimerEndAsync();
 
-            Timer.Reset(TimeSpan.FromSeconds(_roomDataStore.CurrentRoomData.TimePerQuestion));
+            Timer.Reset(TimeSpan.FromSeconds(10));
             Timer.Start();  
             await NextQuestion();
         }

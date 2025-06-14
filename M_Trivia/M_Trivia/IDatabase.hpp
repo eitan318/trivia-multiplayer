@@ -159,7 +159,6 @@ public:
     virtual std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId) const = 0;
 
 
-    virtual bool addExampleUsers() const = 0;
     
     /**
      * Creates users for example for us to test the db and the game.

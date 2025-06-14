@@ -63,6 +63,7 @@ public partial class App : Application
         services.AddTransient<ErrorViewModel>();
         services.AddTransient<GameViewModel>();
         services.AddTransient<GameResultsViewModel>();
+        services.AddTransient<CountdownTimerViewModel>();
 
         //   Password reset ViewModels
         services.AddTransient<EmailEntryViewModel>();
