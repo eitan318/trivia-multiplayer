@@ -18,7 +18,7 @@ public:
     Game& operator=(Game&&) = delete;
     std::map<LoggedUser, PlayerGameData> getPlayers();
     std::optional<Question> getQuestionForUser(const LoggedUser& user);
-    void setNextQuestionForUser(const LoggedUser& user);
+    bool setNextQuestionForUser(const LoggedUser& user);
     unsigned int getQuestionTimeLimit() const;
     bool userExistsInGame(const LoggedUser& user) const;
 

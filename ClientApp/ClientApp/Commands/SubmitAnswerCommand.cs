@@ -22,7 +22,7 @@ namespace ClientApp.Commands
 
         public override async void Execute(object parameter)
         {
-            //_gameViewModel.Timer.Stop();
+            _gameViewModel.Timer.Stop();
 
             SubmitAnswerRequest request = new SubmitAnswerRequest(_gameViewModel.SelectedAnswerIndex);
             ResponseInfo<SubmitAnswerResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<SubmitAnswerResponse>(request);

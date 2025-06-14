@@ -14,9 +14,12 @@ namespace ClientApp.Commands
     {
         private readonly INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
+        private readonly GameViewModel _gameViewModel;
         public LeaveGameCommand(INavigationService navigationService,
-            RequestsExchangeService requestsExchangeService) 
+            RequestsExchangeService requestsExchangeService,
+            GameViewModel gameViewModel) 
         {
+            this._gameViewModel = gameViewModel;
             this._navigationService = navigationService;
             this._requestsExchangeService = requestsExchangeService;
         }
@@ -24,6 +27,7 @@ namespace ClientApp.Commands
 
         public override async void Execute(object parameter)
         {
+            _gameViewModel.Timer.Stop();
             LeaveGameRequest request = new LeaveGameRequest();
             ResponseInfo<LeaveGameResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<LeaveGameResponse>(request);
 

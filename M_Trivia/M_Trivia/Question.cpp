@@ -29,25 +29,38 @@ Question::Question(unsigned int id, const std::string& difficulty, const std::st
     m_possibleAnswers.push_back(ans2);
     m_possibleAnswers.push_back(ans3);
 
-    // Shuffle the answers while tracking the index of the correct answer
+    m_originalToShuffledMap = { 0, 1, 2, 3 };
+}
+
+void Question::shuffle()
+{
     std::random_device rd;
     std::mt19937 g(rd());
-    std::vector<int> indices = { 0, 1, 2, 3 }; // Track original indices
-    std::shuffle(indices.begin(), indices.end(), g);
 
-    // Reorder answers and update the correct answer index
+    std::shuffle(m_originalToShuffledMap.begin(), m_originalToShuffledMap.end(), g);
+
     std::vector<std::string> shuffledAnswers(4);
-    m_originalToShuffledMap.resize(4); // Resize map to store mappings
-
-    for (size_t i = 0; i < indices.size(); ++i) {
-        shuffledAnswers[i] = m_possibleAnswers[indices[i]];
-        m_originalToShuffledMap[indices[i]] = i; // Map original to shuffled index
-        if (indices[i] == 0) { // Original index of the correct answer
+    for (size_t i = 0; i < m_originalToShuffledMap.size(); ++i) {
+        shuffledAnswers[i] = m_possibleAnswers[m_originalToShuffledMap[i]];
+        if (m_originalToShuffledMap[i] == 0) { 
             m_correctAnswerIdx = i;
         }
     }
 
     m_possibleAnswers = shuffledAnswers;
+}
+
+
+Question::Question(const Question& other)
+    : m_id(other.m_id),
+    m_difficultyStr(other.m_difficultyStr),
+    m_difficulty(other.m_difficulty),
+    m_category(other.m_category),
+    m_question(other.m_question),
+    m_possibleAnswers(other.m_possibleAnswers),
+    m_originalToShuffledMap(other.m_originalToShuffledMap),
+    m_correctAnswerIdx(other.m_correctAnswerIdx)
+{
 }
 
 unsigned int Question::getId() const

@@ -5,7 +5,9 @@ Game::Game(std::vector<Question> questions, std::vector<LoggedUser> players, uns
 {
     std::lock_guard<std::mutex> lock(m_playersMutex);
     for (const auto& player : players) {
-        m_players[player] = PlayerGameData{ 0, std::time(nullptr) };
+        Question shuffledCopy = Question(this->m_questions[0]);
+        shuffledCopy.shuffle();
+        m_players.emplace(player, PlayerGameData(0, shuffledCopy, std::time(nullptr)));
     }
 }
 
@@ -17,23 +19,11 @@ std::map<LoggedUser, PlayerGameData> Game::getPlayers()
 
 std::optional<Question> Game::getQuestionForUser(const LoggedUser& user)
 {
-    unsigned int questionIdx;
-    {
-        std::lock_guard<std::mutex> playersLock(m_playersMutex);
-        if (m_players.find(user) == m_players.end()) {
-            return std::nullopt;
-        }
-
-        questionIdx = m_players[user].questionIdx;
-    }
-
-
-    std::lock_guard<std::mutex> questionsLock(m_questionsMutex);
-    if (questionIdx >= m_questions.size()) {
+    std::lock_guard<std::mutex> playersLock(m_playersMutex);
+    if (m_players.find(user) == m_players.end()) {
         return std::nullopt;
     }
-
-    return m_questions[questionIdx];
+    return m_players.find(user)->second.question;
 }
 
 bool Game::userExistsInGame(const LoggedUser& user) const
@@ -42,12 +32,18 @@ bool Game::userExistsInGame(const LoggedUser& user) const
     return m_players.find(user) != m_players.end();
 }
 
-void Game::setNextQuestionForUser(const LoggedUser& user)
+bool Game::setNextQuestionForUser(const LoggedUser& user)
 {
     std::lock_guard<std::mutex> lock(m_playersMutex);
     auto it = m_players.find(user);
     if (it != m_players.end()) {
+        if (it->second.questionIdx + 1 >= this->m_questions.size()) {
+            return false;
+        }
         it->second.questionIdx++;
+        Question nextQuestionShuffledCopy(this->m_questions[it->second.questionIdx]);
+        nextQuestionShuffledCopy.shuffle();
+        it->second.question = nextQuestionShuffledCopy;
         it->second.lastStartTime = std::time(nullptr);
     }
 }
@@ -65,5 +61,5 @@ void Game::removePlayer(const LoggedUser& user)
 
 unsigned int Game::getId() const
 {
-    return m_gameId; // Immutable, no need for a lock.
+    return m_gameId; 
 }

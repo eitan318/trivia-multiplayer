@@ -37,9 +37,11 @@ public:
         const std::string& correctAnswer, const std::string& ans1, const std::string& ans2,
         const std::string& ans3);
 
+    Question(const Question& other);
+
+    void shuffle();
+
     Question() {}
-
-
 
     unsigned int getId() const;
 

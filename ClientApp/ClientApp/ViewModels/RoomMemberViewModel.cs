@@ -118,6 +118,7 @@ namespace ClientApp.ViewModels
 
             if (roomState.RoomStatus == RoomStatus.InGame && prevRoomStatus == RoomStatus.NotInGame)
             {
+                prevRoomStatus = roomState.RoomStatus;
                 _navigationService.NavigateTo<GameViewModel>();
             }
 

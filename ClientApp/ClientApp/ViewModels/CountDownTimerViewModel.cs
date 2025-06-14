@@ -5,12 +5,12 @@ using System.Windows.Threading;
 
 namespace ClientApp.ViewModels
 {
-    public class CountdownTimerViewModel : INotifyPropertyChanged, IDisposable
+    class CountdownTimerViewModel : INotifyPropertyChanged, IDisposable
     {
         private TimeSpan _remainingTime;
         private readonly DispatcherTimer _timer;
 
-        public event EventHandler TimerEnded; // Event to notify when the timer ends
+        public event EventHandler TimerEnded;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public CountdownTimerViewModel()

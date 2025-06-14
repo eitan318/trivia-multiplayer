@@ -492,7 +492,9 @@
     <ClInclude Include="RoomAdminRequestHandler.hpp" />
     <ClInclude Include="RoomMemberRequestHandler.hpp" />
     <ClInclude Include="RoomRequestHandler.hpp" />
-    <ClInclude Include="PlayerGameData.hpp" />
+    <ClInclude Include="PlayerGameData.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External Libs">

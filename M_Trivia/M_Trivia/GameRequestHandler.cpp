@@ -75,8 +75,7 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
     }
 
     
-    GetQuestionResponse getQuestionResponse(&errors, 
-        quetionForUser.has_value() ? quetionForUser.value() : Question());
+    GetQuestionResponse getQuestionResponse(&errors, quetionForUser);
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(getQuestionResponse),

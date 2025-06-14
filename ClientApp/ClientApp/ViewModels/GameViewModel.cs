@@ -11,7 +11,6 @@ namespace ClientApp.ViewModels
     class GameViewModel : ViewModelBase
     {
         private readonly RequestsExchangeService _requestsExchangeService;
-
         private readonly RoomDataStore _roomDataStore;
 
         private uint _totalQuestions;
@@ -25,18 +24,15 @@ namespace ClientApp.ViewModels
         public CountdownTimerViewModel Timer => _countdownTimerViewModel;
 
         public GameViewModel(RequestsExchangeService requestsExchangeService,
-            RoomDataStore roomDataStore, INavigationService navigationService) : base(false)
+            RoomDataStore roomDataStore, INavigationService navigationService, CountdownTimerViewModel timer) : base(false)
         {
             _roomDataStore = roomDataStore;
             _requestsExchangeService = requestsExchangeService;
 
             SubmitCmd = new SubmitAnswerCommand(requestsExchangeService, this, navigationService);
-            LeaveGameCmd = new LeaveGameCommand(navigationService, requestsExchangeService);
+            LeaveGameCmd = new LeaveGameCommand(navigationService, requestsExchangeService, this);
 
-            _countdownTimerViewModel = new CountdownTimerViewModel();
-
-
-
+            _countdownTimerViewModel = timer;
             PossibleAnswers = new List<string>();
         }
 
@@ -89,8 +85,8 @@ namespace ClientApp.ViewModels
                     PossibleAnswers = new List<string>();
                 }
 
-                //Timer.Reset(TimeSpan.FromSeconds(_roomDataStore.CurrentRoomData.TimePerQuestion));
-                //Timer.Start();
+                Timer.Reset(TimeSpan.FromSeconds(_roomDataStore.CurrentRoomData.TimePerQuestion));
+                Timer.Start();
             }
             catch (Exception ex)
             {
@@ -103,19 +99,16 @@ namespace ClientApp.ViewModels
         {
             _questionNumber = 0;
             _totalQuestions = _roomDataStore.CurrentRoomData.NumOfQuestionsInGame;
-             //_countdownTimerViewModel.TimerEnded += async (sender, args) => await HandleTimerEndAsync();
+            _countdownTimerViewModel.TimerEnded += async (sender, args) => await HandleTimerEndAsync();
 
-            Timer.Reset(TimeSpan.FromSeconds(10));
+            Timer.Reset(TimeSpan.FromSeconds(_roomDataStore.CurrentRoomData.TimePerQuestion));
             Timer.Start();  
             await NextQuestion();
         }
 
         private async Task HandleTimerEndAsync()
         {
-            if (SubmitCmd.CanExecute(null))
-            {
-                SubmitCmd.Execute(null);
-            }
+            SubmitCmd.Execute(null);
         }
 
         public uint TotalQuestions
