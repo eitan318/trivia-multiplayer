@@ -29,7 +29,6 @@ namespace ClientApp.ViewModels
         {
             LeaveGameCmd = new LeaveGameCommand(navigationService, requestsExchangeService, null);
             this._requestsExchangeService = requestsExchangeService;
-            getAllPlayersResults();
         }
 
         public ICommand LeaveGameCmd { get; }
