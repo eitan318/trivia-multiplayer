@@ -12,6 +12,7 @@ namespace ClientApp.Commands
 {
     class LeaveGameCommand : CommandBase
     {
+        private readonly uint NAVIGATETOROOMFROMRESULTS = 2;
         private readonly INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
         private readonly GameViewModel _gameViewModel;
@@ -39,8 +40,8 @@ namespace ClientApp.Commands
 
                 if(leaveGameResponse.Status == 0)
                 {
-                    if (_gameViewModel != null)
-                        this._navigationService.GoBack(2);
+                    if (_gameViewModel == null)
+                        this._navigationService.GoBack(NAVIGATETOROOMFROMRESULTS);
                     else
                         this._navigationService.GoBack();
                 }

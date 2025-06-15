@@ -125,8 +125,8 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
         this->m_handlerFactory.createRoomAdminRequestHandler(this->m_user, this->m_room) :
         this->m_handlerFactory.createRoomMemberRequestHandler(this->m_user, this->m_room));
 
-    this->m_game->removePlayer(this->m_user);
-    if(this->m_game->getPlayers().size() == 0)
+    this->m_game->removeActivePlayer();
+    if(this->m_game->getActivePlayers() == 0)
         this->m_room->closeGame();
 
     RequestResult requestResult(
