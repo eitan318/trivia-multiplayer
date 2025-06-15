@@ -11,6 +11,6 @@ namespace ClientApp.Services
     public interface INavigationService
     {
         void NavigateTo<TViewModel>() where TViewModel : ViewModelBase;
-        void GoBack();
+        void GoBack(uint timesBack = 1);
     }
 }

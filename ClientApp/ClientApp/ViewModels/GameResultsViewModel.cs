@@ -4,6 +4,7 @@ using ClientApp.Services;
 using ClientApp.Commands;
 using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
+using System.Windows.Input;
 
 namespace ClientApp.ViewModels
 {
@@ -26,9 +27,14 @@ namespace ClientApp.ViewModels
             INavigationService navigationService,
             RequestsExchangeService requestsExchangeService) : base(false)
         {
+            LeaveGameCmd = new LeaveGameCommand(navigationService, requestsExchangeService, null);
             this._requestsExchangeService = requestsExchangeService;
             getAllPlayersResults();
         }
+
+        public ICommand LeaveGameCmd { get; }
+
+
         public override void OnNavigatedTo()
         {
             _refreshTopPlayersCTS = new CancellationTokenSource();

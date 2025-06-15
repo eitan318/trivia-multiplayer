@@ -12,5 +12,7 @@ ResponseCodes GetGameResultsResponse::getCode() const
 
 nlohmann::json GetGameResultsResponse::getJson() const
 {
-	return nlohmann::json();
+	nlohmann::json j = Response::getJson();
+	j["Results"] = _results;
+	return j;
 }

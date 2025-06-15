@@ -39,12 +39,13 @@ namespace ClientApp.Services
         }
 
 
-        public void GoBack()
+        public void GoBack(uint timesBack)
         {
-            if (_navigationStore.CanGoBack())
+            for (int i = 0; i < timesBack && _navigationStore.CanGoBack(); i++)
             {
-                _navigationStore.GoBack();
+                 _navigationStore.GoBack();
             }
+            
         }
 
         // Optional: Add a method to clear or remove ViewModels from the cache

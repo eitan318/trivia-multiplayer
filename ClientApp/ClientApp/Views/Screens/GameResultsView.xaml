@@ -18,7 +18,8 @@
             Margin="10"
             VerticalAlignment="Bottom"
             Grid.Column="2"
-            Content="To Menu" Command="{Binding LeaveGameCmd}"/>
+            Content="To Room" Command="{Binding LeaveGameCmd}"
+            />
         
         
         <!--Whole Card-->

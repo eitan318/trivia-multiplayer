@@ -334,15 +334,16 @@ bool SqliteDatabase::addQuestions(int amount) const {
 
 std::optional<PlayerResults> SqliteDatabase::getPlayerResults(const std::string& username, unsigned int gameId) const {
     const char* query = R"(
-        SELECT 
-            username,
-            COUNT(*) WHERE chosen_answer = 0 AS correctAnswerCount,
-            COUNT(*) WHERE NOT chosen_answer = 0 AS wrongAnswerCount,
-            AVG(answer_time) AS averageAnswerTime
-        FROM answers
-        WHERE username = ? AND game_id = ? AND NOT chosen_answer = -1
-        GROUP BY username
-    )";
+    SELECT 
+        username,
+        SUM(CASE WHEN chosen_answer = 0 THEN 1 ELSE 0 END) AS correctAnswerCount,
+        SUM(CASE WHEN chosen_answer != 0 THEN 1 ELSE 0 END) AS wrongAnswerCount,
+        AVG(answer_time) AS averageAnswerTime
+    FROM answers
+    WHERE username = ? AND game_id = ? AND chosen_answer != -1
+    GROUP BY username
+)";
+
 
     sqlite3_stmt* stmt;
 
@@ -565,11 +566,7 @@ UserRecord SqliteDatabase::getUserRecord(const std::string& email) const {
 
 std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit) const {
     const char* query = R"(
-<<<<<<< HEAD
-        SELECT a.username, a.game_id, SUM(a.score) AS total_score
-=======
         SELECT a.username, a.game_id, g.room_name, g.start_time, SUM(a.score) AS total_score
->>>>>>> Feature/GameScreen
         FROM answers a
         JOIN Games g ON a.game_id = g.id
         GROUP BY a.game_id, a.username

@@ -24,10 +24,12 @@ namespace ClientApp.Commands
             this._requestsExchangeService = requestsExchangeService;
         }
 
-
         public override async void Execute(object parameter)
         {
-            _gameViewModel.Timer.Stop();
+            if (_gameViewModel != null)
+            {
+                _gameViewModel.Timer.Stop();
+            }
             LeaveGameRequest request = new LeaveGameRequest();
             ResponseInfo<LeaveGameResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<LeaveGameResponse>(request);
 
@@ -37,7 +39,10 @@ namespace ClientApp.Commands
 
                 if(leaveGameResponse.Status == 0)
                 {
-                    this._navigationService.GoBack();
+                    if (_gameViewModel != null)
+                        this._navigationService.GoBack(2);
+                    else
+                        this._navigationService.GoBack();
                 }
                 else
                 {
