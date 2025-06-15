@@ -60,12 +60,6 @@ namespace ClientApp.Commands
                 }
 
             }
-            else
-            {
-                ErrorResponse errorResponse = responseInfo.ErrorResponse;
-                _codeEntryViewModel.ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
-            }
-
         }
 
 

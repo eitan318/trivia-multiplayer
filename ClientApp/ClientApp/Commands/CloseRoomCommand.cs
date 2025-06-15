@@ -39,10 +39,6 @@ namespace ClientApp.Commands
                         _roomAdminViewModel.ErrorMessage = closeRoomResponse.Errors.GeneralError;
                     }
                 }
-                else
-                {
-                    _roomAdminViewModel.ErrorMessage = "SERVER ERROR: " + responseInfo.ErrorResponse.Message;
-                }
   
 
             }

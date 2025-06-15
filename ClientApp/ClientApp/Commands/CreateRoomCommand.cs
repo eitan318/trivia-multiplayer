@@ -85,10 +85,6 @@ namespace ClientApp.Commands
                 }
 
             }
-            else
-            {
-                _createRoomViewModel.ErrorMessage = "SERVER ERROR: " + responseInfo.ErrorResponse.Message;
-            }
 
             return null; 
 

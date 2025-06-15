@@ -53,10 +53,6 @@ namespace ClientApp.Commands
                         _joinRoomViewModel.ErrorMessage = joinResponse.Errors.GeneralError;
                     }
                 }
-                else
-                {
-                    _joinRoomViewModel.ErrorMessage = "SERVER ERROR: " + responseInfo.ErrorResponse.Message;
-                }
   
 
             }

@@ -1,27 +1,25 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Threading;
+using System.Timers;
+using System.Windows;
 
 namespace ClientApp.ViewModels
 {
     class CountdownTimerViewModel : INotifyPropertyChanged, IDisposable
     {
         private TimeSpan _remainingTime;
-        private readonly DispatcherTimer _timer;
+        private readonly System.Timers.Timer _timer;
+        private int _msInterval;
 
         public event EventHandler TimerEnded;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public CountdownTimerViewModel()
+        public CountdownTimerViewModel(int msInverval)
         {
-            _timer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1)
-            };
-            _timer.Tick += TimerTick;
-
-            Console.WriteLine("CountdownTimer initialized.");
+            _timer = new System.Timers.Timer(msInverval); 
+            _timer.Elapsed += TimerElapsed;
+            this._msInterval = msInverval;
         }
 
         public TimeSpan RemainingTime
@@ -40,47 +38,48 @@ namespace ClientApp.ViewModels
 
         public string FormattedTime => RemainingTime.ToString(@"mm\:ss");
 
-        public bool IsRunning => _timer.IsEnabled;
+        public bool IsRunning => _timer.Enabled;
 
-        private async void TimerTick(object sender, EventArgs e)
+        private void TimerElapsed(object sender, ElapsedEventArgs e)
         {
             if (RemainingTime > TimeSpan.Zero)
             {
-                RemainingTime -= _timer.Interval;
-                Console.WriteLine($"Timer ticked. Remaining time: {FormattedTime}");
+                RemainingTime -= TimeSpan.FromMilliseconds(_msInterval);
+
+                // Update the UI on the main thread
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    OnPropertyChanged(nameof(FormattedTime));
+                });
             }
             else
             {
                 Stop();
                 RemainingTime = TimeSpan.Zero;
-                Console.WriteLine("Timer ended.");
                 TimerEnded?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        public async void Start()
+        public void Start()
         {
             if (!IsRunning)
             {
                 _timer.Start();
-                Console.WriteLine("Timer started.");
             }
         }
 
-        public async void Stop()
+        public void Stop()
         {
             if (IsRunning)
             {
                 _timer.Stop();
-                Console.WriteLine("Timer stopped.");
             }
         }
 
-        public async void Reset(TimeSpan newTime)
+        public void Reset(TimeSpan newTime)
         {
             Stop();
             RemainingTime = newTime;
-            Console.WriteLine($"Timer reset to: {FormattedTime}");
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -88,11 +87,11 @@ namespace ClientApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public async void Dispose()
+        public void Dispose()
         {
-            _timer.Tick -= TimerTick;
+            _timer.Elapsed -= TimerElapsed;
             _timer.Stop();
-            Console.WriteLine("CountdownTimer disposed.");
+            _timer.Dispose();
         }
     }
 }

@@ -93,11 +93,12 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
     int answerScore = 0;
     GeneralResponseErrors errors;
     errors = this->m_gameManager.submitAnswer(this->m_user, this->m_game, answerId, &answerScore);
+
+    std::optional<Question> currQ = this->m_game->getQuestionForUser(m_user);
+
     this->m_game->setNextQuestionForUser(this->m_user);
 
-    std::optional<Question> questionUserChose = this->m_game->getQuestionForUser(m_user);
-
-    SubmitAnswerResponse submitAnswerResponse(&errors, questionUserChose.value().getCorrectAnswerId(), answerScore);
+    SubmitAnswerResponse submitAnswerResponse(&errors, currQ.value().getCorrectAnswerId(), answerScore);
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(submitAnswerResponse),
