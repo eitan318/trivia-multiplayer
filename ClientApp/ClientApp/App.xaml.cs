@@ -62,7 +62,7 @@ public partial class App : Application
         services.AddTransient<JoinRoomViewModel>();
         services.AddTransient<ErrorViewModel>();
         services.AddTransient<GameViewModel>();
-        services.AddTransient<CountdownTimerViewModel>();
+        services.AddTransient<GameResultsViewModel>();
 
         //   Password reset ViewModels
         services.AddTransient<EmailEntryViewModel>();
