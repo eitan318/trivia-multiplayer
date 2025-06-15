@@ -14,6 +14,10 @@ namespace ClientApp.ViewModels
         {
             _requestsExchangeService = requestsExchangeService;
             this.personalInfo = new PersonalStatisticsModel();
+        }
+
+        public override void OnNavigatedTo()
+        {
             SetStats();
         }
 
@@ -64,8 +68,6 @@ namespace ClientApp.ViewModels
                 {
 
                 }
-
-
             }
             catch (Exception ex)    
             {

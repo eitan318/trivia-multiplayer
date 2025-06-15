@@ -166,7 +166,7 @@ MenuRequestHandler::joinRoom(const RequestInfo& requestInfo) const {
 
     std::shared_ptr<IRequestHandler> nextHandler;
 
-    if (joinRoomResponseErrors.statusCode == 0)
+    if (joinRoomResponseErrors.statusCode() == 0)
         nextHandler = std::move(this->m_handlerFactory.createRoomMemberRequestHandler(this->m_user, roomManager.getRoom(roomId)));
     else
         nextHandler = nullptr;
@@ -200,7 +200,7 @@ MenuRequestHandler::createRoom(const RequestInfo& requestInfo) const {
 
     std::shared_ptr<IRequestHandler> nextHandler;
 
-    if (createRoomResponseErrors.statusCode == 0)
+    if (createRoomResponseErrors.statusCode() == 0)
         nextHandler = std::move(this->m_handlerFactory.createRoomAdminRequestHandler(this->m_user, roomManager.getRoom(data.id)));
     else
         nextHandler = nullptr;

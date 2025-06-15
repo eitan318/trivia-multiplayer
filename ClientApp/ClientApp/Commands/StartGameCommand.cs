@@ -33,18 +33,13 @@ namespace ClientApp.Commands
                     var startGameResponse = responseInfo.Response;
                     if(startGameResponse.Status == 0)
                     {
-                        _navigationService.NavigateTo<GameViewModel>(); //Will be game in next version
+                        _navigationService.NavigateTo<GameViewModel>(); 
                     }
                     else
                     {
                         _roomAdminViewModel.ErrorMessage = startGameResponse.Errors.GeneralError;
                     }
                 }
-                else
-                {
-                    _roomAdminViewModel.ErrorMessage = "SERVER ERROR: " + responseInfo.ErrorResponse.Message;
-                }
-  
 
             }
             catch (Exception ex)

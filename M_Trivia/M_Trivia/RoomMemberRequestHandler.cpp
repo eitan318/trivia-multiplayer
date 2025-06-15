@@ -36,7 +36,7 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
 		case RequestCodes::LeaveRoomRequest:
 			return this->leaveRoomRequest(requestInfo);
 		case RequestCodes::GetRoomStateRequest:
-			return this->getRoomState(requestInfo);
+			return this->getRoomState(requestInfo);//
 		default:
 			ServerErrorResponse errorResponse("Invalid msg code.");
 			RequestResult requestResult(
@@ -59,7 +59,10 @@ RequestResult RoomMemberRequestHandler::leaveRoomRequest(RequestInfo requestInfo
 	if (this->m_room->getUsersVector().empty()) {
 		this->m_roomManager.deleteRoom(this->m_room->getId());
 	}
-	LeaveRoomResponse leaveRoomResponse(GENERAL_SUCCESS_RESPONSE_STATUS);
+	GeneralResponseErrors errors;
+
+		
+	LeaveRoomResponse leaveRoomResponse(&errors);
 	RequestResult result;
 	result.response = JsonResponsePacketSerializer::serializeResponse(leaveRoomResponse);
 	result.newHandler = this->m_requestHandlerFactory.createMenuRequestHandler(this->m_user);

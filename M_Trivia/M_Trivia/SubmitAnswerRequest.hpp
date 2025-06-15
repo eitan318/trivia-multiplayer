@@ -12,10 +12,10 @@ class SubmitAnswerRequest {
 	friend class JsonRequestPacketDeserializer<SubmitAnswerRequest>;
 
 private:
-	unsigned int correctAnswerId;
+	unsigned int m_chosenAnswerId;
 
 	SubmitAnswerRequest(const nlohmann::json& j);
 
 public:
-	const unsigned int getAnswerId() const;
+	const int getAnswerId() const;
 };

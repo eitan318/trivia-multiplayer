@@ -24,6 +24,6 @@ inline void to_json(nlohmann::json& j, const PlayerResults& playerResults) {
         {"Username", playerResults.username},
         {"CorrectAnswerCount", playerResults.correctAnswerCount},
         {"WrongAnswerCount", playerResults.wrongAnswerCount},
-        {"averageAnswerTime", playerResults.averageAnswerTime},
+        {"AverageAnswerTime", playerResults.averageAnswerTime},
     };
 }

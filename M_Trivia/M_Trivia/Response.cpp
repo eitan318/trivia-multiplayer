@@ -1,7 +1,7 @@
 #include "Response.hpp"
 
 Response::Response(IResponseErrors* errors)
-        : errors(errors), status(this->errors->statusCode) 
+        : errors(errors), status(this->errors->statusCode()) 
 {
 }
 

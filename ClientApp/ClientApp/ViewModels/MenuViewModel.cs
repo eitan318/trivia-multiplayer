@@ -10,6 +10,10 @@ namespace ClientApp.ViewModels
     /// </summary>
     internal class MenuViewModel : ViewModelBase
     {
+
+        private readonly CountdownTimerViewModel _countdownTimerViewModel;
+        public CountdownTimerViewModel Timer => _countdownTimerViewModel;
+
         /// <summary>
         /// Private constructor for the MenuPageViewModel. Initializes the commands for the actions available in the menu.
         /// </summary>
@@ -23,6 +27,8 @@ namespace ClientApp.ViewModels
             LogoutCmd = new LogoutCommand(this,
                 navigationService,
                 requestsExchangeService);
+
+  
         }
 
 

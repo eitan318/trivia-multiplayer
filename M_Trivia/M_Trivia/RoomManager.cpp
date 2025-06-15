@@ -34,9 +34,8 @@ CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser& player,
             "Too many questions, there are only: " +
             std::to_string(totalQuestionCount);
     }
-    createRoonResponseErrors.statusCode = !createRoonResponseErrors.noErrors();
 
-    if (createRoonResponseErrors.statusCode == 0) {
+    if (createRoonResponseErrors.statusCode() == 0) {
         std::lock_guard<std::mutex> lock(this->m_roomsMutex);
         int roomid = ids++;
         roomData.id = roomid;
@@ -74,8 +73,7 @@ CloseRoomResponseErrors RoomManager::closeRoom(Room* room)
         errors.generalError = "Room already closed";
     }
 
-    errors.statusCode = !errors.noErrors();
-    if (errors.statusCode == GENERAL_SUCCESS_RESPONSE_STATUS) {
+    if (errors.statusCode() == GENERAL_SUCCESS_RESPONSE_STATUS) {
         room->close();
     }
     return errors;
@@ -94,8 +92,7 @@ StartGameResponseErrors RoomManager::startGameOfRoom(Room* room)
         errors.generalError = "Not enougth palyers.";
     }
 
-    errors.statusCode = !errors.noErrors();
-    if (errors.statusCode == GENERAL_SUCCESS_RESPONSE_STATUS) {
+    if (errors.statusCode() == GENERAL_SUCCESS_RESPONSE_STATUS) {
         room->startGame();
     }
     return errors;
@@ -127,7 +124,6 @@ JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
     else {
         errors.generalError = "room does not exist.";
     }
-    errors.statusCode = !errors.noErrors();
     return errors;
 }
 
@@ -144,10 +140,4 @@ Room* RoomManager::getRoom(int ID) {
     return nullptr;
 }
 
-bool Room::hasUser(const std::string& username) const {
-    auto it = std::find_if(m_users.begin(), m_users.end(), [&username](const LoggedUser& user) {
-        return user.getUsername() == username;
-        });
-    return it != m_users.end();
-}
 

@@ -1,6 +1,6 @@
 #include "GetQuestionResponse.hpp"
 
-GetQuestionResponse::GetQuestionResponse(GeneralResponseErrors* errors, const Question& question) :
+GetQuestionResponse::GetQuestionResponse(GeneralResponseErrors* errors, const std::optional<Question>& question) :
 	Response(errors), m_question(question)
 {
 }
@@ -13,6 +13,11 @@ ResponseCodes GetQuestionResponse::getCode() const
 nlohmann::json GetQuestionResponse::getJson() const
 {
     nlohmann::json j = Response::getJson();
-    j["Question"] = m_question;
+    if (m_question.has_value()) {
+        j["Question"] = m_question.value();
+    }
+    else {
+        j["Question"] = "No question";
+    }
     return j;
 }

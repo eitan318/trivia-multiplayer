@@ -16,8 +16,13 @@ public partial class App : Application
 {
     private readonly IServiceProvider? _serviceProvider;
 
+    [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+    private static extern bool AllocConsole();
+
     public App()
     {
+         //AllocConsole();
+
         // Configure services
         var services = new ServiceCollection();
         ConfigureServices(services);
@@ -57,6 +62,8 @@ public partial class App : Application
         services.AddTransient<JoinRoomViewModel>();
         services.AddTransient<ErrorViewModel>();
         services.AddTransient<GameViewModel>();
+        services.AddTransient<GameResultsViewModel>();
+        services.AddTransient<CountdownTimerViewModel>();
 
         //   Password reset ViewModels
         services.AddTransient<EmailEntryViewModel>();
@@ -76,6 +83,7 @@ public partial class App : Application
         services.AddTransient<JoinRoomView>();
         services.AddTransient<ErrorView>();
         services.AddTransient<GameView>();
+        services.AddTransient<GameResultsView>();
 
         // Password reset Views
         services.AddTransient<EmailEntryView>();

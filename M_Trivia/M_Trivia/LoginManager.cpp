@@ -24,9 +24,8 @@ LoginResponseErrors LoginManager::login(const std::string username,
         !this->m_database.doesPasswordMatch(username, password)) {
         errors.generalError = "Unknown username or wrong password";
     }
-    errors.statusCode = !errors.noErrors();
 
-    if (errors.statusCode == 0) {
+    if (errors.statusCode() == 0) {
         m_loggedUsers.emplace(username, LoggedUser(username));
         m_usernames.emplace(sock, username);
     }
@@ -41,13 +40,11 @@ PasswordCodeResponseErrors LoginManager::sendEmailCode(const std::string email,
             RegexValidator::emailRegexDescription.data();
     }
     else if (!this->m_database.emailExists(email)) {
-        errors.statusCode = 0;
         return errors;
     }
     this->prevRandomCode = code;
 
-    errors.statusCode = !errors.noErrors();
-    if (errors.statusCode == 0) {
+    if (errors.statusCode() == 0) {
         EmailSender::sendEmail("servicehandler055@gmail.com", email,
             "Reset Password Code",
             "Code: " + std::to_string(code));
@@ -64,8 +61,6 @@ LoginManager::verifyResetPasswordCode(const std::string& codeFromClient,
     if (codeFromClient != std::to_string(this->prevRandomCode)) {
         errors.generalError = "Wrong code";
     }
-
-    errors.statusCode = !errors.noErrors();
 
     return errors;
 }
@@ -92,7 +87,6 @@ LoginManager::resetPassword(const std::string& email,
             RegexValidator::passwordRegexDescription.data();
     }
 
-    resetPasswordErrors.statusCode = !resetPasswordErrors.noErrors();
 
     UserRecord userRecord;
     try {
@@ -103,7 +97,7 @@ LoginManager::resetPassword(const std::string& email,
         return resetPasswordErrors;
     }
 
-    if (resetPasswordErrors.statusCode == 0) {
+    if (resetPasswordErrors.statusCode() == 0) {
         this->m_database.updatePassword(userRecord.username, newPassword);
         this->prevResetPasswordTocken = resetPasswordTocken;
     }
@@ -162,9 +156,8 @@ SignupResponseErrors LoginManager::signup(const UserRecord& userRecord) const {
             RegexValidator::birthDateRegexDescription.data();
     }
 
-    signupErrors.statusCode = !signupErrors.noErrors();
 
-    if (signupErrors.statusCode == 0) {
+    if (signupErrors.statusCode() == 0) {
         this->m_database.addNewUser(userRecord);
     }
 

@@ -47,6 +47,10 @@ void Room::startGame() {
     this->status = RoomStatus::InGame;
 }
 
+void Room::closeGame() {
+    this->status = RoomStatus::NotInGame;
+}
+
 unsigned int Room::getId() const {
     return this->m_metadata.id;
 }
@@ -62,3 +66,17 @@ RoomPreview Room::getRoomPreview() const {
     p.roomData = this->m_metadata;
     return p;
 }
+
+
+bool Room::hasUser(const std::string& username) const {
+    auto it = std::find_if(m_users.begin(), m_users.end(), [&username](const LoggedUser& user) {
+        return user.getUsername() == username;
+        });
+    return it != m_users.end();
+}
+
+bool Room::isAdmin(const LoggedUser& user) const
+{
+    return this->m_users[0] == user;
+}
+

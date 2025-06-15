@@ -8,7 +8,8 @@ namespace ClientApp.Models
     public class HighScoreInfoModel
     {
         public string PlayerUsername {  get; set; }
-        public string GameName {  get; set; }
+        public string RoomName {  get; set; }
+        public string StartTime {  get; set; }
         public int TotalScore {  get; set; }
         public uint GameId {  get; set; }
         public uint Rank {  get; set; }

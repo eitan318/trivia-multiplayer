@@ -1,6 +1,6 @@
 ﻿namespace ClientApp.Models
 {
-    class PlayerResults
+    public class PlayerResults
     {
         public string Username { get; set; }
         public uint CorrectAnswerCount {get; set; }

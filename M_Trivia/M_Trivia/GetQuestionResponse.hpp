@@ -12,10 +12,10 @@
  */
 class GetQuestionResponse : public Response {
 private:
-    Question m_question;
+    const std::optional<Question>& m_question;
 
 public:
-    GetQuestionResponse(GeneralResponseErrors* errors, const Question& question);
+    GetQuestionResponse(GeneralResponseErrors* errors, const std::optional<Question>& question);
 
     /**
      * @brief Gets the response code for this response.

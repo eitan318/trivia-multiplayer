@@ -140,14 +140,14 @@ public:
 	 * @param answerTimeSec The time taken by the user to answer, in seconds.
 	 */
     virtual void addUserAnswer(const std::string& username, unsigned int gameId, unsigned int questionId,
-        bool isCorrect, int score, double answerTimeSec) const = 0;
+        int chosenAnswerInQuestion, int score, double answerTimeSec) const = 0;
 
     /**
      * Creates a new game entry in the database.
      *
      * @return The ID of the newly created game.
      */
-    virtual unsigned int createGame() const = 0;
+    virtual unsigned int createGame(const std::string& roomName, time_t startTime) const = 0;
 
     /**
      * Retrieves the results of a player for a specific game.
@@ -157,7 +157,17 @@ public:
      * @return An optional containing the player's results if found, or std::nullopt if no results are available.
      */
     virtual std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId) const = 0;
+
+
     
+    /**
+     * Creates users for example for us to test the db and the game.
+     *
+     * @return Succesful or not.
+     */
+    virtual bool addExampleUsers() const = 0;
+
+
     /**
      * @brief Virtual destructor for proper cleanup of derived classes.
      */
