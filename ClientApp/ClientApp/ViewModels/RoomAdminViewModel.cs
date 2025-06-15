@@ -19,9 +19,6 @@ namespace ClientApp.ViewModels
         private string _errorMessage;
 
         
-        private readonly CountdownTimerViewModel _countdownTimerViewModel;
-        public CountdownTimerViewModel Timer => _countdownTimerViewModel;
-
         public RoomAdminViewModel(
             INavigationService navigationService,
             RequestsExchangeService requestsExchangeService,
@@ -35,9 +32,6 @@ namespace ClientApp.ViewModels
             this.CloseRoomCmd = new CloseRoomCommand(navigationService, requestsExchangeService, this);
             this.RoomDataStore = roomDataStore;
 
-                        _countdownTimerViewModel = new CountdownTimerViewModel();
-            Timer.Reset(TimeSpan.FromSeconds(10));
-            Timer.Start();
         }
 
         public override void OnNavigatedTo()

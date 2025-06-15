@@ -19,10 +19,6 @@ namespace ClientApp.ViewModels
         private LoggedUser _admin;
         private readonly int refreshMS = 300;
         private RoomStatus prevRoomStatus;
-
-        private readonly CountdownTimerViewModel _countdownTimerViewModel;
-        public CountdownTimerViewModel Timer => _countdownTimerViewModel;
-
         public RoomMemberViewModel(
             INavigationService navigationService,
             RoomDataStore roomDataStore,
@@ -35,9 +31,6 @@ namespace ClientApp.ViewModels
             this.LeaveRoomCmd = new LeaveRoomCommand(navigationService, requestsExchangeService, null);
             this.RoomDataStore = roomDataStore;
 
-                        _countdownTimerViewModel = new CountdownTimerViewModel();
-            Timer.Reset(TimeSpan.FromSeconds(10));
-            Timer.Start();
         }
 
         public override void OnNavigatedTo()
