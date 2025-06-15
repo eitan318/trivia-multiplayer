@@ -8,6 +8,10 @@ Room::Room(const RoomData& roomdata, const LoggedUser& user)
 
 Room::Room() : m_metadata{}, status(RoomStatus::NotInGame) {}
 
+Room::~Room()
+{
+}
+
 void Room::addUser(const LoggedUser& loggeduser) {
     if (std::none_of(m_users.begin(), m_users.end(), [&loggeduser](const LoggedUser& u) {
         return u.getUsername() == loggeduser.getUsername();
@@ -17,9 +21,11 @@ void Room::addUser(const LoggedUser& loggeduser) {
 }
 
 void Room::removeUser(const LoggedUser& loggeduser) {
-    auto it = std::remove(m_users.begin(), m_users.end(), loggeduser);
-    m_users.erase(it, m_users.end());
+    std::erase_if(m_users, [&loggeduser](const LoggedUser& u) {
+        return u.getUsername() == loggeduser.getUsername();
+        });
 }
+
 
 const std::vector<LoggedUser>& Room::getUsersVector() const {
     return m_users;

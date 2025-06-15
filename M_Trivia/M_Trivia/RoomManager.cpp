@@ -67,24 +67,33 @@ std::vector<RoomPreview> RoomManager::getRooms() const {
 }
 
 
-CloseRoomResponseErrors RoomManager::closeRoom(Room* room, const LoggedUser& closer)
+CloseRoomResponseErrors RoomManager::closeRoom(unsigned int roomId, const LoggedUser& closer)
 {
-    room->removeUser(closer);
-    if (room->getUsersVector().empty()) {
-        deleteRoom(room->getId());
-    }
-
+    Room* room = getRoom(roomId);
     CloseRoomResponseErrors errors;
     if (room->getRoomStatus() == RoomStatus::Closed) {
         errors.generalError = "Room already closed";
     }
 
     errors.statusCode = !errors.noErrors();
+
     if (errors.statusCode == GENERAL_SUCCESS_RESPONSE_STATUS) {
+        leaveRoom(roomId, closer);
         room->close();
     }
     return errors;
 }
+
+void RoomManager::leaveRoom(unsigned int roomId,
+    const LoggedUser& loggedUser) {
+    Room* room = this->getRoom(roomId);
+    room->removeUser(loggedUser);
+    if (room->getUsersVector().empty()) {
+        this->deleteRoom(room->getId());
+    }
+}
+
+
 
 StartGameResponseErrors RoomManager::startGameOfRoom(Room* room)
 {
@@ -135,16 +144,6 @@ JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
     errors.statusCode = !errors.noErrors();
     return errors;
 }
-
-void RoomManager::leaveRoom(unsigned int roomId,
-    const LoggedUser& loggedUser) {
-    Room* room = this->getRoom(roomId);
-    room->removeUser(loggedUser);
-    if (room->getUsersVector().empty()) {
-        this->deleteRoom(room->getId());
-    }
-}
-
 
 
 

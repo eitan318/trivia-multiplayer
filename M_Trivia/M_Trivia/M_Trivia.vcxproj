@@ -146,7 +146,6 @@
     <ClInclude Include="LoginResponseErrors.hpp" />
     <ClInclude Include="LogoutResponse.hpp" />
     <ClInclude Include="MenuRequestHandler.hpp" />
-    <ClInclude Include="PersonalStatisticsRequest.hpp" />
     <ClInclude Include="RegexValidator.hpp" />
     <ClInclude Include="ResetPasswordResponseErrors.hpp" />
     <ClInclude Include="ResetPasswordRequest.hpp" />
@@ -230,7 +229,6 @@
     <ClCompile Include="PasswordCodeResponse.cpp" />
     <ClCompile Include="PasswordCodeResponseErrors.cpp" />
     <ClCompile Include="PersonalStatistics.cpp" />
-    <ClCompile Include="PersonalStatisticsRequest.cpp" />
     <ClCompile Include="Question.cpp" />
     <ClCompile Include="RequestInfo.cpp" />
     <ClCompile Include="RequestResult.cpp" />

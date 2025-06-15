@@ -71,7 +71,7 @@ public:
 	 *
 	 * @return A CloseRoomResponseErrors indicating the result of the operation.
 	 */
-    CloseRoomResponseErrors closeRoom(Room* room, const LoggedUser& closer);
+    CloseRoomResponseErrors closeRoom(unsigned int roomId, const LoggedUser& closer);
 
     /**
      * Attempts to start the game in the current room.

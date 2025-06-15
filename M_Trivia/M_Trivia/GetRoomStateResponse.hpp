@@ -18,9 +18,6 @@ public:
     GetRoomStateResponse(unsigned int status,
         RoomState roomState);
 
-    GetRoomStateResponse();
-
-
 
     /**
      * @brief Gets the response code for this response.

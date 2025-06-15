@@ -59,7 +59,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
 
 RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& requestInfo)
 {
-	CloseRoomResponseErrors errors = this->m_roomManager.closeRoom(this->m_room);
+	CloseRoomResponseErrors errors = this->m_roomManager.closeRoom(this->m_room->getId(), this->m_user);
 
 	CloseRoomResponse closeRoomResponse(&errors);
 	RequestResult result;

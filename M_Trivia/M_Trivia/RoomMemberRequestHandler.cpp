@@ -54,7 +54,7 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
 
 RequestResult RoomMemberRequestHandler::leaveRoomRequest(RequestInfo requestInfo) 
 {
-
+	this->m_roomManager.leaveRoom(this->m_room->getId(), this->m_user);
 	LeaveRoomResponse leaveRoomResponse(GENERAL_SUCCESS_RESPONSE_STATUS);
 	RequestResult result;
 	result.response = JsonResponsePacketSerializer::serializeResponse(leaveRoomResponse);

@@ -13,7 +13,6 @@ nlohmann::json Response::getJson() const {
         nlohmann::json errorsJson = errors ? errors->getJson() : nlohmann::json();
         nlohmann::json j = nlohmann::json{
             {"Status", status},
-            //{"Errors", errorsJson}
         };
         if (errors) {
             j["Errors"] = errorsJson;

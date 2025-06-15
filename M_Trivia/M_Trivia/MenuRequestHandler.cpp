@@ -14,7 +14,6 @@
 #include "JsonResponsePacketSerializer.hpp"
 #include "LoginManager.hpp"
 #include "LogoutResponse.hpp"
-#include "PersonalStatisticsRequest.hpp"
 #include "RequestHandlerFactory.hpp"
 #include "RequestsCodes.hpp"
 #include "RoomManager.hpp"
