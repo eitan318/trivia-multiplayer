@@ -74,12 +74,16 @@ namespace ClientApp.ViewModels
                 var getQuestionRequest = new GetQuestionRequest();
                 var questionResponseInfo = await _requestsExchangeService.ExchangeRequest<GetQuestionResponse>(getQuestionRequest);
 
+
                 if (questionResponseInfo.NormalResponse && questionResponseInfo.Response?.Status == 0)
                 {
-                    SelectedAnswerIndex = -1;
-                    QuestionInfo = questionResponseInfo.Response.Question;
-                    Question = QuestionInfo.Question;
-                    PossibleAnswers = QuestionInfo.PossibleAnswers;
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        SelectedAnswerIndex = -1;
+                        QuestionInfo = questionResponseInfo.Response.Question;
+                        Question = QuestionInfo.Question;
+                        PossibleAnswers = QuestionInfo.PossibleAnswers;
+                    });
                 }
                 else
                 {
