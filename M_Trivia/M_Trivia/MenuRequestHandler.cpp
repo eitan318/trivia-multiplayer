@@ -8,12 +8,10 @@
 #include "GetPlayersInRoomResponse.hpp"
 #include "GetRoomsResponse.hpp"
 #include "JoinRoomRequest.hpp"
-#include "JoinRoomResponse.hpp"
 #include "JoinRoomResponseErrors.hpp"
 #include "JsonRequestPacketDeserializer.hpp"
 #include "JsonResponsePacketSerializer.hpp"
 #include "LoginManager.hpp"
-#include "LogoutResponse.hpp"
 #include "RequestHandlerFactory.hpp"
 #include "RequestsCodes.hpp"
 #include "RoomManager.hpp"
@@ -161,7 +159,7 @@ MenuRequestHandler::joinRoom(const RequestInfo& requestInfo) const {
     JoinRoomResponseErrors joinRoomResponseErrors =
         m_handlerFactory.getRoomManger().joinRoom(roomId, this->m_user);
 
-    JoinRoomResponse joinRoomResponse(&joinRoomResponseErrors);
+    JoinRoomResponse joinRoomResponse(std::make_unique<JoinRoomResponseErrors>(joinRoomResponseErrors));
 
     std::shared_ptr<IRequestHandler> nextHandler;
 
@@ -194,7 +192,7 @@ MenuRequestHandler::createRoom(const RequestInfo& requestInfo) const {
     CreateRoomResponseErrors createRoomResponseErrors =
         roomManager.createRoom(this->m_user, data);
 
-    CreateRoomResponse createRoomResponse(&createRoomResponseErrors, data);
+    CreateRoomResponse createRoomResponse(std::make_unique<CreateRoomResponseErrors>(createRoomResponseErrors), data);
 
 
     std::shared_ptr<IRequestHandler> nextHandler;

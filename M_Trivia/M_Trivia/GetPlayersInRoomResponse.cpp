@@ -7,11 +7,6 @@ GetPlayersInRoomResponse::GetPlayersInRoomResponse(unsigned int status, const st
 }
 
 
-ResponseCodes GetPlayersInRoomResponse::getCode() const 
-{
-	return ResponseCodes::C_GetPlayersInRoomResponse; 
-}
-
 nlohmann::json GetPlayersInRoomResponse::getJson() const {
         nlohmann::json j = Response::getJson();
         j["Players"] = players; 

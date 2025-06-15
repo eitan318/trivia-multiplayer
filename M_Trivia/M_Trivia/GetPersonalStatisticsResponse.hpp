@@ -6,7 +6,7 @@
  * @class GetPersonalStatisticsResponse
  * @brief Represents a response containing personal statistics.
  */
-class GetPersonalStatisticsResponse : public Response {
+class GetPersonalStatisticsResponse : public  Response<ResponseCodes::C_GetPersonalStatsResponse> {
 private:
     PersonalStatistics statistics;
 
@@ -17,12 +17,6 @@ public:
      * @param personalStats The personal statistics data.
      */
     GetPersonalStatisticsResponse(const PersonalStatistics& personalStats, unsigned int status);
-
-    /**
-     * @brief Gets the response code for this response.
-     * @return The response code as an unsigned integer.
-     */
-    ResponseCodes getCode() const override ;
 
     /**
      * @brief Converts the response to a JSON object.

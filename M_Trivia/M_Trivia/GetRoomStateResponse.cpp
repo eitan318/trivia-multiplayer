@@ -5,10 +5,6 @@ GetRoomStateResponse::GetRoomStateResponse(unsigned int status,
 {
 }
 
-ResponseCodes GetRoomStateResponse::getCode() const
-{
-	return ResponseCodes::C_GetRoomStateResponse;
-}
 
 nlohmann::json GetRoomStateResponse::getJson() const
 {

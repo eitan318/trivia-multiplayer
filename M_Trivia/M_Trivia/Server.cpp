@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <thread>
-#include "CloseRoomResponse.hpp"
 
 Server::Server()
     : m_database(SqliteDatabase::getInstance()),

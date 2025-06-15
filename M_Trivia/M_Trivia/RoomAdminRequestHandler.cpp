@@ -3,9 +3,6 @@
 #include "ServerErrorResponse.hpp"
 #include "JsonResponsePacketSerializer.hpp"
 #include "JsonRequestPacketDeserializer.hpp"
-#include "CloseRoomResponse.hpp"
-#include "StartGameResponse.hpp"
-#include "GetRoomStateResponse.hpp"
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory,
 	LoggedUser loggedUser, 
@@ -60,8 +57,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
 RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& requestInfo)
 {
 	CloseRoomResponseErrors errors = this->m_roomManager.closeRoom(this->m_room->getId(), this->m_user);
-
-	CloseRoomResponse closeRoomResponse(&errors);
+	CloseRoomResponse closeRoomResponse(std::make_unique<CloseRoomResponseErrors>(errors));
 	RequestResult result;
 	result.response = JsonResponsePacketSerializer::serializeResponse(closeRoomResponse);
 	result.newHandler = this->m_requestHandlerFactory.createMenuRequestHandler(this->m_user);
@@ -72,7 +68,7 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& requestInfo)
 {
 	StartGameResponseErrors errors = this->m_roomManager.startGameOfRoom(this->m_room);
 
-	StartGameResponse startGameResponse(&errors);
+	StartGameResponse startGameResponse(std::make_unique<StartGameResponseErrors>(errors));
 	RequestResult result;
 	result.response = JsonResponsePacketSerializer::serializeResponse(startGameResponse);
 	result.newHandler = nullptr;

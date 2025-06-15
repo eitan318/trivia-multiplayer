@@ -1,5 +1,4 @@
 #include "RoomMemberRequestHandler.hpp"
-#include "LeaveRoomResponse.hpp"
 #include "JsonResponsePacketSerializer.hpp"
 #include "RequestsCodes.hpp"
 #include "ServerErrorResponse.hpp"
