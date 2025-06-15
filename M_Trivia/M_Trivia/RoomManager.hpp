@@ -71,7 +71,7 @@ public:
 	 *
 	 * @return A CloseRoomResponseErrors indicating the result of the operation.
 	 */
-    CloseRoomResponseErrors closeRoom(Room* room);
+    CloseRoomResponseErrors closeRoom(Room* room, const LoggedUser& closer);
 
     /**
      * Attempts to start the game in the current room.
@@ -87,4 +87,8 @@ public:
      * @throws MyException if the room does not exist.
      */
     Room* getRoom(int ID);
+
+
+    void leaveRoom(unsigned int roomId,
+        const LoggedUser& loggedUser);
 };

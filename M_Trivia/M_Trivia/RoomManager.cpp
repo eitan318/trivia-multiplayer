@@ -5,6 +5,7 @@
 #include "MyException.hpp"
 #include "Response.hpp"
 #include <algorithm>
+#include <ranges> 
 
 
 unsigned int RoomManager::ids = 0;
@@ -46,15 +47,14 @@ CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser& player,
 }
 
 
+
 void RoomManager::deleteRoom(int ID) {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
-    auto it = std::find_if(m_rooms.begin(), m_rooms.end(), [ID](const Room& room) {
+    std::erase_if(m_rooms, [ID](const Room& room) {
         return room.getRoomPreview().roomData.id == ID;
         });
-    if (it != m_rooms.end()) {
-        m_rooms.erase(it);
-    }
 }
+
 
 
 std::vector<RoomPreview> RoomManager::getRooms() const {
@@ -67,8 +67,13 @@ std::vector<RoomPreview> RoomManager::getRooms() const {
 }
 
 
-CloseRoomResponseErrors RoomManager::closeRoom(Room* room)
+CloseRoomResponseErrors RoomManager::closeRoom(Room* room, const LoggedUser& closer)
 {
+    room->removeUser(closer);
+    if (room->getUsersVector().empty()) {
+        deleteRoom(room->getId());
+    }
+
     CloseRoomResponseErrors errors;
     if (room->getRoomStatus() == RoomStatus::Closed) {
         errors.generalError = "Room already closed";
@@ -110,7 +115,7 @@ JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
     Room* room = this->getRoom(id);
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     if (room != nullptr) {
-        if (room->hasUser(loggedUser.getUsername())) {
+        if (room->hasUser(loggedUser)) {
             errors.generalError = "You are already inside this room.";
         }
         else if (room->getRoomPreview().roomData.maxPlayers ==
@@ -131,23 +136,25 @@ JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
     return errors;
 }
 
+void RoomManager::leaveRoom(unsigned int roomId,
+    const LoggedUser& loggedUser) {
+    Room* room = this->getRoom(roomId);
+    room->removeUser(loggedUser);
+    if (room->getUsersVector().empty()) {
+        this->deleteRoom(room->getId());
+    }
+}
+
+
 
 
 Room* RoomManager::getRoom(int ID) {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
-    auto it = std::find_if(m_rooms.begin(), m_rooms.end(), [ID](const Room& room) {
+
+    auto it = std::ranges::find_if(m_rooms, [ID](const Room& room) {
         return room.getRoomPreview().roomData.id == ID;
         });
-    if (it != m_rooms.end()) {
-        return &(*it);
-    }
-    return nullptr;
-}
 
-bool Room::hasUser(const std::string& username) const {
-    auto it = std::find_if(m_users.begin(), m_users.end(), [&username](const LoggedUser& user) {
-        return user.getUsername() == username;
-        });
-    return it != m_users.end();
+    return it != m_rooms.end() ? &(*it) : nullptr;
 }
 

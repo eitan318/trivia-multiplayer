@@ -2,22 +2,16 @@
 #include "Response.hpp"
 #include <algorithm>
 
-Room::Room(const RoomData& roomdata, const LoggedUser& user) {
-    this->m_metadata = roomdata;
-    this->m_users = std::vector<LoggedUser>();
-    this->m_users.push_back(user);
-    this->status = RoomStatus::NotInGame;
+Room::Room(const RoomData& roomdata, const LoggedUser& user)
+    : m_metadata(roomdata), m_users{ user }, status(RoomStatus::NotInGame) {
 }
 
-Room::Room() {}
-
-Room::~Room() {}
+Room::Room() : m_metadata{}, status(RoomStatus::NotInGame) {}
 
 void Room::addUser(const LoggedUser& loggeduser) {
-    auto it = std::find_if(m_users.begin(), m_users.end(), [&loggeduser](const LoggedUser& u) {
+    if (std::none_of(m_users.begin(), m_users.end(), [&loggeduser](const LoggedUser& u) {
         return u.getUsername() == loggeduser.getUsername();
-        });
-    if (it == m_users.end()) {
+        })) {
         m_users.push_back(loggeduser);
     }
 }
@@ -27,8 +21,7 @@ void Room::removeUser(const LoggedUser& loggeduser) {
     m_users.erase(it, m_users.end());
 }
 
-
-std::vector<LoggedUser> Room::getUsersVector() const {
+const std::vector<LoggedUser>& Room::getUsersVector() const {
     return m_users;
 }
 
@@ -52,10 +45,16 @@ RoomStatus Room::getRoomStatus() const {
     return this->status;
 }
 
+RoomState Room::getRoomState() const
+{
+    return RoomState(this->status, this->m_users,
+        m_metadata.numOfQuestionsInGame, m_metadata.timePerQuestion);
+}
+
 RoomPreview Room::getRoomPreview() const {
-    RoomPreview p;
-    p.currPlayersAmount = static_cast<unsigned int>(m_users.size());
-    p.status = this->status;
-    p.roomData = this->m_metadata;
-    return p;
+    return { m_metadata, static_cast<unsigned int>(m_users.size()), status };
+}
+
+bool Room::hasUser(const LoggedUser& user) const {
+    return std::find(m_users.begin(), m_users.end(), user) != m_users.end();
 }

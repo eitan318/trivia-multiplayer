@@ -12,8 +12,8 @@ private:
 
 public:
     /**
-	* @brief Constructor for CreateRoomResponse.
-	* @param errors The error details for the response.
+	* @brief Constructor for GetRoomStateResponse.
+	* @param status The status for the response.
 	*/
     GetRoomStateResponse(unsigned int status,
         RoomState roomState);

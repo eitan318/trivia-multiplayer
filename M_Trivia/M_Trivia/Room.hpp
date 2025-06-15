@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include "RoomStatus.h"
+#include "RoomState.hpp"
 
 
 
@@ -55,7 +56,7 @@ public:
      * @brief Retrieves the usernames of all users in the room.
      * @return A vector of strings containing the usernames of all users.
      */
-    std::vector<LoggedUser> getUsersVector() const;
+    const std::vector<LoggedUser>& getUsersVector() const;
 
 
     /**
@@ -80,6 +81,8 @@ public:
      */
     RoomStatus getRoomStatus() const;
 
+    RoomState getRoomState() const;
+
 
      /**
      * @brief Retrieves the metadata associated with the room.
@@ -87,5 +90,6 @@ public:
      */
     RoomPreview getRoomPreview() const;
 
-    bool hasUser(const std::string& username) const;
+
+    bool hasUser(const LoggedUser& user) const;
 };
