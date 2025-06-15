@@ -63,3 +63,13 @@ unsigned int Game::getId() const
 {
     return m_gameId; 
 }
+
+void Game::removeActivePlayer()
+{
+    m_activePlayers--;
+}
+
+int Game::getActivePlayers()
+{
+    return m_activePlayers;
+}

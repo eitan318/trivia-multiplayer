@@ -25,11 +25,15 @@ public:
     void removePlayer(const LoggedUser& user);
     unsigned int getId() const;
 
+    void removeActivePlayer();
+    int getActivePlayers();
+
 private:
     const unsigned int m_questionTimeLimit;
     std::vector<Question> m_questions;
     std::map<LoggedUser, PlayerGameData> m_players;
     const int m_gameId;
+    int m_activePlayers;
 
     mutable std::mutex m_playersMutex; // Protects m_players
     mutable std::mutex m_questionsMutex; // Protects m_questions
