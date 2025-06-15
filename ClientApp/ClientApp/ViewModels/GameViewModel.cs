@@ -19,12 +19,13 @@ namespace ClientApp.ViewModels
         private List<string> _possibleAnswers;
         private QuestionInfo _questionInfo;
         private double _score;
+        private readonly int _msTimerInterval = 1000;
 
         private readonly CountdownTimerViewModel _countdownTimerViewModel;
         public CountdownTimerViewModel Timer => _countdownTimerViewModel;
 
         public GameViewModel(RequestsExchangeService requestsExchangeService,
-            RoomDataStore roomDataStore, INavigationService navigationService, CountdownTimerViewModel timer) : base(false)
+            RoomDataStore roomDataStore, INavigationService navigationService) : base(false)
         {
             _roomDataStore = roomDataStore;
             _requestsExchangeService = requestsExchangeService;
@@ -32,7 +33,8 @@ namespace ClientApp.ViewModels
             SubmitCmd = new SubmitAnswerCommand(requestsExchangeService, this, navigationService);
             LeaveGameCmd = new LeaveGameCommand(navigationService, requestsExchangeService, this);
 
-            _countdownTimerViewModel = timer;
+
+            _countdownTimerViewModel = new CountdownTimerViewModel(_msTimerInterval);
             PossibleAnswers = new List<string>();
         }
 

@@ -66,10 +66,6 @@ namespace ClientApp.Commands
                     _emailEntryViewModel.ErrorMessage = response.Errors.EmailError;
                 }
             }
-            else
-            {
-                _emailEntryViewModel.ErrorMessage = responseInfo.ErrorResponse.Message;
-            }
 
              
         }

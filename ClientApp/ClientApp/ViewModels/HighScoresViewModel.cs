@@ -94,11 +94,6 @@ namespace ClientApp.ViewModels
                     var HighestScoresResponse = responseInfo.Response;
                     this.ResponseList = HighestScoresResponse.Statistics;
                 }
-                else
-                {
-
-                }
-
 
             }
             catch (Exception ex)

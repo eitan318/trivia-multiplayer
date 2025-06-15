@@ -10,14 +10,16 @@ namespace ClientApp.ViewModels
     {
         private TimeSpan _remainingTime;
         private readonly System.Timers.Timer _timer;
+        private int _msInterval;
 
         public event EventHandler TimerEnded;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public CountdownTimerViewModel()
+        public CountdownTimerViewModel(int msInverval)
         {
-            _timer = new System.Timers.Timer(1000); 
+            _timer = new System.Timers.Timer(msInverval); 
             _timer.Elapsed += TimerElapsed;
+            this._msInterval = msInverval;
         }
 
         public TimeSpan RemainingTime
@@ -42,7 +44,7 @@ namespace ClientApp.ViewModels
         {
             if (RemainingTime > TimeSpan.Zero)
             {
-                RemainingTime -= TimeSpan.FromSeconds(1);
+                RemainingTime -= TimeSpan.FromMilliseconds(_msInterval);
 
                 // Update the UI on the main thread
                 Application.Current.Dispatcher.Invoke(() =>
