@@ -12,8 +12,6 @@ private:
     std::string message;
 
 public:
-    ServerErrorResponse() = delete;
-
     ServerErrorResponse(const std::string& message);
 
     /**

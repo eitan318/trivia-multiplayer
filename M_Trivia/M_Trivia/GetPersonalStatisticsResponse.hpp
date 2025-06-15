@@ -12,7 +12,6 @@ private:
 
 public:
 
-    GetPersonalStatisticsResponse() = delete;
     /**
      * @brief Constructor for GetPersonalStatisticsResponse.
      * @param personalStats The personal statistics data.

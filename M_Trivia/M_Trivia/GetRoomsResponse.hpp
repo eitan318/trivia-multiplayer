@@ -11,7 +11,6 @@ class GetRoomsResponse : public Response{
 private:
     std::vector<RoomPreview> rooms;
 public:
-    GetRoomsResponse() = delete;
     GetRoomsResponse(unsigned int status, const std::vector<RoomPreview>& rooms);
 
     /**

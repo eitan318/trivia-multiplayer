@@ -4,7 +4,7 @@
 #include "LoggedUser.hpp"
 #include "MyException.hpp"
 #include "Response.hpp"
-#include <mutex>
+#include <algorithm>
 
 
 unsigned int RoomManager::ids = 0;

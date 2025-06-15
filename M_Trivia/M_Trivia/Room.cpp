@@ -23,13 +23,10 @@ void Room::addUser(const LoggedUser& loggeduser) {
 }
 
 void Room::removeUser(const LoggedUser& loggeduser) {
-    auto it = std::find_if(m_users.begin(), m_users.end(), [&loggeduser](const LoggedUser& u) {
-        return u.getUsername() == loggeduser.getUsername();
-        });
-    if (it != m_users.end()) {
-        m_users.erase(it);
-    }
+    auto it = std::remove(m_users.begin(), m_users.end(), loggeduser);
+    m_users.erase(it, m_users.end());
 }
+
 
 std::vector<LoggedUser> Room::getUsersVector() const {
     return m_users;

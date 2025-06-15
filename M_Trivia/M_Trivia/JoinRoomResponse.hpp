@@ -15,9 +15,4 @@ public:
 	 * @return The response code as an unsigned integer.
 	 */
 	ResponseCodes getCode() const override ;
-
-	/**
-	 * @brief Deleted default constructor to enforce proper initialization.
-	 */
-	JoinRoomResponse() = delete;
 };

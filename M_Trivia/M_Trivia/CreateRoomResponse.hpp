@@ -19,12 +19,6 @@ public:
         */
     CreateRoomResponse(CreateRoomResponseErrors* errors, const RoomData& roomData);
 
-
-    /**
-     * @brief Deleted default constructor to enforce proper initialization.
-     */
-    CreateRoomResponse() = delete;
-
     /**
      * @brief Gets the response code for this response.
      * @return The response code as an unsigned integer.

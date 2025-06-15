@@ -13,7 +13,6 @@ private:
     std::vector<LoggedUser> players;
 
 public:
-    GetPlayersInRoomResponse() = delete;
     GetPlayersInRoomResponse(unsigned int status, const std::vector<LoggedUser>& players) ;
 
     /**

@@ -13,7 +13,6 @@ private:
     std::vector<HighScoreInfo> statistics;
 
 public:
-    GetHighScoreResponse() = delete;
     GetHighScoreResponse(unsigned int status, const std::vector<HighScoreInfo>& statistics);
 
     /**

@@ -7,7 +7,6 @@ class PasswordCodeResponse : public Response {
 private:
 
 public:
-  PasswordCodeResponse() = delete;
   PasswordCodeResponse(PasswordCodeResponseErrors *errors);
 
   /**

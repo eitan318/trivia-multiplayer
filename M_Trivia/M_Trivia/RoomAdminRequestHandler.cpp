@@ -83,25 +83,3 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& requestInfo)
 	result.newHandler = nullptr;
 	return result;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -4,8 +4,8 @@
 #include "JoinRoomResponseErrors.hpp"
 #include "Room.hpp"
 #include "RoomPreview.hpp"
-#include <map>
 #include <mutex>
+#include <vector>
 
 /**
  * @brief Manages the lifecycle of rooms in the application.

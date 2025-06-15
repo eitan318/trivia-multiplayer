@@ -4,7 +4,7 @@
 #include "RoomPreview.hpp"
 #include "CloseRoomResponseErrors.hpp"
 #include "StartGameResponseErrors.hpp"
-#include <map>
+#include <vector>
 #include <string>
 #include "RoomStatus.h"
 
