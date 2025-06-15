@@ -1,15 +1,11 @@
 #include "SubmitAnswerResponse.hpp"
 
-SubmitAnswerResponse::SubmitAnswerResponse(GeneralResponseErrors* errors, 
+SubmitAnswerResponse::SubmitAnswerResponse(std::unique_ptr<GeneralResponseErrors> errors,
 	unsigned int correctAnswerId, int answerScore)
-    : Response(errors), m_correctAnswerId(correctAnswerId), m_answerScore(answerScore)
+    : Response(std::move(errors)), m_correctAnswerId(correctAnswerId), m_answerScore(answerScore)
 {
 }
 
-ResponseCodes SubmitAnswerResponse::getCode() const
-{
-    return ResponseCodes::C_SubmitAnswerResponse;
-}
 
 nlohmann::json SubmitAnswerResponse::getJson() const
 {

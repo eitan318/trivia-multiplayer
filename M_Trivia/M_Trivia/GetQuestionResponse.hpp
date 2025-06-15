@@ -10,19 +10,12 @@
  * @class GetHighScoreResponse
  * @brief Represents a response status, statistics
  */
-class GetQuestionResponse : public Response {
+class GetQuestionResponse : public Response<ResponseCodes::C_GetQuestionResponse, GeneralResponseErrors>  {
 private:
     const std::optional<Question>& m_question;
 
 public:
-    GetQuestionResponse(GeneralResponseErrors* errors, const std::optional<Question>& question);
-
-    /**
-     * @brief Gets the response code for this response.
-     * @return The response code as an unsigned integer.
-     */
-    ResponseCodes getCode() const override;
-
+    GetQuestionResponse(std::unique_ptr<GeneralResponseErrors> errors, const std::optional<Question>& question);
 
     /**
      * @brief Converts the response to a JSON object.

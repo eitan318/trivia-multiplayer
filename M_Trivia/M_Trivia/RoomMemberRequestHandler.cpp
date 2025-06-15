@@ -1,5 +1,4 @@
 #include "RoomMemberRequestHandler.hpp"
-#include "LeaveRoomResponse.hpp"
 #include "JsonResponsePacketSerializer.hpp"
 #include "RequestsCodes.hpp"
 #include "ServerErrorResponse.hpp"
@@ -9,7 +8,6 @@ RoomMemberRequestHandler::RoomMemberRequestHandler(RequestHandlerFactory& handle
 	LoggedUser loggedUser, Room* room) :
 	RoomRequestHandler(room,
 		loggedUser,
-		handlerFactory.getRoomManger(),
 		handlerFactory)
 {
 }
@@ -36,7 +34,7 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
 		case RequestCodes::LeaveRoomRequest:
 			return this->leaveRoomRequest(requestInfo);
 		case RequestCodes::GetRoomStateRequest:
-			return this->getRoomState(requestInfo);//
+			return this->getRoomState(requestInfo);
 		default:
 			ServerErrorResponse errorResponse("Invalid msg code.");
 			RequestResult requestResult(
@@ -55,14 +53,8 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
 
 RequestResult RoomMemberRequestHandler::leaveRoomRequest(RequestInfo requestInfo) 
 {
-	this->m_room->removeUser(this->m_user);
-	if (this->m_room->getUsersVector().empty()) {
-		this->m_roomManager.deleteRoom(this->m_room->getId());
-	}
-	GeneralResponseErrors errors;
-
-		
-	LeaveRoomResponse leaveRoomResponse(&errors);
+	this->m_roomManager.leaveRoom(this->m_room->getId(), this->m_user);
+	LeaveRoomResponse leaveRoomResponse(GENERAL_SUCCESS_RESPONSE_STATUS);
 	RequestResult result;
 	result.response = JsonResponsePacketSerializer::serializeResponse(leaveRoomResponse);
 	result.newHandler = this->m_requestHandlerFactory.createMenuRequestHandler(this->m_user);

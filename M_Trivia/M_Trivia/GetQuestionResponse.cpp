@@ -1,13 +1,8 @@
 #include "GetQuestionResponse.hpp"
 
-GetQuestionResponse::GetQuestionResponse(GeneralResponseErrors* errors, const std::optional<Question>& question) :
-	Response(errors), m_question(question)
+GetQuestionResponse::GetQuestionResponse(std::unique_ptr<GeneralResponseErrors> errors, const std::optional<Question>& question) :
+	Response(std::move(errors)), m_question(question)
 {
-}
-
-ResponseCodes GetQuestionResponse::getCode() const
-{
-	return ResponseCodes::C_GetQuestionResponse;
 }
 
 nlohmann::json GetQuestionResponse::getJson() const

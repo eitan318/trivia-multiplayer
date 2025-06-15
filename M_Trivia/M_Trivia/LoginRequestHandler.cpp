@@ -1,21 +1,15 @@
 #include "LoginRequestHandler.hpp"
-#include "JoinRoomResponse.hpp"
 #include "JsonRequestPacketDeserializer.hpp"
 #include "JsonResponsePacketSerializer.hpp"
 #include "LoginRequest.hpp"
-#include "LoginResponse.hpp"
-#include "LogoutResponse.hpp"
-#include "PasswordCodeResponse.hpp"
 #include "RequestInfo.hpp"
 #include "RequestResult.hpp"
 #include "RequestsCodes.hpp"
 #include "ResetPasswordRequest.hpp"
-#include "ResetPasswordResponse.hpp"
 #include "ResetPasswordResponseErrors.hpp"
 #include "SendPasswordResetCodeRequest.hpp"
 #include "ServerErrorResponse.hpp"
 #include "SignupRequest.hpp"
-#include "SignupResponse.hpp"
 #include "VerifyPasswordResetCodeRequest.hpp"
 #include "VerifyPasswordResetCodeResponse.hpp"
 #include <cmath>
@@ -83,7 +77,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& requestInfo, SOCKET 
     auto errors =
         this->m_handlerFactory.getLoginManager().login(
             request.getUsername(), request.getPassword(), socket);
-    LoginResponse loginResponse(&errors);
+    LoginResponse loginResponse(std::make_unique<LoginResponseErrors>(errors));
 
     auto response =
         JsonResponsePacketSerializer::serializeResponse(loginResponse);
@@ -106,7 +100,7 @@ LoginRequestHandler::signup(const RequestInfo& requestInfo) const {
     auto errors = 
         this->m_handlerFactory.getLoginManager().signup(request.getUserRecord());
 
-    SignupResponse signupResponse(&errors);
+    SignupResponse signupResponse(std::make_unique<SignupResponseErrors>(errors));
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(signupResponse),
         this->m_handlerFactory.createLoginRequestHandler());
@@ -144,7 +138,7 @@ LoginRequestHandler::sendPasswordResetEmail(const RequestInfo& requestInfo) {
     unsigned int randomCode = generateRandomCode(CODE_DIGITS);
     auto errors = this->m_handlerFactory.getLoginManager().sendEmailCode(request.getEmail(), randomCode);
 
-    PasswordCodeResponse response(&errors);
+    PasswordCodeResponse response(std::make_unique<PasswordCodeResponseErrors>(errors));
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(response),
@@ -165,7 +159,7 @@ LoginRequestHandler::resetPassword(const RequestInfo& requestInfo) const {
             resetPasswordRequest.getNewPassword(),
             resetPasswordRequest.getResetPasswordTocken());
 
-    ResetPasswordResponse response(&errors);
+    ResetPasswordResponse response(std::make_unique<ResetPasswordResponseErrors>(errors));
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(response),
         this->m_handlerFactory.createLoginRequestHandler());
@@ -179,13 +173,11 @@ LoginRequestHandler::verifyResetPasswordCode(const RequestInfo& requestInfo) {
         deserializeRequest(requestInfo.buffer);
 
     std::string verificationTocken = generateVerificationTocken();
-    VerifyPasswordResetCodeResponseErrors errors =
+    GeneralResponseErrors errors =
         this->m_handlerFactory.getLoginManager().verifyResetPasswordCode(
             verifyPasswordResetCodeRequest.getCodeFromClient(), verificationTocken);
 
-
-
-    VerifyPasswordResetCodeResponse response(&errors, verificationTocken);
+    VerifyPasswordResetCodeResponse response(std::make_unique<GeneralResponseErrors>(errors), verificationTocken);
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(response),
         this->m_handlerFactory.createLoginRequestHandler());

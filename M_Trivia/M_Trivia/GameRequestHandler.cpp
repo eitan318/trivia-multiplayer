@@ -5,7 +5,6 @@
 #include "JsonRequestPacketDeserializer.hpp"
 #include "GetGameResultsResponse.hpp"
 #include "SubmitAnswerResponse.hpp"
-#include "LeaveGameResponse.hpp"
 #include "GetQuestionResponse.hpp"
 #include "SubmitAnswerRequest.hpp"
 
@@ -75,7 +74,7 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
     }
 
     
-    GetQuestionResponse getQuestionResponse(&errors, quetionForUser);
+    GetQuestionResponse getQuestionResponse(std::make_unique<GeneralResponseErrors>(errors), quetionForUser);
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(getQuestionResponse),
@@ -98,7 +97,7 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 
     this->m_game->setNextQuestionForUser(this->m_user);
 
-    SubmitAnswerResponse submitAnswerResponse(&errors, currQ.value().getCorrectAnswerId(), answerScore);
+    SubmitAnswerResponse submitAnswerResponse(std::make_unique<GeneralResponseErrors>(errors), currQ.value().getCorrectAnswerId(), answerScore);
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(submitAnswerResponse),
@@ -121,7 +120,7 @@ RequestResult GameRequestHandler::getGameResults(RequestInfo requestInfo)
 RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
 {
     GeneralResponseErrors errors;
-    LeaveGameResponse leaveGameResponse(&errors);
+    LeaveGameResponse leaveGameResponse(std::make_unique<GeneralResponseErrors>(errors));
     std::shared_ptr<IRequestHandler> nextHandler = std::move(this->m_room->isAdmin(this->m_user) ?
         this->m_handlerFactory.createRoomAdminRequestHandler(this->m_user, this->m_room) :
         this->m_handlerFactory.createRoomMemberRequestHandler(this->m_user, this->m_room));

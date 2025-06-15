@@ -133,8 +133,7 @@ void Communicator::handleNewClient(SOCKET sock)
         }
         catch (std::exception &e)
         {
-            std::cerr << "Client " << sock << " probably exited ungracefully." << std::endl;
-            this->m_handlerFactory.getLoginManager().logout(sock);
+            clientExited(sock);
             break;
         }
         time_t requestRecievalTime = time(nullptr);
@@ -174,4 +173,10 @@ void Communicator::handleNewClient(SOCKET sock)
         std::lock_guard<std::mutex> lock(m_clientsMtx);
         this->m_clients.erase(sock);
     }
+}
+
+void Communicator::clientExited(SOCKET sock)
+{
+    std::cerr << "Client " << sock << " probably exited ungracefully." << std::endl;
+    this->m_handlerFactory.getLoginManager().logout(sock);
 }

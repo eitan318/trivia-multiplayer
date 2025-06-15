@@ -42,10 +42,10 @@ namespace ClientApp.ViewModels
 
         private void TimerElapsed(object sender, ElapsedEventArgs e)
         {
+            RemainingTime -= TimeSpan.FromMilliseconds(_msInterval);
+            
             if (RemainingTime > TimeSpan.Zero)
             {
-                RemainingTime -= TimeSpan.FromMilliseconds(_msInterval);
-
                 // Update the UI on the main thread
                 Application.Current.Dispatcher.Invoke(() =>
                 {

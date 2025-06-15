@@ -7,26 +7,23 @@
 
 RequestResult RoomRequestHandler::getRoomState(const RequestInfo& requestinfo)
 {
-    RoomData roomData = this->m_room->getRoomPreview().roomData;
-    RoomState roomState(this->m_room->getRoomStatus(), this->m_room->getUsersVector(),
-        roomData.numOfQuestionsInGame, roomData.timePerQuestion);
-
-    GetRoomStateResponse roomStateResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, roomState);
     std::shared_ptr<IRequestHandler> nextHandler = nullptr;
-    if (prevStatus == RoomStatus::NotInGame && (RoomStatus)roomState.m_roomStatus == RoomStatus::InGame) {
+    if (this->m_room->justOpenedGame()) {
         std::shared_ptr<Game> game = this->m_requestHandlerFactory.getGameManager().getGame(m_room->getId());
         nextHandler = this->m_requestHandlerFactory.createGameRequestHandler(m_user, game, m_room);
     }
 
+    GetRoomStateResponse roomStateResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, this->m_room->getRoomState());
+
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(roomStateResponse),
         nextHandler);
-    this->prevStatus = (RoomStatus)roomState.m_roomStatus;
     return requestResult;
 }
+
 RoomRequestHandler::RoomRequestHandler(Room* room, LoggedUser user, 
-	RoomManager& roomManager, RequestHandlerFactory& requestHandlerFactory) 
+	RequestHandlerFactory& requestHandlerFactory) 
 	: m_user(user),m_room(room),
-	m_roomManager(roomManager),
-	m_requestHandlerFactory(requestHandlerFactory) 
+	m_roomManager(m_requestHandlerFactory.getRoomManger()),
+	m_requestHandlerFactory(requestHandlerFactory)  
 {}

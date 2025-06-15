@@ -54,8 +54,12 @@
                     <DataGrid Grid.Column="0" ItemsSource="{Binding Players}" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="User's Name" Binding="{Binding Username}" />
+                            <DataGridTextColumn Header="Score" Binding="{Binding Score}" />
                             <DataGridTextColumn Header="Correct Answers" Binding="{Binding CorrectAnswerCount}" />
                             <DataGridTextColumn Header="Average Answer Time" Binding="{Binding AverageAnswerTime}" />
+                            <DataGridTextColumn Header="Wrong  Answers" Binding="{Binding WrongAnswerCount}" />
+                            <DataGridTextColumn Header="Not answered" Binding="{Binding NotAnsweredCount}" />
+
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>

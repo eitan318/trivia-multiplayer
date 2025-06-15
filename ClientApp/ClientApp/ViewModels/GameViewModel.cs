@@ -76,20 +76,24 @@ namespace ClientApp.ViewModels
                 var questionResponseInfo = await _requestsExchangeService.ExchangeRequest<GetQuestionResponse>(getQuestionRequest);
 
 
-                if (questionResponseInfo.NormalResponse && questionResponseInfo.Response?.Status == 0)
+                if (questionResponseInfo.NormalResponse)
                 {
-                    App.Current.Dispatcher.Invoke(() =>
+                    if (questionResponseInfo.Response?.Status == 0)
                     {
-                        SelectedAnswerIndex = -1;
-                        QuestionInfo = questionResponseInfo.Response.Question;
-                        Question = QuestionInfo.Question;
-                        PossibleAnswers = QuestionInfo.PossibleAnswers;
-                    });
-                }
-                else
-                {
-                    Question = "Unable to fetch the question. Please try again.";
-                    PossibleAnswers = new List<string>();
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            SelectedAnswerIndex = -1;
+                            QuestionInfo = questionResponseInfo.Response.Question;
+                            Question = QuestionInfo.Question;
+                            PossibleAnswers = QuestionInfo.PossibleAnswers;
+                        });
+                    }
+                    else
+                    {
+                        Question = "Unable to fetch the question. Please try again.";
+                        PossibleAnswers = new List<string>();
+                    }
+
                 }
 
                 Timer.Reset(TimeSpan.FromSeconds(_roomDataStore.CurrentRoomData.TimePerQuestion));

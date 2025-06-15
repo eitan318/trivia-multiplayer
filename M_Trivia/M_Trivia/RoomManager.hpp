@@ -1,11 +1,11 @@
 #pragma once
 #include "CreateRoomResponseErrors.hpp"
 #include "IDatabase.hpp"
-#include "JoinRoomResponseErrors.hpp"
 #include "Room.hpp"
 #include "RoomPreview.hpp"
-#include <map>
+#include "GeneralResponseErrors.hpp"
 #include <mutex>
+#include <vector>
 
 /**
  * @brief Manages the lifecycle of rooms in the application.
@@ -53,7 +53,7 @@ public:
      * @param loggedUser The user joining the room.
      * @param id The id of the room to join.
      */
-    JoinRoomResponseErrors joinRoom(unsigned int id, const LoggedUser& loggedUser);
+    GeneralResponseErrors joinRoom(unsigned int id, const LoggedUser& loggedUser);
 
     /**
      * @brief Deletes an existing room by its ID.
@@ -71,14 +71,14 @@ public:
 	 *
 	 * @return A CloseRoomResponseErrors indicating the result of the operation.
 	 */
-    CloseRoomResponseErrors closeRoom(Room* room);
+    GeneralResponseErrors closeRoom(unsigned int roomId, const LoggedUser& closer);
 
     /**
      * Attempts to start the game in the current room.
      *
      * @return A StartGameResponseErrors indicating the result of the operation.
      */
-    StartGameResponseErrors startGameOfRoom(Room* room);
+    GeneralResponseErrors startGameOfRoom(Room* room);
 
     /**
      * @brief Retrieves a reference to a specific room.
@@ -87,4 +87,8 @@ public:
      * @throws MyException if the room does not exist.
      */
     Room* getRoom(int ID);
+
+
+    void leaveRoom(unsigned int roomId,
+        const LoggedUser& loggedUser);
 };

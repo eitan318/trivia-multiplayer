@@ -3,15 +3,11 @@
 #include "ServerErrorResponse.hpp"
 #include "JsonResponsePacketSerializer.hpp"
 #include "JsonRequestPacketDeserializer.hpp"
-#include "CloseRoomResponse.hpp"
-#include "StartGameResponse.hpp"
-#include "GetRoomStateResponse.hpp"
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory,
 	LoggedUser loggedUser, 
 	Room* room) : RoomRequestHandler(room, 
 		loggedUser, 
-		handlerFactory.getRoomManger(),
 		handlerFactory)
 {
 }
@@ -60,13 +56,8 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
 
 RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& requestInfo)
 {
-	CloseRoomResponseErrors errors = this->m_roomManager.closeRoom(this->m_room);
-	this->m_room->removeUser(this->m_user);
-	if (this->m_room->getUsersVector().empty()) {
-		this->m_roomManager.deleteRoom(this->m_room->getId());
-	}
-
-	CloseRoomResponse closeRoomResponse(&errors);
+	GeneralResponseErrors errors = this->m_roomManager.closeRoom(this->m_room->getId(), this->m_user);
+	CloseRoomResponse closeRoomResponse(std::make_unique<GeneralResponseErrors>(errors));
 	RequestResult result;
 	result.response = JsonResponsePacketSerializer::serializeResponse(closeRoomResponse);
 	result.newHandler = this->m_requestHandlerFactory.createMenuRequestHandler(this->m_user);
@@ -75,34 +66,12 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& requestInfo)
 
 RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& requestInfo)
 {
-	StartGameResponseErrors errors = this->m_roomManager.startGameOfRoom(this->m_room);
+	GeneralResponseErrors errors = this->m_roomManager.startGameOfRoom(this->m_room);
 	std::shared_ptr<Game> game = this->m_requestHandlerFactory.getGameManager().createGame(this->m_room);
 
-	StartGameResponse startGameResponse(&errors);
+	StartGameResponse startGameResponse(std::make_unique<GeneralResponseErrors>(errors));
 	RequestResult result;
 	result.response = JsonResponsePacketSerializer::serializeResponse(startGameResponse);
 	result.newHandler = errors.statusCode() == 0 ? this->m_requestHandlerFactory.createGameRequestHandler(m_user, game, m_room) : nullptr;
 	return result;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

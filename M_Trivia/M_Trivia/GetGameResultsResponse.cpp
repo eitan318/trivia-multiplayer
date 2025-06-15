@@ -5,11 +5,6 @@ GetGameResultsResponse::GetGameResultsResponse(unsigned int status, const std::v
 {
 }
 
-ResponseCodes GetGameResultsResponse::getCode() const
-{
-	return ResponseCodes::C_GetGameResultsResponse;
-}
-
 nlohmann::json GetGameResultsResponse::getJson() const
 {
 	nlohmann::json j = Response::getJson();

@@ -7,13 +7,6 @@ ServerErrorResponse::ServerErrorResponse(const std::string& message) : Response(
 }
 
 
-ResponseCodes ServerErrorResponse::getCode() const 
-{
-	return ResponseCodes::C_ErrorResponse; 
-}
-
-
-
 nlohmann::json ServerErrorResponse::getJson() const {
     nlohmann::json j = Response::getJson();
     j["Message"] = message; 

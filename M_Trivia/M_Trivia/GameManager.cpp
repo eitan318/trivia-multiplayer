@@ -62,6 +62,9 @@ std::vector<PlayerResults> GameManager::getGameResults(std::shared_ptr<Game> gam
             playersResults.emplace_back(playerResults.value());
         }
     }
+    std::sort(playersResults.begin(), playersResults.end(), [](const PlayerResults& a, const PlayerResults& b) {
+        return a.score > b.score;
+        });
     return playersResults;
 }
 

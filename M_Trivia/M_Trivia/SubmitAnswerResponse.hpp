@@ -6,24 +6,13 @@
  * @class CloseRoomResponse
  * @brief Represents a response containing Status only and no data
  */
-class SubmitAnswerResponse : public Response {
+class SubmitAnswerResponse : public Response<ResponseCodes::C_SubmitAnswerResponse, GeneralResponseErrors> {
 private:
 	unsigned int m_correctAnswerId;
 	int m_answerScore;
 public:
-	SubmitAnswerResponse(GeneralResponseErrors* errors, unsigned int correctAnswerId,
+	SubmitAnswerResponse(std::unique_ptr<GeneralResponseErrors> errors, unsigned int correctAnswerId,
 	 int answerScore);
-
-	/**
-	 * @brief Gets the response code for this response.
-	 * @return The response code as an unsigned integer.
-	 */
-	ResponseCodes getCode() const override;
-
-	/**
-	 * @brief Deleted default constructor to enforce proper initialization.
-	 */
-	SubmitAnswerResponse() = delete;
 
 	/**
 	 * @brief Converts the response to a JSON object.

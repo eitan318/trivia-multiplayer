@@ -4,7 +4,6 @@
 #include "MyException.hpp"
 #include "RegexValidator.hpp"
 #include "UserRecord.hpp"
-#include "VerifyPasswordResetCodeResponseErrors.hpp"
 #include <string>
 
 LoginManager::LoginManager(IDatabase& database) : m_database(database) {}
@@ -53,11 +52,10 @@ PasswordCodeResponseErrors LoginManager::sendEmailCode(const std::string email,
     return errors;
 }
 
-VerifyPasswordResetCodeResponseErrors
-LoginManager::verifyResetPasswordCode(const std::string& codeFromClient,
+GeneralResponseErrors LoginManager::verifyResetPasswordCode(const std::string& codeFromClient,
     const std::string& resetPasswordTocken) {
     this->prevResetPasswordTocken = resetPasswordTocken;
-    VerifyPasswordResetCodeResponseErrors errors;
+    GeneralResponseErrors errors;
     if (codeFromClient != std::to_string(this->prevRandomCode)) {
         errors.generalError = "Wrong code";
     }

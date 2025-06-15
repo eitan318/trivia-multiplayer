@@ -1,10 +1,10 @@
 #include "RoomManager.hpp"
 #include "CreateRoomResponseErrors.hpp"
-#include "JoinRoomResponseErrors.hpp"
 #include "LoggedUser.hpp"
 #include "MyException.hpp"
 #include "Response.hpp"
-#include <mutex>
+#include <algorithm>
+#include <ranges> 
 
 
 unsigned int RoomManager::ids = 0;
@@ -45,15 +45,14 @@ CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser& player,
 }
 
 
+
 void RoomManager::deleteRoom(int ID) {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
-    auto it = std::find_if(m_rooms.begin(), m_rooms.end(), [ID](const Room& room) {
+    std::erase_if(m_rooms, [ID](const Room& room) {
         return room.getRoomPreview().roomData.id == ID;
         });
-    if (it != m_rooms.end()) {
-        m_rooms.erase(it);
-    }
 }
+
 
 
 std::vector<RoomPreview> RoomManager::getRooms() const {
@@ -66,22 +65,37 @@ std::vector<RoomPreview> RoomManager::getRooms() const {
 }
 
 
-CloseRoomResponseErrors RoomManager::closeRoom(Room* room)
+GeneralResponseErrors RoomManager::closeRoom(unsigned int roomId, const LoggedUser& closer)
 {
-    CloseRoomResponseErrors errors;
+    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
+    Room* room = getRoom(roomId);
+    GeneralResponseErrors errors;
     if (room->getRoomStatus() == RoomStatus::Closed) {
         errors.generalError = "Room already closed";
     }
 
     if (errors.statusCode() == GENERAL_SUCCESS_RESPONSE_STATUS) {
+        leaveRoom(roomId, closer);
         room->close();
     }
     return errors;
 }
 
-StartGameResponseErrors RoomManager::startGameOfRoom(Room* room)
+void RoomManager::leaveRoom(unsigned int roomId,
+    const LoggedUser& loggedUser) {
+    Room* room = this->getRoom(roomId);
+    room->removeUser(loggedUser);
+    if (room->getUsersVector().empty()) {
+        this->deleteRoom(room->getId());
+    }
+}
+
+
+
+GeneralResponseErrors RoomManager::startGameOfRoom(Room* room)
 {
-    StartGameResponseErrors errors;
+    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
+    GeneralResponseErrors errors;
     if (room->getRoomStatus() == RoomStatus::Closed) {
         errors.generalError = "Cannot start game of a closed room.";
     }
@@ -100,14 +114,14 @@ StartGameResponseErrors RoomManager::startGameOfRoom(Room* room)
 
 
 
-JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
+GeneralResponseErrors RoomManager::joinRoom(unsigned int id,
     const LoggedUser& loggedUser) {
 
-    JoinRoomResponseErrors errors;
+    GeneralResponseErrors errors;
     Room* room = this->getRoom(id);
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     if (room != nullptr) {
-        if (room->hasUser(loggedUser.getUsername())) {
+        if (room->hasUser(loggedUser)) {
             errors.generalError = "You are already inside this room.";
         }
         else if (room->getRoomPreview().roomData.maxPlayers ==
@@ -131,13 +145,11 @@ JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
 
 Room* RoomManager::getRoom(int ID) {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
-    auto it = std::find_if(m_rooms.begin(), m_rooms.end(), [ID](const Room& room) {
+
+    auto it = std::ranges::find_if(m_rooms, [ID](const Room& room) {
         return room.getRoomPreview().roomData.id == ID;
         });
-    if (it != m_rooms.end()) {
-        return &(*it);
-    }
-    return nullptr;
-}
 
+    return it != m_rooms.end() ? &(*it) : nullptr;
+}
 

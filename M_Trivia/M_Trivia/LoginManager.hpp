@@ -5,7 +5,7 @@
 #include "PasswordCodeResponseErrors.hpp"
 #include "ResetPasswordResponseErrors.hpp"
 #include "SignupResponseErrors.hpp"
-#include "VerifyPasswordResetCodeResponseErrors.hpp"
+#include "GeneralResponseErrors.hpp"
 #include <unordered_map>
 #include <WinSock2.h>
 
@@ -80,7 +80,7 @@ public:
         resetPassword(const std::string& username, const std::string& newPassword,
             const std::string& resetPasswordTocken);
 
-    VerifyPasswordResetCodeResponseErrors
+    GeneralResponseErrors
         verifyResetPasswordCode(const std::string& codeFromClient, const std::string& resetPasswordTocken);
 
     /**

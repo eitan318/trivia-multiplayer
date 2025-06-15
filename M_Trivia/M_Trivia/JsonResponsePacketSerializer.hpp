@@ -25,39 +25,40 @@ public:
     JsonResponsePacketSerializer() = delete;
 
     /**
-     * @brief Serializes a `Response` object into a vector of characters.
+     * @brief Serializes a templated `Response` object into a vector of characters.
      *
      * The serialization format is as follows:
      * - The first byte contains the message code (`getCode()`).
      * - The next 4 bytes contain the length of the serialized JSON string.
      * - The remaining bytes contain the JSON string representation of the response data.
      *
-     * @param response The `Response` object to serialize.
+     * @tparam Code The response code type, corresponding to `ResponseCodes`.
+     * @tparam ErrorType The type of errors, defaulting to `IResponseErrors`.
+     * @param response The templated `Response` object to serialize.
      * @return A vector of characters containing the serialized response.
      */
-    static std::vector<char> serializeResponse(const Response& response)
-    {
+    template<ResponseCodes Code, typename ErrorType = IResponseErrors>
+    static std::vector<char> serializeResponse(const Response<Code, ErrorType>& response) {
         std::vector<char> res;
 
         // Add the message code as the first byte
-        res.push_back((char)response.getCode());
+        res.push_back(static_cast<char>(Code));
 
         // Convert the response data to a JSON string
         std::string json_str = response.getJson().dump();
 
         // Get the length of the JSON string
-        int json_length = json_str.size();
+        uint32_t json_length = static_cast<uint32_t>(json_str.size());
 
-        // Allocate space for the length of the JSON string (4 bytes)
-        res.resize(res.size() + sizeof(int));
-
-        // Copy the JSON length into the vector after the message code
-        std::memcpy(res.data() + MSG_CODE_SIZE, &json_length, sizeof(int)); //Little endian
+        // Append the length of the JSON string in little-endian format
+        for (size_t i = 0; i < sizeof(uint32_t); ++i) {
+            res.push_back(static_cast<char>((json_length >> (i * 8)) & 0xFF));
+        }
 
         // Append the JSON string to the vector
         res.insert(res.end(), json_str.begin(), json_str.end());
 
         return res;
     }
-    
+
 };
