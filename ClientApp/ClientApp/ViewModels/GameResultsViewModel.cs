@@ -25,9 +25,10 @@ namespace ClientApp.ViewModels
 
         public GameResultsViewModel(
             INavigationService navigationService,
-            RequestsExchangeService requestsExchangeService) : base(false)
+            RequestsExchangeService requestsExchangeService,
+            AmIAdminStore amIAdminStore) : base(false)
         {
-            LeaveGameCmd = new LeaveGameCommand(navigationService, requestsExchangeService, null);
+            LeaveGameCmd = new LeaveGameCommand(navigationService, requestsExchangeService, null, amIAdminStore);
             this._requestsExchangeService = requestsExchangeService;
         }
 

@@ -23,8 +23,10 @@ namespace ClientApp.ViewModels
             INavigationService navigationService,
             RequestsExchangeService requestsExchangeService,
             RoomDataStore roomDataStore,
-            UserStore userState)
+            UserStore userState,
+            AmIAdminStore amIAdminStore)
         {
+            amIAdminStore.AmIAdmin = true;
 
             this.userStore = userState;
             this._requestsExchangeService = requestsExchangeService;

@@ -26,14 +26,13 @@ namespace ClientApp.ViewModels
         public CountdownTimerViewModel Timer => _countdownTimerViewModel;
 
         public GameViewModel(RequestsExchangeService requestsExchangeService,
-            RoomDataStore roomDataStore, INavigationService navigationService) : base(false)
+            RoomDataStore roomDataStore, INavigationService navigationService, AmIAdminStore amIAdminStore) : base(false)
         {
             _roomDataStore = roomDataStore;
             _requestsExchangeService = requestsExchangeService;
 
             SubmitCmd = new SubmitAnswerCommand(requestsExchangeService, this, navigationService);
-            LeaveGameCmd = new LeaveGameCommand(navigationService, requestsExchangeService, this);
-
+            LeaveGameCmd = new LeaveGameCommand(navigationService, requestsExchangeService, this, amIAdminStore);
 
             _countdownTimerViewModel = new CountdownTimerViewModel(_msTimerInterval);
             PossibleAnswers = new List<string>();
@@ -108,9 +107,10 @@ namespace ClientApp.ViewModels
 
         public override async void OnNavigatedTo()
         {
+
             _questionNumber = 0;
             _totalQuestions = _roomDataStore.CurrentRoomData.NumOfQuestionsInGame;
-             _countdownTimerViewModel.TimerEnded += async (sender, args) => await HandleTimerEndAsync();
+            _countdownTimerViewModel.TimerEnded += async (sender, args) => await HandleTimerEndAsync();
 
             Timer.Reset(TimeSpan.FromSeconds(10));
             Timer.Start();  

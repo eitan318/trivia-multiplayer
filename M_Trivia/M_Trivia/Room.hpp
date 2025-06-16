@@ -19,9 +19,6 @@ private:
     RoomData m_metadata;               
     std::vector<LoggedUser> m_users;   
     RoomStatus status;
-    RoomStatus prevStatus;
-
-    void setStatus(RoomStatus newStatus);
 
 public:
     /**
@@ -66,13 +63,15 @@ public:
      */
     void setRoomData(const RoomData& roomdata);
 
-    bool justOpenedGame() const;
+    bool gameStarted() const;
 
     // closes the room
     void close();
 
     // starting a game in the room
     void startGame();
+
+    void enterGame();
 
     void closeGame();
 

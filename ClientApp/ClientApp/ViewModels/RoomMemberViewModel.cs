@@ -18,13 +18,15 @@ namespace ClientApp.ViewModels
         private CancellationTokenSource _checkRoomStateCTS;
         private LoggedUser _admin;
         private readonly int refreshMS = 300;
-        private RoomStatus prevRoomStatus;
         public RoomMemberViewModel(
             INavigationService navigationService,
             RoomDataStore roomDataStore,
             UserStore userStore,
-            RequestsExchangeService requestsExchangeService)
+            RequestsExchangeService requestsExchangeService,
+            AmIAdminStore amIAdminStore)
         {
+            amIAdminStore.AmIAdmin = false;
+
             this._navigationService = navigationService;
             this._userStore = userStore;
             this._requestsExchangeService = requestsExchangeService;
@@ -104,18 +106,15 @@ namespace ClientApp.ViewModels
                 }
             });
 
-            if (roomState.RoomStatus == RoomStatus.Closed)
+            if (roomState.RoomStatus == RoomStatus.Closing)
             {
                 LeaveRoomCmd.Execute(null);
             }
 
-            if (roomState.RoomStatus == RoomStatus.InGame && prevRoomStatus == RoomStatus.NotInGame)
+            if (roomState.RoomStatus == RoomStatus.StartingGame)
             {
-                prevRoomStatus = roomState.RoomStatus;
                 _navigationService.NavigateTo<GameViewModel>();
             }
-
-            prevRoomStatus = roomState.RoomStatus;
         }
     }
 }

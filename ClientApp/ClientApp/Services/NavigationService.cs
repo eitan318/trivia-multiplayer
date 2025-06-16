@@ -39,9 +39,9 @@ namespace ClientApp.Services
         }
 
 
-        public void GoBack(uint timesBack)
+        public void GoBack()
         {
-            for (int i = 0; i < timesBack && _navigationStore.CanGoBack(); i++)
+            if(_navigationStore.CanGoBack())
             {
                  _navigationStore.GoBack();
             }

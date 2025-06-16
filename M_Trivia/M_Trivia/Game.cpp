@@ -1,13 +1,21 @@
 #include "Game.hpp"
 
-Game::Game(std::vector<Question> questions, std::vector<LoggedUser> players, unsigned int gameId, unsigned int questionTimeLimit)
-    : m_gameId(gameId), m_questions(std::move(questions)), m_questionTimeLimit(questionTimeLimit)
+Game::Game(std::vector<Question> questions, std::vector<LoggedUser> neededPlayers, unsigned int gameId,
+    unsigned int questionTimeLimit, Room* room)
+    : m_gameId(gameId), m_questions(std::move(questions)), m_questionTimeLimit(questionTimeLimit),
+    m_totalNeededPlayers(neededPlayers.size()), m_room(room), m_activePlayers(0)
 {
+}
+
+void Game::join(const LoggedUser& player) {
+    this->m_activePlayers++;
     std::lock_guard<std::mutex> lock(m_playersMutex);
-    for (const auto& player : players) {
-        Question shuffledCopy = Question(this->m_questions[0]);
-        shuffledCopy.shuffle();
-        m_players.emplace(player, PlayerGameData(0, shuffledCopy, std::time(nullptr)));
+    Question shuffledCopy = Question(this->m_questions[0]);
+    shuffledCopy.shuffle();
+    m_players.emplace(player, PlayerGameData(0, shuffledCopy, std::time(nullptr)));
+    
+    if (m_activePlayers == m_totalNeededPlayers) {
+        this->m_room->enterGame();
     }
 }
 

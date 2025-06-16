@@ -3,8 +3,9 @@ namespace ClientApp.Models
 {
     public enum RoomStatus
     {
-        Closed,
+        Closing,
+        StartingGame,
         InGame,
-        NotInGame 
+        NotInGame
     }
 }

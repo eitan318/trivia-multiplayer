@@ -95,6 +95,7 @@ public partial class App : Application
         services.AddSingleton<ErrorMessageStore>();
         services.AddSingleton<NavigationStore>();
         services.AddSingleton<RoomDataStore>();
+        services.AddSingleton<AmIAdminStore>();
 
         // Register MainWindow
         services.AddTransient<MainWindow>(sp =>

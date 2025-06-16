@@ -2,14 +2,8 @@
 #include "Response.hpp"
 #include <algorithm>
 
-void Room::setStatus(RoomStatus newStatus)
-{
-    this->prevStatus = this->status;
-    this->status = newStatus;
-}
-
 Room::Room(const RoomData& roomdata, const LoggedUser& user)
-    : m_metadata(roomdata), m_users{ user }, status(RoomStatus::NotInGame), prevStatus(status){
+    : m_metadata(roomdata), m_users{ user }, status(RoomStatus::NotInGame){
 }
 
 Room::Room() : m_metadata{}, status(RoomStatus::NotInGame) {}
@@ -41,21 +35,25 @@ void Room::setRoomData(const RoomData& roomdata) {
     this->m_metadata = roomdata;
 }
 
-bool Room::justOpenedGame() const
+bool Room::gameStarted() const
 {
-    return prevStatus == RoomStatus::NotInGame && status == RoomStatus::InGame;
+    return status == RoomStatus::StartingGame;
 }
 
 void Room::close() {
-    setStatus(RoomStatus::Closed);
+    status = RoomStatus::Closing;
 }
 
 void Room::startGame() {
-    setStatus(RoomStatus::InGame);
+    status = RoomStatus::StartingGame;
+}
+
+void Room::enterGame() {
+    status = RoomStatus::InGame;
 }
 
 void Room::closeGame() {
-    setStatus(RoomStatus::NotInGame);
+    status = RoomStatus::NotInGame;
 }
 
 unsigned int Room::getId() const {

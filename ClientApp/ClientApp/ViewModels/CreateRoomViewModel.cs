@@ -45,7 +45,7 @@ namespace ClientApp.ViewModels
         private string _roomName;
         private double _questionTimeout = 10;
         private uint _maxPlayers = 2; //Start val
-        private uint _questionsCount = 10; //Start val
+        private uint _questionsCount = 1; //Start val
 
         // Error message fields
         private string _questionCountError;

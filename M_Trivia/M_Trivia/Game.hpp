@@ -6,11 +6,13 @@
 #include <vector>
 #include <mutex>
 #include <optional>
+#include "Room.hpp"
 
 
 class Game {
 public:
-    Game(std::vector<Question> questions, std::vector<LoggedUser> players, unsigned int roomId, unsigned int questionTimeLimit);
+    Game(std::vector<Question> questions, std::vector<LoggedUser> neededPlayers, unsigned int gameId,
+        unsigned int questionTimeLimit, Room* room);
     Game(const Game&) = delete;
     Game& operator=(const Game&) = delete;
 
@@ -25,6 +27,8 @@ public:
     void removePlayer(const LoggedUser& user);
     unsigned int getId() const;
 
+    void join(const LoggedUser& player);
+
     void removeActivePlayer();
     int getActivePlayers();
 
@@ -34,7 +38,10 @@ private:
     std::map<LoggedUser, PlayerGameData> m_players;
     const int m_gameId;
     int m_activePlayers;
+    const int m_totalNeededPlayers;
+    Room* m_room;
 
     mutable std::mutex m_playersMutex; // Protects m_players
     mutable std::mutex m_questionsMutex; // Protects m_questions
+
 };

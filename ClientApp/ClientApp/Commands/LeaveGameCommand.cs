@@ -2,11 +2,8 @@
 using ClientApp.Models.Responses;
 using ClientApp.Services;
 using ClientApp.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ClientApp.Stores;
+
 
 namespace ClientApp.Commands
 {
@@ -16,10 +13,13 @@ namespace ClientApp.Commands
         private readonly INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
         private readonly GameViewModel _gameViewModel;
+        private readonly AmIAdminStore _amIAdminStore;
         public LeaveGameCommand(INavigationService navigationService,
             RequestsExchangeService requestsExchangeService,
-            GameViewModel gameViewModel) 
+            GameViewModel gameViewModel,
+            AmIAdminStore amIAdminStore) 
         {
+            this._amIAdminStore = amIAdminStore;
             this._gameViewModel = gameViewModel;
             this._navigationService = navigationService;
             this._requestsExchangeService = requestsExchangeService;
@@ -29,7 +29,7 @@ namespace ClientApp.Commands
         {
             if (_gameViewModel != null)
             {
-                _gameViewModel.Timer.Stop();
+                _gameViewModel.Timer.Dispose();
             }
             LeaveGameRequest request = new LeaveGameRequest();
             ResponseInfo<LeaveGameResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<LeaveGameResponse>(request);
@@ -40,10 +40,14 @@ namespace ClientApp.Commands
 
                 if(leaveGameResponse.Status == 0)
                 {
-                    if (_gameViewModel == null)
-                        this._navigationService.GoBack(NAVIGATETOROOMFROMRESULTS);
+                    if (_amIAdminStore.AmIAdmin)
+                    {
+                        _navigationService.NavigateTo<RoomAdminViewModel>();
+                    }
                     else
-                        this._navigationService.GoBack();
+                    {
+                        _navigationService.NavigateTo<RoomMemberViewModel>();
+                    }
                 }
                 else
                 {

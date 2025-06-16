@@ -16,6 +16,7 @@ GameRequestHandler::GameRequestHandler(const LoggedUser& user,
     m_game(std::move(game)),
     m_room(room)
 {
+    m_game->join(user);
 }
 
 GameRequestHandler::~GameRequestHandler() = default;

@@ -7,13 +7,14 @@
 
 RequestResult RoomRequestHandler::getRoomState(const RequestInfo& requestinfo)
 {
+    RoomState state = this->m_room->getRoomState();
     std::shared_ptr<IRequestHandler> nextHandler = nullptr;
-    if (this->m_room->justOpenedGame()) {
+    if (this->m_room->gameStarted()) {
         std::shared_ptr<Game> game = this->m_requestHandlerFactory.getGameManager().getGame(m_room->getId());
         nextHandler = this->m_requestHandlerFactory.createGameRequestHandler(m_user, game, m_room);
     }
 
-    GetRoomStateResponse roomStateResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, this->m_room->getRoomState());
+    GetRoomStateResponse roomStateResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, state);
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(roomStateResponse),
