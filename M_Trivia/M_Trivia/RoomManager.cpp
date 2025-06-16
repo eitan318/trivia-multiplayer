@@ -67,8 +67,8 @@ std::vector<RoomPreview> RoomManager::getRooms() const {
 
 GeneralResponseErrors RoomManager::closeRoom(unsigned int roomId, const LoggedUser& closer)
 {
-    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     Room* room = getRoom(roomId);
+    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     GeneralResponseErrors errors;
     if (room->getRoomStatus() == RoomStatus::Closed) {
         errors.generalError = "Room already closed";
@@ -94,8 +94,8 @@ void RoomManager::leaveRoom(unsigned int roomId,
 
 GeneralResponseErrors RoomManager::startGameOfRoom(unsigned int roomId)
 {
-    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     Room* room = getRoom(roomId);
+    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     GeneralResponseErrors errors;
     if (room->getRoomStatus() == RoomStatus::Closed) {
         errors.generalError = "Cannot start game of a closed room.";

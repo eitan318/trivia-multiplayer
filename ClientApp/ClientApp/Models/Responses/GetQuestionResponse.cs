@@ -1,13 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using ClientApp.Models.ResponseErrors;
+using Newtonsoft.Json;
 
 namespace ClientApp.Models.Responses
 {
-    class GetQuestionResponse : Response
+    class GetQuestionResponse : Response<NoResponseErrors>
     {
         private GetQuestionResponse() { }
-
-        public override ResponsesCodes GetCode() => ResponsesCodes.GetQuestionResponse;
-
 
         [JsonProperty]
         public QuestionInfo Question { get; private set; }

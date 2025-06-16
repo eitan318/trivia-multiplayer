@@ -1,13 +1,10 @@
 ﻿using Newtonsoft.Json;
+using ClientApp.Models.ResponseErrors;
 namespace ClientApp.Models.Responses
 {
-    class GetRoomsResponse : Response
+    class GetRoomsResponse : Response<NoResponseErrors>
     {
         private GetRoomsResponse() { }
-
-
-        public override ResponsesCodes GetCode() => ResponsesCodes.GetRoomsResponse;
-
 
         [JsonProperty]
         public List<RoomPreview> Rooms { get; private set; }

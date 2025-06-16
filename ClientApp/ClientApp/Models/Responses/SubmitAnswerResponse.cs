@@ -2,11 +2,9 @@
 using Newtonsoft.Json;
 namespace ClientApp.Models.Responses
 {
-    class SubmitAnswerResponse : Response
+    class SubmitAnswerResponse : Response<GeneralResponseErrors>
     {
         private SubmitAnswerResponse() { }
-
-        public override ResponsesCodes GetCode() => ResponsesCodes.SubmitAnswerResponse;
 
         [JsonProperty]
         public uint CorrectAnswerId { get; private set; }
@@ -14,7 +12,5 @@ namespace ClientApp.Models.Responses
         [JsonProperty]
         public int AnswerScore { get; private set; }
 
-        [JsonProperty]
-        public GeneralResponseErrors Errors { get; private set; }
     }
 }

@@ -13,7 +13,7 @@ GetRoomsResponse::GetRoomsResponse(unsigned int status, const std::vector<RoomPr
 
 nlohmann::json GetRoomsResponse::getJson() const {
 	nlohmann::json j = Response::getJson();
-	j["Rooms"] = rooms; // Uses the to_json for PersonalStatistics
+	j["Rooms"] = rooms;
 	return j;
 }
 

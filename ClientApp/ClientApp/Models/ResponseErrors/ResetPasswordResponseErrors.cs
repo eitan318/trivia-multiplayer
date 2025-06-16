@@ -1,7 +1,8 @@
 ﻿namespace ClientApp.Models.ResponseErrors
 {
-    class JoinRoomResponseErrors
+    class ResetPasswordResponseErrors
     {
+        public string NewPasswordError { get; set; }
         public string GeneralError { get; set; }
     }
 }

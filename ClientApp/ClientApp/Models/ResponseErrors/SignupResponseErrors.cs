@@ -1,6 +1,6 @@
 ﻿namespace ClientApp.Models.ResponseErrors
 {
-    class SignupErrors
+    class SignupResponseErrors
     {
         public string UsernameError { get; set; }
         public string PasswordError { get; set; }

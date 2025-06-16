@@ -18,15 +18,39 @@ namespace ClientApp.Services
         /// <exception cref="JsonException">
         /// Thrown if the JSON response cannot be deserialized into the specified type.
         /// </exception>
-        internal T DeserializeResponse<T>(byte[] buffer)
+        internal T DeserializeResponse<T>(byte[] buffer, byte code)
         {
             // Convert the raw response buffer to a JSON string
             var json = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
 
-            // Deserialize the JSON string into the specified type
-            T data = JsonConvert.DeserializeObject<T>(json);
+            try
+            {
+                // Deserialize JSON into a dictionary for manipulation
+                var jsonObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
 
-            return data;
+                if (jsonObject == null)
+                    throw new InvalidOperationException("Failed to deserialize the JSON response.");
+
+                // Add or overwrite the 'Code' field
+                jsonObject["Code"] = code;
+
+                // Serialize back to JSON string after modification
+                var modifiedJson = JsonConvert.SerializeObject(jsonObject);
+
+                // Deserialize the modified JSON string into the specified type
+                T data = JsonConvert.DeserializeObject<T>(modifiedJson);
+
+                return data;
+            }
+            catch (JsonException ex)
+            {
+                throw new InvalidOperationException("An error occurred while processing the JSON response.", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("An unexpected error occurred during deserialization.", ex);
+            }
         }
+
     }
 }

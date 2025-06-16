@@ -28,7 +28,7 @@ namespace ClientApp.Services
             _socketService = socketService;
         }
 
-        internal async Task<ResponseInfo<T>> ExchangeRequest<T>(IRequest request) where T : Response
+        internal async Task<ResponseInfo<T>> ExchangeRequest<T>(IRequest request) where T : class 
         {    
             byte[] requestData = _requestSerializer.SerializeRequest(request);
 
@@ -57,11 +57,11 @@ namespace ClientApp.Services
 
             if (success)
             {
-                return new ResponseInfo<T>(success, this._responseDiserializer.DeserializeResponse<T>(payloadBuffer), null);
+                return new ResponseInfo<T>(success, this._responseDiserializer.DeserializeResponse<T>(payloadBuffer, code), null);
             }
             else 
             {
-                ErrorResponse errorResponse = this._responseDiserializer.DeserializeResponse<ErrorResponse>(payloadBuffer);
+                ErrorResponse errorResponse = this._responseDiserializer.DeserializeResponse<ErrorResponse>(payloadBuffer, code);
                 this._errorMessageStore.ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
                 return new ResponseInfo<T>(success, null, errorResponse);
             }

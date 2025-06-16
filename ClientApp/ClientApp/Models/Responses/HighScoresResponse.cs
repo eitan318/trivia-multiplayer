@@ -1,12 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using ClientApp.Models.ResponseErrors;
+using Newtonsoft.Json;
 
 namespace ClientApp.Models.Responses
 {
-    class HighScoresResponse : Response
+    class HighScoresResponse : Response<NoResponseErrors>
     {
         private HighScoresResponse() { }
-        public override ResponsesCodes GetCode() => ResponsesCodes.HighScoresRespones;
-
         [JsonProperty]
         public List<HighScoreInfoModel> Statistics { get; private set; }
 
