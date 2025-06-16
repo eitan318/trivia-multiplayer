@@ -78,7 +78,7 @@ public:
      *
      * @return A StartGameResponseErrors indicating the result of the operation.
      */
-    GeneralResponseErrors startGameOfRoom(Room* room);
+    GeneralResponseErrors startGameOfRoom(unsigned int roomId);
 
     /**
      * @brief Retrieves a reference to a specific room.

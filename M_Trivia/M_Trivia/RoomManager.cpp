@@ -92,9 +92,10 @@ void RoomManager::leaveRoom(unsigned int roomId,
 
 
 
-GeneralResponseErrors RoomManager::startGameOfRoom(Room* room)
+GeneralResponseErrors RoomManager::startGameOfRoom(unsigned int roomId)
 {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
+    Room* room = getRoom(roomId);
     GeneralResponseErrors errors;
     if (room->getRoomStatus() == RoomStatus::Closed) {
         errors.generalError = "Cannot start game of a closed room.";
