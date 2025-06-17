@@ -50,9 +50,21 @@ GeneralResponseErrors GameManager::submitAnswer(const LoggedUser& user, std::sha
     this->m_database.addUserAnswer(user.getUsername(), game->getId(), q.getId(), 
         answerOriginalNumber, score, ansTime);
 
-    if (game->didEveryoneAnswered()) {
-        game->moveToScoreBoard();
+    if (!game->didEveryoneAnswered()) {
+        return errors;
     }
+
+    if (game->wasLastQuestion()) {
+        game->MoveToGameResults();
+    }
+    else {
+        game->moveToScoreBoard();
+        std::thread([game]() {
+            std::this_thread::sleep_for(std::chrono::seconds(game->getScoreShowingTime()));
+            game->setNextQuestion();
+            }).detach();
+    }
+
 
     return errors;
 }

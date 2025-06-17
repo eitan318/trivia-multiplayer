@@ -31,11 +31,15 @@ public:
     GameStatus getStatus() const;
 
     void moveToScoreBoard();
-
+    void MoveToGameResults();
     double getAnswerDouration(const std::chrono::time_point<std::chrono::steady_clock>& answerMoment) const;
 
     void removeActivePlayer();
     int getActivePlayers();
+    bool wasLastQuestion() const;
+
+
+    unsigned int getScoreShowingTime() const;
 
     void userAnswered(const LoggedUser& user);
 
@@ -49,7 +53,7 @@ private:
     int m_activePlayers;
     const int m_totalNeededPlayers;
     Room* m_room;
-    int currQuestionIdx;
+    int m_currQuestionIdx;
     GameStatus m_status;
     std::chrono::time_point<std::chrono::steady_clock> m_lastQuestionStartTime;
 

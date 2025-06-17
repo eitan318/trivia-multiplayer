@@ -17,6 +17,7 @@ GameRequestHandler::GameRequestHandler(const LoggedUser& user,
     m_game(std::move(game)),
     m_room(room)
 {
+    this->m_game->join(user);
 }
 
 GameRequestHandler::~GameRequestHandler() = default;
@@ -87,11 +88,13 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
     int answerId = request.getAnswerId();
     int answerScore = 0;
     GeneralResponseErrors errors;
+
+    std::optional<Question> currQ = this->m_game->getQuestionForUser(m_user);
     errors = this->m_gameManager.submitAnswer(this->m_user, this->m_game, answerId, &answerScore);
 
 
-    std::optional<Question> currQ = this->m_game->getQuestionForUser(m_user);
-    this->m_game->setNextQuestion();
+
+
 
     SubmitAnswerResponse submitAnswerResponse(std::make_unique<GeneralResponseErrors>(errors), currQ.value().getCorrectAnswerId(), answerScore);
 

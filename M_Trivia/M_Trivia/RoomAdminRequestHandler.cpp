@@ -23,6 +23,7 @@ bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) 
 	switch (static_cast<RequestCodes>(requestInfo.code)) {
 	case RequestCodes::CloseRoomRequest:
 	case RequestCodes::StartGameRequest:
+		return true;
 	default:
 		return false;
 	}
@@ -31,25 +32,18 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
 {
 	if (RoomRequestHandler::isRequestRelevant(requestInfo))
 		return RoomRequestHandler::handleRequest(requestInfo, socket);
-	try {
-		switch (static_cast<RequestCodes>(requestInfo.code)) {
-		case RequestCodes::CloseRoomRequest:
-			return closeRoom(requestInfo);
-		case RequestCodes::StartGameRequest:
-			return startGame(requestInfo);
-		default:
-			ServerErrorResponse errorResponse("Invalid msg code.");
-			RequestResult requestResult(
-				JsonResponsePacketSerializer::serializeResponse(errorResponse),
-				nullptr);
-			return requestResult;
-		}
-	}
-	catch (const std::exception& e) {
-		ServerErrorResponse errResponse(e.what());
-		RequestResult res(
-			JsonResponsePacketSerializer::serializeResponse(errResponse), nullptr);
-		return res;
+
+	switch (static_cast<RequestCodes>(requestInfo.code)) {
+	case RequestCodes::CloseRoomRequest:
+		return closeRoom(requestInfo);
+	case RequestCodes::StartGameRequest:
+		return startGame(requestInfo);
+	default:
+		ServerErrorResponse errorResponse("Invalid msg code.");
+		RequestResult requestResult(
+			JsonResponsePacketSerializer::serializeResponse(errorResponse),
+			nullptr);
+		return requestResult;
 	}
 }
 

@@ -172,12 +172,7 @@ MenuRequestHandler::createRoom(const RequestInfo& requestInfo) const {
         JsonRequestPacketDeserializer<CreateRoomRequest>::deserializeRequest(
             requestInfo.buffer);
    
-    RoomData data;
-    data.maxPlayers = request.getMaxUsers();
-    data.numOfQuestionsInGame = request.getQuestionCount();
-    data.name = request.getRoomName();
-    data.timePerQuestion = request.getAnswerTimeout();
-
+    RoomData data = request.getRoomData();
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
 
     CreateRoomResponseErrors createRoomResponseErrors =
