@@ -29,7 +29,8 @@ enum class ResponseCodes : unsigned char {
 	C_LeaveGameResponse = 19,
 	C_GetGameResultsResponse = 20,
 	C_SubmitAnswerResponse = 21,
-	C_GetRoomStateResponse = 22,
+    C_GetRoomStateResponse = 22,
+    C_GetGameStateResponse = 22,
 
 
 

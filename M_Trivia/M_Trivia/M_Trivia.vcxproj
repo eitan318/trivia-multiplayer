@@ -136,8 +136,10 @@
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameManager.hpp" />
     <ClInclude Include="GameRequestHandler.hpp" />
+    <ClInclude Include="GameStatus.hpp" />
     <ClInclude Include="GeneralResponseErrors.hpp" />
     <ClInclude Include="GetGameResultsResponse.hpp" />
+    <ClInclude Include="GetGameStateResponse.hpp" />
     <ClInclude Include="GetHighScoreRequest.hpp" />
     <ClInclude Include="GetPlayersInRoomRequest.hpp" />
     <ClInclude Include="GetQuestionResponse.hpp" />
@@ -210,6 +212,7 @@
     <ClCompile Include="GameRequestHandler.cpp" />
     <ClCompile Include="GeneralResponseErrors.cpp" />
     <ClCompile Include="GetGameResultsResponse.cpp" />
+    <ClCompile Include="GetGameStateResponse.cpp" />
     <ClCompile Include="GetHighScoreRequest.cpp" />
     <ClCompile Include="GetHighScoreResponse.cpp" />
     <ClCompile Include="GetPersonalStatisticsResponse.cpp" />

@@ -18,26 +18,25 @@ RoomAdminRequestHandler::~RoomAdminRequestHandler()
 
 bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
 {
+	if (RoomRequestHandler::isRequestRelevant(requestInfo))
+		return true;
 	switch (static_cast<RequestCodes>(requestInfo.code)) {
 	case RequestCodes::CloseRoomRequest:
 	case RequestCodes::StartGameRequest:
-	case RequestCodes::GetRoomStateRequest:
-		return true;
 	default:
 		return false;
 	}
 }
 RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestInfo, SOCKET socket)
 {
-
+	if (RoomRequestHandler::isRequestRelevant(requestInfo))
+		return RoomRequestHandler::handleRequest(requestInfo, socket);
 	try {
 		switch (static_cast<RequestCodes>(requestInfo.code)) {
 		case RequestCodes::CloseRoomRequest:
 			return closeRoom(requestInfo);
 		case RequestCodes::StartGameRequest:
 			return startGame(requestInfo);
-		case RequestCodes::GetRoomStateRequest:
-			return getRoomState(requestInfo);
 		default:
 			ServerErrorResponse errorResponse("Invalid msg code.");
 			RequestResult requestResult(

@@ -7,6 +7,7 @@
 #include "SubmitAnswerResponse.hpp"
 #include "GetQuestionResponse.hpp"
 #include "SubmitAnswerRequest.hpp"
+#include "GetGameStateResponse.hpp"
 
 GameRequestHandler::GameRequestHandler(const LoggedUser& user,
     RequestHandlerFactory& handlerFactory, std::shared_ptr<Game> game, Room* room) :
@@ -16,7 +17,6 @@ GameRequestHandler::GameRequestHandler(const LoggedUser& user,
     m_game(std::move(game)),
     m_room(room)
 {
-    m_game->join(user);
 }
 
 GameRequestHandler::~GameRequestHandler() = default;
@@ -28,6 +28,7 @@ bool GameRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
     case RequestCodes::GetQuestionRequest:
     case RequestCodes::SubmitAnswerRequest:
     case RequestCodes::GetGameResultRequest:
+    case RequestCodes::GetGameStateRequest:
         return true;
     default:
         return false;
@@ -36,28 +37,22 @@ bool GameRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
 
 RequestResult GameRequestHandler::handleRequest(const RequestInfo& requestInfo, SOCKET socket)
 {
-    try {
-        switch (static_cast<RequestCodes>(requestInfo.code)) {
-        case RequestCodes::LeaveGameRequest:
-            return this->leaveGame(requestInfo);
-        case RequestCodes::GetQuestionRequest:
-            return this->getQuestion(requestInfo);
-        case RequestCodes::SubmitAnswerRequest:
-            return this->submitAnswer(requestInfo);
-        case RequestCodes::GetGameResultRequest:
-            return this->getGameResults(requestInfo);
-        default:
-            ServerErrorResponse errorResponse("Invalid msg code.");
-            RequestResult requestResult(
-                JsonResponsePacketSerializer::serializeResponse(errorResponse),
-                nullptr);
-        }
-    }
-    catch (const std::exception& e) {
-        ServerErrorResponse errResponse(e.what());
-        RequestResult res(
-            JsonResponsePacketSerializer::serializeResponse(errResponse), nullptr);
-        return res;
+    switch (static_cast<RequestCodes>(requestInfo.code)) {
+    case RequestCodes::LeaveGameRequest:
+        return this->leaveGame(requestInfo);
+    case RequestCodes::GetQuestionRequest:
+        return this->getQuestion(requestInfo);
+    case RequestCodes::SubmitAnswerRequest:
+        return this->submitAnswer(requestInfo);
+    case RequestCodes::GetGameResultRequest:
+        return this->getGameResults(requestInfo);
+    case RequestCodes::GetGameStateRequest:
+        return this->getGameState(requestInfo);
+    default:
+        ServerErrorResponse errorResponse("Invalid msg code.");
+        RequestResult requestResult(
+            JsonResponsePacketSerializer::serializeResponse(errorResponse),
+            nullptr);
     }
 }
 
@@ -94,9 +89,9 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
     GeneralResponseErrors errors;
     errors = this->m_gameManager.submitAnswer(this->m_user, this->m_game, answerId, &answerScore);
 
-    std::optional<Question> currQ = this->m_game->getQuestionForUser(m_user);
 
-    this->m_game->setNextQuestionForUser(this->m_user);
+    std::optional<Question> currQ = this->m_game->getQuestionForUser(m_user);
+    this->m_game->setNextQuestion();
 
     SubmitAnswerResponse submitAnswerResponse(std::make_unique<GeneralResponseErrors>(errors), currQ.value().getCorrectAnswerId(), answerScore);
 
@@ -114,6 +109,16 @@ RequestResult GameRequestHandler::getGameResults(RequestInfo requestInfo)
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(getGameResults),
+        nullptr);
+    return requestResult;
+}
+
+RequestResult GameRequestHandler::getGameState(RequestInfo requestInfo)
+{
+    GetGameStateResponse getGameState(GENERAL_SUCCESS_RESPONSE_STATUS, this->m_game->getStatus());
+
+    RequestResult requestResult(
+        JsonResponsePacketSerializer::serializeResponse(getGameState),
         nullptr);
     return requestResult;
 }

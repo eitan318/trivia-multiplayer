@@ -4,6 +4,8 @@
 #include "RoomState.hpp"
 #include "RoomData.hpp"
 #include "RoomStatus.h"
+#include "RequestsCodes.hpp"
+#include "ServerErrorResponse.hpp"
 
 RequestResult RoomRequestHandler::getRoomState(const RequestInfo& requestinfo)
 {
@@ -20,6 +22,29 @@ RequestResult RoomRequestHandler::getRoomState(const RequestInfo& requestinfo)
         JsonResponsePacketSerializer::serializeResponse(roomStateResponse),
         nextHandler);
     return requestResult;
+}
+
+RequestResult RoomRequestHandler::handleRequest(const RequestInfo& requestInfo, SOCKET socket) {
+	switch (static_cast<RequestCodes>(requestInfo.code)) {
+	case RequestCodes::GetRoomStateRequest:
+		return this->getRoomState(requestInfo);
+	default:
+		ServerErrorResponse errorResponse("Invalid msg code.");
+		RequestResult requestResult(
+			JsonResponsePacketSerializer::serializeResponse(errorResponse),
+			nullptr);
+		return requestResult;
+	}
+}
+
+bool RoomRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
+{
+    switch (static_cast<RequestCodes>(requestInfo.code)) {
+    case RequestCodes::GetRoomStateRequest:
+        return true;
+    default:
+        return false;
+    }
 }
 
 RoomRequestHandler::RoomRequestHandler(Room* room, LoggedUser user, 

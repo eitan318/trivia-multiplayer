@@ -6,31 +6,40 @@
 #include <vector>
 #include <mutex>
 #include <optional>
+#include "GameStatus.hpp"
 #include "Room.hpp"
 
 
 class Game {
 public:
-    Game(std::vector<Question> questions, std::vector<LoggedUser> neededPlayers, unsigned int gameId,
+    Game(const std::vector<Question>& questions, const std::vector<LoggedUser>& neededPlayers, unsigned int gameId,
         unsigned int questionTimeLimit, Room* room);
     Game(const Game&) = delete;
     Game& operator=(const Game&) = delete;
-
     Game(Game&&) = delete;
     Game& operator=(Game&&) = delete;
+
+
     std::map<LoggedUser, PlayerGameData> getPlayers();
     std::optional<Question> getQuestionForUser(const LoggedUser& user);
-    bool setNextQuestionForUser(const LoggedUser& user);
+    void setNextQuestion();
     unsigned int getQuestionTimeLimit() const;
     bool userExistsInGame(const LoggedUser& user) const;
-
     void removePlayer(const LoggedUser& user);
     unsigned int getId() const;
-
     void join(const LoggedUser& player);
+    GameStatus getStatus() const;
+
+    void moveToScoreBoard();
+
+    double getAnswerDouration(const std::chrono::time_point<std::chrono::steady_clock>& answerMoment) const;
 
     void removeActivePlayer();
     int getActivePlayers();
+
+    void userAnswered(const LoggedUser& user);
+
+    bool didEveryoneAnswered() const;
 
 private:
     const unsigned int m_questionTimeLimit;
@@ -40,6 +49,9 @@ private:
     int m_activePlayers;
     const int m_totalNeededPlayers;
     Room* m_room;
+    int currQuestionIdx;
+    GameStatus m_status;
+    std::chrono::time_point<std::chrono::steady_clock> m_lastQuestionStartTime;
 
     mutable std::mutex m_playersMutex; // Protects m_players
     mutable std::mutex m_questionsMutex; // Protects m_questions

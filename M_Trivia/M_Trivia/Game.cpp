@@ -1,9 +1,9 @@
 #include "Game.hpp"
 
-Game::Game(std::vector<Question> questions, std::vector<LoggedUser> neededPlayers, unsigned int gameId,
+Game::Game(const std::vector<Question>& questions, const std::vector<LoggedUser>& neededPlayers, unsigned int gameId,
     unsigned int questionTimeLimit, Room* room)
     : m_gameId(gameId), m_questions(std::move(questions)), m_questionTimeLimit(questionTimeLimit),
-    m_totalNeededPlayers(neededPlayers.size()), m_room(room), m_activePlayers(0)
+    m_totalNeededPlayers(neededPlayers.size()), m_room(room), m_activePlayers(0), m_status(GameStatus::ScoreBoardShow)
 {
 }
 
@@ -12,11 +12,16 @@ void Game::join(const LoggedUser& player) {
     std::lock_guard<std::mutex> lock(m_playersMutex);
     Question shuffledCopy = Question(this->m_questions[0]);
     shuffledCopy.shuffle();
-    m_players.emplace(player, PlayerGameData(0, shuffledCopy, std::time(nullptr)));
+    m_players.emplace(player, PlayerGameData(shuffledCopy, std::chrono::steady_clock::now()));
     
     if (m_activePlayers == m_totalNeededPlayers) {
         this->m_room->enterGame();
     }
+}
+
+GameStatus Game::getStatus() const
+{
+    return this->m_status;
 }
 
 std::map<LoggedUser, PlayerGameData> Game::getPlayers()
@@ -40,20 +45,43 @@ bool Game::userExistsInGame(const LoggedUser& user) const
     return m_players.find(user) != m_players.end();
 }
 
-bool Game::setNextQuestionForUser(const LoggedUser& user)
+void Game::userAnswered(const LoggedUser& user)
 {
-    std::lock_guard<std::mutex> lock(m_playersMutex);
-    auto it = m_players.find(user);
-    if (it != m_players.end()) {
-        if (it->second.questionIdx + 1 >= this->m_questions.size()) {
+    this->m_players[user].answeredLastQuestion = true;
+}
+
+void Game::moveToScoreBoard()
+{
+    this->m_status = GameStatus::ScoreBoardShow;
+}
+
+double Game::getAnswerDouration(const std::chrono::time_point<std::chrono::steady_clock>& answerMoment) const
+{
+    return std::chrono::duration<double>(answerMoment - this->m_lastQuestionStartTime).count();
+}
+
+
+bool Game::didEveryoneAnswered() const
+{
+    for (const auto& [player, playerData] : this->m_players) {
+        if (playerData.answeredLastQuestion) {
             return false;
         }
-        it->second.questionIdx++;
-        Question nextQuestionShuffledCopy(this->m_questions[it->second.questionIdx]);
-        nextQuestionShuffledCopy.shuffle();
-        it->second.question = nextQuestionShuffledCopy;
-        it->second.lastStartTime = std::time(nullptr);
     }
+    return true;
+}
+
+
+void Game::setNextQuestion()
+{
+    this->currQuestionIdx++;
+    std::lock_guard<std::mutex> lock(m_playersMutex);
+    for (auto& [player, playerData] : this->m_players) {
+        Question nextQuestionShuffledCopy(this->m_questions[this->currQuestionIdx]);
+        nextQuestionShuffledCopy.shuffle();
+        playerData.question = nextQuestionShuffledCopy;
+    }
+    this->m_lastQuestionStartTime = std::chrono::steady_clock::now();
 }
 
 unsigned int Game::getQuestionTimeLimit() const

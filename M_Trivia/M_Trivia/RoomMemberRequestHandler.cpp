@@ -18,6 +18,9 @@ RoomMemberRequestHandler::~RoomMemberRequestHandler()
 
 bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo & requestInfo) const 
 {
+	if (RoomRequestHandler::isRequestRelevant(requestInfo))
+		return true;
+
 	switch (static_cast<RequestCodes>(requestInfo.code)) {
 	case RequestCodes::LeaveRoomRequest:
 	case RequestCodes::GetRoomStateRequest:
@@ -29,25 +32,20 @@ bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo & requestInfo
 
 RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& requestInfo, SOCKET socket)
 {
-	try {
-		switch (static_cast<RequestCodes>(requestInfo.code)) {
-		case RequestCodes::LeaveRoomRequest:
-			return this->leaveRoomRequest(requestInfo);
-		case RequestCodes::GetRoomStateRequest:
-			return this->getRoomState(requestInfo);
-		default:
-			ServerErrorResponse errorResponse("Invalid msg code.");
-			RequestResult requestResult(
-				JsonResponsePacketSerializer::serializeResponse(errorResponse),
-				nullptr);
-			return requestResult;
-		}
-	}
-	catch (const std::exception& e) {
-		ServerErrorResponse errResponse(e.what());
-		RequestResult res(
-			JsonResponsePacketSerializer::serializeResponse(errResponse), nullptr);
-		return res;
+	if (RoomRequestHandler::isRequestRelevant(requestInfo))
+		return RoomRequestHandler::handleRequest(requestInfo, socket);
+
+	switch (static_cast<RequestCodes>(requestInfo.code)) {
+	case RequestCodes::LeaveRoomRequest:
+		return this->leaveRoomRequest(requestInfo);
+	case RequestCodes::GetRoomStateRequest:
+		return this->getRoomState(requestInfo);
+	default:
+		ServerErrorResponse errorResponse("Invalid msg code.");
+		RequestResult requestResult(
+			JsonResponsePacketSerializer::serializeResponse(errorResponse),
+			nullptr);
+		return requestResult;
 	}
 }
 

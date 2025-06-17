@@ -40,34 +40,26 @@ bool MenuRequestHandler::isRequestRelevant(
 
 RequestResult
 MenuRequestHandler::handleRequest(const RequestInfo& requestInfo, SOCKET socket) {
-    try {
-        switch (static_cast<RequestCodes>(requestInfo.code)) {
-        case RequestCodes::CreateRoomRequest:
-            return this->createRoom(requestInfo);
-        case RequestCodes::GetPlayersInRoomRequest:
-            return this->getPlayersInRoom(requestInfo);
-        case RequestCodes::GetRoomsRequest:
-            return this->getRooms(requestInfo);
-        case RequestCodes::JoinRoomRequest:
-            return this->joinRoom(requestInfo);
-        case RequestCodes::LogoutRequest:
-            return this->logout(requestInfo);
-        case RequestCodes::GetHighScoresRequest:
-            return this->getHighScore(requestInfo);
-        case RequestCodes::PersonalStatisticsRequest:
-            return this->getPersonalStats(requestInfo);
-        default:
-            ServerErrorResponse errorResponse("Invalid msg code.");
-            RequestResult requestResult(
-                JsonResponsePacketSerializer::serializeResponse(errorResponse),
-                nullptr);
-        }
-    }
-    catch (const std::exception& e) {
-        ServerErrorResponse errResponse(e.what());
-        RequestResult res(
-            JsonResponsePacketSerializer::serializeResponse(errResponse), nullptr);
-        return res;
+    switch (static_cast<RequestCodes>(requestInfo.code)) {
+    case RequestCodes::CreateRoomRequest:
+        return this->createRoom(requestInfo);
+    case RequestCodes::GetPlayersInRoomRequest:
+        return this->getPlayersInRoom(requestInfo);
+    case RequestCodes::GetRoomsRequest:
+        return this->getRooms(requestInfo);
+    case RequestCodes::JoinRoomRequest:
+        return this->joinRoom(requestInfo);
+    case RequestCodes::LogoutRequest:
+        return this->logout(requestInfo);
+    case RequestCodes::GetHighScoresRequest:
+        return this->getHighScore(requestInfo);
+    case RequestCodes::PersonalStatisticsRequest:
+        return this->getPersonalStats(requestInfo);
+    default:
+        ServerErrorResponse errorResponse("Invalid msg code.");
+        RequestResult requestResult(
+            JsonResponsePacketSerializer::serializeResponse(errorResponse),
+            nullptr);
     }
 }
 

@@ -144,7 +144,16 @@ void Communicator::handleNewClient(SOCKET sock)
         RequestResult requestResult;
         if (handler->isRequestRelevant(requestInfo))
         {
-            requestResult = handler->handleRequest(requestInfo, sock);
+            try {
+                requestResult = handler->handleRequest(requestInfo, sock);
+            }
+            catch (const std::exception& e) {
+                ServerErrorResponse errResponse(e.what());
+                RequestResult res(
+                    JsonResponsePacketSerializer::serializeResponse(errResponse), nullptr);
+                requestResult = res;
+            }
+
         }
         else
         {

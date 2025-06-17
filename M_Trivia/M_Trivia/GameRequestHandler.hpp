@@ -74,6 +74,14 @@ private:
     RequestResult getGameResults(RequestInfo requestInfo);
 
     /**
+	 * @brief requesting a game state response.
+	 * @param requestInfo The request information.
+	 * @return A RequestResult containing the serialized response and the next
+	 * handler.
+	 */
+    RequestResult getGameState(RequestInfo requestInfo);
+
+    /**
      * @brief removes the player who requested to leave the game.
      * @param requestInfo The request information.
      * @return A RequestResult containing the serialized response and the next
