@@ -9,10 +9,8 @@
 class SubmitAnswerResponse : public Response<ResponseCodes::C_SubmitAnswerResponse, GeneralResponseErrors> {
 private:
 	unsigned int m_correctAnswerId;
-	int m_answerScore;
 public:
-	SubmitAnswerResponse(std::unique_ptr<GeneralResponseErrors> errors, unsigned int correctAnswerId,
-	 int answerScore);
+	SubmitAnswerResponse(std::unique_ptr<GeneralResponseErrors> errors, unsigned int correctAnswerId);
 
 	/**
 	 * @brief Converts the response to a JSON object.

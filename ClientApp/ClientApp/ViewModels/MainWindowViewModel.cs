@@ -13,7 +13,7 @@ namespace ClientApp.ViewModels
     internal class MainWindowViewModel : ViewModelBase
     {
         private readonly NavigationStore _navigationStore;
-        private readonly ErrorMessageStore _errorMessageStore;
+        private readonly ServerErrorMessageStore _errorMessageStore;
         private readonly INavigationService _navigationService;
         private readonly SocketService _socketService;
 
@@ -22,7 +22,7 @@ namespace ClientApp.ViewModels
 
         public MainWindowViewModel(
             NavigationStore navigationStore,
-            ErrorMessageStore errorMessageStore,
+            ServerErrorMessageStore errorMessageStore,
             INavigationService navigationService,
             RequestsExchangeService requestsExchangeService,
             SocketService socketService)
@@ -36,7 +36,7 @@ namespace ClientApp.ViewModels
 
             _errorMessageStore.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == nameof(ErrorMessageStore.ErrorMessage))
+                if (args.PropertyName == nameof(ServerErrorMessageStore.ErrorMessage))
                 {
                     OnPropertyChanged(nameof(ServerErrorMessage));
                 }

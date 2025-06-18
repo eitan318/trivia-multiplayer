@@ -26,7 +26,7 @@ namespace ClientApp.Commands
                 var leaverRoomRequest = new LeaveRoomRequest();
                 ResponseInfo<LeaveRoomResponse> responseInfo =
                     await _requestsExchangeService.ExchangeRequest<LeaveRoomResponse>(leaverRoomRequest);
-                LeaveRoomResponse response = (LeaveRoomResponse)responseInfo.Response;
+                LeaveRoomResponse response = responseInfo.Response;
                 if (response.Status == 0)
                 {
                     this._navigationService.NavigateTo<MenuViewModel>();

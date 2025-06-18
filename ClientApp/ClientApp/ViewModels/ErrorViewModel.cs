@@ -4,9 +4,9 @@ namespace ClientApp.ViewModels
 {
     class ErrorViewModel : ViewModelBase
     {
-        private ErrorMessageStore _errorMessageStore;
+        private ServerErrorMessageStore _errorMessageStore;
 
-        public ErrorViewModel(ErrorMessageStore errorMessageStore) {
+        public ErrorViewModel(ServerErrorMessageStore errorMessageStore) {
             this._errorMessageStore = errorMessageStore;
         }
 

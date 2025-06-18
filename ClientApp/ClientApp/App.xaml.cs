@@ -61,10 +61,13 @@ public partial class App : Application
         services.AddTransient<CreateRoomViewModel>();
         services.AddTransient<JoinRoomViewModel>();
         services.AddTransient<ErrorViewModel>();
-        services.AddTransient<GameViewModel>();
+        services.AddTransient<GameAnsweringViewModel>();
         services.AddTransient<GameResultsViewModel>();
+        services.AddTransient<WaitingBetweenQuestionsViewModel>();
+        services.AddTransient<GameScoreBoardViewModel>();
+        
 
-        //   Password reset ViewModels
+        // Password reset ViewModels
         services.AddTransient<EmailEntryViewModel>();
         services.AddTransient<CodeEntryViewModel>();
         services.AddTransient<ResetPasswordViewModel>();
@@ -81,8 +84,10 @@ public partial class App : Application
         services.AddTransient<CreateRoomView>();
         services.AddTransient<JoinRoomView>();
         services.AddTransient<ErrorView>();
-        services.AddTransient<GameView>();
+        services.AddTransient<GameAnsweringView>();
         services.AddTransient<GameResultsView>();
+        services.AddTransient<WaitingBetweenQuestionsView>();
+        services.AddTransient<GameScoreBoardView>();
 
         // Password reset Views
         services.AddTransient<EmailEntryView>();
@@ -92,7 +97,7 @@ public partial class App : Application
         // Register stores
         services.AddSingleton<UserStore>();
         services.AddSingleton<PasswordResetStore>();
-        services.AddSingleton<ErrorMessageStore>();
+        services.AddSingleton<ServerErrorMessageStore>();
         services.AddSingleton<NavigationStore>();
         services.AddSingleton<RoomDataStore>();
         services.AddSingleton<AmIAdminStore>();

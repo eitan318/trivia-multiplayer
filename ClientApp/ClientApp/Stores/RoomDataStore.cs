@@ -6,7 +6,7 @@ namespace ClientApp.Stores
     /// <summary>
     /// Represents data about a room and notifies changes to its properties.
     /// </summary>
-    public class RoomDataStore : StoreBase
+    class RoomDataStore : StoreBase
     {
         private RoomDataModel? _currentRoomData;
 

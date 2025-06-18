@@ -2,5 +2,6 @@
 
 enum GameStatus {
 	AnsweringQuestion,
-	ScoreBoardShow
+	ScoreBoardShow,
+	GameResultsShow
 };

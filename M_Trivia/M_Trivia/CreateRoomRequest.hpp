@@ -1,6 +1,7 @@
 #pragma once
 #include "json.hpp"
 #include <string>
+#include "RoomData.hpp"
 
 template <typename T> class JsonRequestPacketDeserializer;
 
@@ -12,16 +13,10 @@ class CreateRoomRequest {
   friend class JsonRequestPacketDeserializer<CreateRoomRequest>;
 
 private:
-  std::string roomName;
-  unsigned int maxUsers;
-  unsigned int questionCount;
-  double answerTimeout;
+	RoomData m_roomData;
 
   CreateRoomRequest(const nlohmann::json &j);
 
 public:
-  std::string getRoomName() const;
-  unsigned int getMaxUsers() const;
-  unsigned int getQuestionCount() const;
-  double getAnswerTimeout() const;
+	RoomData getRoomData() const;
 };

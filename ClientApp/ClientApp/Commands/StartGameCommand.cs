@@ -33,7 +33,7 @@ namespace ClientApp.Commands
                     var startGameResponse = responseInfo.Response;
                     if(startGameResponse.Status == 0)
                     {
-                        _navigationService.NavigateTo<GameViewModel>(); 
+                        _navigationService.NavigateTo<GameAnsweringViewModel>(); 
                     }
                     else
                     {

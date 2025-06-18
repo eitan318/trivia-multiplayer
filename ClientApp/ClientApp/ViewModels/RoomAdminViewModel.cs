@@ -31,7 +31,7 @@ namespace ClientApp.ViewModels
             this.userStore = userState;
             this._requestsExchangeService = requestsExchangeService;
             this.StartGameCmd = new StartGameCommand(navigationService, requestsExchangeService, this);
-            this.CloseRoomCmd = new CloseRoomCommand(navigationService, requestsExchangeService, this);
+            this.CloseRoomCmd = new LeaveRoomCommand(navigationService, requestsExchangeService, roomDataStore);
             this.RoomDataStore = roomDataStore;
 
         }

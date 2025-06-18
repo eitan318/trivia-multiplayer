@@ -118,10 +118,6 @@ namespace ClientApp.ViewModels
 
                         SelectedRoom = matchingRoom;
                     }
-                    else
-                    {
-                        ErrorMessage = "SERVER ERROR: " + responseInfo.ErrorResponse.Message;
-                    }
                 });
             }
             catch (Exception ex)

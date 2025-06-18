@@ -45,7 +45,7 @@ public:
      * @return A GeneralResponseErrors value indicating the result of the submission (e.g., success or specific error).
      */
     GeneralResponseErrors submitAnswer(const LoggedUser& user, std::shared_ptr<Game> game,
-        int answerId, int* answerScore);
+        int answerId);
 
     /**
      * Retrieves the results for all players in a specified game.
