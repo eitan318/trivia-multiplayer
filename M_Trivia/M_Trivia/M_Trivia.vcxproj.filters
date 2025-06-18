@@ -154,9 +154,6 @@
     <ClCompile Include="RoomRequestHandler.cpp">
       <Filter>RequestHandlers</Filter>
     </ClCompile>
-    <ClCompile Include="StartGameResponseErrors.cpp">
-      <Filter>Model\ResponseErrors</Filter>
-    </ClCompile>
     <ClCompile Include="GetQuestionResponse.cpp">
       <Filter>Model\Responses</Filter>
     </ClCompile>

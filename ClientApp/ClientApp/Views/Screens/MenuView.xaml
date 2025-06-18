@@ -9,28 +9,168 @@
 
     <Grid>
         <!-- StackPanel to center menu buttons -->
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="{Binding Timer.FormattedTime, StringFormat='Timer: {0}'}" 
-                       FontWeight="Bold" FontSize="16" Margin="10,0" />
+        <StackPanel Margin="34" HorizontalAlignment="Left" VerticalAlignment="Center">
+            
+            
             <!-- Create Room Button -->
-            <Button Content="Create Room" 
-                    Command="{Binding NavToCreateRoomCmd}" 
-                    Margin="0,10"/>
+            <Button Content="Create a Room"
+    Width="200"
+    Height="56"
+    Command="{Binding NavToCreateRoomCmd}" 
+    Margin="0,10"
+    FontSize="22"
+    FontWeight="Bold"
+    Style="{StaticResource MaterialDesignOutlinedButton}"
+    materialDesign:ButtonAssist.CornerRadius="14"
+    BorderThickness="3"
+    RenderTransformOrigin="0.5,0.5">
+                <Button.RenderTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Button.RenderTransform>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+             To="1.05" Duration="0:0:0.15"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+             To="1.05" Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+             To="1" Duration="0:0:0.15"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+             To="1" Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
 
             <!-- Join Room Button -->
-            <Button Content="Join Room" 
-                    Command="{Binding NavToJoinRoomCmd}" 
-                    Margin="0,10"/>
+            <Button Content="Join a Room"
+                Width="200"
+                Height="56"
+                Command="{Binding NavToJoinRoomCmd}" 
+                Margin="0,10"
+                FontSize="22"
+                FontWeight="Bold"
+                Style="{StaticResource MaterialDesignOutlinedButton}"
+                materialDesign:ButtonAssist.CornerRadius="14"
+                BorderThickness="3"
+                RenderTransformOrigin="0.5,0.5">
+                <Button.RenderTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Button.RenderTransform>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+             To="1.05" Duration="0:0:0.15"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+             To="1.05" Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+             To="1" Duration="0:0:0.15"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+             To="1" Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
 
             <!-- Statistics Button -->
-            <Button Content="Statistics" 
-                    Command="{Binding NavToStatisticsCmd}" 
-                    Margin="0,10"/>
+            <Button Content="Statistics"
+                Width="200"
+                Height="56"
+                Command="{Binding NavToStatisticsCmd}" 
+                Margin="0,10"
+                FontSize="22"
+                FontWeight="Bold"
+                Style="{StaticResource MaterialDesignOutlinedButton}"
+                materialDesign:ButtonAssist.CornerRadius="14"
+                BorderThickness="3"
+                RenderTransformOrigin="0.5,0.5">
+                <Button.RenderTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Button.RenderTransform>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                     To="1.05" Duration="0:0:0.15"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                     To="1.05" Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                     To="1" Duration="0:0:0.15"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                     To="1" Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+
+
+
+
 
             <!-- Logout Button -->
-            <Button Content="Logout" 
-                    Command="{Binding LogoutCmd}" 
-                    Margin="0,10"/>
+            <Button Content="Logout"
+                Width="200"
+                Height="56"
+                Command="{Binding logoutCmd}" 
+                Margin="0,10"
+                FontSize="22"
+                FontWeight="Bold"
+                Style="{StaticResource MaterialDesignOutlinedButton}"
+                materialDesign:ButtonAssist.CornerRadius="14"
+                BorderThickness="3"
+                RenderTransformOrigin="0.5,0.5">
+                <Button.RenderTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Button.RenderTransform>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                         To="1.05" Duration="0:0:0.15"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                         To="1.05" Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                         To="1" Duration="0:0:0.15"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                         To="1" Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
 
             <!-- Error Message -->
             <TextBlock Text="{Binding ErrorMessage}" 
