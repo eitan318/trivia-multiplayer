@@ -2,7 +2,7 @@
 
 Game::Game(const std::vector<Question>& questions, const std::vector<LoggedUser>& neededPlayers, unsigned int gameId,
     unsigned int questionTimeLimit, Room* room)
-    : m_gameId(gameId), m_questions(std::move(questions)), m_questionTimeLimit(questionTimeLimit),
+    : m_gameId(gameId), m_questions(std::move(questions)), m_questionTimeLimitSeconds(questionTimeLimit),
     m_totalNeededPlayers(neededPlayers.size()), m_room(room), m_activePlayers(0), m_status(GameStatus::AnsweringQuestion), m_currQuestionIdx(0)
 {
     this->m_lastQuestionStartTime = std::chrono::steady_clock::now();
@@ -67,14 +67,15 @@ double Game::getAnswerDouration(const std::chrono::time_point<std::chrono::stead
 }
 
 
-bool Game::didEveryoneAnswered() const
+bool Game::didEveryActiveAnswered() const
 {
+    unsigned int countAnswered = 0;
     for (const auto& [player, playerData] : this->m_players) {
-        if (!playerData.answeredLastQuestion) {
-            return false;
+        if (playerData.answeredLastQuestion) {
+            countAnswered++;
         }
     }
-    return true;
+    return countAnswered == this->m_activePlayers;
 }
 
 
@@ -104,7 +105,7 @@ unsigned int Game::getCurrQuestionIdx() const
 
 unsigned int Game::getQuestionTimeLimit() const
 {
-    return m_questionTimeLimit; 
+    return m_questionTimeLimitSeconds; 
 }
 
 void Game::removePlayer(const LoggedUser& user)

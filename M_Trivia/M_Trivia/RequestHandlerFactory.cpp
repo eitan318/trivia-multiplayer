@@ -4,7 +4,6 @@
 #include "LoginRequestHandler.hpp"
 #include "MenuRequestHandler.hpp"
 #include "RoomAdminRequestHandler.hpp"
-#include "RoomMemberRequestHandler.hpp"
 #include "GameRequestHandler.hpp"
 
 
@@ -40,9 +39,9 @@ std::shared_ptr<IRequestHandler> RequestHandlerFactory::createRoomAdminRequestHa
 	return std::make_shared<RoomAdminRequestHandler>(const_cast<RequestHandlerFactory&>(*this), loggedUser, room);
 }
 
-std::shared_ptr<IRequestHandler> RequestHandlerFactory::createRoomMemberRequestHandler(const LoggedUser& loggedUser, Room* room) const
+std::shared_ptr<IRequestHandler> RequestHandlerFactory::createRoomRequestHandler(const LoggedUser& loggedUser, Room* room) const
 {
-	return std::make_shared<RoomMemberRequestHandler>(const_cast<RequestHandlerFactory&>(*this), loggedUser, room);
+	return std::make_shared<RoomRequestHandler>(const_cast<RequestHandlerFactory&>(*this), loggedUser, room);
 }
 
 std::shared_ptr<IRequestHandler> RequestHandlerFactory::createGameRequestHandler(LoggedUser user, std::shared_ptr<Game> game, Room* room)

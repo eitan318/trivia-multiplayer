@@ -9,7 +9,6 @@ namespace ClientApp.Commands
 {
     class LeaveGameCommand : CommandBase
     {
-        private readonly uint NAVIGATETOROOMFROMRESULTS = 2;
         private readonly INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
         private readonly GameAnsweringViewModel _gameViewModel;
@@ -29,7 +28,7 @@ namespace ClientApp.Commands
         {
             if (_gameViewModel != null)
             {
-                _gameViewModel.Timer.Dispose();
+                _gameViewModel.Timer.Stop();
             }
             LeaveGameRequest request = new LeaveGameRequest();
             ResponseInfo<LeaveGameResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<LeaveGameResponse>(request);

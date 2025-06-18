@@ -42,10 +42,10 @@ public:
     std::shared_ptr<IRequestHandler> createRoomAdminRequestHandler(const LoggedUser& loggedUser, Room* room) const;
 
     /**
-     * @brief Creates a new RoomMemberRequestHandler.
-     * @return A pointer to a newly created RoomMemberRequestHandler.
-     */
-    std::shared_ptr<IRequestHandler> createRoomMemberRequestHandler(const LoggedUser& loggedUser, Room* room) const;
+     * @brief Creates a new RoomAdminRequestHandler.
+     * @return A pointer to a newly created RoomAdminRequestHandler.
+    */
+    std::shared_ptr<IRequestHandler> createRoomRequestHandler(const LoggedUser& loggedUser, Room* room) const;
 
     /**
      * @brief Creates a new GameRequestHandler.

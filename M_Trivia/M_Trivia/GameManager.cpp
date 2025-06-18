@@ -55,7 +55,7 @@ GeneralResponseErrors GameManager::submitAnswer(const LoggedUser& user, std::sha
     this->m_database.addUserAnswer(user.getUsername(), game->getId(), q.getId(), 
         answerOriginalNumber, score, answerTime);
 
-    if (!game->didEveryoneAnswered()) {
+    if (!game->didEveryActiveAnswered()) {
         return errors;
     }
 

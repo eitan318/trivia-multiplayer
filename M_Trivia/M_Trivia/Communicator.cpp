@@ -133,7 +133,8 @@ void Communicator::handleNewClient(SOCKET sock)
         }
         catch (std::exception &e)
         {
-            clientExited(sock);
+            std::cerr << "Client " << sock << " probably exited ungracefully." << std::endl;
+            handler->Cleanup();
             break;
         }
         time_t requestRecievalTime = time(nullptr);
@@ -145,7 +146,7 @@ void Communicator::handleNewClient(SOCKET sock)
         if (handler->isRequestRelevant(requestInfo))
         {
             try {
-                requestResult = handler->handleRequest(requestInfo, sock);
+                requestResult = handler->handleRequest(requestInfo);
             }
             catch (const std::exception& e) {
                 ServerErrorResponse errResponse(e.what());
@@ -153,12 +154,10 @@ void Communicator::handleNewClient(SOCKET sock)
                     JsonResponsePacketSerializer::serializeResponse(errResponse), nullptr);
                 requestResult = res;
             }
-
         }
         else
         {
             ServerErrorResponse errorResponse("Invalid msg code.");
-
             requestResult = RequestResult(JsonResponsePacketSerializer::serializeResponse(errorResponse), nullptr);
         }
 
@@ -184,8 +183,3 @@ void Communicator::handleNewClient(SOCKET sock)
     }
 }
 
-void Communicator::clientExited(SOCKET sock)
-{
-    std::cerr << "Client " << sock << " probably exited ungracefully." << std::endl;
-    this->m_handlerFactory.getLoginManager().logout(sock);
-}

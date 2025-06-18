@@ -10,13 +10,15 @@
 class RoomRequestHandler : public IRequestHandler {
 public:
 	RequestResult getRoomState(const RequestInfo& requestinfo);
-	RoomRequestHandler(Room* room, LoggedUser user, RequestHandlerFactory& requestHandlerFactory);
+	RoomRequestHandler(RequestHandlerFactory& requestHandlerFactory, LoggedUser user, Room* room);
 
-	RequestResult handleRequest(const RequestInfo& requestInfo, SOCKET socket) override;
+	RequestResult handleRequest(const RequestInfo& requestInfo) override;
 	bool isRequestRelevant(const RequestInfo& requestInfo) const override;
+	void Cleanup() override;
 
+	RequestResult leaveRoom(RequestInfo requestInfo);
 protected:
-	RequestHandlerFactory& m_requestHandlerFactory;
+	RequestHandlerFactory& m_handlerFactory;
 	Room* m_room;
 	LoggedUser m_user;
 	RoomManager& m_roomManager;

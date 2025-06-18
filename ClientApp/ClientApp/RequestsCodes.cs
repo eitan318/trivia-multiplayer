@@ -23,6 +23,5 @@ namespace ClientApp.Models.Requests
         SubmitAnswerRequest = 19,
         GetGameResultRequest = 20, 
         GetGameStateRequrst = 21, 
-
     }
 }

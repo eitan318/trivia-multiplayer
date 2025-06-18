@@ -42,6 +42,12 @@ namespace ClientApp.ViewModels
             this.Timer.Stop();
         }
 
+        public override void Dispose()
+        {
+            base.Dispose();
+            Timer.Dispose();
+        }
+
 
         public ICommand SubmitCmd { get; }
         public ICommand LeaveGameCmd { get; }

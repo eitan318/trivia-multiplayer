@@ -39,7 +39,7 @@ bool MenuRequestHandler::isRequestRelevant(
 }
 
 RequestResult
-MenuRequestHandler::handleRequest(const RequestInfo& requestInfo, SOCKET socket) {
+MenuRequestHandler::handleRequest(const RequestInfo& requestInfo) {
     switch (static_cast<RequestCodes>(requestInfo.code)) {
     case RequestCodes::CreateRoomRequest:
         return this->createRoom(requestInfo);
@@ -61,6 +61,11 @@ MenuRequestHandler::handleRequest(const RequestInfo& requestInfo, SOCKET socket)
             JsonResponsePacketSerializer::serializeResponse(errorResponse),
             nullptr);
     }
+}
+
+void MenuRequestHandler::Cleanup()
+{
+    this->m_handlerFactory.getLoginManager().logout(this->m_user);
 }
 
 RequestResult MenuRequestHandler::logout(const RequestInfo& info) const {
@@ -155,7 +160,7 @@ MenuRequestHandler::joinRoom(const RequestInfo& requestInfo) const {
     std::shared_ptr<IRequestHandler> nextHandler;
 
     if (joinRoomResponseErrors.statusCode() == 0)
-        nextHandler = std::move(this->m_handlerFactory.createRoomMemberRequestHandler(this->m_user, roomManager.getRoom(roomId)));
+        nextHandler = std::move(this->m_handlerFactory.createRoomRequestHandler(this->m_user, roomManager.getRoom(roomId)));
     else
         nextHandler = nullptr;
 
