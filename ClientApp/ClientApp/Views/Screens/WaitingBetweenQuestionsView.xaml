@@ -1,31 +1,31 @@
 ﻿<UserControl x:Class="ClientApp.Views.Screens.WaitingBetweenQuestionsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ClientApp.Views.Screens"
-             mc:Ignorable="d" 
-    <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
-            <!-- Loading animation -->
-            <ProgressBar
+             mc:Ignorable="d" >
+	<Grid>
+		<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+			<!-- Loading animation -->
+			<ProgressBar
                 IsIndeterminate="True"
                 Width="40"
                 Style="{StaticResource MaterialDesignCircularProgressBar}"
                 Value="0"/>
 
-                <Button 
-            Margin="10"
-            VerticalAlignment="Bottom"
-            Grid.Column="2"
-            Content="To Room" Style="{StaticResource OperationButtonStyle}" Command="{Binding LeaveGameCmd}"
+			<Button
+		Margin="10"
+		VerticalAlignment="Bottom"
+		Grid.Column="2"
+		Content="To Room" Style="{StaticResource OperationButtonStyle}" Command="{Binding LeaveGameCmd}"
             />
 
-            <!-- Loading text -->
-            <TextBlock Text="Waiting for everyone to answer..." 
-                       FontSize="16" 
-                       Foreground="Gray" 
+			<!-- Loading text -->
+			<TextBlock Text="Waiting for everyone to answer..."
+                       FontSize="16"
+                       Foreground="Gray"
                        TextAlignment="Center" />
-        </StackPanel>
-    </Grid>
+		</StackPanel>
+	</Grid>
 </UserControl>
