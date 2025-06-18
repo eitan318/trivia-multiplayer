@@ -10,8 +10,8 @@
     <Grid>
         <StackPanel Margin="40" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" >
             <TextBlock 
-                Text="Main Menu" FontSize="60" Foreground="#FF737373" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <materialDesign:PackIcon Kind="Home" Width="75" Height="60" Foreground="#FF737373" />
+                Text="Main Menu" FontSize="60" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <materialDesign:PackIcon Kind="Home" Width="75" Height="43"  VerticalAlignment="Bottom"/>
             </TextBlock>
             <!--Keep The 4 buttons' stackpanels together-->
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
@@ -25,7 +25,7 @@
                     FontSize="22"
                     FontWeight="Bold"
                     Style="{StaticResource MaterialDesignOutlinedButton}"
-                    materialDesign:ButtonAssist.CornerRadius="14"
+                    materialDesign:ButtonAssist.CornerRadius="16"
                     BorderThickness="3"
                     RenderTransformOrigin="0.5,0.5">
                         <Button.RenderTransform>
@@ -61,16 +61,16 @@
 
                     <!-- Logout Button -->
                     <Button Content="Logout"
-Width="200"
-Height="56"
-Command="{Binding logoutCmd}" 
-Margin="0,10"
-FontSize="22"
-FontWeight="Bold"
-Style="{StaticResource MaterialDesignOutlinedButton}"
-materialDesign:ButtonAssist.CornerRadius="14"
-BorderThickness="3"
-RenderTransformOrigin="0.5,0.5">
+                        Width="200"
+                        Height="56"
+                        Command="{Binding logoutCmd}" 
+                        Margin="0,10"
+                        FontSize="22"
+                        FontWeight="Bold"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        materialDesign:ButtonAssist.CornerRadius="16"
+                        BorderThickness="3"
+                        RenderTransformOrigin="0.5,0.5">
                         <Button.RenderTransform>
                             <ScaleTransform ScaleX="1" ScaleY="1"/>
                         </Button.RenderTransform>
@@ -109,7 +109,7 @@ RenderTransformOrigin="0.5,0.5">
            FontSize="22"
            FontWeight="Bold"
            Style="{StaticResource MaterialDesignOutlinedButton}"
-           materialDesign:ButtonAssist.CornerRadius="14"
+           materialDesign:ButtonAssist.CornerRadius="16"
            BorderThickness="3"
            RenderTransformOrigin="0.5,0.5">
                         <Button.RenderTransform>
@@ -141,16 +141,16 @@ RenderTransformOrigin="0.5,0.5">
 
                     <!-- Join Room Button -->
                     <Button Content="Join a Room"
-           Width="200"
-           Height="56"
-           Command="{Binding NavToJoinRoomCmd}" 
-           Margin="0,10"
-           FontSize="22"
-           FontWeight="Bold"
-           Style="{StaticResource MaterialDesignOutlinedButton}"
-           materialDesign:ButtonAssist.CornerRadius="14"
-           BorderThickness="3"
-           RenderTransformOrigin="0.5,0.5">
+                       Width="200"
+                       Height="56"
+                       Command="{Binding NavToJoinRoomCmd}" 
+                       Margin="0,10"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       Style="{StaticResource MaterialDesignOutlinedButton}"
+                       materialDesign:ButtonAssist.CornerRadius="16"
+                       BorderThickness="3"
+                       RenderTransformOrigin="0.5,0.5"> 
                         <Button.RenderTransform>
                             <ScaleTransform ScaleX="1" ScaleY="1"/>
                         </Button.RenderTransform>
