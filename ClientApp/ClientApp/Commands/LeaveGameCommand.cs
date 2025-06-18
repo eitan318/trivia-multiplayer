@@ -12,11 +12,11 @@ namespace ClientApp.Commands
         private readonly uint NAVIGATETOROOMFROMRESULTS = 2;
         private readonly INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
-        private readonly GameViewModel _gameViewModel;
+        private readonly GameAnsweringViewModel _gameViewModel;
         private readonly AmIAdminStore _amIAdminStore;
         public LeaveGameCommand(INavigationService navigationService,
             RequestsExchangeService requestsExchangeService,
-            GameViewModel gameViewModel,
+            GameAnsweringViewModel gameViewModel,
             AmIAdminStore amIAdminStore) 
         {
             this._amIAdminStore = amIAdminStore;

@@ -39,6 +39,9 @@ public:
     bool wasLastQuestion() const;
 
 
+    unsigned int getCurrQuestionIdx() const;
+
+
     unsigned int getScoreShowingTime() const;
 
     void userAnswered(const LoggedUser& user);

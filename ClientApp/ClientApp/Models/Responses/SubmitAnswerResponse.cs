@@ -9,8 +9,5 @@ namespace ClientApp.Models.Responses
         [JsonProperty]
         public uint CorrectAnswerId { get; private set; }
        
-        [JsonProperty]
-        public int AnswerScore { get; private set; }
-
     }
 }

@@ -5,9 +5,9 @@ namespace ClientApp.Views.Screens
     /// <summary>
     /// Interaction logic for GameView.xaml
     /// </summary>
-    public partial class GameView : UserControl
+    public partial class GameAnsweringView : UserControl
     {
-        public GameView()
+        public GameAnsweringView()
         {
             InitializeComponent();
         }

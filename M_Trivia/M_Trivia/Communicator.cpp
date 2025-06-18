@@ -172,7 +172,7 @@ void Communicator::handleNewClient(SOCKET sock)
 
         // Send response back to the client
         SocketService::sendData(sock, requestResult.response);
-        std::cout << "Sent: " << std::string(requestResult.response.begin(), requestResult.response.end()) << std::endl;
+        std::cout << "Sent: " << (int)requestResult.response[0] << std::string(requestResult.response.begin(), requestResult.response.end()) << std::endl;
     }
 
     closesocket(sock);

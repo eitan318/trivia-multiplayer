@@ -5,6 +5,7 @@ Game::Game(const std::vector<Question>& questions, const std::vector<LoggedUser>
     : m_gameId(gameId), m_questions(std::move(questions)), m_questionTimeLimit(questionTimeLimit),
     m_totalNeededPlayers(neededPlayers.size()), m_room(room), m_activePlayers(0), m_status(GameStatus::AnsweringQuestion), m_currQuestionIdx(0)
 {
+    this->m_lastQuestionStartTime = std::chrono::steady_clock::now();
 }
 
 void Game::join(const LoggedUser& player) {
@@ -12,7 +13,7 @@ void Game::join(const LoggedUser& player) {
     std::lock_guard<std::mutex> lock(m_playersMutex);
     Question shuffledCopy = Question(this->m_questions[0]);
     shuffledCopy.shuffle();
-    m_players.emplace(player, PlayerGameData(shuffledCopy, std::chrono::steady_clock::now()));
+    m_players.emplace(player, PlayerGameData(shuffledCopy));
     
     if (m_activePlayers == m_totalNeededPlayers) {
         this->m_room->enterGame();
@@ -94,6 +95,11 @@ void Game::setNextQuestion()
 
 bool Game::wasLastQuestion() const {
     return this->m_currQuestionIdx == this->m_questions.size() - 1;
+}
+
+unsigned int Game::getCurrQuestionIdx() const
+{
+    return this->m_currQuestionIdx;
 }
 
 unsigned int Game::getQuestionTimeLimit() const

@@ -2,8 +2,6 @@
 using ClientApp.Models.Responses;
 using ClientApp.Stores;
 using System.Net.Sockets;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace ClientApp.Services
 {
@@ -15,12 +13,12 @@ namespace ClientApp.Services
         private readonly SocketService _socketService;
         private readonly JsonResponseDeserializer _responseDiserializer;
         private readonly JsonRequestSerializer _requestSerializer;
-        private readonly ErrorMessageStore _errorMessageStore;
+        private readonly ServerErrorMessageStore _errorMessageStore;
 
         public RequestsExchangeService(SocketService socketService, 
             JsonResponseDeserializer responseDiserializer,
             JsonRequestSerializer requestSerializer,
-            ErrorMessageStore errorMessageStore)
+            ServerErrorMessageStore errorMessageStore)
         {
             this._errorMessageStore = errorMessageStore;
             this._requestSerializer = requestSerializer;

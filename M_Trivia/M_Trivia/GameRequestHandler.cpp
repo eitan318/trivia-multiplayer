@@ -71,7 +71,7 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
     }
 
     
-    GetQuestionResponse getQuestionResponse(std::make_unique<GeneralResponseErrors>(errors), quetionForUser);
+    GetQuestionResponse getQuestionResponse(std::make_unique<GeneralResponseErrors>(errors), quetionForUser, this->m_game->getCurrQuestionIdx() + 1);
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(getQuestionResponse),
@@ -86,17 +86,13 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
             requestInfo.buffer);
 
     int answerId = request.getAnswerId();
-    int answerScore = 0;
     GeneralResponseErrors errors;
 
     std::optional<Question> currQ = this->m_game->getQuestionForUser(m_user);
-    errors = this->m_gameManager.submitAnswer(this->m_user, this->m_game, answerId, &answerScore);
+    errors = this->m_gameManager.submitAnswer(this->m_user, this->m_game, answerId);
 
 
-
-
-
-    SubmitAnswerResponse submitAnswerResponse(std::make_unique<GeneralResponseErrors>(errors), currQ.value().getCorrectAnswerId(), answerScore);
+    SubmitAnswerResponse submitAnswerResponse(std::make_unique<GeneralResponseErrors>(errors), currQ.value().getCorrectAnswerId());
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(submitAnswerResponse),

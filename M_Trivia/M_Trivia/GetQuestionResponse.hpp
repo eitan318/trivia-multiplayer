@@ -13,9 +13,11 @@
 class GetQuestionResponse : public Response<ResponseCodes::C_GetQuestionResponse, GeneralResponseErrors>  {
 private:
     const std::optional<Question>& m_question;
+    int m_questionNumber;
 
 public:
-    GetQuestionResponse(std::unique_ptr<GeneralResponseErrors> errors, const std::optional<Question>& question);
+    GetQuestionResponse(std::unique_ptr<GeneralResponseErrors> errors, 
+        const std::optional<Question>& question, unsigned int questionNumber);
 
     /**
      * @brief Converts the response to a JSON object.
