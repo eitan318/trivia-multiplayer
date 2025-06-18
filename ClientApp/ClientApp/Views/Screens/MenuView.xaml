@@ -18,9 +18,9 @@
                 <StackPanel Margin="34" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <!-- Statistics Button -->
                     <Button Content="Statistics"
+                    Command="{Binding NavToStatisticsCmd}" 
                     Width="200"
                     Height="56"
-                    Command="{Binding NavToStatisticsCmd}" 
                     Margin="0,10"
                     FontSize="22"
                     FontWeight="Bold"

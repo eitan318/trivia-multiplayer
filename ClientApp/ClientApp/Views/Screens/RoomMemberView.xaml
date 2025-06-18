@@ -31,8 +31,7 @@
         
 
         <!-- List of Players -->
-        <GroupBox Header="Players" Grid.Row="1" Padding="10" Margin="0,0,0,20" Style="{StaticResource RoundedGroupBoxStyle}">
-            
+        <GroupBox Header="Players" Grid.Row="1" Padding="10" Margin="0,0,0,20">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding Players}">
                     <!-- Layout for player items -->
