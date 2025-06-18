@@ -17,6 +17,7 @@ GameRequestHandler::GameRequestHandler(const LoggedUser& user,
     m_game(std::move(game)),
     m_room(room)
 {
+    this->m_game->join(user);
 }
 
 GameRequestHandler::~GameRequestHandler() = default;
@@ -35,7 +36,7 @@ bool GameRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
     }
 }
 
-RequestResult GameRequestHandler::handleRequest(const RequestInfo& requestInfo, SOCKET socket)
+RequestResult GameRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
     switch (static_cast<RequestCodes>(requestInfo.code)) {
     case RequestCodes::LeaveGameRequest:
@@ -56,6 +57,12 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& requestInfo, 
     }
 }
 
+void GameRequestHandler::Cleanup()
+{
+    this->m_handlerFactory.getLoginManager().logout(this->m_user);
+    this->m_handlerFactory.getRoomManger().leaveRoom(this->m_room->getId(), this->m_user);
+}
+
 RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
 {
     GeneralResponseErrors errors;
@@ -70,7 +77,7 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
     }
 
     
-    GetQuestionResponse getQuestionResponse(std::make_unique<GeneralResponseErrors>(errors), quetionForUser);
+    GetQuestionResponse getQuestionResponse(std::make_unique<GeneralResponseErrors>(errors), quetionForUser, this->m_game->getCurrQuestionIdx() + 1);
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(getQuestionResponse),
@@ -85,15 +92,13 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
             requestInfo.buffer);
 
     int answerId = request.getAnswerId();
-    int answerScore = 0;
     GeneralResponseErrors errors;
-    errors = this->m_gameManager.submitAnswer(this->m_user, this->m_game, answerId, &answerScore);
-
 
     std::optional<Question> currQ = this->m_game->getQuestionForUser(m_user);
-    this->m_game->setNextQuestion();
+    errors = this->m_gameManager.submitAnswer(this->m_user, this->m_game, answerId);
 
-    SubmitAnswerResponse submitAnswerResponse(std::make_unique<GeneralResponseErrors>(errors), currQ.value().getCorrectAnswerId(), answerScore);
+
+    SubmitAnswerResponse submitAnswerResponse(std::make_unique<GeneralResponseErrors>(errors), currQ.value().getCorrectAnswerId());
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(submitAnswerResponse),
@@ -129,7 +134,7 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
     LeaveGameResponse leaveGameResponse(std::make_unique<GeneralResponseErrors>(errors));
     std::shared_ptr<IRequestHandler> nextHandler = std::move(this->m_room->isAdmin(this->m_user) ?
         this->m_handlerFactory.createRoomAdminRequestHandler(this->m_user, this->m_room) :
-        this->m_handlerFactory.createRoomMemberRequestHandler(this->m_user, this->m_room));
+        this->m_handlerFactory.createRoomRequestHandler(this->m_user, this->m_room));
 
     this->m_game->removeActivePlayer();
     if(this->m_game->getActivePlayers() == 0)

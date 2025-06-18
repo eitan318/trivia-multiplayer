@@ -10,15 +10,16 @@ namespace ClientApp.ViewModels
 {
     class GameResultsViewModel : ViewModelBase
     {
-        private List<PlayerResults> _players;
+        private List<PlayerResults> _playersResults;
         private readonly RequestsExchangeService _requestsExchangeService;
         private CancellationTokenSource _refreshTopPlayersCTS;
-        public List<PlayerResults> Players
+        private readonly int refreshMS = 300;
+        public List<PlayerResults> PlayersResults
         {
-            get => _players;
+            get => _playersResults;
             set
             {
-                _players = value;
+                _playersResults = value;
                 OnPropertyChanged();
             }
         }
@@ -53,7 +54,7 @@ namespace ClientApp.ViewModels
                 while (!token.IsCancellationRequested)
                 {
                     await getAllPlayersResults();
-                    await Task.Delay(1000, token); // Pass the token to enable cancellation
+                    await Task.Delay(refreshMS, token);
                 }
             }
             catch (OperationCanceledException)
@@ -66,11 +67,10 @@ namespace ClientApp.ViewModels
         {
             GetGameResultRequest getPlayersResultsrequest = new GetGameResultRequest();
             var responseInfo = await _requestsExchangeService.ExchangeRequest<GetGameResultsResponse>(getPlayersResultsrequest);
-            if (responseInfo.NormalResponse)
-            {
-                GetGameResultsResponse playersResultsResponse = responseInfo.Response;
-                this.Players = playersResultsResponse.Results;
-            }
+            if (!responseInfo.NormalResponse)
+                return;
+            GetGameResultsResponse playersResultsResponse = responseInfo.Response;
+            this.PlayersResults = playersResultsResponse.Results;
         }
     }
 }

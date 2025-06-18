@@ -87,6 +87,9 @@ namespace ClientApp.ViewModels
             var getRoomStatusRequest = new GetRoomStateRequest();
             ResponseInfo<GetRoomStateResponse> responseInfo =
                 await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(getRoomStatusRequest);
+            
+            if (!responseInfo.NormalResponse)
+                return;
             GetRoomStateResponse response = (GetRoomStateResponse)responseInfo.Response;
             RoomState roomState = response.RoomState;
 
@@ -113,7 +116,7 @@ namespace ClientApp.ViewModels
 
             if (roomState.RoomStatus == RoomStatus.StartingGame)
             {
-                _navigationService.NavigateTo<GameViewModel>();
+                _navigationService.NavigateTo<GameAnsweringViewModel>();
             }
         }
     }

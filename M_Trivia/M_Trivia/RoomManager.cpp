@@ -64,32 +64,19 @@ std::vector<RoomPreview> RoomManager::getRooms() const {
     return roomsvec;
 }
 
-
-GeneralResponseErrors RoomManager::closeRoom(unsigned int roomId, const LoggedUser& closer)
-{
-    Room* room = getRoom(roomId);
-    //std::lock_guard<std::mutex> lock(this->m_roomsMutex);
-    GeneralResponseErrors errors;
-    if (room->getRoomStatus() == RoomStatus::Closing) {
-        errors.generalError = "Room already closed";
-    }
-
-    if (errors.statusCode() == GENERAL_SUCCESS_RESPONSE_STATUS) {
-        leaveRoom(roomId, closer);
-        room->close();
-    }
-    return errors;
-}
-
 void RoomManager::leaveRoom(unsigned int roomId,
     const LoggedUser& loggedUser) {
     Room* room = this->getRoom(roomId);
+    bool isAdmin = room->isAdmin(loggedUser);
+
     room->removeUser(loggedUser);
     if (room->getUsersVector().empty()) {
         this->deleteRoom(room->getId());
     }
+    if (isAdmin) {
+        room->close();
+    }
 }
-
 
 
 GeneralResponseErrors RoomManager::startGameOfRoom(unsigned int roomId)
@@ -154,4 +141,3 @@ Room* RoomManager::getRoom(int ID) {
 
     return it != m_rooms.end() ? &(*it) : nullptr;
 }
-

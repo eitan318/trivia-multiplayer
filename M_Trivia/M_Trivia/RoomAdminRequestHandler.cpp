@@ -6,9 +6,9 @@
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory,
 	LoggedUser loggedUser, 
-	Room* room) : RoomRequestHandler(room, 
+	Room* room) : RoomRequestHandler(handlerFactory,
 		loggedUser, 
-		handlerFactory)
+		room)
 {
 }
 
@@ -21,56 +21,41 @@ bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) 
 	if (RoomRequestHandler::isRequestRelevant(requestInfo))
 		return true;
 	switch (static_cast<RequestCodes>(requestInfo.code)) {
-	case RequestCodes::CloseRoomRequest:
 	case RequestCodes::StartGameRequest:
+		return true;
 	default:
 		return false;
 	}
 }
-RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestInfo, SOCKET socket)
+
+
+
+RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestInfo)
 {
 	if (RoomRequestHandler::isRequestRelevant(requestInfo))
-		return RoomRequestHandler::handleRequest(requestInfo, socket);
-	try {
-		switch (static_cast<RequestCodes>(requestInfo.code)) {
-		case RequestCodes::CloseRoomRequest:
-			return closeRoom(requestInfo);
-		case RequestCodes::StartGameRequest:
-			return startGame(requestInfo);
-		default:
-			ServerErrorResponse errorResponse("Invalid msg code.");
-			RequestResult requestResult(
-				JsonResponsePacketSerializer::serializeResponse(errorResponse),
-				nullptr);
-			return requestResult;
-		}
-	}
-	catch (const std::exception& e) {
-		ServerErrorResponse errResponse(e.what());
-		RequestResult res(
-			JsonResponsePacketSerializer::serializeResponse(errResponse), nullptr);
-		return res;
+		return RoomRequestHandler::handleRequest(requestInfo);
+
+	switch (static_cast<RequestCodes>(requestInfo.code)) {
+	case RequestCodes::StartGameRequest:
+		return startGame(requestInfo);
+	default:
+		ServerErrorResponse errorResponse("Invalid msg code.");
+		RequestResult requestResult(
+			JsonResponsePacketSerializer::serializeResponse(errorResponse),
+			nullptr);
+		return requestResult;
 	}
 }
 
-RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo& requestInfo)
-{
-	GeneralResponseErrors errors = this->m_roomManager.closeRoom(this->m_room->getId(), this->m_user);
-	CloseRoomResponse closeRoomResponse(std::make_unique<GeneralResponseErrors>(errors));
-	RequestResult result;
-	result.response = JsonResponsePacketSerializer::serializeResponse(closeRoomResponse);
-	result.newHandler = this->m_requestHandlerFactory.createMenuRequestHandler(this->m_user);
-	return result;
-}
 
 RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& requestInfo)
 {
 	GeneralResponseErrors errors = this->m_roomManager.startGameOfRoom(this->m_room->getId());
-	std::shared_ptr<Game> game = this->m_requestHandlerFactory.getGameManager().createGame(this->m_room);
+	std::shared_ptr<Game> game = this->m_handlerFactory.getGameManager().createGame(this->m_room);
 
 	StartGameResponse startGameResponse(std::make_unique<GeneralResponseErrors>(errors));
 	RequestResult result;
 	result.response = JsonResponsePacketSerializer::serializeResponse(startGameResponse);
-	result.newHandler = errors.statusCode() == 0 ? this->m_requestHandlerFactory.createGameRequestHandler(m_user, game, m_room) : nullptr;
+	result.newHandler = errors.statusCode() == 0 ? this->m_handlerFactory.createGameRequestHandler(m_user, game, m_room) : nullptr;
 	return result;
 }

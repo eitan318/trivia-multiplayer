@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ClientApp.Views.Screens.GameView"
+﻿<UserControl x:Class="ClientApp.Views.Screens.GameAnsweringView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -26,8 +26,6 @@
 
         <!-- Game Info Panel -->
         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Margin="0,5,0,10">
-            <TextBlock Text="{Binding Score, StringFormat='Score: {0}'}" 
-                       FontWeight="Bold" FontSize="16" Margin="10,0" />
             <TextBlock Text="{Binding Timer.FormattedTime, StringFormat='Timer: {0}'}" 
                        FontWeight="Bold" FontSize="16" Margin="10,0" />
             <TextBlock Text="{Binding QuestionInfo.Category, StringFormat='Category: {0}'}" 
@@ -47,14 +45,14 @@
 
         <!-- Question Text -->
         <TextBlock Grid.Row="1"
-                   Text="{Binding Question}" 
+                   Text="{Binding QuestionInfo.Question}" 
                    FontWeight="Bold" FontSize="20" 
                    TextAlignment="Center" TextWrapping="Wrap" 
                    Margin="0,10,0,10" />
 
         <!-- Answer Options -->
         <ListBox Grid.Row="2"
-                 ItemsSource="{Binding PossibleAnswers}" 
+                 ItemsSource="{Binding QuestionInfo.PossibleAnswers}" 
                  SelectedIndex="{Binding SelectedAnswerIndex}" 
                  BorderThickness="0" Background="Transparent" 
                  Margin="0,10,0,10">

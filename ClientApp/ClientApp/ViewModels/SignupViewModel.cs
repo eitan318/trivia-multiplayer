@@ -31,12 +31,7 @@ namespace ClientApp.ViewModels
 
 
 
-        // Account fields
-        private string _password = "";
-        private string _email = "";
-        private string _houseAddress = "";
-        private string _phoneNumber = "";
-        private DateTime? _birthDate;
+
 
         // Error message fields
         private string _usernameErrorMessage;
@@ -49,7 +44,12 @@ namespace ClientApp.ViewModels
         private string _errorMessage;
 
 
-
+        // Account fields
+        private string _password = "";
+        private string _email = "";
+        private string _houseAddress = "";
+        private string _phoneNumber = "";
+        private DateTime? _birthDate;
         public string Username
         {
             get => _userStore.Username??"";

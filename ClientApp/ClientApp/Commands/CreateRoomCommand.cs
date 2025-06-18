@@ -36,10 +36,10 @@ namespace ClientApp.Commands
         /// <returns>True if the room can be created, otherwise false.</returns>
         public override bool CanExecute(object parameters)
         {
-            return !string.IsNullOrWhiteSpace(_createRoomViewModel.RoomName?.Trim())
-                   && _createRoomViewModel.MaxPlayers > 0
-                   && _createRoomViewModel.QuestionsCount > 0
-                   && _createRoomViewModel.QuestionTimeout > 0;
+            return !string.IsNullOrWhiteSpace(_roomDataStore.CurrentRoomData.RoomName?.Trim())
+                   && _roomDataStore.CurrentRoomData.MaxPlayers > 0
+                   && _roomDataStore.CurrentRoomData.NumOfQuestionsInGame > 0
+                   && _roomDataStore.CurrentRoomData.TimePerQuestion > 0;
         }
 
         /// <summary>
@@ -62,13 +62,10 @@ namespace ClientApp.Commands
         /// </summary>
         private async Task<RoomDataModel?> CreateRoom()
         {
-            string trimmedRoomName = _createRoomViewModel.RoomName?.Trim();
-
-            var createRoomRequest = new CreateRoomRequest(
-                trimmedRoomName,
-                _createRoomViewModel.MaxPlayers,
-                _createRoomViewModel.QuestionsCount,
-                _createRoomViewModel.QuestionTimeout);
+            string trimmedRoomName = _roomDataStore.CurrentRoomData.RoomName?.Trim();
+            RoomDataModel trimmedRoomData = new RoomDataModel(_roomDataStore.CurrentRoomData);
+            trimmedRoomData.RoomName = trimmedRoomData.RoomName.Trim();
+            var createRoomRequest = new CreateRoomRequest(trimmedRoomData);
 
             var responseInfo = await _requestsExchangeService.ExchangeRequest<CreateRoomResponse>(createRoomRequest);
 
@@ -83,7 +80,6 @@ namespace ClientApp.Commands
                 {
                     _createRoomViewModel.QuestionCountError = createRoomResponse.Errors.QuestionCountError;
                 }
-
             }
 
             return null; 

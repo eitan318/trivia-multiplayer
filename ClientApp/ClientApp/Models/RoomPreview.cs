@@ -1,6 +1,6 @@
 ﻿namespace ClientApp.Models
 {
-    public class RoomPreview
+    class RoomPreview
     {
         public RoomDataModel RoomData { get; set; }
         public uint CurrPlayersAmount { get; set; }
