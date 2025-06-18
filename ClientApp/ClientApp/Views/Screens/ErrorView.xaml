@@ -15,10 +15,8 @@
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <TextBlock Text="{Binding StatusMessage}" 
-                       FontSize="16" 
-                       Foreground="{StaticResource ErrorBrush}" 
-                       TextAlignment="Center"
-                       Margin="0,20" />
+                       Style="{StaticResource ErrorMessageStyle}"
+                       />
             <ProgressBar IsIndeterminate="True" Width="200" />
         </StackPanel>
     </Grid>

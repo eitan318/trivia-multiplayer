@@ -51,11 +51,22 @@
 
         <!-- Action Buttons -->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,10,0,10" VerticalAlignment="Top">
-            <Button Content="Start Game" Command="{Binding StartGameCmd}" Margin="0,0,0,10" />
-            <Button Content="Close Room" Command="{Binding CloseRoomCmd}" />
+            
+            <Button Content="Start Game" 
+                    Command="{Binding StartGameCmd}"
+                    Style="{StaticResource OperationButtonStyle}"
+                    Margin="0,0,0,10" 
+                    />
+            
+            <Button Content="Close Room" 
+                    Command="{Binding CloseRoomCmd}"
+                    Style="{StaticResource OperationButtonStyle}"
+                    />
+            
             <TextBlock Text="{Binding ErrorMessage}" 
-                   Foreground="{StaticResource ErrorBrush}" 
-                   Visibility="{Binding ErrorMessage}" />
+                   Style="{StaticResource ErrorMessageStyle}"
+                   Visibility="{Binding ErrorMessage}" 
+                       />
         </StackPanel>
     </Grid>
 </UserControl>

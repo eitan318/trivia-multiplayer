@@ -39,6 +39,12 @@
             <Button Content="LeaveGame" Command="{Binding LeaveGameCmd}"/>
         </StackPanel>
 
+        <!-- General Error Message -->
+        <TextBlock Text="{Binding ErrorMessage}" 
+                           Style="{StaticResource ErrorMessageStyle}"
+                           Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
+
+
         <!-- Question Text -->
         <TextBlock Grid.Row="1"
                    Text="{Binding Question}" 

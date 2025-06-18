@@ -9,8 +9,17 @@
 
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Content="Personal statistics" Command="{Binding NavToPersonalStatisticsCmd}" Margin="0,10"/>
-            <Button Content="High scores" Command="{Binding NavToHighScoresCmd}" Margin="0,10"/>
+            <Button Content="Personal statistics" 
+                    Command="{Binding NavToPersonalStatisticsCmd}"
+                    Margin="0,10"
+                    Style="{StaticResource MenuButtonStyle}"
+                    />
+            
+            <Button Content="High scores"
+                    Command="{Binding NavToHighScoresCmd}"
+                    Style="{StaticResource MenuButtonStyle}"
+                    Margin="0,10"
+                    />
         </StackPanel>
     </Grid>
 </UserControl>

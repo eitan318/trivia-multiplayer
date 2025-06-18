@@ -22,10 +22,7 @@
         <!-- Page header -->
         <TextBlock Grid.Row="0" 
            Text="Forgot Password" 
-           FontSize="24" 
-           FontWeight="Bold" 
-           HorizontalAlignment="Center" 
-           Margin="0,20,0,10"/>
+           Style="{StaticResource TitleStyle}"/>
 
         <!-- Instruction for entering the email -->
         <TextBlock Grid.Row="1" 
@@ -51,13 +48,12 @@
         Width="150" 
         Height="40" 
         HorizontalAlignment="Center"
-        Style="{StaticResource MaterialDesignRaisedButton}"
+        Style="{StaticResource OperationButtonStyle}"
         Command="{Binding SubmitEmailCmd}" />
 
         <!-- Error message display -->
         <TextBlock Text="{Binding ErrorMessage}" 
-               Grid.Row="4" Foreground="{StaticResource ErrorBrush}" 
-               TextAlignment="Center" 
-               Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
+        Style="{StaticResource ErrorMessageStyle}"
+                   Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
     </Grid>
 </UserControl>

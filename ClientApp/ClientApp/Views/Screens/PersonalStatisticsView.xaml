@@ -17,22 +17,14 @@
             <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
                 <!-- Title -->
                 <TextBlock Text="Personal Statistics"
-                           FontSize="32"
-                           FontWeight="Bold"
-                           Foreground="{DynamicResource MaterialDesignBody}"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,20"/>
+                           Style="{StaticResource TitleStyle}" />
 
                 <!-- Personal Info UserControl -->
                 <controls:PersonalStatisticsUserControl DataContext="{Binding PersonalInfo}" />
 
                 <!-- ErrorBlock -->
                 <TextBlock Text="{Binding ErrorMessage}" 
-                           Foreground="Red" 
-                           FontSize="14" 
-                           FontStyle="Italic"
-                           HorizontalAlignment="Center" 
-                           Margin="0,20,0,0"/>
+                           Style="{StaticResource ErrorMessageStyle}"/>
 
             </StackPanel>
         </materialDesign:Card>

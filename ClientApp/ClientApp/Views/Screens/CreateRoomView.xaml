@@ -69,6 +69,7 @@
         <!-- Button for creating the room -->
         <Button Content="Create Room" 
                 Command="{Binding CreateRoomCmd}" 
+                Style="{StaticResource OperationButtonStyle}"
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Grid.Row="1" 
@@ -76,10 +77,8 @@
 
         <!-- Error Message -->
         <TextBlock Text="{Binding ErrorMessage}" 
-                   Foreground="{StaticResource ErrorBrush}" 
+                   Style="{StaticResource ErrorMessageStyle}"
                    Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" 
-                   HorizontalAlignment="Center" 
-                   Margin="0,10,0,0"
-                   Grid.Row="2"/>
+                   />
     </Grid>
 </UserControl>
