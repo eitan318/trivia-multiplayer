@@ -1,10 +1,6 @@
 ﻿using System.Windows.Input;
 using ClientApp.Commands;
-using ClientApp.Models;
-using ClientApp.Models.Requests;
-using ClientApp.Models.Responses;
 using ClientApp.Services;
-using ClientApp.Views.Screens;
 using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
@@ -35,7 +31,7 @@ namespace ClientApp.ViewModels
                     args.PropertyName == nameof(QuestionsCount) ||
                     args.PropertyName == nameof(QuestionTimeout))
                 {
-                    ((BaseCommand)CreateRoomCmd).RaiseCanExecuteChanged();
+                    ((CommandBase)CreateRoomCmd).RaiseCanExecuteChanged();
                 }
             };
 

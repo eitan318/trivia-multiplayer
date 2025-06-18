@@ -8,11 +8,6 @@ GetPersonalStatisticsResponse::GetPersonalStatisticsResponse(const PersonalStati
 
 
 
-ResponseCodes GetPersonalStatisticsResponse::getCode() const {
-	return ResponseCodes::C_GetPersonalStatsResponse;
-}
-
-
 nlohmann::json GetPersonalStatisticsResponse::getJson() const {
 	nlohmann::json j = Response::getJson();
 	j["Statistics"] = statistics; // Uses the to_json for PersonalStatistics

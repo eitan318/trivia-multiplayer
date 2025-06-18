@@ -37,7 +37,7 @@ namespace ClientApp.Commands
 
             try
             {
-                var selectedRoomId = _joinRoomViewModel.SelectedRoom.Value.RoomData.Id;
+                var selectedRoomId = _joinRoomViewModel.SelectedRoom.RoomData.Id;
                 var request = new JoinRoomRequest(selectedRoomId);
                 ResponseInfo<JoinRoomResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<JoinRoomResponse>(request);
 
@@ -46,7 +46,7 @@ namespace ClientApp.Commands
                     var joinResponse = responseInfo.Response;
                     if(joinResponse.Status == 0)
                     {
-                        _navigationService.NavigateTo<MemberRoomViewModel>();
+                        _navigationService.NavigateTo<RoomMemberViewModel>();
                     }
                     else
                     {

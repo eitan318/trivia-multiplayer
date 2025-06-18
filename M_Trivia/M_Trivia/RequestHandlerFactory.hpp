@@ -4,6 +4,7 @@
 #include "RoomManager.hpp"
 #include "StatisticsManager.hpp"
 #include "IRequestHandler.hpp"
+#include "Room.hpp"
 #include <memory>
 
 
@@ -28,11 +29,22 @@ public:
     std::shared_ptr<IRequestHandler> createLoginRequestHandler() const;
 
     /**
-	 * @brief Creates a new MenuRequestHandler.
-	 * @return A pointer to a newly created MenuRequestHandler.
-	 */
+     * @brief Creates a new MenuRequestHandler.
+     * @return A pointer to a newly created MenuRequestHandler.
+     */
     std::shared_ptr<IRequestHandler> createMenuRequestHandler(const LoggedUser& loggedUser) const;
 
+    /**
+     * @brief Creates a new RoomAdminRequestHandler.
+     * @return A pointer to a newly created RoomAdminRequestHandler.
+    */
+    std::shared_ptr<IRequestHandler> createRoomAdminRequestHandler(const LoggedUser& loggedUser, Room* room) const;
+
+    /**
+     * @brief Creates a new RoomMemberRequestHandler.
+     * @return A pointer to a newly created RoomMemberRequestHandler.
+     */
+    std::shared_ptr<IRequestHandler> createRoomMemberRequestHandler(const LoggedUser& loggedUser, Room* room) const;
 
     /**
      * @brief Gets a reference to the LoginManager.

@@ -2,8 +2,15 @@
 #include "RoomData.hpp"
 #include "LoggedUser.hpp"
 #include "RoomPreview.hpp"
-#include <map>
+#include "CloseRoomResponseErrors.hpp"
+#include "StartGameResponseErrors.hpp"
+#include <vector>
 #include <string>
+#include "RoomStatus.h"
+#include "RoomState.hpp"
+
+
+
 
 /**
  * @class Room
@@ -11,9 +18,9 @@
  */
 class Room {
 private:
-    static unsigned int id;            
     RoomData m_metadata;               
-    std::map<std::string,LoggedUser> m_users;   
+    std::vector<LoggedUser> m_users;   
+    RoomStatus status;
 
 public:
     /**
@@ -49,27 +56,40 @@ public:
      * @brief Retrieves the usernames of all users in the room.
      * @return A vector of strings containing the usernames of all users.
      */
-    std::vector<LoggedUser> getUsersVector() const;
+    const std::vector<LoggedUser>& getUsersVector() const;
 
 
     /**
-     * @brief Retrieves the usernames of all users in the room.
-     * @return A vector of strings containing the usernames of all users.
-     */
-    const std::map<std::string, LoggedUser>& getUsersMap() const;
-
-
-    /**
-     * @brief Updates the metadata of the room.
+     * @brief Initialy sets the metadata of the room.
      * @param roomdata The new RoomData object to set as the room's metadata.
      */
     void setRoomData(const RoomData& roomdata);
 
+    // closes the room
+    void close();
 
-    bool getRoomStatus() const;
+    // starting a game in the room
+    void startGame();
+
+    //returning the id of the room
+    unsigned int getId() const;
+
     /**
+     * Retrieves the current status of the room.
+     *
+     * @return A RoomStatus representing the room's current state.
+     */
+    RoomStatus getRoomStatus() const;
+
+    RoomState getRoomState() const;
+
+
+     /**
      * @brief Retrieves the metadata associated with the room.
      * @return The RoomPreview object containing the room's metadata.
      */
     RoomPreview getRoomPreview() const;
+
+
+    bool hasUser(const LoggedUser& user) const;
 };

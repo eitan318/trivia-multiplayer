@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp23</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CloseRoomResponseErrors.hpp" />
     <ClInclude Include="Communicator.hpp" />
     <ClInclude Include="CreateRoomRequest.hpp" />
     <ClInclude Include="CreateRoomResponse.hpp" />
@@ -135,22 +136,22 @@
     <ClInclude Include="EmailSender.hpp" />
     <ClInclude Include="GetHighScoreRequest.hpp" />
     <ClInclude Include="GetPlayersInRoomRequest.hpp" />
+    <ClInclude Include="GetRoomStateResponse.hpp" />
     <ClInclude Include="IResponseErrors.hpp" />
-    <ClInclude Include="JoinRoomResponse.hpp" />
     <ClInclude Include="JoinRoomResponseErrors.hpp" />
-    <ClInclude Include="LoginResponse.hpp" />
     <ClInclude Include="LoginResponseErrors.hpp" />
-    <ClInclude Include="LogoutResponse.hpp" />
     <ClInclude Include="MenuRequestHandler.hpp" />
-    <ClInclude Include="PersonalStatisticsRequest.hpp" />
     <ClInclude Include="RegexValidator.hpp" />
     <ClInclude Include="ResetPasswordResponseErrors.hpp" />
     <ClInclude Include="ResetPasswordRequest.hpp" />
-    <ClInclude Include="ResetPasswordResponse.hpp" />
     <ClInclude Include="PasswordCodeResponseErrors.hpp" />
+    <ClInclude Include="RoomAdminRequestHandler.hpp" />
+    <ClInclude Include="RoomMemberRequestHandler.hpp" />
     <ClInclude Include="RoomPreview.hpp" />
+    <ClInclude Include="RoomRequestHandler.hpp" />
+    <ClInclude Include="RoomState.hpp" />
+    <ClInclude Include="RoomStatus.h" />
     <ClInclude Include="SendPasswordResetCodeRequest.hpp" />
-    <ClInclude Include="PasswordCodeResponse.hpp" />
     <ClInclude Include="ServerErrorResponse.hpp" />
     <ClInclude Include="GetHighScoreResponse.hpp" />
     <ClInclude Include="GetPersonalStatisticsResponse.hpp" />
@@ -180,12 +181,11 @@
     <ClInclude Include="Server.hpp" />
     <ClInclude Include="SignupResponseErrors.hpp" />
     <ClInclude Include="SignupRequest.hpp" />
-    <ClInclude Include="SignupResponse.hpp" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDatabase.hpp" />
     <ClInclude Include="ApiClient.hpp" />
+    <ClInclude Include="StartGameResponseErrors.hpp" />
     <ClInclude Include="StatisticsManager.hpp" />
-    <ClInclude Include="StatusEnum.hpp" />
     <ClInclude Include="UserRecord.hpp" />
     <ClInclude Include="VerifyPasswordResetCodeRequest.hpp" />
     <ClInclude Include="VerifyPasswordResetCodeResponse.hpp" />
@@ -193,6 +193,7 @@
     <ClInclude Include="WSAInitializer.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CloseRoomResponseErrors.cpp" />
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="CreateRoomRequest.cpp" />
     <ClCompile Include="CreateRoomResponse.cpp" />
@@ -204,30 +205,26 @@
     <ClCompile Include="GetPlayersInRoomRequest.cpp" />
     <ClCompile Include="GetPlayersInRoomResponse.cpp" />
     <ClCompile Include="GetRoomsResponse.cpp" />
+    <ClCompile Include="GetRoomStateResponse.cpp" />
     <ClCompile Include="JoinRoomRequest.cpp" />
-    <ClCompile Include="JoinRoomResponse.cpp" />
     <ClCompile Include="JoinRoomResponseErrors.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.hpp" />
     <ClCompile Include="LoggedUser.cpp" />
     <ClCompile Include="LoginRequest.cpp" />
-    <ClCompile Include="LoginResponse.cpp" />
     <ClCompile Include="LoginResponseErrors.cpp" />
-    <ClCompile Include="LogoutResponse.cpp" />
-    <ClCompile Include="PasswordCodeResponse.cpp" />
     <ClCompile Include="PasswordCodeResponseErrors.cpp" />
     <ClCompile Include="PersonalStatistics.cpp" />
-    <ClCompile Include="PersonalStatisticsRequest.cpp" />
     <ClCompile Include="Question.cpp" />
     <ClCompile Include="RequestInfo.cpp" />
     <ClCompile Include="RequestResult.cpp" />
     <ClCompile Include="ResetPasswordRequest.cpp" />
-    <ClCompile Include="ResetPasswordResponse.cpp" />
     <ClCompile Include="ResetPasswordResponseErrors.cpp" />
-    <ClCompile Include="Response.cpp" />
+    <ClCompile Include="RoomAdminRequestHandler.cpp" />
+    <ClCompile Include="RoomMemberRequestHandler.cpp" />
+    <ClCompile Include="RoomRequestHandler.cpp" />
     <ClCompile Include="SendPasswordResetCodeRequest.cpp" />
     <ClCompile Include="ServerErrorResponse.cpp" />
     <ClCompile Include="SignupRequest.cpp" />
-    <ClCompile Include="SignupResponse.cpp" />
     <ClCompile Include="SignupResponseErrors.cpp" />
     <ClCompile Include="SocketService.cpp" />
     <ClCompile Include="LoginManager.cpp" />
@@ -243,6 +240,7 @@
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDatabase.cpp" />
     <ClCompile Include="ApiClient.cpp" />
+    <ClCompile Include="StartGameResponseErrors.cpp" />
     <ClCompile Include="StatisticsManager.cpp" />
     <ClCompile Include="VerifyPasswordResetCodeRequest.cpp" />
     <ClCompile Include="VerifyPasswordResetCodeResponse.cpp" />

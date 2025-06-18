@@ -8,19 +8,12 @@
  * @class GetHighScoreResponse
  * @brief Represents a response status, statistics
  */
-class GetHighScoreResponse : public Response{
+class GetHighScoreResponse : public Response<ResponseCodes::C_GetHighScoreResponse>{
 private:
     std::vector<HighScoreInfo> statistics;
 
 public:
-    GetHighScoreResponse() = delete;
     GetHighScoreResponse(unsigned int status, const std::vector<HighScoreInfo>& statistics);
-
-    /**
-	 * @brief Gets the response code for this response.
-	 * @return The response code as an unsigned integer.
-	 */
-    ResponseCodes getCode() const override; 
 
 
     /**

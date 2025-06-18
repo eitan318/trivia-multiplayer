@@ -4,8 +4,8 @@
 #include "JoinRoomResponseErrors.hpp"
 #include "Room.hpp"
 #include "RoomPreview.hpp"
-#include <map>
 #include <mutex>
+#include <vector>
 
 /**
  * @brief Manages the lifecycle of rooms in the application.
@@ -14,7 +14,7 @@ class RoomManager
 {
 private:
     static unsigned int ids;     ///< Counter for generating unique room IDs.
-    std::map<int, Room> m_rooms; ///< Map of active rooms indexed by their ID.
+    std::vector<Room> m_rooms; 
     mutable std::mutex m_roomsMutex;
     IDatabase& m_database;       ///< Pointer to the database interface for accessing data.
 
@@ -60,19 +60,25 @@ public:
      * @param ID The ID of the room to delete.
      */
     void deleteRoom(int ID);
-
-    /**
-     * @brief Retrieves the state of a room.
-     * @param ID The ID of the room.
-     * @return `true` if the room is active, `false` otherwise.
-     */
-    bool getRoomState(int ID) const;
-
     /**
      * @brief Retrieves a list of all active rooms.
      * @return A vector of RoomData objects representing active rooms.
      */
     std::vector<RoomPreview> getRooms() const;
+
+    /**
+	 * Attempts to close the current room.
+	 *
+	 * @return A CloseRoomResponseErrors indicating the result of the operation.
+	 */
+    CloseRoomResponseErrors closeRoom(unsigned int roomId, const LoggedUser& closer);
+
+    /**
+     * Attempts to start the game in the current room.
+     *
+     * @return A StartGameResponseErrors indicating the result of the operation.
+     */
+    StartGameResponseErrors startGameOfRoom(unsigned int roomId);
 
     /**
      * @brief Retrieves a reference to a specific room.
@@ -81,4 +87,8 @@ public:
      * @throws MyException if the room does not exist.
      */
     Room* getRoom(int ID);
+
+
+    void leaveRoom(unsigned int roomId,
+        const LoggedUser& loggedUser);
 };

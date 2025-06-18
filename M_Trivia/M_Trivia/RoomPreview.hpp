@@ -1,12 +1,13 @@
 #pragma once
 #include "json.hpp"
 #include "RoomData.hpp"
+#include "RoomStatus.h"
 
 
 struct RoomPreview {
     RoomData roomData;
     unsigned int currPlayersAmount;
-    bool status;
+    RoomStatus status;
 };
 
 

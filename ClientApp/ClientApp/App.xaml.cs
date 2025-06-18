@@ -48,14 +48,15 @@ public partial class App : Application
         services.AddTransient<LoginViewModel>();
         services.AddTransient<SignupViewModel>();
         services.AddTransient<MenuViewModel>();
-        services.AddTransient<MemberRoomViewModel>();
-        services.AddTransient<AdminRoomViewModel>();
+        services.AddTransient<RoomMemberViewModel>();
+        services.AddTransient<RoomAdminViewModel>();
         services.AddTransient<StatisticsViewModel>();
         services.AddTransient<HighScoresViewModel>();
         services.AddTransient<PersonalStatisticsViewModel>();
         services.AddTransient<CreateRoomViewModel>();
         services.AddTransient<JoinRoomViewModel>();
         services.AddTransient<ErrorViewModel>();
+        services.AddTransient<GameViewModel>();
 
         //   Password reset ViewModels
         services.AddTransient<EmailEntryViewModel>();
@@ -66,14 +67,15 @@ public partial class App : Application
         services.AddTransient<LoginView>();
         services.AddTransient<SignupView>();
         services.AddTransient<MenuView>();
-        services.AddTransient<MemberRoomView>();
-        services.AddTransient<AdminRoomView>();
+        services.AddTransient<RoomMemberView>();
+        services.AddTransient<RoomAdminView>();
         services.AddTransient<StatisticsView>();
         services.AddTransient<HighScoresView>();
         services.AddTransient<PersonalStatisticsView>();
         services.AddTransient<CreateRoomView>();
         services.AddTransient<JoinRoomView>();
         services.AddTransient<ErrorView>();
+        services.AddTransient<GameView>();
 
         // Password reset Views
         services.AddTransient<EmailEntryView>();

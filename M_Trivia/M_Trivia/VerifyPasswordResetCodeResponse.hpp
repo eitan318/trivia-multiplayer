@@ -6,19 +6,13 @@
  * @class LoginResponse
  * @brief Represents a response containing Status only and no data
  */
-class VerifyPasswordResetCodeResponse : public Response {
+class VerifyPasswordResetCodeResponse : public Response<ResponseCodes::C_VerifyPasswordResetCodeResponse, VerifyPasswordResetCodeResponseErrors> {
 private:
     std::string passwordResetTocken;
 
 public:
-    VerifyPasswordResetCodeResponse(VerifyPasswordResetCodeResponseErrors* errors,
+    VerifyPasswordResetCodeResponse(std::unique_ptr<VerifyPasswordResetCodeResponseErrors> errors,
         const std::string& passwordResetTocken);
-
-    /**
-     * @brief Gets the response code for this response.
-     * @return The response code as an unsigned integer.
-     */
-    ResponseCodes getCode() const override;
 
     /**
      * @brief Converts the response to a JSON object.

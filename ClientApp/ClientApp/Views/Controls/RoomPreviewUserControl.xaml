@@ -11,6 +11,6 @@
         <TextBlock Text="{Binding PlayersInfo}" />
         <TextBlock Text="{Binding RoomData.NumOfQuestionsInGame, StringFormat='Questions: {0}'}" />
         <TextBlock Text="{Binding RoomData.TimePerQuestion, StringFormat='Time per Question: {0} sec'}" />
-        <TextBlock Text="Status" />
+        <TextBlock Text="{Binding StatusInfo, StringFormat='Status: {0}'}" /> 
     </StackPanel>
 </UserControl>

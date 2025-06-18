@@ -2,14 +2,10 @@
 
 #include "json.hpp"
 
-CreateRoomResponse::CreateRoomResponse(CreateRoomResponseErrors* errors, const RoomData& roomData)
-    : Response(errors), roomData(roomData) {
+CreateRoomResponse::CreateRoomResponse(std::unique_ptr<CreateRoomResponseErrors> errors, const RoomData& roomData)
+    : Response(std::move(errors)), roomData(roomData) {
 }
 
-
-ResponseCodes CreateRoomResponse::getCode() const {
-    return ResponseCodes::C_CreateRoomResponse; 
-}
 
 nlohmann::json CreateRoomResponse::getJson() const {
 	nlohmann::json j = Response::getJson();
