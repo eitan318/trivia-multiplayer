@@ -78,8 +78,9 @@
             
             
             <!-- Signup button bound to the Signup command -->
-            <Button Content="Signup" Margin="0,20" Padding="10,5" 
-                    Command="{Binding SignupCmd}" Style="{StaticResource OperationButtonStyle}"/>
+            <Button Content="Signup" 
+                    Command="{Binding SignupCmd}"
+                    Style="{StaticResource OperationButtonStyle}"/>
 
             <!-- Navigate to Login button -->
              <Button Content="Login"

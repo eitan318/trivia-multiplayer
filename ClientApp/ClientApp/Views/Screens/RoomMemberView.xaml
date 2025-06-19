@@ -54,13 +54,15 @@
 
         <StackPanel Grid.Row="2" >
             <!-- Leave Button -->
-            <Button Content="Leave Room" Command="{Binding LeaveRoomCmd}"
-                HorizontalAlignment="Center" Padding="10,5" Margin="20"
-                materialDesign:ButtonAssist.CornerRadius="16"
-                BorderThickness="3"
-                Width="200"
-                Height="40"
-                FontWeight="Bold"/>
+            <Button Content="Leave Room"
+                    Command="{Binding LeaveRoomCmd}"
+                    HorizontalAlignment="Center" Padding="10,5" Margin="20"
+                    materialDesign:ButtonAssist.CornerRadius="16"
+                    BorderThickness="3"
+                    Width="200"
+                    Height="40"
+                    FontWeight="Bold"
+                    Style="{StaticResource OperationButtonStyle}"/>
             
             
         </StackPanel>

@@ -60,6 +60,7 @@
                 <Button Content="Start Game" 
                     Command="{Binding StartGameCmd}" Margin="0,0,0,10" 
                     materialDesign:ButtonAssist.CornerRadius="16"
+                        Style="{StaticResource OperationButtonStyle}"
                     BorderThickness="3"
                     Width="200"
                     Height="40"
@@ -67,15 +68,16 @@
                 <Button 
                     Content="Close Room" 
                     Command="{Binding CloseRoomCmd}"
-                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Style="{StaticResource OperationButtonStyle}"
                     materialDesign:ButtonAssist.CornerRadius="16"
                     BorderThickness="3"
                     Width="200"
                     Height="40"
                     FontWeight="Bold"/>
+
                 <TextBlock Text="{Binding ErrorMessage}" 
-           Foreground="{StaticResource ErrorBrush}" 
-           Visibility="{Binding ErrorMessage}" />
+                           Style="{StaticResource ErrorMessageStyle}"
+                            Visibility="{Binding ErrorMessage}" />
             </StackPanel>
         </materialDesign:Card>
         
