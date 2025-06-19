@@ -19,6 +19,7 @@
             VerticalAlignment="Bottom"
             Grid.Column="2"
             Content="To Room" Command="{Binding LeaveGameCmd}"
+            Style="{StaticResource OperationButtonStyle}"
             />
         
         
