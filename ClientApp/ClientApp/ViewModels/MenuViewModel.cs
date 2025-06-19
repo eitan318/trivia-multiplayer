@@ -1,6 +1,7 @@
 ﻿using ClientApp.Commands;
 using System.Windows.Input;
 using ClientApp.Services;
+using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
@@ -10,17 +11,16 @@ namespace ClientApp.ViewModels
     /// </summary>
     internal class MenuViewModel : ViewModelBase
     {
-
-        private readonly CountdownTimerViewModel _countdownTimerViewModel;
-        public CountdownTimerViewModel Timer => _countdownTimerViewModel;
-
+        private readonly UserStore _userStore;
         /// <summary>
         /// Private constructor for the MenuPageViewModel. Initializes the commands for the actions available in the menu.
         /// </summary>
         public MenuViewModel(
             INavigationService navigationService,
-            RequestsExchangeService requestsExchangeService)
+            RequestsExchangeService requestsExchangeService,
+            UserStore userStore)
         {
+            this._userStore = userStore;
             NavToCreateRoomCmd = new NavigateCommand<CreateRoomViewModel>(navigationService);
             NavToJoinRoomCmd = new NavigateCommand<JoinRoomViewModel>(navigationService);
             NavToStatisticsCmd = new NavigateCommand<StatisticsViewModel>(navigationService);
@@ -50,6 +50,8 @@ namespace ClientApp.ViewModels
             set { _errorMessage = value; OnPropertyChanged(); }
         }
 
+
+        public string Username => _userStore.Username;
 
     }
 }

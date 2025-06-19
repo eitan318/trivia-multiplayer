@@ -85,7 +85,7 @@
             <!-- Navigate to Login button -->
              <Button Content="Login"
                     Command="{Binding NavToLoginCmd}"
-                    Style="{StaticResource TextLikeButtonStyle}" />
+                    Style="{StaticResource LoginToggleStyle}" />
 
 
 

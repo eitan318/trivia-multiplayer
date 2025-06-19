@@ -12,74 +12,74 @@
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
 
-        <!-- Admin Display -->
-        <materialDesign:Card Grid.ColumnSpan="2" UniformCornerRadius="22" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="3">
-            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,10" VerticalAlignment="Center">
-                <TextBlock Text="Admin (You):" FontSize="16" FontWeight="Bold" Margin="10"/>
-                <controls:PlayerUserControl DataContext="{Binding Admin}"  Margin="0,0,100,0"/>
-                <controls:RoomDataUserControl DataContext="{Binding RoomDataStore.CurrentRoomData}" Margin="0,0,0,10" />
-            </StackPanel>
+        <!-- Admin and Room Info -->
+        <materialDesign:Card Grid.ColumnSpan="2" UniformCornerRadius="22" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="3" Margin="0,0,0,10" Padding="20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,20,0">
+                    <TextBlock Text="Admin (You):" FontSize="16" FontWeight="Bold" Margin="10,0,10,0" />
+                    <controls:PlayerUserControl DataContext="{Binding Admin}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Vertical">
+                    <TextBlock Text="name"/>
+                    <TextBlock Grid.Column="1" Text="{Binding RoomDataStore.CurrentRoomData.RoomName}"
+                               FontWeight="Bold" FontSize="28" />
+                </StackPanel>
+                <StackPanel Grid.Column="2" Orientation="Vertical">
+                    <TextBlock Text="{Binding RoomDataStore.CurrentRoomData.MaxPlayers, StringFormat='Max Players: {0}'}" />
+                    <TextBlock Text="{Binding RoomDataStore.CurrentRoomData.NumOfQuestionsInGame, StringFormat='Questions: {0}'}" />
+                    <TextBlock Text="{Binding RoomDataStore.CurrentRoomData.TimePerQuestion, StringFormat='Time per Question: {0} sec'}" />
+                </StackPanel>
+            </Grid>
         </materialDesign:Card>
-        
 
-        <!-- List of players -->
+        <!-- List of Players -->
         <GroupBox Header="Players" Grid.Row="1" Grid.Column="0" Margin="0,10,10,10">
             <ScrollViewer>
                 <ItemsControl ItemsSource="{Binding Players}">
-                    <!-- Define the layout for player items -->
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Columns="4" HorizontalAlignment="Center" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-
-                    <!-- Define the template for each player item -->
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <controls:PlayerUserControl Margin="10"/>
+                            <controls:PlayerUserControl Margin="10" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
         </GroupBox>
 
-
-        <materialDesign:Card Margin="10" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" UniformCornerRadius="22" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="3">
-            <!-- Action Buttons -->
-            <StackPanel  Margin="10,10,0,10" VerticalAlignment="Top">
+        <!-- Action Buttons -->
+        <materialDesign:Card Grid.Row="1" Grid.Column="1" Margin="10" Padding="20" UniformCornerRadius="22" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="3">
+            <StackPanel VerticalAlignment="Top" >
                 <Button Content="Start Game" 
-                    Command="{Binding StartGameCmd}" Margin="0,0,0,10" 
-                    materialDesign:ButtonAssist.CornerRadius="16"
+                        Command="{Binding StartGameCmd}"
                         Style="{StaticResource OperationButtonStyle}"
-                    BorderThickness="3"
-                    Width="200"
-                    Height="40"
-                    FontWeight="Bold"/>
-                <Button 
-                    Content="Close Room" 
-                    Command="{Binding CloseRoomCmd}"
-                    Style="{StaticResource OperationButtonStyle}"
-                    materialDesign:ButtonAssist.CornerRadius="16"
-                    BorderThickness="3"
-                    Width="200"
-                    Height="40"
-                    FontWeight="Bold"/>
-
-                <TextBlock Text="{Binding ErrorMessage}" 
-                           Style="{StaticResource ErrorMessageStyle}"
-                            Visibility="{Binding ErrorMessage}" />
+                        Height="40"
+                        Margin="10"/>
+                <Button Content="Close Room" 
+                        Command="{Binding CloseRoomCmd}"
+                        Style="{StaticResource OperationButtonStyle}"
+                        Height="40"
+                        Margin="10"/>
+                <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessageStyle}" Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
             </StackPanel>
         </materialDesign:Card>
-        
     </Grid>
 </UserControl>

@@ -21,12 +21,29 @@
         </Grid.RowDefinitions>
 
         <!-- Admin Display -->
-        <materialDesign:Card Margin="10" Grid.ColumnSpan="2" UniformCornerRadius="22" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="3">
-            <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,20">
-                <TextBlock Text="Admin:" FontSize="16" FontWeight="Bold" Margin="10" VerticalAlignment="Center"/>
-                <controls:PlayerUserControl DataContext="{Binding Admin}"  Margin="0,0,100,0"/>
-                <controls:RoomDataUserControl DataContext="{Binding RoomDataStore.CurrentRoomData}"/>
-            </StackPanel>
+        <materialDesign:Card Grid.ColumnSpan="2" UniformCornerRadius="22" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="3" Margin="0,0,0,10" Padding="20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,20,0">
+                    <TextBlock Text="Admin:" FontSize="16" FontWeight="Bold" Margin="10,0,10,0" />
+                    <controls:PlayerUserControl DataContext="{Binding Admin}" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Vertical">
+                    <TextBlock Text="name"/>
+                    <TextBlock Grid.Column="1" Text="{Binding RoomDataStore.CurrentRoomData.RoomName}"
+                               FontWeight="Bold" FontSize="28" />
+                </StackPanel>
+                <StackPanel Grid.Column="2" Orientation="Vertical">
+                    <TextBlock Text="{Binding RoomDataStore.CurrentRoomData.MaxPlayers, StringFormat='Max Players: {0}'}" />
+                    <TextBlock Text="{Binding RoomDataStore.CurrentRoomData.NumOfQuestionsInGame, StringFormat='Questions: {0}'}" />
+                    <TextBlock Text="{Binding RoomDataStore.CurrentRoomData.TimePerQuestion, StringFormat='Time per Question: {0} sec'}" />
+                </StackPanel>
+            </Grid>
         </materialDesign:Card>
         
 
