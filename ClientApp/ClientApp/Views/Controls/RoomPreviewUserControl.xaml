@@ -4,13 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
+             xmlns:behaviors="clr-namespace:ClientApp.Views.Behaviors"
              TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
              d:DesignHeight="200" d:DesignWidth="300">
-    <StackPanel Orientation="Vertical">
-        <TextBlock Text="{Binding RoomData.RoomName}" FontWeight="Bold" FontSize="16" />
-        <TextBlock Text="{Binding PlayersInfo}" />
-        <TextBlock Text="{Binding RoomData.NumOfQuestionsInGame, StringFormat='Questions: {0}'}" />
-        <TextBlock Text="{Binding RoomData.TimePerQuestion, StringFormat='Time per Question: {0} sec'}" />
-        <TextBlock Text="{Binding StatusInfo, StringFormat='Status: {0}'}" /> 
+    <StackPanel Orientation="Vertical" Margin="10">
+        <!-- Room Name and ID -->
+        <TextBlock Text="{Binding RoomDisplayName}" 
+           FontWeight="Bold" 
+           FontSize="16" 
+           behaviors:TextHighlightBehavior.HighlightText="{Binding SearchQuery, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   />
+        <TextBlock Text="{Binding PlayersInfo}"/>
+        <TextBlock  Text="{Binding RoomData.NumOfQuestionsInGame, StringFormat='Questions: {0}'}" />
+        <TextBlock Text="{Binding RoomData.TimePerQuestion, StringFormat='Time per Question: {0} sec'}"/>
     </StackPanel>
+
 </UserControl>

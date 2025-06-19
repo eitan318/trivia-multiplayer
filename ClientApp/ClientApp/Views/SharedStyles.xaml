@@ -30,17 +30,7 @@
         <Setter Property="BorderThickness" Value="0" />
     </Style>
 
-    <Style x:Key="OperationButtonStyle" BasedOn="{StaticResource MaterialDesignOutlinedLightButton}" TargetType="Button">
-        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="16"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="BorderThickness" Value="3"/>
-    </Style>
 
-    <Style x:Key="LowProButtonStyle" BasedOn="{StaticResource MaterialDesignOutlinedLightButton}" TargetType="Button">
-        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="16"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="BorderThickness" Value="3"/>
-    </Style>
 
     <Style x:Key="LoginToggleStyle" BasedOn="{StaticResource TextLikeButtonStyle}" TargetType="Button">
     </Style>
@@ -78,6 +68,35 @@
         </Style.Triggers>
     </Style>
 
+    <!--Buttons-->
+
+    <Style x:Key="OperationButtonStyle" BasedOn="{StaticResource MaterialDesignOutlinedLightButton}" TargetType="Button">
+        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="16"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="BorderThickness" Value="3"/>
+    </Style>
+
+    <Style x:Key="LowProButtonStyle" BasedOn="{StaticResource MaterialDesignOutlinedLightButton}" TargetType="Button">
+        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="16"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="BorderThickness" Value="3"/>
+    </Style>
+
+    <Style x:Key="BackButtonStyle" TargetType="Button" BasedOn="{StaticResource MaterialDesignIconButton}">
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="ToolTip" Value="Back" />
+        <Setter Property="Content">
+            <Setter.Value>
+                <materialDesign:PackIcon 
+                Kind="ArrowLeft" 
+                Width="24" 
+                Height="24" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center" />
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 
 

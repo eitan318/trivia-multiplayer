@@ -7,7 +7,7 @@
         public RoomStatus Status { get; set; }
 
         public string PlayersInfo => $"{CurrPlayersAmount}/{RoomData.MaxPlayers}";
-
+        public string RoomDisplayName => $"{RoomData.RoomName} (#{RoomData.Id})";
         public string StatusInfo
         {
             get

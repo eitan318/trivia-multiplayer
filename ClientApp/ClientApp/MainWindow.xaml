@@ -18,10 +18,8 @@
 
     <DockPanel>
         <!-- Back Button -->
-        <Button Content="Back"
+        <Button Style="{StaticResource BackButtonStyle}"
                 DockPanel.Dock="Top"
-                Width="100"
-                Height="30"
                 HorizontalAlignment="Left"
                 Margin="5"
                 Command="{Binding BackCmd}"

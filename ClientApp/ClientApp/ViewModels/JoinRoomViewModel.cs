@@ -5,6 +5,7 @@ using ClientApp.Models;
 using ClientApp.Services;
 using System.Windows.Input;
 using ClientApp.Stores;
+using System.Collections.ObjectModel;
 
 namespace ClientApp.ViewModels
 {
@@ -44,20 +45,33 @@ namespace ClientApp.ViewModels
         // Fields
         private List<RoomPreview> _rooms;
         private RoomPreview? _selectedRoom;
+        private string _searchQuery;
+        private ObservableCollection<RoomPreview> _filteredRooms;
+
+        public ObservableCollection<RoomPreview> FilteredRooms
+        {
+            get => _filteredRooms;
+            set
+            {
+                _filteredRooms = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SearchQuery
+        {
+            get => _searchQuery;
+            set
+            {
+                _searchQuery = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         // Error message fields
         private string _errorMessage;
 
-        // Properties
-        public List<RoomPreview> Rooms
-        {
-            get => _rooms;
-            set
-            {
-                _rooms = value;
-                OnPropertyChanged();
-            }
-        }
 
         public RoomPreview? SelectedRoom
         {
@@ -97,6 +111,23 @@ namespace ClientApp.ViewModels
                 // Task was canceled; no further action needed
             }
         }
+          private void UpdateFilteredRooms()
+          {
+              if (string.IsNullOrWhiteSpace(SearchQuery))
+              {
+                  FilteredRooms = new ObservableCollection<RoomPreview>(_rooms);
+              }
+              else
+              {
+                  var lowerQuery = SearchQuery.ToLower();
+                var filtered = _rooms
+                  .Where(room => room.RoomData.Id.ToString().Contains(lowerQuery) ||
+                                   room.RoomData.RoomName.ToLower().Contains(lowerQuery))
+                    .ToList();
+                  FilteredRooms = new ObservableCollection<RoomPreview>(filtered);
+              }
+          }
+
 
         public async Task Refresh()
         {
@@ -114,9 +145,10 @@ namespace ClientApp.ViewModels
                         var currentlySelectedRoomId = SelectedRoom?.RoomData.Id;
                         var matchingRoom = refreshedRooms.FirstOrDefault(r => r.RoomData.Id == currentlySelectedRoomId);
 
-                        Rooms = refreshedRooms;
+                        _rooms = refreshedRooms;
 
                         SelectedRoom = matchingRoom;
+                        UpdateFilteredRooms();
                     }
                 });
             }
