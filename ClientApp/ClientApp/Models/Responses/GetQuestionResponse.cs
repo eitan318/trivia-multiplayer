@@ -3,11 +3,13 @@ using Newtonsoft.Json;
 
 namespace ClientApp.Models.Responses
 {
-    class GetQuestionResponse : Response<NoResponseErrors>
+    class GetQuestionResponse : Response<GeneralResponseErrors>
     {
         private GetQuestionResponse() { }
 
         [JsonProperty]
         public QuestionInfo Question { get; private set; }
+        [JsonProperty]
+        public uint QuestionNumber { get; private set; }
     }
 }

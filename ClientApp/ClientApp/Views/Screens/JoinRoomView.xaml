@@ -35,8 +35,11 @@
 
 
         <StackPanel Grid.Row="1" Grid.Column="1">
-            <Button Content="Join" Margin="8" Command="{Binding JoinCmd}"/>
-            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" />
+            <Button Content="Join" Margin="8" 
+                    Command="{Binding JoinCmd}"
+                    Style="{StaticResource OperationButtonStyle}"/>
+            <TextBlock Text="{Binding ErrorMessage}" 
+                       Style="{StaticResource ErrorMessageStyle}"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using ClientApp.Commands;
+using ClientApp.Models;
 using ClientApp.Services;
 using ClientApp.Stores;
 
@@ -10,99 +11,55 @@ namespace ClientApp.ViewModels
     /// </summary>
     class CreateRoomViewModel : ViewModelBase
     {
-        
+        private readonly RoomDataStore _roomDataStore;
+
         /// <summary>
-        /// Private constructor for initializing the ViewModel.
+        /// Constructor for initializing the ViewModel.
         /// </summary>
         public CreateRoomViewModel(
             RequestsExchangeService requestsExchangeService,
             INavigationService navigationService,
             RoomDataStore roomDataStore) : base(true)
         {
+            _roomDataStore = roomDataStore;
+            _roomDataStore.CurrentRoomData = new RoomDataModel();
+
+
+            // Set default values
+            CurrentRoomData.TimePerQuestion = 10;
+            CurrentRoomData.MaxPlayers = 2;
+            CurrentRoomData.NumOfQuestionsInGame = 3;
+            CurrentRoomData.ScoreShowingTime = 3;
+
             CreateRoomCmd = new CreateRoomCommand(this, 
                 requestsExchangeService,
                 navigationService,
                 roomDataStore);
 
-            PropertyChanged += (sender, args) =>
+            CurrentRoomData.PropertyChanged += (_, args) =>
             {
-                if (args.PropertyName == nameof(RoomName) ||
-                    args.PropertyName == nameof(MaxPlayers) ||
-                    args.PropertyName == nameof(QuestionsCount) ||
-                    args.PropertyName == nameof(QuestionTimeout))
+                if (args.PropertyName == nameof(RoomDataModel.RoomName) ||
+                    args.PropertyName == nameof(RoomDataModel.MaxPlayers) ||
+                    args.PropertyName == nameof(RoomDataModel.NumOfQuestionsInGame) ||
+                    args.PropertyName == nameof(RoomDataModel.TimePerQuestion) ||
+                    args.PropertyName == nameof(RoomDataModel.ScoreShowingTime))
                 {
                     ((CommandBase)CreateRoomCmd).RaiseCanExecuteChanged();
                 }
             };
-
         }
+
+        /// <summary>
+        /// Direct access to the current room data.
+        /// </summary>
+        public RoomDataModel CurrentRoomData => _roomDataStore.CurrentRoomData;
 
         // Commands
         public ICommand CreateRoomCmd { get; }
 
-
-        // Room fields
-        private string _roomName;
-        private double _questionTimeout = 10;
-        private uint _maxPlayers = 2; //Start val
-        private uint _questionsCount = 1; //Start val
-
         // Error message fields
         private string _questionCountError;
-        private string _errorMessage;
 
-
-        /// <summary>
-        /// The name of the room to be created.
-        /// </summary>
-        public string RoomName
-        {
-            get => _roomName;
-            set 
-            {
-                _roomName = value;
-                OnPropertyChanged(); 
-            }
-        }
-
-        /// <summary>
-        /// The timeout duration for questions in the room.
-        /// </summary>
-        public double QuestionTimeout
-        {
-            get => _questionTimeout;
-            set 
-            {
-                _questionTimeout = value;
-                OnPropertyChanged(); 
-            }
-        }
-
-        /// <summary>
-        /// The maximum number of players allowed in the room.
-        /// </summary>
-        public uint MaxPlayers
-        {
-            get => _maxPlayers;
-            set 
-            {
-                _maxPlayers = value;
-                OnPropertyChanged(); 
-            }
-        }
-
-        /// <summary>
-        /// The total number of questions in the room.
-        /// </summary>
-        public uint QuestionsCount
-        {
-            get => _questionsCount;
-            set 
-            {
-                _questionsCount = value;
-                OnPropertyChanged();
-            }
-        }
 
         /// <summary>
         /// Error message related to the number of questions.
@@ -116,19 +73,6 @@ namespace ClientApp.ViewModels
                 OnPropertyChanged();
             }
         }
-
-
-        public string ErrorMessage
-        {
-            get => _errorMessage;
-            set 
-            {
-                _errorMessage = value;
-                OnPropertyChanged(); 
-            }
-        }
-
-
 
 
 

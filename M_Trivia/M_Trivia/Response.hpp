@@ -99,7 +99,6 @@ public:
 #include "CreateRoomResponseErrors.hpp"
 #include "GeneralResponseErrors.hpp"
 
-using CloseRoomResponse = Response<ResponseCodes::C_CloseRoomResponse, GeneralResponseErrors>;
 using StartGameResponse = Response<ResponseCodes::C_StartGameResponse, GeneralResponseErrors>;
 using LeaveRoomResponse = Response<ResponseCodes::C_LeaveRoomResponse, IResponseErrors>;
 using LeaveGameResponse = Response<ResponseCodes::C_LeaveGameResponse, GeneralResponseErrors>;

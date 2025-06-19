@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Stores
 {
-    public class ErrorMessageStore : StoreBase
+    public class ServerErrorMessageStore : StoreBase
     {
         private string _errorMessage;
         private string _errorType;

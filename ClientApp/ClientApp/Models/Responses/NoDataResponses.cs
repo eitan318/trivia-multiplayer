@@ -2,7 +2,6 @@
 
 namespace ClientApp.Models.Responses
 {
-    class CloseRoomResponse : Response<GeneralResponseErrors> { }
     class LeaveRoomResponse : Response<NoResponseErrors> { }
     class LeaveGameResponse : Response<NoResponseErrors> { }
     class LoginResponse : Response<LoginResponseErrors> { }

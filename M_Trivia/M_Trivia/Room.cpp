@@ -53,7 +53,9 @@ void Room::enterGame() {
 }
 
 void Room::closeGame() {
-    status = RoomStatus::NotInGame;
+    if (status != Closing) {
+        status = RoomStatus::NotInGame;
+    }
 }
 
 unsigned int Room::getId() const {

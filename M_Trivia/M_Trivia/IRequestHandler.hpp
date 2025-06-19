@@ -37,5 +37,7 @@ public:
    * @return A RequestResult that encapsulates the response and any additional
    * information.
    */
-  virtual RequestResult handleRequest(const RequestInfo &, SOCKET) = 0;
+  virtual RequestResult handleRequest(const RequestInfo &) = 0;
+
+  virtual void Cleanup() = 0;
 };

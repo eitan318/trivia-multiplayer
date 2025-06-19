@@ -5,7 +5,6 @@
              xmlns:local="clr-namespace:ClientApp"
              xmlns:converters="clr-namespace:ClientApp.Views.Converters"
              xmlns:controls="clr-namespace:ClientApp.Views.Controls"
-             xmlns:views="clr-namespace:ClientApp.Views.Screens"
              xmlns:vm="clr-namespace:ClientApp.ViewModels"
              >
     <Application.Resources>
@@ -15,17 +14,11 @@
                 <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Indigo" SecondaryColor="Lime" />
                 
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
-
-                <ResourceDictionary Source="Views/Controls/HyperLink.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/ClientApp;component/Views/SharedStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
             <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-
-
-            <SolidColorBrush x:Key="ErrorBrush" Color="Red" />
-
-
 
         </ResourceDictionary>
     </Application.Resources>

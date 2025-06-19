@@ -8,7 +8,7 @@ public:
     bool answeredLastQuestion;
 
     PlayerGameData() = default;
-    PlayerGameData(const Question& q, std::chrono::time_point<std::chrono::steady_clock> startTime)
+    PlayerGameData(const Question& q)
         : question(q), answeredLastQuestion(false) 
     {
     }

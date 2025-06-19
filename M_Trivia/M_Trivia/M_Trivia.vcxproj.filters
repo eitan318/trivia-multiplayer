@@ -148,9 +148,6 @@
     <ClCompile Include="RoomAdminRequestHandler.cpp">
       <Filter>RequestHandlers</Filter>
     </ClCompile>
-    <ClCompile Include="RoomMemberRequestHandler.cpp">
-      <Filter>RequestHandlers</Filter>
-    </ClCompile>
     <ClCompile Include="RoomRequestHandler.cpp">
       <Filter>RequestHandlers</Filter>
     </ClCompile>
@@ -354,9 +351,6 @@
       <Filter>RequestHandlers</Filter>
     </ClInclude>
     <ClInclude Include="RoomAdminRequestHandler.hpp">
-      <Filter>RequestHandlers</Filter>
-    </ClInclude>
-    <ClInclude Include="RoomMemberRequestHandler.hpp">
       <Filter>RequestHandlers</Filter>
     </ClInclude>
     <ClInclude Include="RoomRequestHandler.hpp">

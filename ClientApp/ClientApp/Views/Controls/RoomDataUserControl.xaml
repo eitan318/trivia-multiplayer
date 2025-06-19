@@ -12,6 +12,5 @@
         <TextBlock Text="{Binding MaxPlayers, StringFormat='Max Players: {0}'}" />
         <TextBlock Text="{Binding NumOfQuestionsInGame, StringFormat='Questions: {0}'}" />
         <TextBlock Text="{Binding TimePerQuestion, StringFormat='Time per Question: {0} sec'}" />
-        <TextBlock Text="Status" />
     </StackPanel>
 </UserControl>

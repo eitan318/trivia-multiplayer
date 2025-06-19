@@ -12,7 +12,6 @@
 
     <Grid Background="{DynamicResource MaterialDesignPaper}">
 
-
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -26,10 +25,8 @@
 
                 <!-- Page Title -->
                 <TextBlock Text="Welcome! Please Log In" 
-                           FontSize="20" 
-                           FontWeight="Bold" 
-                           TextAlignment="Center" 
-                           Margin="0,0,0,20"                           />
+                           Style="{StaticResource TitleStyle}" 
+                          />
 
                 <!-- Username TextBox -->
                 <TextBox
@@ -37,17 +34,16 @@
                     x:Name="UsernameTB"
                     materialDesign:HintAssist.Hint="Username" 
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                    Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"/>
+                    />
 
                 <!-- Username Error Message -->
                 <TextBlock Text="{Binding UsernameErrorMessage}" 
-                   Foreground="{StaticResource ErrorBrush}" 
+                   Style="{StaticResource ErrorMessageStyle}"
                    Visibility="{Binding UsernameErrorMessage}" />
 
                 <!-- PasswordBox with Show/Hide Toggle -->
                 <controls:PasswordBoxWithToggle
                     PasswordText="{Binding Password, Mode=TwoWay}"
-                    Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
                     InnerPasswordBoxStyle="{StaticResource MaterialDesignFloatingHintPasswordBox}"
                     InnerTextBoxStyle="{StaticResource MaterialDesignFloatingHintTextBox}"
                     materialDesign:HintAssist.Hint="Password">
@@ -55,13 +51,11 @@
 
                 <!-- Password Error Message -->
                 <TextBlock Text="{Binding PasswordErrorMessage}" 
-                    Foreground="{StaticResource ErrorBrush}" 
+                            Style="{StaticResource ErrorMessageStyle}"
                     Visibility="{Binding PasswordErrorMessage}" />
 
                 <!-- General Error Message -->
-                <TextBlock Text="{Binding ErrorMessage}" 
-                           Foreground="{StaticResource ErrorBrush}" 
-                           TextAlignment="Center"
+                <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessageStyle}" 
                            Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
 
                 <!-- Spacer for better alignment -->
@@ -69,7 +63,8 @@
 
                 <!-- Forgot Password Hyperlink -->
                 <TextBlock>
-                    <Hyperlink Command="{Binding NavToForgotPasswordCmd}">
+                    <Hyperlink Command="{Binding NavToForgotPasswordCmd}" 
+                               Style="{StaticResource HyperlinkStyle}">
                         Forgot My Password
                     </Hyperlink>
                 </TextBlock>
@@ -84,16 +79,9 @@
                     FontWeight="Bold"/>
 
                 <!-- Sign Up Button -->
-                <TextBlock Text="Sign Up"                    
-                   Padding="10,5" 
-                   Cursor="Hand"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Style="{DynamicResource MaterialDesignButtonTextBlock}">
-                        <TextBlock.InputBindings>
-                            <MouseBinding Gesture="LeftClick" Command="{Binding NavToSignupCmd}"  />
-                        </TextBlock.InputBindings>
-                    </TextBlock>
+                <Button Content="Signup"
+                    Command="{Binding NavToSignupCmd}"
+                    Style="{StaticResource TextLikeButtonStyle}" />
 
 
             </StackPanel>

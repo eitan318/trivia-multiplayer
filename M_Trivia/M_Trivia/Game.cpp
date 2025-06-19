@@ -2,9 +2,10 @@
 
 Game::Game(const std::vector<Question>& questions, const std::vector<LoggedUser>& neededPlayers, unsigned int gameId,
     unsigned int questionTimeLimit, Room* room)
-    : m_gameId(gameId), m_questions(std::move(questions)), m_questionTimeLimit(questionTimeLimit),
-    m_totalNeededPlayers(neededPlayers.size()), m_room(room), m_activePlayers(0), m_status(GameStatus::ScoreBoardShow)
+    : m_gameId(gameId), m_questions(std::move(questions)), m_questionTimeLimitSeconds(questionTimeLimit),
+    m_totalNeededPlayers(neededPlayers.size()), m_room(room), m_activePlayers(0), m_status(GameStatus::AnsweringQuestion), m_currQuestionIdx(0)
 {
+    this->m_lastQuestionStartTime = std::chrono::steady_clock::now();
 }
 
 void Game::join(const LoggedUser& player) {
@@ -12,7 +13,7 @@ void Game::join(const LoggedUser& player) {
     std::lock_guard<std::mutex> lock(m_playersMutex);
     Question shuffledCopy = Question(this->m_questions[0]);
     shuffledCopy.shuffle();
-    m_players.emplace(player, PlayerGameData(shuffledCopy, std::chrono::steady_clock::now()));
+    m_players.emplace(player, PlayerGameData(shuffledCopy));
     
     if (m_activePlayers == m_totalNeededPlayers) {
         this->m_room->enterGame();
@@ -55,38 +56,56 @@ void Game::moveToScoreBoard()
     this->m_status = GameStatus::ScoreBoardShow;
 }
 
+
+void Game::MoveToGameResults() {
+    this->m_status = GameStatus::GameResultsShow;
+}
+
 double Game::getAnswerDouration(const std::chrono::time_point<std::chrono::steady_clock>& answerMoment) const
 {
     return std::chrono::duration<double>(answerMoment - this->m_lastQuestionStartTime).count();
 }
 
 
-bool Game::didEveryoneAnswered() const
+bool Game::didEveryActiveAnswered() const
 {
+    unsigned int countAnswered = 0;
     for (const auto& [player, playerData] : this->m_players) {
         if (playerData.answeredLastQuestion) {
-            return false;
+            countAnswered++;
         }
     }
-    return true;
+    return countAnswered == this->m_activePlayers;
 }
 
 
 void Game::setNextQuestion()
 {
-    this->currQuestionIdx++;
+    this->m_status = GameStatus::AnsweringQuestion;
+
+    this->m_currQuestionIdx++;
     std::lock_guard<std::mutex> lock(m_playersMutex);
     for (auto& [player, playerData] : this->m_players) {
-        Question nextQuestionShuffledCopy(this->m_questions[this->currQuestionIdx]);
+        Question nextQuestionShuffledCopy(this->m_questions[this->m_currQuestionIdx]);
         nextQuestionShuffledCopy.shuffle();
         playerData.question = nextQuestionShuffledCopy;
+        playerData.answeredLastQuestion = false;
     }
     this->m_lastQuestionStartTime = std::chrono::steady_clock::now();
 }
 
+bool Game::wasLastQuestion() const {
+    return this->m_currQuestionIdx == this->m_questions.size() - 1;
+}
+
+unsigned int Game::getCurrQuestionIdx() const
+{
+    return this->m_currQuestionIdx;
+}
+
 unsigned int Game::getQuestionTimeLimit() const
 {
-    return m_questionTimeLimit; 
+    return m_questionTimeLimitSeconds; 
 }
 
 void Game::removePlayer(const LoggedUser& user)
@@ -108,4 +127,9 @@ void Game::removeActivePlayer()
 int Game::getActivePlayers()
 {
     return m_activePlayers;
+}
+
+unsigned int Game::getScoreShowingTime() const
+{
+    return m_room->getRoomPreview().roomData.scoreShowingTime;
 }

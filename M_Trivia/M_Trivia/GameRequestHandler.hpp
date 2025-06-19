@@ -40,7 +40,9 @@ public:
      * @return A RequestResult containing the serialized response and the next
      * handler.
      */
-    RequestResult handleRequest(const RequestInfo& requestInfo, SOCKET socket) override;
+    RequestResult handleRequest(const RequestInfo& requestInfo) override;
+
+    void Cleanup() override;
 
 private:
     LoggedUser m_user;
