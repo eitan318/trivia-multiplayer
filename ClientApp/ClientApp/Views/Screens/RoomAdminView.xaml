@@ -39,11 +39,19 @@
                     <TextBlock Text="Admin (You):" FontSize="16" FontWeight="Bold" Margin="10,0,10,0" />
                     <controls:PlayerUserControl DataContext="{Binding Admin}" />
                 </StackPanel>
-                <StackPanel Grid.Column="1" Orientation="Vertical">
-                    <TextBlock Text="name"/>
-                    <TextBlock Grid.Column="1" Text="{Binding RoomDataStore.CurrentRoomData.RoomName}"
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <TextBlock Text="name"/>
+                        <TextBlock Grid.Column="1" Text="{Binding RoomDataStore.CurrentRoomData.RoomName}"
                                FontWeight="Bold" FontSize="28" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <TextBlock Text="Id"/>
+                        <TextBlock Grid.Column="1" Text="{Binding RoomDataStore.CurrentRoomData.RoomName.Id, StringFormat='#{0}'}"
+                               FontWeight="Bold" FontSize="30" />
+                    </StackPanel>
                 </StackPanel>
+
                 <StackPanel Grid.Column="2" Orientation="Vertical">
                     <TextBlock Text="{Binding RoomDataStore.CurrentRoomData.MaxPlayers, StringFormat='Max Players: {0}'}" />
                     <TextBlock Text="{Binding RoomDataStore.CurrentRoomData.NumOfQuestionsInGame, StringFormat='Questions: {0}'}" />

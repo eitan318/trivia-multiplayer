@@ -12,16 +12,23 @@
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <!-- Admin Display -->
-            <RowDefinition Height="*"/>
-            <!-- Players List -->
-            <RowDefinition Height="Auto"/>
-            <!-- Refresh Button -->
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Admin Display -->
-        <materialDesign:Card Grid.ColumnSpan="2" UniformCornerRadius="22" BorderBrush="{StaticResource MaterialDesignLightSeparatorBackground}" BorderThickness="3" Margin="0,0,0,10" Padding="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Admin and Room Info -->
+        <Border
+                CornerRadius="22"
+                BorderBrush="{StaticResource PrimaryColor}"
+                BorderThickness="2" 
+                Grid.ColumnSpan="2" 
+                Margin="0,0,0,10" Padding="20">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*" />
@@ -32,11 +39,17 @@
                     <TextBlock Text="Admin:" FontSize="16" FontWeight="Bold" Margin="10,0,10,0" />
                     <controls:PlayerUserControl DataContext="{Binding Admin}" />
                 </StackPanel>
-
-                <StackPanel Grid.Column="1" Orientation="Vertical">
-                    <TextBlock Text="name"/>
-                    <TextBlock Grid.Column="1" Text="{Binding RoomDataStore.CurrentRoomData.RoomName}"
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <TextBlock Text="name"/>
+                        <TextBlock Grid.Column="1" Text="{Binding RoomDataStore.CurrentRoomData.RoomName}"
                                FontWeight="Bold" FontSize="28" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <TextBlock Text="Id"/>
+                        <TextBlock Grid.Column="1" Text="{Binding RoomDataStore.CurrentRoomData.RoomName.Id, StringFormat='#{0}'}"
+                               FontWeight="Bold" FontSize="30" />
+                    </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Column="2" Orientation="Vertical">
                     <TextBlock Text="{Binding RoomDataStore.CurrentRoomData.MaxPlayers, StringFormat='Max Players: {0}'}" />
@@ -44,44 +57,76 @@
                     <TextBlock Text="{Binding RoomDataStore.CurrentRoomData.TimePerQuestion, StringFormat='Time per Question: {0} sec'}" />
                 </StackPanel>
             </Grid>
-        </materialDesign:Card>
-        
+        </Border>
 
         <!-- List of Players -->
-        <GroupBox Header="Players" Grid.Row="1" Padding="10" Margin="0,0,0,20">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding Players}">
-                    <!-- Layout for player items -->
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Columns="4" HorizontalAlignment="Center" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
+        <Border Grid.Row="1"
+                Padding="3"
+                CornerRadius="18"
+                BorderBrush="{StaticResource PrimaryColor}"
+                Background="{StaticResource PrimaryColor}"
+                BorderThickness="2" 
+                Grid.Column="0" 
+                Margin="0,10,10,10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <!-- Header row -->
+                    <RowDefinition Height="Auto" />
+                    <!-- Player list row (fills available space) -->
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                    <!-- Template for each player item -->
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <controls:PlayerUserControl />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-        </GroupBox>
+                <!-- Header -->
+                <TextBlock Text="Players"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           Margin="5"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
 
+                <!-- Inner Border for Player List -->
+                <Border Grid.Row="1"
+                        Padding="10"
+                        CornerRadius="18"
+                        BorderBrush="{StaticResource PrimaryColor}"
+                        Background="{DynamicResource MaterialDesign.Brush.Background}"
+                        BorderThickness="1">
+                    <ScrollViewer>
+                        <ItemsControl ItemsSource="{Binding Players}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="4" HorizontalAlignment="Center" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <controls:PlayerUserControl Margin="10" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+        </Border>
 
-        <StackPanel Grid.Row="2" >
-            <!-- Leave Button -->
-            <Button Content="Leave Room"
-                    Command="{Binding LeaveRoomCmd}"
-                    HorizontalAlignment="Center" Padding="10,5" Margin="20"
-                    materialDesign:ButtonAssist.CornerRadius="16"
-                    BorderThickness="3"
-                    Width="200"
-                    Height="40"
-                    FontWeight="Bold"
-                    Style="{StaticResource OperationButtonStyle}"/>
-            
-            
-        </StackPanel>
+        <!-- Action Buttons -->
+        <Border Grid.Row="1"
+                Grid.Column="1"
+                Margin="10" 
+                Padding="20"
+                CornerRadius="22"
+                BorderBrush="{StaticResource PrimaryColor}"
+                BorderThickness="2">
+            <StackPanel VerticalAlignment="Top">
+                <Button Content="Leave Room" 
+                        Command="{Binding LeaveRoomCmd}" 
+                        Style="{StaticResource OperationButtonStyle}"
+                        Height="40"
+                        Margin="10" />
+                <TextBlock Text="{Binding ErrorMessage}" 
+                           Style="{StaticResource ErrorMessageStyle}" 
+                           Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

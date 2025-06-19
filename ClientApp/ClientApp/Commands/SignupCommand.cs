@@ -107,12 +107,6 @@ namespace ClientApp.Commands
                         _signupViewModel.BirthDateErrorMessage = signupResponse.Errors.BirthDateError;
                     } 
                 }
-                else
-                {
-                    ErrorResponse errorResponse = responseInfo.ErrorResponse;
-                    _signupViewModel.ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
-
-                }
             }
             catch (Exception ex)
             {
