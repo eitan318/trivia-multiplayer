@@ -11,6 +11,7 @@ namespace ClientApp.Models
         private string _roomName;
         private uint _maxPlayers;
         private uint _numOfQuestionsInGame;
+        private uint _id;
         private double _timePerQuestion;
         private double _scoreShowingTime;
 
@@ -41,7 +42,18 @@ namespace ClientApp.Models
         {
         }
 
-        public uint Id { get; set; }
+        public uint Id
+        {
+            get => _id;
+            set
+            {
+                if (_id != value)
+                {
+                    _id = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public string RoomName
         {

@@ -10,6 +10,7 @@ namespace ClientApp.Views.Screens
         public JoinRoomView() 
         {
             InitializeComponent();
+            Search_TBX.Focus();
         }
     }
 }

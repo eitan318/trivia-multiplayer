@@ -41,7 +41,7 @@ public partial class App : Application
     {
         // Register services
         services.AddSingleton<INavigationService, NavigationService>();
-        services.AddSingleton(sp => new SocketService("192.168.1.195", 5554));
+        services.AddSingleton(sp => new SocketService("127.0.0.1", 5554));
         services.AddSingleton<RequestsExchangeService>();
         services.AddSingleton<JsonRequestSerializer>();
         services.AddSingleton<JsonResponseDeserializer>();

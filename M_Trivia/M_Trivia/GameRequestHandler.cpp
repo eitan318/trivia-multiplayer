@@ -59,8 +59,9 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& requestInfo)
 
 void GameRequestHandler::Cleanup()
 {
-    this->m_handlerFactory.getLoginManager().logout(this->m_user);
+    this->m_game->playerDeactivate(this->m_user);
     this->m_handlerFactory.getRoomManger().leaveRoom(this->m_room->getId(), this->m_user);
+    this->m_handlerFactory.getLoginManager().logout(this->m_user);
 }
 
 RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
@@ -136,8 +137,8 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
         this->m_handlerFactory.createRoomAdminRequestHandler(this->m_user, this->m_room) :
         this->m_handlerFactory.createRoomRequestHandler(this->m_user, this->m_room));
 
-    this->m_game->removeActivePlayer();
-    if(this->m_game->getActivePlayers() == 0)
+    this->m_game->playerDeactivate(this->m_user);
+    if(this->m_game->countActivePlayers() == 0)
         this->m_room->closeGame();
 
     RequestResult requestResult(
