@@ -21,11 +21,11 @@ namespace ClientApp.Commands
         }
         public override async void Execute(object parameter)
         {
-            try
-            {
                 var leaverRoomRequest = new LeaveRoomRequest();
                 ResponseInfo<LeaveRoomResponse> responseInfo =
                     await _requestsExchangeService.ExchangeRequest<LeaveRoomResponse>(leaverRoomRequest);
+                if (!responseInfo.NormalResponse)
+                    return;
                 LeaveRoomResponse response = responseInfo.Response;
                 if (response.Status == 0)
                 {
@@ -35,11 +35,6 @@ namespace ClientApp.Commands
                 {
                     throw new Exception();
                 }
-            }
-            catch(Exception ex)
-            {
-                this._navigationService.NavigateTo<MenuViewModel>();
-            }
 
         }
 

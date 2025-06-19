@@ -16,28 +16,28 @@
         <local:ViewModelToPageTemplateSelector x:Key="ViewModelToPageTemplateSelector" />
     </Window.Resources>
 
-    <DockPanel>
+    <Grid>
+        <!-- Frame for View Navigation -->
+        <Frame Content="{Binding CurrentViewModel}"
+               ContentTemplateSelector="{StaticResource ViewModelToPageTemplateSelector}" 
+               NavigationUIVisibility="Hidden" />
+
         <!-- Back Button -->
-        <Button Content="Back"
-                DockPanel.Dock="Top"
-                Width="100"
-                Height="30"
+        <Button Style="{StaticResource BackButtonStyle}"
                 HorizontalAlignment="Left"
-                Margin="5"
+                VerticalAlignment="Top"
+                Margin="10"
                 Command="{Binding BackCmd}"
-                Visibility="{Binding CanGoBack, Converter={StaticResource BoolToVisibilityConverter}}" />
+                Visibility="{Binding CanGoBack, Converter={StaticResource BoolToVisibilityConverter}}"
+                Panel.ZIndex="1" />
 
         <!-- Error Message -->
         <TextBlock Text="{Binding ServerErrorMessage}"
                    Style="{StaticResource ErrorMessageStyle}" 
                    Visibility="{Binding ServerErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"
-                   DockPanel.Dock="Bottom"
                    HorizontalAlignment="Center"
-                   Margin="10" />
-
-        <!-- Frame for View Navigation -->
-        <Frame Content="{Binding CurrentViewModel}"
-               ContentTemplateSelector="{StaticResource ViewModelToPageTemplateSelector}" 
-               NavigationUIVisibility="Hidden" />
-    </DockPanel>
+                   VerticalAlignment="Bottom"
+                   Margin="10"
+                   Panel.ZIndex="1" />
+    </Grid>
 </Window>

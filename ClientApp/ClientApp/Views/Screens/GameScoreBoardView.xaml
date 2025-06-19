@@ -3,56 +3,68 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ClientApp.Views.Screens"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+                   TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}">
     <Grid>
-        <Button 
-            Margin="10"
-            VerticalAlignment="Bottom"
-            Grid.Column="2"
-            Content="To Room" Command="{Binding LeaveGameCmd}"
-            Style="{StaticResource OperationButtonStyle}"
-            />
-        
-        <materialDesign:Card 
-Grid.Column="1"
-Margin="20"
-Padding="30"
-HorizontalAlignment="Center"
-VerticalAlignment="Center"
-MaxHeight="800"
-MinWidth="300">
+        <!-- Navigation Button -->
+        <Button Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                Content="To Room" Command="{Binding LeaveGameCmd}"
+                Style="{StaticResource OperationButtonStyle}"/>
+
+        <!-- Scoreboard Card -->
+        <materialDesign:Card Margin="20" Padding="30"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             MaxHeight="600" MinWidth="400">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <!-- Title -->
                     <RowDefinition Height="*"/>
                     <!-- Scrollable Content -->
-                    <RowDefinition Height="Auto"/>
-                    <!-- Buttons and Error Message -->
                 </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Vertical">
-                    <!-- Title -->
-                    <TextBlock Grid.Row="0"
-                               Text="Game Scores"
-                               Style="{StaticResource TitleStyle}" 
-                               />
+                <!-- Title -->
+                <TextBlock Grid.Row="0"
+                           Text="Game Scores"
+                           HorizontalAlignment="Center"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           Margin="0,0,0,20"/>
 
-                    <!--Data Grid of The Game's Results-->
-                    <DataGrid Grid.Column="0" ItemsSource="{Binding PlayersResults}" AutoGenerateColumns="False">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="User's Name" Binding="{Binding Username}" />
-                            <DataGridTextColumn Header="Score" Binding="{Binding Score}" />
+                <!-- Scrollable List of Scores -->
+                <ScrollViewer Grid.Row="1">
+                    <ListView ItemsSource="{Binding PlayersResults}" Margin="10">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border CornerRadius="8" Margin="5" Padding="10" Background="{DynamicResource MaterialDesignPaper}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                        <!-- Username -->
+                                        <TextBlock Text="{Binding Username}" 
+                                                   FontSize="16" 
+                                                   FontWeight="Bold"
+                                                   Margin="10,0"
+                                                   VerticalAlignment="Center"
+                                                   Width="150"/>
 
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
+                                        <!-- Divider -->
+                                        <Rectangle Fill="Gray" Width="1" Height="20" Margin="10,0"/>
+
+                                        <!-- Score -->
+                                        <TextBlock Text="{Binding Score}" 
+                                                   FontSize="16" 
+                                                   FontWeight="Bold"
+                                                   Foreground="Gray"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
             </Grid>
         </materialDesign:Card>
-
-
     </Grid>
 </UserControl>

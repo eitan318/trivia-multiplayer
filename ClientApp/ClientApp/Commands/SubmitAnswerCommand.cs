@@ -24,6 +24,8 @@ namespace ClientApp.Commands
         {
             SubmitAnswerRequest request = new SubmitAnswerRequest(_gameViewModel.SelectedAnswerIndex);
             ResponseInfo<SubmitAnswerResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<SubmitAnswerResponse>(request);
+            if (!responseInfo.NormalResponse)
+                return;
 
             uint currectAnswerId = responseInfo.Response.CorrectAnswerId;
 
