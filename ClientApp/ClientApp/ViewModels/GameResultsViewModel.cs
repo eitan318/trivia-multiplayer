@@ -47,6 +47,7 @@ namespace ClientApp.ViewModels
             _refreshTopPlayersCTS?.Cancel();
             _refreshTopPlayersCTS?.Dispose();
         }
+
         private async Task PeriodicallyRefreshAllPlayersResults(CancellationToken token)
         {
             try

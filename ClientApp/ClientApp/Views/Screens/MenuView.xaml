@@ -55,14 +55,6 @@
                 </StackPanel>
             </Button>
 
-            <!-- High Scores Button -->
-            <Button Command="{Binding NavToHighScoresCmd}" Style="{StaticResource MenuButtonStyle}" Margin="10">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <materialDesign:PackIcon Kind="Star" Width="40" Height="40"/>
-                    <TextBlock Text="High Scores" FontSize="18" FontWeight="Bold" TextAlignment="Center" Margin="0,10,0,0"/>
-                    <TextBlock Text="Check out the top players and their scores" FontSize="12" TextAlignment="Center" Foreground="Gray"/>
-                </StackPanel>
-            </Button>
         </UniformGrid>
     </Grid>
 </UserControl>

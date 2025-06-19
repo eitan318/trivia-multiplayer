@@ -73,9 +73,12 @@ void RoomManager::leaveRoom(unsigned int roomId,
     if (room->getUsersVector().empty()) {
         this->deleteRoom(room->getId());
     }
-    if (isAdmin) {
-        room->close();
+    else {
+        if (isAdmin) {
+            room->close();
+        }
     }
+
 }
 
 
