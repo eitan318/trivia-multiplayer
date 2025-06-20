@@ -137,9 +137,8 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
         this->m_handlerFactory.createRoomAdminRequestHandler(this->m_user, this->m_room) :
         this->m_handlerFactory.createRoomRequestHandler(this->m_user, this->m_room));
 
-    this->m_game->playerDeactivate(this->m_user);
-    if(this->m_game->countActivePlayers() == 0)
-        this->m_room->closeGame();
+    this->m_gameManager.leaveGame(this->m_game, this->m_room, this->m_user);
+
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(leaveGameResponse),

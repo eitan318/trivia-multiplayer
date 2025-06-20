@@ -27,7 +27,7 @@ public:
     bool emailExists(const std::string& email) const;
     UserRecord getUserRecord(const std::string& email) const;
     std::vector<HighScoreInfo> getBestScores(int limit) const;
-    std::vector<Question> getQuestions(int amount) const;
+    std::vector<Question> getRandQuestions(int amount) const;
     void updatePassword(const std::string& username,
         const std::string& newPassword) const;
     unsigned int getQuestionsCount() const;

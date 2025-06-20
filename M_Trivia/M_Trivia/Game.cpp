@@ -27,7 +27,27 @@ GameStatus Game::getStatus() const
 
 Game::~Game()
 {
+    // Signal the time-checking thread to stop
+    m_stopTimeCheckThread.store(true);
+
+    // Join the thread if it is joinable, ensuring it has finished executing
+    if (m_timeCheckThread.joinable()) {
+        m_timeCheckThread.join();
+    }
+
+    // Perform additional cleanup if necessary
+    // For example, clear player data or other dynamically allocated resources
+    {
+        std::lock_guard<std::mutex> lock(m_playersMutex);
+        m_players.clear();
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(m_questionsMutex);
+        m_questions.clear();
+    }
 }
+
 
 
 std::map<LoggedUser, PlayerGameData> Game::getPlayers()
@@ -83,23 +103,7 @@ bool Game::didEveryActiveAnswered() const
     return true;
 }
 
-void Game::actAfterQuestionAnsweringEnded() {
-    //Only if this wasnt called before by timeout
-    if (this->m_status != GameStatus::AnsweringQuestion)
-        return;
 
-
-    if (wasTheLastQuestion()) {
-        moveToGameResults();
-    }
-    else {
-        moveToScoreBoard();
-        std::thread([this]() {
-            std::this_thread::sleep_for(std::chrono::seconds(getScoreShowingTime()));
-            setNextQuestion();
-            }).detach();
-    }
-}
 
 bool Game::reachedTimeout() const
 {
@@ -140,13 +144,6 @@ unsigned int Game::getQuestionTimeLimit() const
     return m_questionTimeLimitSeconds;
 }
 
-
-
-void Game::removePlayer(const LoggedUser& user)
-{
-    std::lock_guard<std::mutex> lock(m_playersMutex);
-    m_players.erase(user);
-}
 
 unsigned int Game::getId() const
 {

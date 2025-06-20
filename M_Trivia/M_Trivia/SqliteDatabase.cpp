@@ -605,10 +605,10 @@ std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit) const {
     return results;
 }
 
-std::vector<Question> SqliteDatabase::getQuestions(int amount) const {
+std::vector<Question> SqliteDatabase::getRandQuestions(int amount) const {
     const char* query = R"(
     SELECT id, difficulty, category, question, answer, incorrect_answer_1,
-    incorrect_answer_2, incorrect_answer_3 FROM questions LIMIT ?)";
+    incorrect_answer_2, incorrect_answer_3 FROM questions ORDER BY RANDOM() LIMIT ?)";
 
     sqlite3_stmt* stmt;
 
@@ -617,11 +617,13 @@ std::vector<Question> SqliteDatabase::getQuestions(int amount) const {
             sqlite3_errmsg(db));
     }
 
+    // Bind the number of questions to fetch
     sqlite3_bind_int(stmt, 1, amount);
 
     std::vector<Question> questions;
+
+    // Iterate through the result set
     while (sqlite3_step(stmt) == SQLITE_ROW) {
-        // Create the Question object using data from the database
         Question q(
             sqlite3_column_int(stmt, 0), // id
             std::string(reinterpret_cast<const char*>(
@@ -643,10 +645,12 @@ std::vector<Question> SqliteDatabase::getQuestions(int amount) const {
         questions.emplace_back(q);
     }
 
+    // Finalize the statement to free resources
     sqlite3_finalize(stmt);
 
     return questions;
 }
+
 
 
 unsigned int SqliteDatabase::getQuestionsCount() const {

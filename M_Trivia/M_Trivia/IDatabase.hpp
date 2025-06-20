@@ -61,7 +61,7 @@ public:
      * @param amount The number of questions to retrieve.
      * @return A list of questions.
      */
-    virtual std::vector<Question> getQuestions(int amount) const = 0;
+    virtual std::vector<Question> getRandQuestions(int amount) const = 0;
 
     /**
      * @brief Retrieves the total number of answers submitted by a user.

@@ -59,6 +59,10 @@ public:
 
     void handleTimeout(std::shared_ptr<Game> game);
 
+    void leaveGame(std::shared_ptr<Game> game, Room* room, const LoggedUser& user);
+
+    void actAfterQuestionAnsweringEnded(std::shared_ptr<Game> game);
+
     /**
      * Destructor for GameManager.
      */

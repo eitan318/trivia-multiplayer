@@ -16,14 +16,7 @@ void GameManager::timeoutCheckLoop()
 
         for (const auto& [id, game] : this->m_gamesByRoomId) {
             if (game->reachedTimeout()) {
-                game->actAfterQuestionAnsweringEnded();
-            }
-            if (game->reachedTimeout()) {
-                for (const auto& [player, playerData] : game->getPlayers()) {
-                    if (!playerData.answeredLastQuestion) {
-                        submitAnswer(player, game, -1); // Submit default answer
-                    }
-                }
+                handleTimeout(game);
             }
         }
         
@@ -31,14 +24,33 @@ void GameManager::timeoutCheckLoop()
 }
 
 void GameManager::handleTimeout(std::shared_ptr<Game> game) {
+    //Only if this wasnt called before by timeout
+    if (game->getStatus() != GameStatus::AnsweringQuestion)
+        return;
 
+    for (const auto& [player, playerData] : game->getPlayers()) {
+        if (!playerData.answeredLastQuestion) {
+            submitAnswer(player, game, -1); // Submit default answer
+        }
+    }
+    actAfterQuestionAnsweringEnded(game);
+
+}
+
+void GameManager::leaveGame(std::shared_ptr<Game> game, Room* room, const LoggedUser& user)
+{
+    game->playerDeactivate(user);
+    if (game->countActivePlayers() == 0) {
+        room->closeGame();
+        deleteGame(game->getId());
+    }
 }
 
 
 std::shared_ptr<Game> GameManager::createGame(Room* room)
 {
     std::lock_guard<std::mutex> lock(m_gamesMutex); 
-    std::vector<Question> questions = this->m_database.getQuestions(room->getRoomPreview().roomData.numOfQuestionsInGame);
+    std::vector<Question> questions = this->m_database.getRandQuestions(room->getRoomPreview().roomData.numOfQuestionsInGame);
     unsigned int gameId = this->m_database.createGame(room->getRoomPreview().roomData.name, std::time(nullptr));
     std::shared_ptr<Game> game = std::make_shared<Game>(questions, room->getUsersVector(), gameId, room->getRoomPreview().roomData.timePerQuestion, room);
     this->m_gamesByRoomId[room->getId()] = game;
@@ -84,7 +96,7 @@ GeneralResponseErrors GameManager::submitAnswer(const LoggedUser& user, std::sha
         answerOriginalNumber, score, answerTime);
 
     if (game->didEveryActiveAnswered()) {
-        game->actAfterQuestionAnsweringEnded();
+        this->actAfterQuestionAnsweringEnded(game);
     }
     return errors;
 }
@@ -104,6 +116,24 @@ std::vector<PlayerResults> GameManager::getGameResults(std::shared_ptr<Game> gam
         return a.score > b.score;
         });
     return playersResults;
+}
+
+void GameManager::actAfterQuestionAnsweringEnded(std::shared_ptr<Game> game) {
+    //Only if this wasnt called before by timeout
+    if (game->getStatus() != GameStatus::AnsweringQuestion)
+        return;
+
+
+    if (game->wasTheLastQuestion()) {
+        game->moveToGameResults();
+    }
+    else {
+        game->moveToScoreBoard();
+        std::thread([game]() {
+            std::this_thread::sleep_for(std::chrono::seconds(game->getScoreShowingTime()));
+            game->setNextQuestion();
+            }).detach();
+    }
 }
 
 int GameManager::calcAnswerScore(QuestionDifficultyLevelScores diffLevel, double answerTime, bool isCurrect, double timeLimit) const

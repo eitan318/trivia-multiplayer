@@ -48,11 +48,6 @@ public:
      */
     bool userExistsInGame(const LoggedUser& user) const;
 
-    /**
-     * @brief Removes a player from the game.
-     * @param user Player to remove.
-     */
-    void removePlayer(const LoggedUser& user);
 
     /**
      * @brief Adds a player to the game.
@@ -151,8 +146,6 @@ public:
      */
     void moveToGameResults();
 
-
-    void actAfterQuestionAnsweringEnded();
 
     bool reachedTimeout() const;
 
