@@ -64,7 +64,7 @@ public:
      * @brief Retrieves a list of all active rooms.
      * @return A vector of RoomData objects representing active rooms.
      */
-    std::vector<RoomPreview> getRooms() const;
+    std::vector<RoomPreview> getActiveRooms() const;
 
 
     /**

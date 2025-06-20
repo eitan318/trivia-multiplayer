@@ -6,6 +6,9 @@ Game::Game(const std::vector<Question>& questions, const std::vector<LoggedUser>
     m_totalNeededPlayers(neededPlayers.size()), m_room(room), m_activePlayers(0), m_status(GameStatus::AnsweringQuestion), m_currQuestionIdx(0)
 {
     this->m_lastQuestionStartTime = std::chrono::steady_clock::now();
+
+    // Start the time-checking thread
+    m_timeCheckThread = std::thread(&Game::timeCheckLoop, this);
 }
 
 void Game::join(const LoggedUser& player) {
@@ -14,7 +17,7 @@ void Game::join(const LoggedUser& player) {
     Question shuffledCopy = Question(this->m_questions[0]);
     shuffledCopy.shuffle();
     m_players.emplace(player, PlayerGameData(shuffledCopy));
-    
+
     if (m_activePlayers == m_totalNeededPlayers) {
         this->m_room->enterGame();
     }
@@ -24,6 +27,15 @@ GameStatus Game::getStatus() const
 {
     return this->m_status;
 }
+
+Game::~Game()
+{
+    m_stopTimeCheckThread.store(true); // Signal the thread to stop
+    if (m_timeCheckThread.joinable()) {
+        m_timeCheckThread.join(); // Wait for the thread to finish
+    }
+}
+
 
 std::map<LoggedUser, PlayerGameData> Game::getPlayers()
 {
@@ -61,6 +73,7 @@ void Game::MoveToGameResults() {
     this->m_status = GameStatus::GameResultsShow;
 }
 
+
 double Game::getAnswerDouration(const std::chrono::time_point<std::chrono::steady_clock>& answerMoment) const
 {
     return std::chrono::duration<double>(answerMoment - this->m_lastQuestionStartTime).count();
@@ -76,6 +89,19 @@ bool Game::didEveryActiveAnswered() const
         }
     }
     return countAnswered == this->m_activePlayers;
+}
+
+void Game::ActAfterQuestionAnsweringEnded() {
+    if (wasTheLastQuestion()) {
+        MoveToGameResults();
+    }
+    else {
+        moveToScoreBoard();
+        std::thread([this]() {
+            std::this_thread::sleep_for(std::chrono::seconds(getScoreShowingTime()));
+            setNextQuestion();
+            }).detach();
+    }
 }
 
 
@@ -94,7 +120,7 @@ void Game::setNextQuestion()
     this->m_lastQuestionStartTime = std::chrono::steady_clock::now();
 }
 
-bool Game::wasLastQuestion() const {
+bool Game::wasTheLastQuestion() const {
     return this->m_currQuestionIdx == this->m_questions.size() - 1;
 }
 
@@ -105,8 +131,22 @@ unsigned int Game::getCurrQuestionIdx() const
 
 unsigned int Game::getQuestionTimeLimit() const
 {
-    return m_questionTimeLimitSeconds; 
+    return m_questionTimeLimitSeconds;
 }
+
+void Game::timeCheckLoop()
+{
+    while (!m_stopTimeCheckThread.load()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Check every 100ms
+
+        // Check if time limit has been exceeded
+        auto elapsedTime = std::chrono::steady_clock::now() - m_lastQuestionStartTime;
+        if (std::chrono::duration_cast<std::chrono::seconds>(elapsedTime).count() >= m_questionTimeLimitSeconds) {
+            ActAfterQuestionAnsweringEnded();
+        }
+    }
+}
+
 
 void Game::removePlayer(const LoggedUser& user)
 {
@@ -116,7 +156,7 @@ void Game::removePlayer(const LoggedUser& user)
 
 unsigned int Game::getId() const
 {
-    return m_gameId; 
+    return m_gameId;
 }
 
 void Game::removeActivePlayer()

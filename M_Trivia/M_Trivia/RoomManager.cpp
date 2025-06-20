@@ -55,11 +55,14 @@ void RoomManager::deleteRoom(int ID) {
 
 
 
-std::vector<RoomPreview> RoomManager::getRooms() const {
+std::vector<RoomPreview> RoomManager::getActiveRooms() const {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     std::vector<RoomPreview> roomsvec;
     for (const auto& room : m_rooms) {
-        roomsvec.push_back(room.getRoomPreview());
+        if (room.getRoomStatus() != RoomStatus::Closing)
+        {
+            roomsvec.push_back(room.getRoomPreview());
+        }
     }
     return roomsvec;
 }

@@ -32,6 +32,8 @@ public:
     Game(Game&&) = delete;
     Game& operator=(Game&&) = delete;
 
+    ~Game();
+
     // Player management
     /**
      * @brief Retrieves the player data for all players in the game.
@@ -98,7 +100,7 @@ public:
      * @brief Checks if the current question is the last one.
      * @return True if it's the last question, false otherwise.
      */
-    bool wasLastQuestion() const;
+    bool wasTheLastQuestion() const;
 
     /**
      * @brief Gets the current question index.
@@ -149,6 +151,10 @@ public:
      */
     void MoveToGameResults();
 
+    void timeCheckLoop();
+
+    void ActAfterQuestionAnsweringEnded();
+
 private:
     // Immutable configuration
     const double m_questionTimeLimitSeconds; 
@@ -171,4 +177,7 @@ private:
     // Thread safety
     mutable std::mutex m_playersMutex; 
     mutable std::mutex m_questionsMutex; 
+
+    std::atomic<bool> m_stopTimeCheckThread{ false };
+    std::thread m_timeCheckThread;
 };
