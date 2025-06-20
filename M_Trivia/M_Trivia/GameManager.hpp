@@ -19,6 +19,8 @@ public:
      */
     static GameManager& getInstance(IDatabase& database);
 
+    void timeoutCheckLoop();
+
     /**
      * Creates a new game for the specified room.
      *
@@ -55,6 +57,8 @@ public:
      */
     std::vector<PlayerResults> getGameResults(std::shared_ptr<Game> game) const;
 
+    void handleTimeout(std::shared_ptr<Game> game);
+
     /**
      * Destructor for GameManager.
      */
@@ -83,4 +87,6 @@ private:
     IDatabase& m_database;
     mutable std::mutex m_gamesMutex; // Mutex to protect m_games
 
+    std::atomic<bool> m_stopTimeoutThread;
+    std::thread m_timeoutThread;
 };

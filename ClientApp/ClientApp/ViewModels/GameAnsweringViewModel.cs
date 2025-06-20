@@ -9,162 +9,170 @@ using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
-    
-class GameAnsweringViewModel : ViewModelBase
-{
-    private readonly RequestsExchangeService _requestsExchangeService;
-    private readonly RoomDataStore _roomDataStore;
-    private readonly int _msTimerInterval = 300;
-    private readonly CountdownTimerViewModel _countdownTimerViewModel;
-    private uint _questionNumber;
-    private QuestionInfo _questionInfo;
-    private string _errorMessage;
-    private int _selectedAnswerIndex = -1; // -1 indicates no selection
-    private List<PossibleAnswerViewModel> _possibleAnswers; // Cached list
-
-    public CountdownTimerViewModel Timer => _countdownTimerViewModel;
-
-    public GameAnsweringViewModel(RequestsExchangeService requestsExchangeService,
-                                  RoomDataStore roomDataStore,
-                                  INavigationService navigationService,
-                                  AmIAdminStore amIAdminStore) : base(false)
+        
+    class GameAnsweringViewModel : ViewModelBase
     {
-        _roomDataStore = roomDataStore;
-        _requestsExchangeService = requestsExchangeService;
+        private readonly RequestsExchangeService _requestsExchangeService;
+        private readonly RoomDataStore _roomDataStore;
+        private readonly int _msTimerInterval = 300;
+        private readonly CountdownTimerViewModel _countdownTimerViewModel;
+        private uint _questionNumber;
+        private QuestionInfo _questionInfo;
+        private string _errorMessage;
+        private int _selectedAnswerIndex = -1; // -1 indicates no selection
+        private List<PossibleAnswerViewModel> _possibleAnswers; // Cached list
+        private readonly INavigationService _navigationService;
+        public CountdownTimerViewModel Timer => _countdownTimerViewModel;
 
-        SubmitCmd = new SubmitAnswerCommand(requestsExchangeService, this, navigationService);
-        LeaveGameCmd = new LeaveGameCommand(navigationService, requestsExchangeService, this, amIAdminStore);
-
-        _countdownTimerViewModel = new CountdownTimerViewModel(_msTimerInterval);
-        _countdownTimerViewModel.TimerEnded += async (sender, args) => await HandleTimerEndAsync();
-    }
-
-    public override async void OnNavigatedTo()
-    {
-        SelectedAnswerIndex = -1;
-        await NextQuestion();
-    }
-
-    public override async void OnNavigatedAway()
-    {
-        Timer.Stop();
-    }
-
-    public override void Dispose()
-    {
-        base.Dispose();
-        Timer.Dispose();
-    }
-
-    public ICommand SubmitCmd { get; }
-    public ICommand LeaveGameCmd { get; }
-
-    public async Task NextQuestion()
-    {
-        try
+        public GameAnsweringViewModel(RequestsExchangeService requestsExchangeService,
+                                      RoomDataStore roomDataStore,
+                                      INavigationService navigationService,
+                                      AmIAdminStore amIAdminStore) : base(false)
         {
-            var getQuestionRequest = new GetQuestionRequest();
-            var questionResponseInfo = await _requestsExchangeService.ExchangeRequest<GetQuestionResponse>(getQuestionRequest);
+            _roomDataStore = roomDataStore;
+            _requestsExchangeService = requestsExchangeService;
 
-            if (questionResponseInfo.NormalResponse)
+            SubmitCmd = new SubmitAnswerCommand(requestsExchangeService, this, navigationService);
+            LeaveGameCmd = new LeaveGameCommand(navigationService, requestsExchangeService, this, amIAdminStore);
+
+            _countdownTimerViewModel = new CountdownTimerViewModel(_msTimerInterval);
+            _countdownTimerViewModel.TimerEnded += async (sender, args) => await HandleTimerEndAsync();
+                _navigationService = navigationService;
+        }
+
+        public override async void OnNavigatedTo()
+        {
+            SelectedAnswerIndex = -1;
+            await NextQuestion();
+        }
+
+        public override async void OnNavigatedAway()
+        {
+            Timer.Stop();
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            Timer.Dispose();
+        }
+
+        public ICommand SubmitCmd { get; }
+        public ICommand LeaveGameCmd { get; }
+
+        public async Task NextQuestion()
+        {
+            try
             {
-                if (questionResponseInfo.Response?.Status == 0)
+                var getQuestionRequest = new GetQuestionRequest();
+                var questionResponseInfo = await _requestsExchangeService.ExchangeRequest<GetQuestionResponse>(getQuestionRequest);
+
+                if (questionResponseInfo.NormalResponse)
                 {
-                    App.Current.Dispatcher.Invoke(() =>
+                    if (questionResponseInfo.Response?.Status == 0)
                     {
-                        SelectedAnswerIndex = -1;
-                        QuestionInfo = questionResponseInfo.Response.Question;
-                        QuestionNumber = questionResponseInfo.Response.QuestionNumber;
-                    });
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            SelectedAnswerIndex = -1;
+                            QuestionInfo = questionResponseInfo.Response.Question;
+                            QuestionNumber = questionResponseInfo.Response.QuestionNumber;
+                        });
+                    }
+                    else
+                    {
+                        ErrorMessage = "Unable to fetch the question. Please try again.";
+                    }
                 }
-                else
+
+                Timer.Reset(TimeSpan.FromSeconds(_roomDataStore.CurrentRoomData.TimePerQuestion));
+                Timer.Start();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"An error occurred: {ex.Message}";
+            }
+        }
+
+        private async Task HandleTimerEndAsync()
+        {
+            if (SubmitCmd.CanExecute(null))
+            {
+                SubmitCmd.Execute(null);
+            }
+            else
+            {
+                this._navigationService.NavigateTo<WaitingBetweenQuestionsViewModel>();
+            }
+        }
+
+        public string QDisplay => $"{QuestionNumber}/{_roomDataStore.CurrentRoomData.NumOfQuestionsInGame}";
+
+        public int SelectedAnswerIndex
+        {
+            get => _selectedAnswerIndex;
+            set
+            {
+                if (_selectedAnswerIndex != value)
                 {
-                    ErrorMessage = "Unable to fetch the question. Please try again.";
+                    _selectedAnswerIndex = value;
+                    OnPropertyChanged();
+
+                    if (SubmitCmd is SubmitAnswerCommand submitCommand)
+                    {
+                        submitCommand.RaiseCanExecuteChanged();
+                    }
                 }
             }
-
-            Timer.Reset(TimeSpan.FromSeconds(_roomDataStore.CurrentRoomData.TimePerQuestion));
-            Timer.Start();
         }
-        catch (Exception ex)
+
+        public List<PossibleAnswerViewModel> PossibleAnswers
         {
-            ErrorMessage = $"An error occurred: {ex.Message}";
-        }
-    }
-
-    private async Task HandleTimerEndAsync()
-    {
-        SubmitCmd.Execute(null);
-    }
-
-    public string QDisplay => $"{QuestionNumber}/{_roomDataStore.CurrentRoomData.NumOfQuestionsInGame}";
-
-    public int SelectedAnswerIndex
-    {
-        get => _selectedAnswerIndex;
-        set
-        {
-            if (_selectedAnswerIndex != value)
+            get => _possibleAnswers;
+            private set
             {
-                _selectedAnswerIndex = value;
+                _possibleAnswers = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public QuestionInfo QuestionInfo
+        {
+            get => _questionInfo;
+            set
+            {
+                _questionInfo = value;
                 OnPropertyChanged();
 
-                if (SubmitCmd is SubmitAnswerCommand submitCommand)
-                {
-                    submitCommand.RaiseCanExecuteChanged();
-                }
+                // Update PossibleAnswers when QuestionInfo changes
+                PossibleAnswers = _questionInfo?.PossibleAnswers
+                    .Select((answer, index) => new PossibleAnswerViewModel
+                    {
+                        Letter = (char)(65 + index),
+                        AnswerText = answer
+                    })
+                    .ToList();
+            }
+        }
+
+        public uint QuestionNumber
+        {
+            get => _questionNumber;
+            set
+            {
+                _questionNumber = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(QDisplay));
+            }
+        }
+
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged();
             }
         }
     }
-
-    public List<PossibleAnswerViewModel> PossibleAnswers
-    {
-        get => _possibleAnswers;
-        private set
-        {
-            _possibleAnswers = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public QuestionInfo QuestionInfo
-    {
-        get => _questionInfo;
-        set
-        {
-            _questionInfo = value;
-            OnPropertyChanged();
-
-            // Update PossibleAnswers when QuestionInfo changes
-            PossibleAnswers = _questionInfo?.PossibleAnswers
-                .Select((answer, index) => new PossibleAnswerViewModel
-                {
-                    Letter = (char)(65 + index),
-                    AnswerText = answer
-                })
-                .ToList();
-        }
-    }
-
-    public uint QuestionNumber
-    {
-        get => _questionNumber;
-        set
-        {
-            _questionNumber = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(QDisplay));
-        }
-    }
-
-    public string ErrorMessage
-    {
-        get => _errorMessage;
-        set
-        {
-            _errorMessage = value;
-            OnPropertyChanged();
-        }
-    }
-}
 }

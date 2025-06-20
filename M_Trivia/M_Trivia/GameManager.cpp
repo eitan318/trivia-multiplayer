@@ -1,11 +1,39 @@
 #include "GameManager.hpp"
 
-GameManager::GameManager(IDatabase& dataBase) : m_database(dataBase) {}
+GameManager::GameManager(IDatabase& dataBase) : m_database(dataBase) {
+    m_timeoutThread = std::thread(&GameManager::timeoutCheckLoop, this);
+}
 
 GameManager& GameManager::getInstance(IDatabase& database) {
     static GameManager instance(database);
     return instance;
 }
+
+void GameManager::timeoutCheckLoop()
+{
+    while (!m_stopTimeoutThread.load()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(300)); // Check every 300ms
+
+        for (const auto& [id, game] : this->m_gamesByRoomId) {
+            if (game->reachedTimeout()) {
+                game->actAfterQuestionAnsweringEnded();
+            }
+            if (game->reachedTimeout()) {
+                for (const auto& [player, playerData] : game->getPlayers()) {
+                    if (!playerData.answeredLastQuestion) {
+                        submitAnswer(player, game, -1); // Submit default answer
+                    }
+                }
+            }
+        }
+        
+    }
+}
+
+void GameManager::handleTimeout(std::shared_ptr<Game> game) {
+
+}
+
 
 std::shared_ptr<Game> GameManager::createGame(Room* room)
 {
@@ -56,7 +84,7 @@ GeneralResponseErrors GameManager::submitAnswer(const LoggedUser& user, std::sha
         answerOriginalNumber, score, answerTime);
 
     if (game->didEveryActiveAnswered()) {
-        game->ActAfterQuestionAnsweringEnded();
+        game->actAfterQuestionAnsweringEnded();
     }
     return errors;
 }
@@ -87,6 +115,13 @@ int GameManager::calcAnswerScore(QuestionDifficultyLevelScores diffLevel, double
 
 GameManager::~GameManager()
 {
-    std::lock_guard<std::mutex> lock(m_gamesMutex); 
-    m_gamesByRoomId.clear();
+    {
+        std::lock_guard<std::mutex> lock(m_gamesMutex);
+        m_gamesByRoomId.clear();
+    }
+
+    m_stopTimeoutThread.store(true);
+    if (m_timeoutThread.joinable()) {
+        m_timeoutThread.join();
+    }
 }

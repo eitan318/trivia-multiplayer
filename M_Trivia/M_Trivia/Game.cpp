@@ -7,8 +7,6 @@ Game::Game(const std::vector<Question>& questions, const std::vector<LoggedUser>
 {
     this->m_lastQuestionStartTime = std::chrono::steady_clock::now();
 
-    // Start the time-checking thread
-    m_timeCheckThread = std::thread(&Game::timeCheckLoop, this);
 }
 
 void Game::join(const LoggedUser& player) {
@@ -29,10 +27,6 @@ GameStatus Game::getStatus() const
 
 Game::~Game()
 {
-    m_stopTimeCheckThread.store(true); // Signal the thread to stop
-    if (m_timeCheckThread.joinable()) {
-        m_timeCheckThread.join(); // Wait for the thread to finish
-    }
 }
 
 
@@ -68,7 +62,7 @@ void Game::moveToScoreBoard()
 }
 
 
-void Game::MoveToGameResults() {
+void Game::moveToGameResults() {
     this->m_status = GameStatus::GameResultsShow;
 }
 
@@ -89,9 +83,14 @@ bool Game::didEveryActiveAnswered() const
     return true;
 }
 
-void Game::ActAfterQuestionAnsweringEnded() {
+void Game::actAfterQuestionAnsweringEnded() {
+    //Only if this wasnt called before by timeout
+    if (this->m_status != GameStatus::AnsweringQuestion)
+        return;
+
+
     if (wasTheLastQuestion()) {
-        MoveToGameResults();
+        moveToGameResults();
     }
     else {
         moveToScoreBoard();
@@ -100,6 +99,15 @@ void Game::ActAfterQuestionAnsweringEnded() {
             setNextQuestion();
             }).detach();
     }
+}
+
+bool Game::reachedTimeout() const
+{
+    auto now = std::chrono::steady_clock::now();
+    double communicationDelay = 1;
+
+    return std::chrono::duration<double>(now - this->m_lastQuestionStartTime).count() >
+        this->m_room->getRoomPreview().roomData.timePerQuestion + communicationDelay;
 }
 
 
@@ -132,18 +140,6 @@ unsigned int Game::getQuestionTimeLimit() const
     return m_questionTimeLimitSeconds;
 }
 
-void Game::timeCheckLoop()
-{
-    while (!m_stopTimeCheckThread.load()) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Check every 100ms
-
-        // Check if time limit has been exceeded
-        auto elapsedTime = std::chrono::steady_clock::now() - m_lastQuestionStartTime;
-        if (std::chrono::duration_cast<std::chrono::seconds>(elapsedTime).count() >= m_questionTimeLimitSeconds) {
-            ActAfterQuestionAnsweringEnded();
-        }
-    }
-}
 
 
 void Game::removePlayer(const LoggedUser& user)

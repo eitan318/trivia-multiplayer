@@ -149,11 +149,13 @@ public:
     /**
      * @brief Moves the game to the results phase.
      */
-    void MoveToGameResults();
+    void moveToGameResults();
 
-    void timeCheckLoop();
 
-    void ActAfterQuestionAnsweringEnded();
+    void actAfterQuestionAnsweringEnded();
+
+    bool reachedTimeout() const;
+
 
 private:
     // Immutable configuration
