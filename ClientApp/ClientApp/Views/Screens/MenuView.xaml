@@ -9,25 +9,28 @@
       d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid Margin="20">
-        <!-- Define Grid Layout -->
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <!-- StackPanel -->
-            <RowDefinition Height="4*"/>
+            <!-- Top Bar -->
+            <RowDefinition Height="Auto"/>
             <!-- Buttons -->
+            <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
 
-        <!-- Welcome Message -->
-        <StackPanel Grid.Row="0">
-            <TextBlock Text="{Binding Username, StringFormat='Welcome, {0}!'}" 
-                       Style="{StaticResource TitleStyle}"/>
-            <TextBlock Text="Ready for another trivia challenge?" 
-                       FontSize="16"  
-                       TextAlignment="Center"/>
-        </StackPanel>
+        <!-- Top Bar -->
+        <DockPanel Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="0,0,10,0">
+                <Button Command="{Binding LogoutCmd}" Style="{StaticResource MaterialDesignIconButton}" Height="37" Margin="10,0,0,0">
+                    <materialDesign:PackIcon Kind="Logout" Width="30" Height="30"/>
+                </Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="0,0,10,0">
+                <materialDesign:PackIcon Kind="Account" Width="30" Height="30" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Username}" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0"/>
+            </StackPanel>
+        </DockPanel>
 
         <!-- Menu Buttons -->
-        <UniformGrid Grid.Row="1" Rows="2" Columns="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10">
+        <UniformGrid Grid.Row="1" Columns="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10">
             <!-- Create Room Button -->
             <Button Command="{Binding NavToCreateRoomCmd}" Style="{StaticResource MenuButtonStyle}" Margin="10">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -54,7 +57,6 @@
                     <TextBlock Text="View your performance stats and leaderboards" FontSize="12" TextAlignment="Center" Foreground="Gray"/>
                 </StackPanel>
             </Button>
-
         </UniformGrid>
     </Grid>
 </UserControl>

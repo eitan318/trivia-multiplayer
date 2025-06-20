@@ -33,7 +33,11 @@ namespace ClientApp.ViewModels
             this.LeaveRoomCmd = new LeaveRoomCommand(navigationService, requestsExchangeService, null);
             this.RoomDataStore = roomDataStore;
 
+            Players.CollectionChanged += (s, e) => OnPropertyChanged(nameof(PlayersInfo));
+
         }
+
+        public string PlayersInfo => $"{this.Players.Count() + 1}/{this.RoomDataStore.CurrentRoomData.MaxPlayers}";
 
         public override void OnNavigatedTo()
         {

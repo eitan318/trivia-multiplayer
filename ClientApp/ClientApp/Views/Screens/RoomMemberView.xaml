@@ -39,20 +39,20 @@
                     <TextBlock Text="Admin:" FontSize="16" FontWeight="Bold" Margin="10,0,10,0" />
                     <controls:PlayerUserControl DataContext="{Binding Admin}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <StackPanel Grid.Column="1" Orientation="Vertical">
-                        <TextBlock Text="name"/>
-                        <TextBlock Grid.Column="1" Text="{Binding RoomDataStore.CurrentRoomData.RoomName}"
+                <StackPanel Orientation="Horizontal" Grid.Column="1">
+                    <StackPanel Grid.Column="1" Orientation="Vertical" Margin="0,0,20,0">
+                        <TextBlock Text="name" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="0" Text="{Binding RoomDataStore.CurrentRoomData.RoomName}"
                                FontWeight="Bold" FontSize="28" />
                     </StackPanel>
-                    <StackPanel Grid.Column="1" Orientation="Vertical">
-                        <TextBlock Text="Id"/>
-                        <TextBlock Grid.Column="1" Text="{Binding RoomDataStore.CurrentRoomData.RoomName.Id, StringFormat='#{0}'}"
+                    <StackPanel Grid.Column="1" Orientation="Vertical" Margin="20,0,0,0">
+                        <TextBlock Text="Id"  HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="{Binding RoomDataStore.CurrentRoomData.Id, StringFormat='#{0}'}"
                                FontWeight="Bold" FontSize="30" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Column="2" Orientation="Vertical">
-                    <TextBlock Text="{Binding RoomDataStore.CurrentRoomData.MaxPlayers, StringFormat='Max Players: {0}'}" />
+                    <TextBlock Text="{Binding PlayersInfo}" />
                     <TextBlock Text="{Binding RoomDataStore.CurrentRoomData.NumOfQuestionsInGame, StringFormat='Questions: {0}'}" />
                     <TextBlock Text="{Binding RoomDataStore.CurrentRoomData.TimePerQuestion, StringFormat='Time per Question: {0} sec'}" />
                 </StackPanel>

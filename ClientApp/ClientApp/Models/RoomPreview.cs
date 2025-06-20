@@ -14,7 +14,7 @@
             {
                 return Status switch
                 {
-                    RoomStatus.Closing => "Closed - something went wrong",
+                    RoomStatus.Closing => "Closed - but some are still inGame",
                     RoomStatus.InGame => "InGame",
                     RoomStatus.NotInGame => "Available",
                     _ => "Unknown Status"

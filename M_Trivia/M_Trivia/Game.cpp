@@ -3,7 +3,7 @@
 Game::Game(const std::vector<Question>& questions, const std::vector<LoggedUser>& neededPlayers, unsigned int gameId,
     unsigned int questionTimeLimit, Room* room)
     : m_gameId(gameId), m_questions(std::move(questions)), m_questionTimeLimitSeconds(questionTimeLimit),
-    m_totalNeededPlayers(neededPlayers.size()), m_room(room), m_activePlayers(0), m_status(GameStatus::AnsweringQuestion), m_currQuestionIdx(0)
+    m_totalNeededPlayers(neededPlayers.size()), m_room(room), m_status(GameStatus::AnsweringQuestion), m_currQuestionIdx(0)
 {
     this->m_lastQuestionStartTime = std::chrono::steady_clock::now();
 
@@ -12,13 +12,12 @@ Game::Game(const std::vector<Question>& questions, const std::vector<LoggedUser>
 }
 
 void Game::join(const LoggedUser& player) {
-    this->m_activePlayers++;
     std::lock_guard<std::mutex> lock(m_playersMutex);
     Question shuffledCopy = Question(this->m_questions[0]);
     shuffledCopy.shuffle();
     m_players.emplace(player, PlayerGameData(shuffledCopy));
-
-    if (m_activePlayers == m_totalNeededPlayers) {
+    
+    if (countActivePlayers() == m_totalNeededPlayers) {
         this->m_room->enterGame();
     }
 }
@@ -82,13 +81,12 @@ double Game::getAnswerDouration(const std::chrono::time_point<std::chrono::stead
 
 bool Game::didEveryActiveAnswered() const
 {
-    unsigned int countAnswered = 0;
     for (const auto& [player, playerData] : this->m_players) {
-        if (playerData.answeredLastQuestion) {
-            countAnswered++;
+        if (playerData.m_isActive && !playerData.answeredLastQuestion) {
+            return false;
         }
     }
-    return countAnswered == this->m_activePlayers;
+    return true;
 }
 
 void Game::ActAfterQuestionAnsweringEnded() {
@@ -159,14 +157,20 @@ unsigned int Game::getId() const
     return m_gameId;
 }
 
-void Game::removeActivePlayer()
+void Game::playerDeactivate(const LoggedUser& user)
 {
-    m_activePlayers--;
+    this->m_players[user].m_isActive = false;
 }
 
-int Game::getActivePlayers()
+int Game::countActivePlayers()
 {
-    return m_activePlayers;
+    unsigned int countActive = 0;
+    for (const auto& [player, playerData] : this->m_players) {
+        if (playerData.m_isActive) {
+            countActive++;
+        }
+    }
+    return countActive;
 }
 
 unsigned int Game::getScoreShowingTime() const

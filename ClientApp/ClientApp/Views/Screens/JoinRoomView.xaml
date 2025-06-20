@@ -27,6 +27,7 @@
 
         <!-- Search Box -->
         <TextBox
+            x:Name="Search_TBX"
             Grid.Row="0"
             Grid.Column="1"
             Margin="0,0,0,10"

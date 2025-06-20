@@ -63,13 +63,13 @@ public:
     /**
      * @brief Removes one active player from the game.
      */
-    void removeActivePlayer();
+    void playerDeactivate(const LoggedUser& user);
 
     /**
      * @brief Gets the current number of active players.
      * @return Number of active players.
      */
-    int getActivePlayers();
+    int countActivePlayers();
 
     /**
      * @brief Marks a user as having answered the current question.
@@ -170,9 +170,6 @@ private:
 
     // Timing
     std::chrono::time_point<std::chrono::steady_clock> m_lastQuestionStartTime; 
-
-    // Player tracking
-    int m_activePlayers; 
 
     // Thread safety
     mutable std::mutex m_playersMutex; 
