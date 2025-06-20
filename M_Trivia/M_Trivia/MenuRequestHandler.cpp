@@ -83,7 +83,13 @@ RequestResult
 MenuRequestHandler::getRooms(const RequestInfo& requestInfo) const {
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
     std::vector<RoomPreview> rooms = roomManager.getRooms();
-    GetRoomsResponse getRoomsResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, rooms);
+
+    // Filter rooms
+    std::vector<RoomPreview> filteredRooms;
+    std::copy_if(rooms.begin(), rooms.end(), std::back_inserter(filteredRooms),
+        [](const RoomPreview& room) { return room.status != RoomStatus::Closing; });
+
+    GetRoomsResponse getRoomsResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, filteredRooms);
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(getRoomsResponse),
