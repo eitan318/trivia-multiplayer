@@ -26,6 +26,7 @@
                 <!-- Page Title -->
                 <TextBlock Text="Welcome! Please Log In" 
                            Style="{StaticResource TitleStyle}" 
+                           Margin="20"
                           />
 
                 <!-- Username TextBox -->
@@ -70,15 +71,19 @@
                 </TextBlock>
 
                 <!-- Login Button -->
-                <Button Content="Login" Style="{StaticResource OperationButtonStyle}" 
-                        Margin="0,20" 
-                        Padding="10,5" 
-                    Command="{Binding LoginCmd}"/>
+                <Button Content="Login"
+                    Command="{Binding LoginCmd}"
+                    Margin="0,20"
+                    Padding="10,5" 
+                    Width="200"
+                    Height="40"
+                    Style="{StaticResource OperationButtonStyle}"
+                    />
 
                 <!-- Sign Up Button -->
                 <Button Content="Signup"
                     Command="{Binding NavToSignupCmd}"
-                    Style="{StaticResource TextLikeButtonStyle}" />
+                    Style="{StaticResource LoginToggleStyle}" />
 
 
             </StackPanel>

@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Timers;
 using System.Windows;
 
-namespace ClientApp.ViewModels
+namespace ClientApp.ViewModels.Controls
 {
     class CountdownTimerViewModel : INotifyPropertyChanged, IDisposable
     {

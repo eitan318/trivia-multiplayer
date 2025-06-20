@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 namespace ClientApp.Views.Controls
 {
     /// <summary>
@@ -10,5 +11,18 @@ namespace ClientApp.Views.Controls
         {
             InitializeComponent();
         }
+        public static readonly DependencyProperty SearchQueryProperty =
+            DependencyProperty.Register(
+                nameof(SearchQuery),
+                typeof(string),
+                typeof(RoomPreviewUserControl),
+                new PropertyMetadata(string.Empty));
+
+        public string SearchQuery
+        {
+            get => (string)GetValue(SearchQueryProperty);
+            set => SetValue(SearchQueryProperty, value);
+        }
+
     }
 }

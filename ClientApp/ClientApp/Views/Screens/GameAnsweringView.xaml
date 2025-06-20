@@ -13,9 +13,9 @@
             <!-- Game Info -->
             <RowDefinition Height="Auto" />
             <!-- Question -->
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="4*" />
             <!-- Answers -->
-            <RowDefinition Height="*" />
+            <RowDefinition Height="6*" />
             <!-- Submit Button -->
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -24,41 +24,65 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!-- Game Info Panel -->
-        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" Margin="0,5,0,10">
-            <TextBlock Text="{Binding Timer.FormattedTime, StringFormat='Timer: {0}'}" 
-                       FontWeight="Bold" FontSize="16" Margin="10,0" />
-            <TextBlock Text="{Binding QuestionInfo.Category, StringFormat='Category: {0}'}" 
-                       FontWeight="Bold" FontSize="16" Margin="10,0" />
-            <TextBlock Text="{Binding QuestionInfo.Difficulty, StringFormat='Difficulty: {0}'}" 
-                       FontWeight="Bold" FontSize="16" Margin="10,0" />
-            <TextBlock Text="{Binding QDisplay, StringFormat='Q: {0}'}" 
-                       FontWeight="Bold" FontSize="16" Margin="10,0" />
-            <Button Content="LeaveGame" Command="{Binding LeaveGameCmd}"/>
-        </StackPanel>
+        <!-- Game Info -->
+        <Grid Grid.Row="0" Margin="0,5,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <!-- For LeaveGame Button -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Timer and Info -->
+            <StackPanel Orientation="Horizontal" Grid.Column="0" HorizontalAlignment="Left">
+                <TextBlock Text="{Binding Timer.FormattedTime, StringFormat='Timer: {0}'}" 
+                           FontWeight="Bold" FontSize="16" Margin="10,0" />
+                <TextBlock Text="{Binding QuestionInfo.Category, StringFormat='Category: {0}'}" 
+                           FontWeight="Bold" FontSize="16" Margin="10,0" />
+                <TextBlock Text="{Binding QuestionInfo.Difficulty, StringFormat='Difficulty: {0}'}" 
+                           FontWeight="Bold" FontSize="16" Margin="10,0" />
+                <TextBlock Text="{Binding QDisplay, StringFormat='Q: {0}'}" 
+                           FontWeight="Bold" FontSize="16" Margin="10,0" />
+            </StackPanel>
+
+            <!-- LeaveGame Button -->
+            <Button Content="Leave Game" Command="{Binding LeaveGameCmd}" 
+                    Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" />
+        </Grid>
 
         <!-- General Error Message -->
         <TextBlock Text="{Binding ErrorMessage}" 
-                           Style="{StaticResource ErrorMessageStyle}"
-                           Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
-
+                   Style="{StaticResource ErrorMessageStyle}"
+                   Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
 
         <!-- Question Text -->
-        <TextBlock Grid.Row="1"
-                   Text="{Binding QuestionInfo.Question}" 
-                   FontWeight="Bold" FontSize="20" 
-                   TextAlignment="Center" TextWrapping="Wrap" 
-                   Margin="0,10,0,10" />
+        <Border BorderBrush="{StaticResource PrimaryColor}"
+                BorderThickness="2" 
+                Grid.Row="1"
+                CornerRadius="10">
+            <TextBlock 
+                Text="{Binding QuestionInfo.Question}" 
+                FontWeight="Bold" FontSize="20" 
+                TextAlignment="Center" TextWrapping="Wrap" 
+                Margin="0,10,0,10" />
+        </Border>
 
         <!-- Answer Options -->
         <ListBox Grid.Row="2"
-                 ItemsSource="{Binding QuestionInfo.PossibleAnswers}" 
+                 ItemsSource="{Binding PossibleAnswers}" 
                  SelectedIndex="{Binding SelectedAnswerIndex}" 
-                 BorderThickness="0" Background="Transparent" 
+                 BorderThickness="0"
+                 Background="Transparent" 
+                 HorizontalContentAlignment="Stretch"
+                 VerticalContentAlignment="Stretch"
                  Margin="0,10,0,10">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="2" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <controls:PossibleAnswerUserControl/>
+                    <controls:PossibleAnswerUserControl />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
@@ -66,11 +90,11 @@
         <!-- Submit Button -->
         <Button Grid.Row="3"
                 Content="Submit" Command="{Binding SubmitCmd}" 
-                FontWeight="Bold" FontSize="16" 
+                FontSize="16" 
                 HorizontalAlignment="Center"
                 Margin="10" Padding="10" 
-                Height="40"
-                Width="80"
-                Style="{StaticResource MaterialDesignFlatButton}" />
+                Height="60"
+                Width="280"
+                Style="{StaticResource OperationButtonStyle}" />
     </Grid>
 </UserControl>

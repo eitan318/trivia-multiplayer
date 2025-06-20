@@ -11,10 +11,8 @@ namespace ClientApp.Views.Converters
             // Check if the value is a boolean
             if (value is bool isMe)
             {
-                // Return the appropriate brush based on the boolean value
-                //return isMe ? Brushes.Transparent :
-                //    (Brush)System.Windows.Application.Current.Resources["PrimaryColor"];
-                return isMe ? Brushes.Aqua : Brushes.Transparent;
+                return isMe ? (Brush)System.Windows.Application.Current.Resources["PrimaryColor"] 
+                   : Brushes.Transparent;
             }
 
             // Default to Red if the value is not a boolean (you can adjust this logic)
