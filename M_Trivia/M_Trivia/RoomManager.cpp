@@ -39,7 +39,7 @@ CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser& player,
         std::lock_guard<std::mutex> lock(this->m_roomsMutex);
         int roomid = ids++;
         roomData.id = roomid;
-        this->m_rooms.emplace_back(roomData, player);
+        this->m_rooms.emplace_back(std::make_shared<RoomPreview>(roomData, 1, RoomStatus::NotInGame, player));
     }
     return createRoonResponseErrors;
 }
@@ -49,7 +49,7 @@ CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser& player,
 void RoomManager::deleteRoom(int ID) {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     std::erase_if(m_rooms, [ID](const Room& room) {
-        return room.getRoomPreview().roomData.id == ID;
+        return room.getRoomPreview()->roomData.id == ID;
         });
 }
 
@@ -61,7 +61,7 @@ std::vector<RoomPreview> RoomManager::getActiveRooms() const {
     for (const auto& room : m_rooms) {
         if (room.getRoomStatus() != RoomStatus::Closing)
         {
-            roomsvec.push_back(room.getRoomPreview());
+            roomsvec.push_back(*room.getRoomPreview());
         }
     }
     return roomsvec;
@@ -78,7 +78,7 @@ void RoomManager::leaveRoom(unsigned int roomId,
     }
     else {
         if (isAdmin) {
-            room->getRoomPreview().close();
+            room->getRoomPreview()->close();
         }
     }
 
@@ -102,7 +102,7 @@ GeneralResponseErrors RoomManager::startGameOfRoom(unsigned int roomId)
     }
 
     if (errors.statusCode() == GENERAL_SUCCESS_RESPONSE_STATUS) {
-        room->getRoomPreview().startGame();
+        room->getRoomPreview()->startGame();
     }
     return errors;
 }
@@ -119,7 +119,7 @@ GeneralResponseErrors RoomManager::joinRoom(unsigned int id,
         if (room->hasUser(loggedUser)) {
             errors.generalError = "You are already inside this room.";
         }
-        else if (room->getRoomPreview().roomData.maxPlayers ==
+        else if (room->getRoomPreview()->roomData.maxPlayers ==
             room->getUsersVector().size()) {
             errors.generalError = "Room is already full.";
         }
@@ -142,7 +142,7 @@ Room* RoomManager::getRoom(int ID) {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
 
     auto it = std::ranges::find_if(m_rooms, [ID](const Room& room) {
-        return room.getRoomPreview().roomData.id == ID;
+        return room.getRoomPreview()->roomData.id == ID;
         });
 
     return it != m_rooms.end() ? &(*it) : nullptr;

@@ -37,24 +37,24 @@ void GameManager::handleTimeout(std::shared_ptr<Game> game) {
 
 }
 
-void GameManager::leaveGame(std::shared_ptr<Game> game, RoomPreview& roomPreview, const LoggedUser& user)
+void GameManager::leaveGame(std::shared_ptr<Game> game, std::shared_ptr<RoomPreview> roomPreview, const LoggedUser& user)
 {
     game->playerDeactivate(user);
     if (game->countActivePlayers() == 0) {
-        roomPreview.closeGame();
+        roomPreview->closeGame();
         deleteGame(game->getId());
     }
 }
 
 
-std::shared_ptr<Game> GameManager::createGame(const RoomPreview& roomPreview)
+std::shared_ptr<Game> GameManager::createGame(std::shared_ptr<RoomPreview> roomPreview)
 {
     std::lock_guard<std::mutex> lock(m_gamesMutex); 
-    std::vector<Question> questions = this->m_database.getRandQuestions(roomPreview.roomData.numOfQuestionsInGame);
-    unsigned int gameId = this->m_database.createGame(roomPreview.roomData.name, std::time(nullptr));
+    std::vector<Question> questions = this->m_database.getRandQuestions(roomPreview->roomData.numOfQuestionsInGame);
+    unsigned int gameId = this->m_database.createGame(roomPreview->roomData.name, std::time(nullptr));
     std::shared_ptr<Game> game = std::make_shared<Game>(questions, roomPreview, gameId);
 
-    this->m_gamesByRoomId[roomPreview.roomData.id] = game;
+    this->m_gamesByRoomId[roomPreview->roomData.id] = game;
     return game;
 }
 

@@ -10,13 +10,13 @@
 /**
  * @brief Manages the lifecycle of rooms in the application.
  */
-class VSManager : public GameManager
+class VSManager
 {
 private:
     static unsigned int ids;     ///< Counter for generating unique room IDs.
     std::map<LoggedUser, bool> m_waitingList;
     mutable std::mutex m_waitingListMutex;
-    const RoomPreview defaultRoomPreview;
+    RoomPreview* defaultRoomPreview;
 
     /**
      * @brief Constructs a RoomManager instance.

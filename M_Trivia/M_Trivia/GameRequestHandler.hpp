@@ -4,6 +4,7 @@
 #include "Question.hpp"
 #include "GameManager.hpp"
 #include "RequestHandlerFactory.hpp"
+#include "RoomPreview.hpp"
 
 /**
  * @class GameRequestHandler
@@ -21,7 +22,7 @@ public:
      * @param handlerFactory The factory for creating other request handlers.
      */
     GameRequestHandler(const LoggedUser& user,
-        RequestHandlerFactory& handlerFactory, std::shared_ptr<Game> game, RoomPreview& roomPreview);
+        RequestHandlerFactory& handlerFactory, std::shared_ptr<Game> game, std::shared_ptr<RoomPreview> roomPreview);
 
     /**
      * @brief Default destructor.
@@ -46,7 +47,7 @@ public:
 
 private:
     LoggedUser m_user;
-    RoomPreview& m_roomPreview;
+    std::shared_ptr<RoomPreview> m_roomPreview;
     RequestHandlerFactory& m_handlerFactory;
     GameManager& m_gameManager;
     std::shared_ptr<Game> m_game;

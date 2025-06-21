@@ -1,17 +1,21 @@
 #include "Game.hpp"
 
-Game::Game(const std::vector<Question>& questions, const RoomPreview& roomPreview, int gameId)
-    : m_gameId(gameId), m_questions(std::move(questions)), m_roomData(roomPreview.roomData),
-    m_totalNeededPlayers(roomPreview.currPlayersAmount), m_status(GameStatus::AnsweringQuestion), m_currQuestionIdx(0)
+Game::Game(const std::vector<Question>& questions, std::shared_ptr<RoomPreview> roomPreview, int gameId)
+    : m_gameId(gameId),
+    m_questions(std::move(questions)),
+    m_roomData(roomPreview->roomData),            
+    m_totalNeededPlayers(roomPreview->currPlayersAmount),
+    m_status(GameStatus::AnsweringQuestion),
+    m_currQuestionIdx(0)
 {
     this->m_lastQuestionStartTime = std::chrono::steady_clock::now();
-
 }
 
+
 void Game::join(const LoggedUser& player) {
-    std::lock_guard<std::mutex> lock(m_playersMutex);
     Question shuffledCopy = Question(this->m_questions[0]);
     shuffledCopy.shuffle();
+    std::lock_guard<std::mutex> lock(m_playersMutex);
     m_players.emplace(player, PlayerGameData(shuffledCopy));
 }
 
@@ -90,6 +94,7 @@ double Game::getAnswerDouration(const std::chrono::time_point<std::chrono::stead
 
 bool Game::didEveryActiveAnswered() const
 {
+    std::lock_guard<std::mutex> lock(m_playersMutex);
     for (const auto& [player, playerData] : this->m_players) {
         if (playerData.m_isActive && !playerData.answeredLastQuestion) {
             return false;
@@ -152,6 +157,7 @@ void Game::playerDeactivate(const LoggedUser& user)
 
 int Game::countActivePlayers()
 {
+    std::lock_guard<std::mutex> lock(m_playersMutex);
     unsigned int countActive = 0;
     for (const auto& [player, playerData] : this->m_players) {
         if (playerData.m_isActive) {

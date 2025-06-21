@@ -27,7 +27,7 @@ public:
      * @param room Pointer to the room where the game is to be created.
      * @return A shared pointer to the newly created Game object.
      */
-    std::shared_ptr<Game> createGame(const RoomPreview& roomPreview);
+    std::shared_ptr<Game> createGame(std::shared_ptr<RoomPreview>);
 
     /**
      * Deletes a game with the specified game ID.
@@ -59,7 +59,7 @@ public:
 
     void handleTimeout(std::shared_ptr<Game> game);
 
-    void leaveGame(std::shared_ptr<Game> game, RoomPreview& roomPreview, const LoggedUser& user);
+    void leaveGame(std::shared_ptr<Game> game, std::shared_ptr<RoomPreview>, const LoggedUser& user);
 
     void actAfterQuestionAnsweringEnded(std::shared_ptr<Game> game);
 

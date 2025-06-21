@@ -2,14 +2,14 @@
 #include "Response.hpp"
 #include <algorithm>
 
-Room::Room(const RoomData& roomdata, const LoggedUser& user)
-    : m_metadata(roomdata, (unsigned int)m_users.size(), RoomStatus::NotInGame, user), m_users{user} {
+Room::Room(std::shared_ptr<RoomPreview> metadata)
+    : m_metadata(std::move(metadata)), m_users {metadata->admin} {
 }
 
-Room::Room(const RoomData& roomdata, const std::vector<LoggedUser>& users)
-    : m_metadata(roomdata, (unsigned int)m_users.size(), RoomStatus::NotInGame, users[0]), m_users(users)
-    {
+Room::Room(std::shared_ptr<RoomPreview> metadata, const std::vector<LoggedUser>& users)
+    : m_metadata(std::move(metadata)), m_users(users) {
 }
+
 
 
 Room::~Room()
@@ -35,27 +35,27 @@ const std::vector<LoggedUser>& Room::getUsersVector() const {
     return m_users;
 }
 
-void Room::setRoomData(const RoomData& roomdata) {
-    this->m_metadata.roomData = roomdata;
-}
+//void Room::setRoomData(const RoomData& roomdata) {
+//    this->m_metadata->roomData = roomdata;
+//}
 
 
 
 unsigned int Room::getId() const {
-    return this->m_metadata.roomData.id;
+    return this->m_metadata->roomData.id;
 }
 
 RoomStatus Room::getRoomStatus() const {
-    return this->m_metadata.status;
+    return this->m_metadata->status;
 }
 
 RoomState Room::getRoomState() const
 {
-    return RoomState(this->m_metadata.status, this->m_users,
-        m_metadata.roomData.numOfQuestionsInGame, m_metadata.roomData.timePerQuestion);
+    return RoomState(this->m_metadata->status, this->m_users,
+        m_metadata->roomData.numOfQuestionsInGame, m_metadata->roomData.timePerQuestion);
 }
 
-RoomPreview& Room::getRoomPreview() const {
+std::shared_ptr<RoomPreview> Room::getRoomPreview() const {
     return m_metadata;
 }
 

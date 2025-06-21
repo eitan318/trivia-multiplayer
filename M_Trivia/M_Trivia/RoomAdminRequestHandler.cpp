@@ -6,9 +6,9 @@
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory,
 	LoggedUser loggedUser, 
-	unsigned int roomId) : RoomRequestHandler(handlerFactory,
+	Room* room) : RoomRequestHandler(handlerFactory,
 		loggedUser, 
-		roomId)
+		room)
 {
 }
 

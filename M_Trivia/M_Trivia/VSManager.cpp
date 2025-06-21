@@ -1,8 +1,13 @@
 #include "VSManager.hpp"
 
+VSManager::VSManager() 
+{
+}
+
 VSManager::~VSManager()
 {
 }
+
 
 VSManager& VSManager::getInstance()
 {
@@ -44,13 +49,13 @@ std::pair<GeneralResponseErrors, bool> VSManager::didPlayerFoundMatch(const Logg
     return { GeneralResponseErrors("User not found in waiting list"), false }; // Return error and default match status
 }
 
-GeneralResponseErrors VSManager::startGame(const std::vector<LoggedUser>& players)
-{
-    GeneralResponseErrors errors;
-    std::shared_ptr<Game> game = createGame(this->defaultRoomPreview);
-    for (LoggedUser user : players) {
-        game->join(user);
-    }
-    return errors;
-}
 
+
+//start game
+
+//GeneralResponseErrors errors;
+//std::shared_ptr<Game> game = createGame(this->defaultRoomPreview);
+//for (LoggedUser user : players) {
+//    game->join(user);
+//}
+//return errors;

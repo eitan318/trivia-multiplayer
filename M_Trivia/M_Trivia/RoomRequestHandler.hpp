@@ -10,7 +10,7 @@
 class RoomRequestHandler : public IRequestHandler {
 public:
 	RequestResult getRoomState(const RequestInfo& requestinfo);
-	RoomRequestHandler(RequestHandlerFactory& requestHandlerFactory, LoggedUser user, unsigned int roomId);
+	RoomRequestHandler(RequestHandlerFactory& requestHandlerFactory, LoggedUser user, Room* room);
 
 	RequestResult handleRequest(const RequestInfo& requestInfo) override;
 	bool isRequestRelevant(const RequestInfo& requestInfo) const override;

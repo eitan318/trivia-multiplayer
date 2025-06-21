@@ -34,17 +34,17 @@ std::shared_ptr<IRequestHandler> RequestHandlerFactory::createMenuRequestHandler
 	return std::make_shared<MenuRequestHandler>(loggedUser, const_cast<RequestHandlerFactory&>(*this));
 }
 
-std::shared_ptr<IRequestHandler> RequestHandlerFactory::createRoomAdminRequestHandler(const LoggedUser& loggedUser, unsigned int roomId) const
+std::shared_ptr<IRequestHandler> RequestHandlerFactory::createRoomAdminRequestHandler(const LoggedUser& loggedUser, Room* room) const
 {
-	return std::make_shared<RoomAdminRequestHandler>(const_cast<RequestHandlerFactory&>(*this), loggedUser, roomId);
+	return std::make_shared<RoomAdminRequestHandler>(const_cast<RequestHandlerFactory&>(*this), loggedUser, room);
 }
 
-std::shared_ptr<IRequestHandler> RequestHandlerFactory::createRoomRequestHandler(const LoggedUser& loggedUser, unsigned int roomId) const
+std::shared_ptr<IRequestHandler> RequestHandlerFactory::createRoomRequestHandler(const LoggedUser& loggedUser, Room* room) const
 {
-	return std::make_shared<RoomRequestHandler>(const_cast<RequestHandlerFactory&>(*this), loggedUser, roomId);
+	return std::make_shared<RoomRequestHandler>(const_cast<RequestHandlerFactory&>(*this), loggedUser, room);
 }
 
-std::shared_ptr<IRequestHandler> RequestHandlerFactory::createGameRequestHandler(LoggedUser user, std::shared_ptr<Game> game, RoomPreview& roomPreview)
+std::shared_ptr<IRequestHandler> RequestHandlerFactory::createGameRequestHandler(LoggedUser user, std::shared_ptr<Game> game, std::shared_ptr<RoomPreview> roomPreview)
 {
 	return std::make_shared<GameRequestHandler>(user,const_cast<RequestHandlerFactory&>(*this), game, roomPreview);
 }

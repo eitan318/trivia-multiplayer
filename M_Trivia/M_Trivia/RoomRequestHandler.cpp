@@ -11,7 +11,7 @@ RequestResult RoomRequestHandler::getRoomState(const RequestInfo& requestinfo)
 {
     RoomState state = this->m_room->getRoomState();
     std::shared_ptr<IRequestHandler> nextHandler = nullptr;
-    if (this->m_room->getRoomPreview().gameStarted()) {
+    if (this->m_room->getRoomPreview()->gameStarted()) {
         std::shared_ptr<Game> game = this->m_handlerFactory.getGameManager().getGame(m_room->getId());
         nextHandler = this->m_handlerFactory.createGameRequestHandler(m_user, game, m_room->getRoomPreview());
     }
@@ -67,9 +67,8 @@ bool RoomRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
     }
 }
 
-RoomRequestHandler::RoomRequestHandler(RequestHandlerFactory& requestHandlerFactory, LoggedUser user, unsigned int roomId)
-	: m_user(user),
-	m_room(m_handlerFactory.getRoomManger().getRoom(roomId)),
+RoomRequestHandler::RoomRequestHandler(RequestHandlerFactory& requestHandlerFactory, LoggedUser user, Room* room)
+	: m_user(user),m_room(room),
 	m_roomManager(m_handlerFactory.getRoomManger()),
 	m_handlerFactory(requestHandlerFactory)  
 {}

@@ -15,7 +15,7 @@
  */
 class Game {
 public:
-    Game(const std::vector<Question>& questions, const RoomPreview& roomPreview, int gameId);
+    Game(const std::vector<Question>& questions, std::shared_ptr<RoomPreview> roomPreview, int gameId);
 
     // Deleted constructors and operators to prevent unintended copying or moving
     Game(const Game&) = delete;
@@ -151,7 +151,7 @@ private:
     std::map<LoggedUser, PlayerGameData> m_players; 
     int m_currQuestionIdx; 
     GameStatus m_status; 
-    RoomData m_roomData;
+    const RoomData m_roomData;
 
     // Timing
     std::chrono::time_point<std::chrono::steady_clock> m_lastQuestionStartTime; 

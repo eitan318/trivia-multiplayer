@@ -4,7 +4,7 @@
 
 
 
-GetRoomsResponse::GetRoomsResponse(unsigned int status, const std::vector<RoomPreview>& rooms) : 
+GetRoomsResponse::GetRoomsResponse(unsigned int status, const std::vector<RoomPreview>& rooms) :
 	Response(status), rooms(rooms) 
 {
 
