@@ -60,13 +60,6 @@ public:
     const std::vector<LoggedUser>& getUsersVector() const;
 
 
-    /**
-     * @brief Initialy sets the metadata of the room.
-     * @param roomdata The new RoomData object to set as the room's metadata.
-     */
-    void setRoomData(const RoomData& roomdata);
-
-
     //returning the id of the room
     unsigned int getId() const;
 
@@ -79,17 +72,6 @@ public:
 
     RoomState getRoomState() const;
 
-    //bool gameStarted() const;
-
-    //// closes the room
-    //void close();
-
-    //// starting a game in the room
-    //void startGame();
-
-    //void enterGame();
-
-    //void closeGame();
 
 
 

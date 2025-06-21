@@ -21,23 +21,25 @@ void Room::addUser(const LoggedUser& loggeduser) {
         return u.getUsername() == loggeduser.getUsername();
         })) {
         m_users.push_back(loggeduser);
+        this->getRoomPreview()->currPlayersAmount++;
     }
 }
 
 void Room::removeUser(const LoggedUser& loggeduser) {
-    std::erase_if(m_users, [&loggeduser](const LoggedUser& u) {
+    size_t removedCount = std::erase_if(m_users, [&loggeduser](const LoggedUser& u) {
         return u.getUsername() == loggeduser.getUsername();
         });
+    if (removedCount > 0) {
+        this->getRoomPreview()->currPlayersAmount--;
+    }
 }
+
 
 
 const std::vector<LoggedUser>& Room::getUsersVector() const {
     return m_users;
 }
 
-//void Room::setRoomData(const RoomData& roomdata) {
-//    this->m_metadata->roomData = roomdata;
-//}
 
 
 

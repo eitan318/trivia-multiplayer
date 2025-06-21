@@ -26,14 +26,15 @@ namespace ClientApp.Commands
 
             if(gameAnsweringViewModel.SelectedAnswerIndex != -1)
             {
-            SubmitAnswerRequest request = new SubmitAnswerRequest(gameAnsweringViewModel.SelectedAnswerIndex);
-            ResponseInfo<SubmitAnswerResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<SubmitAnswerResponse>(request);
-            if (!responseInfo.NormalResponse)
-                return;
+                SubmitAnswerRequest request = new SubmitAnswerRequest(gameAnsweringViewModel.SelectedAnswerIndex);
+                ResponseInfo<SubmitAnswerResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<SubmitAnswerResponse>(request);
+                if (!responseInfo.NormalResponse)
+                    return;
 
-            uint currectAnswerId = responseInfo.Response.CorrectAnswerId;
+                uint currectAnswerId = responseInfo.Response.CorrectAnswerId;
+                gameAnsweringViewModel.ErrorMessage = responseInfo.Response.Errors.GeneralError;
 
-             _navigationService.NavigateTo<WaitingBetweenQuestionsViewModel>();
+                 _navigationService.NavigateTo<WaitingBetweenQuestionsViewModel>();
             }
         }
 

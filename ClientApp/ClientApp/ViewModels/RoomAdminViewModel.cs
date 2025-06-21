@@ -105,11 +105,9 @@ namespace ClientApp.ViewModels
             var getRoomStatusRequest = new GetRoomStateRequest();
             ResponseInfo<GetRoomStateResponse> responseInfo =
                 await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(getRoomStatusRequest);
-            GetRoomStateResponse response = responseInfo.Response;
-            if(responseInfo.Response == null)
-            {
+            if (!responseInfo.NormalResponse)
                 return;
-            }
+            GetRoomStateResponse response = responseInfo.Response;
             RoomState roomState = response.RoomState;
 
             // Update Players on the UI thread
