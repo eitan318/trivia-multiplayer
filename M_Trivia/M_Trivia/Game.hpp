@@ -137,6 +137,8 @@ public:
      */
     void moveToGameResults();
 
+    unsigned int getQuestionsAmount();
+
 
     bool reachedTimeout() const;
 

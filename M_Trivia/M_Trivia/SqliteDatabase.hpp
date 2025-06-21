@@ -18,7 +18,7 @@ public:
     int addNewUser(const UserRecord&) const override;
     void addUserAnswer(const std::string& username, unsigned int gameId, unsigned int questionId,
         int chosenAnswerInQuestion, int score, double answerTimeSec) const;
-    std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId) const;
+    std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId, unsigned int questionAmount) const;
     unsigned int createGame(const std::string& roomName, time_t startTime) const;
     int getNumOfTotalAnswers(const std::string& username) const;
     int getNumOfTotalCorrectAnswers(const std::string& username) const;

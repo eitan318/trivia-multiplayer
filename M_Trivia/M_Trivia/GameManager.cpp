@@ -116,7 +116,7 @@ std::vector<PlayerResults> GameManager::getGameResults(std::shared_ptr<Game> gam
 
     auto players = game->getPlayers();
     for (const auto& [player, _] : players) {
-        std::optional<PlayerResults> playerResults = this->m_database.getPlayerResults(player.getUsername(), game->getId());
+        std::optional<PlayerResults> playerResults = this->m_database.getPlayerResults(player.getUsername(), game->getId(), game->getQuestionsAmount());
         if (playerResults.has_value()) {
             playersResults.emplace_back(playerResults.value());
         }

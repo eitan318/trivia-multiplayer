@@ -85,6 +85,11 @@ void Game::moveToGameResults() {
     this->m_status = GameStatus::GameResultsShow;
 }
 
+unsigned int Game::getQuestionsAmount()
+{
+    return this->m_roomData.numOfQuestionsInGame;
+}
+
 
 double Game::getAnswerDouration(const std::chrono::time_point<std::chrono::steady_clock>& answerMoment) const
 {
