@@ -198,6 +198,7 @@
     <ClInclude Include="UserRecord.hpp" />
     <ClInclude Include="VerifyPasswordResetCodeRequest.hpp" />
     <ClInclude Include="VerifyPasswordResetCodeResponse.hpp" />
+    <ClInclude Include="VSManager.hpp" />
     <ClInclude Include="WSAInitializer.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -257,6 +258,7 @@
     <ClCompile Include="SubmitAnswerResponse.cpp" />
     <ClCompile Include="VerifyPasswordResetCodeRequest.cpp" />
     <ClCompile Include="VerifyPasswordResetCodeResponse.cpp" />
+    <ClCompile Include="VSManager.cpp" />
     <ClCompile Include="WSAInitializer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

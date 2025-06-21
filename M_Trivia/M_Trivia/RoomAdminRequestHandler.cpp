@@ -6,9 +6,9 @@
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory,
 	LoggedUser loggedUser, 
-	Room* room) : RoomRequestHandler(handlerFactory,
+	unsigned int roomId) : RoomRequestHandler(handlerFactory,
 		loggedUser, 
-		room)
+		roomId)
 {
 }
 
@@ -51,11 +51,11 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
 RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& requestInfo)
 {
 	GeneralResponseErrors errors = this->m_roomManager.startGameOfRoom(this->m_room->getId());
-	std::shared_ptr<Game> game = this->m_handlerFactory.getGameManager().createGame(this->m_room);
+	std::shared_ptr<Game> game = this->m_handlerFactory.getGameManager().createGame(this->m_room->getRoomPreview());
 
 	StartGameResponse startGameResponse(std::make_unique<GeneralResponseErrors>(errors));
 	RequestResult result;
 	result.response = JsonResponsePacketSerializer::serializeResponse(startGameResponse);
-	result.newHandler = errors.statusCode() == 0 ? this->m_handlerFactory.createGameRequestHandler(m_user, game, m_room) : nullptr;
+	result.newHandler = errors.statusCode() == 0 ? this->m_handlerFactory.createGameRequestHandler(m_user, game, m_room->getRoomPreview()) : nullptr;
 	return result;
 }

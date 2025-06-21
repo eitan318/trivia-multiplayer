@@ -16,9 +16,9 @@
  */
 class Room {
 private:
-    RoomData m_metadata;               
-    std::vector<LoggedUser> m_users;   
-    RoomStatus status;
+    std::vector<LoggedUser> m_users;
+    RoomPreview& m_metadata;
+ 
 
 public:
     /**
@@ -27,6 +27,8 @@ public:
      * @param user The initial user to add to the room.
      */
     Room(const RoomData& roomdata, const LoggedUser& user);
+
+    Room(const RoomData& roomdata, const std::vector<LoggedUser>& users);
 
     /**
      * @brief Default constructor for creating an empty Room.
@@ -63,17 +65,17 @@ public:
      */
     void setRoomData(const RoomData& roomdata);
 
-    bool gameStarted() const;
+    //bool gameStarted() const;
 
-    // closes the room
-    void close();
+    //// closes the room
+    //void close();
 
-    // starting a game in the room
-    void startGame();
+    //// starting a game in the room
+    //void startGame();
 
-    void enterGame();
+    //void enterGame();
 
-    void closeGame();
+    //void closeGame();
 
     //returning the id of the room
     unsigned int getId() const;
@@ -92,7 +94,7 @@ public:
      * @brief Retrieves the metadata associated with the room.
      * @return The RoomPreview object containing the room's metadata.
      */
-    RoomPreview getRoomPreview() const;
+    RoomPreview& getRoomPreview() const;
 
     bool hasUser(const LoggedUser& user) const;
 

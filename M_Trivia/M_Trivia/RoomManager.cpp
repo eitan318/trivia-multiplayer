@@ -78,7 +78,7 @@ void RoomManager::leaveRoom(unsigned int roomId,
     }
     else {
         if (isAdmin) {
-            room->close();
+            room->getRoomPreview().close();
         }
     }
 
@@ -102,7 +102,7 @@ GeneralResponseErrors RoomManager::startGameOfRoom(unsigned int roomId)
     }
 
     if (errors.statusCode() == GENERAL_SUCCESS_RESPONSE_STATUS) {
-        room->startGame();
+        room->getRoomPreview().startGame();
     }
     return errors;
 }

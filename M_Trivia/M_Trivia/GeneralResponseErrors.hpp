@@ -8,6 +8,10 @@ public:
 	// Error fields
 	std::string generalError;
 
+	GeneralResponseErrors(const std::string& generalError);
+
+	GeneralResponseErrors() = default;
+
 	/**
 	 * @brief Checks if all error fields are not set (empty).
 	 *

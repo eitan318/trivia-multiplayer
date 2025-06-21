@@ -1,9 +1,8 @@
 #include "Game.hpp"
 
-Game::Game(const std::vector<Question>& questions, const std::vector<LoggedUser>& neededPlayers, unsigned int gameId,
-    unsigned int questionTimeLimit, Room* room)
-    : m_gameId(gameId), m_questions(std::move(questions)), m_questionTimeLimitSeconds(questionTimeLimit),
-    m_totalNeededPlayers(neededPlayers.size()), m_room(room), m_status(GameStatus::AnsweringQuestion), m_currQuestionIdx(0)
+Game::Game(const std::vector<Question>& questions, const RoomPreview& roomPreview, int gameId)
+    : m_gameId(gameId), m_questions(std::move(questions)), m_roomData(roomPreview.roomData),
+    m_totalNeededPlayers(roomPreview.currPlayersAmount), m_status(GameStatus::AnsweringQuestion), m_currQuestionIdx(0)
 {
     this->m_lastQuestionStartTime = std::chrono::steady_clock::now();
 
@@ -14,10 +13,6 @@ void Game::join(const LoggedUser& player) {
     Question shuffledCopy = Question(this->m_questions[0]);
     shuffledCopy.shuffle();
     m_players.emplace(player, PlayerGameData(shuffledCopy));
-    
-    if (countActivePlayers() == m_totalNeededPlayers) {
-        this->m_room->enterGame();
-    }
 }
 
 GameStatus Game::getStatus() const
@@ -111,7 +106,7 @@ bool Game::reachedTimeout() const
     double communicationDelay = 1;
 
     return std::chrono::duration<double>(now - this->m_lastQuestionStartTime).count() >
-        this->m_room->getRoomPreview().roomData.timePerQuestion + communicationDelay;
+        this->m_roomData.timePerQuestion + communicationDelay;
 }
 
 
@@ -141,7 +136,7 @@ unsigned int Game::getCurrQuestionIdx() const
 
 unsigned int Game::getQuestionTimeLimit() const
 {
-    return m_questionTimeLimitSeconds;
+    return this->m_roomData.timePerQuestion;
 }
 
 
@@ -168,5 +163,5 @@ int Game::countActivePlayers()
 
 unsigned int Game::getScoreShowingTime() const
 {
-    return m_room->getRoomPreview().roomData.scoreShowingTime;
+    return m_roomData.scoreShowingTime;
 }

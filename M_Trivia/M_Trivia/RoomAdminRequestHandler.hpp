@@ -8,7 +8,7 @@ public:
 	 * other request handlers.
 	 */
 	RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory,
-		LoggedUser loggedUser, Room* room);
+		LoggedUser loggedUser, unsigned int roomId);
 
 	/**
 	 * @brief Destructor for RoomAdminRequestHandler.
