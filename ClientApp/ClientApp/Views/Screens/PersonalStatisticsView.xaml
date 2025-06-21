@@ -25,14 +25,8 @@
             </Grid.RowDefinitions>
 
             <!-- Title -->
-            <Border Grid.Row="0"
-                CornerRadius="10"
-                BorderThickness="0,2,0,2"
-                Padding="10"
-                BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}"
-                Margin="100,0,100,0">
-                <TextBlock Text="📊 Personal Statistics"
-                       Style="{StaticResource TitleStyle}" />
+            <Border Style="{StaticResource TitleBorderStyle}">
+                <TextBlock Text="📊 Personal Statistics" Style="{StaticResource TitleStyle}" />
             </Border>
 
             <!-- Main Content -->

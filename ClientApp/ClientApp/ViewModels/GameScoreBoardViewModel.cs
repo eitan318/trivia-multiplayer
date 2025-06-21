@@ -23,11 +23,11 @@ namespace ClientApp.ViewModels
         private List<PlayerResults> _playersResults;
         public GameScoreBoardViewModel (RequestsExchangeService requestsExchangeService,
             INavigationService navigationService,
-            AmIAdminStore amIAdminStore)
+            LeaveGameCommand leaveGameCommand)
         {
             this._requestsExchangeService = requestsExchangeService;
             this._navigationService = navigationService;
-            this.LeaveGameCmd = new LeaveGameCommand(navigationService, requestsExchangeService, null, amIAdminStore);
+            this.LeaveGameCmd = leaveGameCommand;
         }
 
         public List<PlayerResults> PlayersResults

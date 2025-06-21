@@ -25,14 +25,9 @@
             </Grid.RowDefinitions>
 
             <!-- Title Section -->
-            <TextBlock 
-            Text="Create Room" 
-            FontSize="24" 
-            FontWeight="Bold" 
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center"
-            Margin="15" 
-            Grid.Row="0" />
+            <Border Style="{StaticResource TitleBorderStyle}">
+                <TextBlock Text="Create Room" Style="{StaticResource TitleStyle}" />
+            </Border>
 
             <!-- Input Fields Section -->
             <Border Grid.Row="1"
@@ -113,6 +108,7 @@
                 <!-- Create Room Button -->
                 <Button Content="Create Room" 
                     Command="{Binding CreateRoomCmd}" 
+                    CommandParameter="{Binding}"
                     Style="{StaticResource OperationButtonStyle}" 
                     Padding="12,8"
                     FontSize="14"

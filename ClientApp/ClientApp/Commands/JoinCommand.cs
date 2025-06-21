@@ -6,13 +6,11 @@ using ClientApp.ViewModels;
 
 namespace ClientApp.Commands
 {
-    class JoinCommand : CommandBase
+    public class JoinCommand : CommandBase
     {
         private INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
-        private JoinRoomViewModel _joinRoomViewModel;
         public JoinCommand(
-            JoinRoomViewModel joinRoomViewModel,
             INavigationService navigationService,
             RequestsExchangeService requestsExchangeService,
             RoomDataStore roomDataStore
@@ -20,24 +18,32 @@ namespace ClientApp.Commands
         {
             this._navigationService = navigationService;
             this._requestsExchangeService = requestsExchangeService;
-            this._joinRoomViewModel = joinRoomViewModel;
         }
         public override bool CanExecute(object parameters)
         {
-            return _joinRoomViewModel.SelectedRoom != null;
+            if (parameters is not JoinRoomViewModel joinRoomViewModel) 
+            {
+                return false; 
+            }
+            return joinRoomViewModel.SelectedRoom != null;
         }
 
         public override async void Execute(object parameters)
         {
-            if (_joinRoomViewModel.SelectedRoom == null) 
+            if (parameters is not JoinRoomViewModel joinRoomViewModel) 
             {
-                _joinRoomViewModel.ErrorMessage = "Please select a room to join.";
+                return; 
+            }
+
+            if (joinRoomViewModel.SelectedRoom == null) 
+            {
+                joinRoomViewModel.ErrorMessage = "Please select a room to join.";
                 return;
             }
 
             try
             {
-                var selectedRoomId = _joinRoomViewModel.SelectedRoom.RoomData.Id;
+                var selectedRoomId = joinRoomViewModel.SelectedRoom.RoomData.Id;
                 var request = new JoinRoomRequest(selectedRoomId);
                 ResponseInfo<JoinRoomResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<JoinRoomResponse>(request);
 
@@ -50,7 +56,7 @@ namespace ClientApp.Commands
                     }
                     else
                     {
-                        _joinRoomViewModel.ErrorMessage = joinResponse.Errors.GeneralError;
+                        joinRoomViewModel.ErrorMessage = joinResponse.Errors.GeneralError;
                     }
                 }
   
@@ -58,7 +64,7 @@ namespace ClientApp.Commands
             }
             catch (Exception ex)
             {
-                _joinRoomViewModel.ErrorMessage = $"Failed to join room: {ex.Message}";
+                joinRoomViewModel.ErrorMessage = $"Failed to join room: {ex.Message}";
             }
         }
     }

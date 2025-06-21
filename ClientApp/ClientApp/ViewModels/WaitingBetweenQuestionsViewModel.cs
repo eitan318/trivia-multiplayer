@@ -17,11 +17,12 @@ namespace ClientApp.ViewModels
 
         public WaitingBetweenQuestionsViewModel(RequestsExchangeService requestsExchangeService,
             INavigationService navigationService,
-            AmIAdminStore amIAdminStore)
+            AmIAdminStore amIAdminStore,
+            LeaveGameCommand leaveGameCommand)
         {
             this._requestsExchangeService = requestsExchangeService;
             this._navigationService = navigationService;
-            this.LeaveGameCmd = new LeaveGameCommand(navigationService, requestsExchangeService, null, amIAdminStore);
+            this.LeaveGameCmd = leaveGameCommand;
         }
 
         public ICommand LeaveGameCmd { get; set; }

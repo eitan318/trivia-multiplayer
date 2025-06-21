@@ -6,7 +6,7 @@ namespace ClientApp.Models
     /// <summary>
     /// Model for storing room data.
     /// </summary>
-    class RoomDataModel : INotifyPropertyChanged
+    public class RoomDataModel : INotifyPropertyChanged
     {
         private string _roomName;
         private uint _maxPlayers;

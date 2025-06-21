@@ -124,6 +124,7 @@
             <StackPanel VerticalAlignment="Top" >
                 <Button Content="Start Game" 
                         Command="{Binding StartGameCmd}"
+                        CommandParameter="{Binding}"
                         Style="{StaticResource OperationButtonStyle}"
                         Height="40"
                         Margin="10"/>

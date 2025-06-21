@@ -26,14 +26,16 @@ namespace ClientApp.ViewModels
 
         public GameAnsweringViewModel(RequestsExchangeService requestsExchangeService,
                                       RoomDataStore roomDataStore,
+                                      SubmitAnswerCommand submitAnswerCommand,
+                                      LeaveGameCommand leaveGameCommand,
                                       INavigationService navigationService,
                                       AmIAdminStore amIAdminStore) : base(false)
         {
             _roomDataStore = roomDataStore;
             _requestsExchangeService = requestsExchangeService;
 
-            SubmitCmd = new SubmitAnswerCommand(requestsExchangeService, this, navigationService);
-            LeaveGameCmd = new LeaveGameCommand(navigationService, requestsExchangeService, this, amIAdminStore);
+            SubmitCmd = submitAnswerCommand;
+            LeaveGameCmd = leaveGameCommand;
 
             _countdownTimerViewModel = new CountdownTimerViewModel(_msTimerInterval);
             _countdownTimerViewModel.TimerEnded += async (sender, args) => await HandleTimerEndAsync();

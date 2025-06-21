@@ -16,15 +16,17 @@ namespace ClientApp.ViewModels
         /// Private constructor for the MenuPageViewModel. Initializes the commands for the actions available in the menu.
         /// </summary>
         public MenuViewModel(
-            INavigationService navigationService,
-            RequestsExchangeService requestsExchangeService,
-            TopBarViewModel topBarViewModel)
+            TopBarViewModel topBarViewModel,
+            NavigateCommand<CreateRoomViewModel> navToCreateRoomCommand,
+            NavigateCommand<JoinRoomViewModel> navToJoinRoomCommand,
+            NavigateCommand<StatisticsViewModel> navToStatisticsCommand
+            )
         {
             TopBarVM = topBarViewModel;
 
-            NavToCreateRoomCmd = new NavigateCommand<CreateRoomViewModel>(navigationService);
-            NavToJoinRoomCmd = new NavigateCommand<JoinRoomViewModel>(navigationService);
-            NavToStatisticsCmd = new NavigateCommand<StatisticsViewModel>(navigationService);
+            NavToCreateRoomCmd = navToCreateRoomCommand;
+            NavToJoinRoomCmd = navToJoinRoomCommand;
+            NavToStatisticsCmd = navToStatisticsCommand;
         }
 
 

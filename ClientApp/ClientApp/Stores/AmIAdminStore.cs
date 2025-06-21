@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Stores
 {
-    class AmIAdminStore
+    public class AmIAdminStore
     {
         public bool AmIAdmin { get; set; }
     }

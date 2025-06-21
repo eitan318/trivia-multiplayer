@@ -11,23 +11,20 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Commands
 {
-    class SubmitPasswordResetEmailCommand : CommandBase
+    public class SubmitPasswordResetEmailCommand : CommandBase
     {
         private readonly RequestsExchangeService _requestsExchangeService;
         private readonly INavigationService _navigationService;
         private PasswordResetStore _state;
-        private EmailEntryViewModel _emailEntryViewModel;
 
         /// <summary>
         /// Initializes the ViewModel, setting up the command for submitting the email.
         /// </summary>
         public SubmitPasswordResetEmailCommand(
-            EmailEntryViewModel emailEntryViewModel,
             INavigationService navigationService,
             PasswordResetStore state,
             RequestsExchangeService requestsExchangeService)
         {
-            this._emailEntryViewModel = emailEntryViewModel;
             _navigationService = navigationService;
             _requestsExchangeService = requestsExchangeService;
             _state = state;
@@ -39,12 +36,16 @@ namespace ClientApp.Commands
         /// </summary>
         public override async void Execute(object parameters)
         {
+            if(parameters is not EmailEntryViewModel emailEntryViewModel)
+            {
+                return;
+            }
             string trimmedEmail = this._state.Email?.Trim();
 
             // Ensure email is not empty
             if (string.IsNullOrEmpty(trimmedEmail))
             {
-                _emailEntryViewModel.ErrorMessage = "Email field cannot be empty";
+                emailEntryViewModel.ErrorMessage = "Email field cannot be empty";
                 return;
             }
 
@@ -63,7 +64,7 @@ namespace ClientApp.Commands
                 }
                 else
                 {
-                    _emailEntryViewModel.ErrorMessage = response.Errors.EmailError;
+                    emailEntryViewModel.ErrorMessage = response.Errors.EmailError;
                 }
             }
 

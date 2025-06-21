@@ -17,13 +17,13 @@ namespace ClientApp.ViewModels
         private readonly int refreshMS = 300;
 
         public JoinRoomViewModel(
-            INavigationService navigationService,
+            JoinCommand joinCommand,
             RequestsExchangeService requestsExchangeService,
             RoomDataStore roomDataStore) : base(true)
         {
             this._requestsExchangeService = requestsExchangeService;
             this._roomDataStore = roomDataStore;
-            JoinCmd = new JoinCommand(this, navigationService, requestsExchangeService, roomDataStore);
+            JoinCmd = joinCommand;
         }
 
 

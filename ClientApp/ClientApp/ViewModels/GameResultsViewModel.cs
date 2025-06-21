@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace ClientApp.ViewModels
 {
-    class GameResultsViewModel : ScreenViewModelBase
+    public class GameResultsViewModel : ScreenViewModelBase
     {
         private List<PlayerResults> _playersResults;
         private readonly RequestsExchangeService _requestsExchangeService;
@@ -25,11 +25,10 @@ namespace ClientApp.ViewModels
         }
 
         public GameResultsViewModel(
-            INavigationService navigationService,
             RequestsExchangeService requestsExchangeService,
-            AmIAdminStore amIAdminStore) : base(false)
+            LeaveGameCommand leaveGameCommand) : base(false)
         {
-            LeaveGameCmd = new LeaveGameCommand(navigationService, requestsExchangeService, null, amIAdminStore);
+            LeaveGameCmd = leaveGameCommand;
             this._requestsExchangeService = requestsExchangeService;
         }
 

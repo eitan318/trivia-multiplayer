@@ -50,7 +50,9 @@
         Height="40" 
         HorizontalAlignment="Center"
         Style="{StaticResource OperationButtonStyle}"
-        Command="{Binding SubmitEmailCmd}" />
+        Command="{Binding SubmitEmailCmd}" 
+        CommandParameter="{Binding}"
+                />
 
         <!-- Error message display -->
         <TextBlock Text="{Binding ErrorMessage}" 

@@ -10,7 +10,9 @@ namespace ClientApp.ViewModels
     class PersonalStatisticsViewModel : ScreenViewModelBase
     {
         private readonly RequestsExchangeService _requestsExchangeService;
-        public PersonalStatisticsViewModel(RequestsExchangeService requestsExchangeService,TopBarViewModel topBarViewModel) : base(true)
+        public PersonalStatisticsViewModel(
+            RequestsExchangeService requestsExchangeService,
+            TopBarViewModel topBarViewModel) : base(true)
         {
             this.TopBarVM = topBarViewModel;
             _requestsExchangeService = requestsExchangeService;

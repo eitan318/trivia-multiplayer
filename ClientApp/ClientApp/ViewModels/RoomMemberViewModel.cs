@@ -23,21 +23,22 @@ namespace ClientApp.ViewModels
             RoomDataStore roomDataStore,
             UserStore userStore,
             RequestsExchangeService requestsExchangeService,
-            AmIAdminStore amIAdminStore)
+            AmIAdminStore amIAdminStore,
+            LeaveRoomCommand leaveRoomCommand)
         {
             amIAdminStore.AmIAdmin = false;
 
             this._navigationService = navigationService;
             this._userStore = userStore;
             this._requestsExchangeService = requestsExchangeService;
-            this.LeaveRoomCmd = new LeaveRoomCommand(navigationService, requestsExchangeService, null);
+            this.LeaveRoomCmd = leaveRoomCommand;
             this.RoomDataStore = roomDataStore;
 
             Players.CollectionChanged += (s, e) => OnPropertyChanged(nameof(PlayersInfo));
 
         }
 
-        public string PlayersInfo => $"{this.Players.Count() + 1}/{this.RoomDataStore.CurrentRoomData.MaxPlayers}";
+
 
         public override void OnNavigatedTo()
         {
@@ -50,6 +51,8 @@ namespace ClientApp.ViewModels
             _checkRoomStateCTS.Cancel();
             _checkRoomStateCTS.Dispose();
         }
+
+        public string PlayersInfo => $"{this.Players.Count() + 1}/{this.RoomDataStore.CurrentRoomData.MaxPlayers}";
 
         public ObservableCollection<LoggedUser> Players { get; set; } = new ObservableCollection<LoggedUser>();
 

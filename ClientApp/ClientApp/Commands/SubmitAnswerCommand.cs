@@ -5,26 +5,28 @@ using ClientApp.ViewModels;
 
 namespace ClientApp.Commands
 {
-    class SubmitAnswerCommand : CommandBase
+    public class SubmitAnswerCommand : CommandBase
     {
         private readonly RequestsExchangeService _requestsExchangeService;
-        private readonly GameAnsweringViewModel _gameViewModel;
         private readonly INavigationService _navigationService;
 
         public SubmitAnswerCommand(RequestsExchangeService requestsExchangeService,
-                                   GameAnsweringViewModel gameViewModel,
                                    INavigationService navigationService)
         {
             _requestsExchangeService = requestsExchangeService;
-            _gameViewModel = gameViewModel;
             _navigationService = navigationService;
         }
 
         public override async void Execute(object parameter)
         {
-            if(_gameViewModel.SelectedAnswerIndex != -1)
+            if (parameter is not GameAnsweringViewModel gameAnsweringViewModel)
             {
-            SubmitAnswerRequest request = new SubmitAnswerRequest(_gameViewModel.SelectedAnswerIndex);
+                return;
+            }
+
+            if(gameAnsweringViewModel.SelectedAnswerIndex != -1)
+            {
+            SubmitAnswerRequest request = new SubmitAnswerRequest(gameAnsweringViewModel.SelectedAnswerIndex);
             ResponseInfo<SubmitAnswerResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<SubmitAnswerResponse>(request);
             if (!responseInfo.NormalResponse)
                 return;
@@ -37,7 +39,11 @@ namespace ClientApp.Commands
 
         public override bool CanExecute(object parameter)
         {
-            return _gameViewModel.SelectedAnswerIndex >= 0;
+            if (parameter is not GameAnsweringViewModel gameAnsweringViewModel)
+            {
+                return false;
+            }
+            return gameAnsweringViewModel.SelectedAnswerIndex >= 0;
         }
 
         public void RaiseCanExecuteChanged()

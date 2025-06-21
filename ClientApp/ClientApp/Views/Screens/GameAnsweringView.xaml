@@ -46,8 +46,11 @@
             </StackPanel>
 
             <!-- LeaveGame Button -->
-            <Button Content="Leave Game" Command="{Binding LeaveGameCmd}" 
-                    Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" />
+            <Button 
+                Content="Leave Game" 
+                Command="{Binding LeaveGameCmd}"
+                CommandParameter="{Binding}"
+                Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" />
         </Grid>
 
         <!-- General Error Message -->
@@ -90,7 +93,9 @@
 
         <!-- Submit Button -->
         <Button Grid.Row="3"
-                Content="Submit" Command="{Binding SubmitCmd}" 
+                Content="Submit" 
+                Command="{Binding SubmitCmd}" 
+                CommandParameter="{Binding}"
                 FontSize="16" 
                 HorizontalAlignment="Center"
                 Margin="10" Padding="10" 

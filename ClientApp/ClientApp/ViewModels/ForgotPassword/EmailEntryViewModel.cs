@@ -20,15 +20,11 @@ namespace ClientApp.ViewModels.ForgotPassword
         /// Initializes the ViewModel, setting up the command for submitting the email.
         /// </summary>
         public EmailEntryViewModel(
-            INavigationService navigationService,
-            PasswordResetStore state,
-            RequestsExchangeService requestsExchangeService) : base(true)
+            SubmitPasswordResetEmailCommand submitPasswordResetEmailCommand,
+            PasswordResetStore state) : base(true)
         {
             _state = state;
-            SubmitEmailCmd = new SubmitPasswordResetEmailCommand(this, 
-                navigationService,
-                state,
-                requestsExchangeService);
+            SubmitEmailCmd = submitPasswordResetEmailCommand;
         }
 
         //Commands

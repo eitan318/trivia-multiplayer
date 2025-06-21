@@ -53,16 +53,6 @@ namespace ClientApp.ViewModels
             }
         }
 
-        public ICommand BackCmd => new RelayCommand(
-            _ => _navigationStore.GoBack()
-        );
-
-
-        public bool CanGoBack
-        {
-            get => _navigationStore.CanGoBack() && _navigationStore.CurrentViewModel.HasBackBtn;
-        }
-
 
         public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
 
@@ -72,7 +62,6 @@ namespace ClientApp.ViewModels
         private void OnCurrentViewModelChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));
-            OnPropertyChanged(nameof(CanGoBack));
         }
 
         private async void AttemptConnectionAsync()

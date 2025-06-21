@@ -12,19 +12,16 @@ using ClientApp.Stores;
 
 namespace ClientApp.Commands
 {
-    class CreateRoomCommand : CommandBase
+    public class CreateRoomCommand : CommandBase
     {
-        private CreateRoomViewModel _createRoomViewModel;
         private readonly INavigationService _navigationService;
         private RoomDataStore _roomDataStore;
         private readonly RequestsExchangeService _requestsExchangeService;
         public CreateRoomCommand(
-            CreateRoomViewModel createRoomViewModel,
             RequestsExchangeService requestsExchangeService,
             INavigationService navigationService,
             RoomDataStore roomDataStore)
         {
-            this._createRoomViewModel = createRoomViewModel;
             this._roomDataStore = roomDataStore;
             this._navigationService = navigationService;
             this._requestsExchangeService = requestsExchangeService;
@@ -36,6 +33,10 @@ namespace ClientApp.Commands
         /// <returns>True if the room can be created, otherwise false.</returns>
         public override bool CanExecute(object parameters)
         {
+            if(parameters is not CreateRoomViewModel createRoomViewModel)
+            {
+                return false;
+            }
             return !string.IsNullOrWhiteSpace(_roomDataStore.CurrentRoomData.RoomName?.Trim())
                    && _roomDataStore.CurrentRoomData.MaxPlayers > 0
                    && _roomDataStore.CurrentRoomData.NumOfQuestionsInGame > 0
@@ -47,7 +48,11 @@ namespace ClientApp.Commands
         /// </summary>
         public override async void Execute(object parameters)
         {
-            RoomDataModel? roomData = await CreateRoom();
+            if(parameters is not CreateRoomViewModel createRoomViewModel)
+            {
+                return;
+            }
+            RoomDataModel? roomData = await CreateRoom(createRoomViewModel);
             this._roomDataStore.CurrentRoomData = roomData;
             if (roomData != null)
             {
@@ -60,7 +65,7 @@ namespace ClientApp.Commands
         /// <summary>
         /// Sends a request to create a room with the specified parameters.
         /// </summary>
-        private async Task<RoomDataModel?> CreateRoom()
+        private async Task<RoomDataModel?> CreateRoom(CreateRoomViewModel createRoomViewModel)
         {
             string trimmedRoomName = _roomDataStore.CurrentRoomData.RoomName?.Trim();
             RoomDataModel trimmedRoomData = new RoomDataModel(_roomDataStore.CurrentRoomData);
@@ -78,7 +83,7 @@ namespace ClientApp.Commands
                 }
                 else
                 {
-                    _createRoomViewModel.QuestionCountError = createRoomResponse.Errors.QuestionCountError;
+                    createRoomViewModel.QuestionCountError = createRoomResponse.Errors.QuestionCountError;
                 }
             }
 

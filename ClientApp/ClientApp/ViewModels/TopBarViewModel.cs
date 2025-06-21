@@ -22,7 +22,9 @@ namespace ClientApp.ViewModels
         public bool ShowBackButton => _navigationStore.CurrentViewModel.HasBackBtn;
 
         public TopBarViewModel(LogoutCommand logoutCmd,
-            UserStore userStore, INavigationService navigationService, NavigationStore navigationStore)
+            UserStore userStore,
+            INavigationService navigationService,
+            NavigationStore navigationStore)
         {
             this._navigationService = navigationService;
             _navigationStore = navigationStore;

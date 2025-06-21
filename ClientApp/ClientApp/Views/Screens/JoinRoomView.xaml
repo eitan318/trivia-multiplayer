@@ -10,24 +10,28 @@
       d:DesignHeight="450" d:DesignWidth="800"
              Style="{StaticResource UserControlStyle}"
 >
+    <DockPanel>
+        <!-- Top Bar -->
+        <controls:TopBar DataContext="{Binding TopBarVM}" DockPanel.Dock="Top" />
 
-    <Grid Margin="20">
-        <!-- Define Grid Columns -->
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="1*" />
-        </Grid.ColumnDefinitions>
+        <!-- Main Content -->
+        <Grid Margin="20">
+            <!-- Define Grid Columns -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
 
-        <!-- Define Grid Rows -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+            <!-- Define Grid Rows -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <!-- Search Box -->
-        <TextBox
+            <!-- Search Box -->
+            <TextBox
             x:Name="Search_TBX"
             Grid.Row="0"
             Grid.Column="1"
@@ -36,27 +40,37 @@
             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
             Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" />
 
-        <!-- Selectable Scrollable Room List -->
-        <Border Grid.Row="1" Grid.Column="1" BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
-            <ListBox
+            <!-- Selectable Scrollable Room List -->
+            <Border Grid.Row="1" Grid.Column="1" BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
+                <ListBox
                 ItemsSource="{Binding FilteredRooms}"
                 SelectedItem="{Binding SelectedRoom}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <controls:RoomPreviewUserControl 
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <controls:RoomPreviewUserControl 
                         DataContext="{Binding}" 
                         SearchQuery="{Binding DataContext.SearchQuery, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
-        </Border>
+            </Border>
 
 
-        <!-- Action Buttons and Error Message -->
-        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center">
-            <Button Content="Join" Margin="8" Style="{StaticResource OperationButtonStyle}" Command="{Binding JoinCmd}" Width="150" Height="40" />
-            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap" Margin="10" />
-        </StackPanel>
-    </Grid>
+            <!-- Action Buttons and Error Message -->
+            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center">
+                <Button 
+                Content="Join" 
+                Margin="8"
+                Style="{StaticResource OperationButtonStyle}"
+                Command="{Binding JoinCmd}"
+                CommandParameter="{Binding}"
+                Width="150"
+                Height="40" />
+                <TextBlock 
+                Text="{Binding ErrorMessage}" 
+                Foreground="Red" TextWrapping="Wrap" Margin="10" />
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </UserControl>

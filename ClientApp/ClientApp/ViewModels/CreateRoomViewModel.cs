@@ -18,12 +18,11 @@ namespace ClientApp.ViewModels
         /// Constructor for initializing the ViewModel.
         /// </summary>
         public CreateRoomViewModel(
-            RequestsExchangeService requestsExchangeService,
-            INavigationService navigationService,
             RoomDataStore roomDataStore,
-            TopBarViewModel topBarViewModel) : base(true)
+            TopBarViewModel topBarViewModel,
+            CreateRoomCommand createRoomCommand) : base(true)
         {
-                        this.TopBarVM = topBarViewModel;
+            this.TopBarVM = topBarViewModel;
             _roomDataStore = roomDataStore;
             _roomDataStore.CurrentRoomData = new RoomDataModel();
 
@@ -34,10 +33,7 @@ namespace ClientApp.ViewModels
             CurrentRoomData.NumOfQuestionsInGame = 3;
             CurrentRoomData.ScoreShowingTime = 3;
 
-            CreateRoomCmd = new CreateRoomCommand(this, 
-                requestsExchangeService,
-                navigationService,
-                roomDataStore);
+            CreateRoomCmd = createRoomCommand;
 
             CurrentRoomData.PropertyChanged += (_, args) =>
             {

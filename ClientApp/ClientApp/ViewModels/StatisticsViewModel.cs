@@ -17,12 +17,15 @@ namespace ClientApp.ViewModels
         /// Private constructor for the StatisticsPageViewModel. Initializes the commands for navigating to
         /// personal statistics and high scores pages.
         /// </summary>
-        public StatisticsViewModel(INavigationService navigationService, TopBarViewModel topBarViewModel) : base(true)
+        public StatisticsViewModel(
+            TopBarViewModel topBarViewModel,
+            NavigateCommand<PersonalStatisticsViewModel> navToPersonalStatsCommand,
+            NavigateCommand<HighScoresViewModel> navToHighScoresCmd) : base(true)
         {
             TopBarVM = topBarViewModel;
 
-            this.NavToPersonalStatisticsCmd = new NavigateCommand<PersonalStatisticsViewModel>(navigationService);
-            this.NavToHighScoresCmd = new NavigateCommand<HighScoresViewModel>(navigationService);
+            this.NavToPersonalStatisticsCmd = navToPersonalStatsCommand;
+            this.NavToHighScoresCmd = navToHighScoresCmd;
         }
 
         public TopBarViewModel TopBarVM { get; }

@@ -20,18 +20,19 @@ namespace ClientApp.ViewModels
 
         
         public RoomAdminViewModel(
-            INavigationService navigationService,
             RequestsExchangeService requestsExchangeService,
             RoomDataStore roomDataStore,
             UserStore userState,
+            StartGameCommand startGameCommand,
+            LeaveRoomCommand leaveRoomCommand,
             AmIAdminStore amIAdminStore)
         {
             amIAdminStore.AmIAdmin = true;
 
             this.userStore = userState;
             this._requestsExchangeService = requestsExchangeService;
-            this.StartGameCmd = new StartGameCommand(navigationService, requestsExchangeService, this);
-            this.CloseRoomCmd = new LeaveRoomCommand(navigationService, requestsExchangeService, roomDataStore);
+            this.StartGameCmd = startGameCommand;
+            this.CloseRoomCmd = leaveRoomCommand;
             this.RoomDataStore = roomDataStore;
 
             Players.CollectionChanged += (s, e) => OnPropertyChanged(nameof(PlayersInfo));
