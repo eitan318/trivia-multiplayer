@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClientApp.Views.Controls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -19,9 +20,27 @@ namespace ClientApp.ViewModels
         /// Protected constructor for derived classes to ensure that only classes inheriting from BaseViewModel 
         /// can be instantiated.
         /// </summary>
-        protected ScreenViewModelBase(bool hasBackBtn = false) 
+        protected ScreenViewModelBase(bool hasBackBtn = false, TopBarViewModel? topBarViewModel = null) 
         {
-            this.HasBackBtn = hasBackBtn;
+
+            HasNavBar = topBarViewModel != null;
+            if (HasNavBar)
+            {
+                this.NavBarVM = topBarViewModel;
+            }
+            WindowBackBtn = hasBackBtn;
+            NavBarBackBtn = hasBackBtn;
+            if (hasBackBtn)
+            {
+                if(HasNavBar)
+                {
+                    WindowBackBtn = false;
+                }
+                else
+                {
+                    NavBarBackBtn = false;
+                }
+            }
         }
 
         public virtual void OnNavigatedTo() { }
@@ -29,7 +48,10 @@ namespace ClientApp.ViewModels
 
         public virtual void Dispose() { }
 
-        public bool HasBackBtn { get; private set; }
+        public bool WindowBackBtn { get; private set; }
+        public TopBarViewModel NavBarVM { get; private set; }
+        public bool HasNavBar { get; private set; }
+        public bool NavBarBackBtn { get; private set; }
 
 
 

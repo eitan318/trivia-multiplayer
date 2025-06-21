@@ -11,10 +11,6 @@
              Style="{StaticResource UserControlStyle}"
              >
 
-    <DockPanel>
-        <!-- Top Bar -->
-        <controls:TopBar DataContext="{Binding TopBarVM}" DockPanel.Dock="Top" />
-
         <!-- Main Content -->
         <Grid Margin="20">
             <Grid.RowDefinitions>
@@ -86,5 +82,4 @@
                        Style="{StaticResource ErrorMessageStyle}"
                        Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
         </Grid>
-    </DockPanel>
 </UserControl>

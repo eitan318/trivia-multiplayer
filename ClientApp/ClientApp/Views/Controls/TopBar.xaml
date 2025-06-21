@@ -20,7 +20,7 @@
                 <materialDesign:PackIcon Kind="ArrowLeft" Width="30" Height="30"/>
             </Button>
             <materialDesign:PackIcon Kind="Account" Foreground="{DynamicResource MaterialDesign.Brush.Primary}" Width="30" Height="30" VerticalAlignment="Center"/>
-            <TextBlock Text="{Binding Username}" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0"/>
+            <TextBlock Text="{Binding TopBarUsername}" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0"/>
         </StackPanel>
     </DockPanel>
 </UserControl>

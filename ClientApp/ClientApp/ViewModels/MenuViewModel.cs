@@ -20,10 +20,8 @@ namespace ClientApp.ViewModels
             NavigateCommand<CreateRoomViewModel> navToCreateRoomCommand,
             NavigateCommand<JoinRoomViewModel> navToJoinRoomCommand,
             NavigateCommand<StatisticsViewModel> navToStatisticsCommand
-            )
+            ) : base(false, topBarViewModel)
         {
-            TopBarVM = topBarViewModel;
-
             NavToCreateRoomCmd = navToCreateRoomCommand;
             NavToJoinRoomCmd = navToJoinRoomCommand;
             NavToStatisticsCmd = navToStatisticsCommand;
@@ -34,8 +32,6 @@ namespace ClientApp.ViewModels
         public ICommand NavToCreateRoomCmd { get; }
         public ICommand NavToJoinRoomCmd { get; }
         public ICommand NavToStatisticsCmd { get; }
-
-        public TopBarViewModel TopBarVM { get; }
 
 
 

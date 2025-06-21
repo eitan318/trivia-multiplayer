@@ -14,14 +14,12 @@ namespace ClientApp.ViewModels
         private CancellationTokenSource _refreshTopPlayersCTS;
 
         public HighScoresViewModel(RequestsExchangeService requestsExchangeService,
-            TopBarViewModel topBarViewModel) : base(true)
+            TopBarViewModel topBarViewModel) : base(true, topBarViewModel)
         {
-            this.TopBarVM = topBarViewModel;
             _requestsExchangeService = requestsExchangeService;
         }
 
         
-        public TopBarViewModel TopBarVM { get; }
 
 
         public override void OnNavigatedTo()

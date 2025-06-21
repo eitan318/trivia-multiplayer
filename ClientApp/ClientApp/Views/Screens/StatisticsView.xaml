@@ -10,10 +10,6 @@
              Style="{StaticResource UserControlStyle}"
 
                      d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel>
-        <!-- Top Bar -->
-        <controls:TopBar DataContext="{Binding TopBarVM}" DockPanel.Dock="Top" />
-
         <!-- Main Content -->
         <Grid Margin="20">
 
@@ -37,5 +33,4 @@
                 </Button>
             </StackPanel>
         </Grid>
-    </DockPanel>
 </UserControl>

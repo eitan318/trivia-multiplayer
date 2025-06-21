@@ -13,9 +13,10 @@ namespace ClientApp.ViewModels
         public LoginViewModel(
             LoginCommand loginCmd,
             NavigateCommand<SignupViewModel> naToSignupCmd,
-            NavigateCommand<CodeEntryViewModel> navToForgotPasswordCmd,
-            UserStore userStore
-            )
+            NavigateCommand<EmailEntryViewModel> navToForgotPasswordCmd,
+            UserStore userStore,
+            TopBarViewModel topBarViewModel
+            ) 
         {
             this._userStore = userStore;
 

@@ -11,7 +11,7 @@ namespace ClientApp.ViewModels
         private readonly NavigationStore _navigationStore;
         private readonly UserStore _userStore;
 
-        public string Username => _userStore.Username;
+        public string TopBarUsername => _userStore.Username;
 
         public ICommand LogoutCmd { get; }
 
@@ -19,7 +19,7 @@ namespace ClientApp.ViewModels
             _ => _navigationService.GoBack()
         );
 
-        public bool ShowBackButton => _navigationStore.CurrentViewModel.HasBackBtn;
+        public bool ShowBackButton => _navigationStore.CurrentViewModel.NavBarBackBtn;
 
         public TopBarViewModel(LogoutCommand logoutCmd,
             UserStore userStore,
@@ -36,7 +36,7 @@ namespace ClientApp.ViewModels
             {
                 if (e.PropertyName == nameof(UserStore.Username))
                 {
-                    OnPropertyChanged(nameof(Username)); // Notify that Username has changed
+                    OnPropertyChanged(nameof(TopBarUsername)); // Notify that Username has changed
                 }
             };
         }

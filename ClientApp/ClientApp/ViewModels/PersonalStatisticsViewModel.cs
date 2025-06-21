@@ -12,14 +12,12 @@ namespace ClientApp.ViewModels
         private readonly RequestsExchangeService _requestsExchangeService;
         public PersonalStatisticsViewModel(
             RequestsExchangeService requestsExchangeService,
-            TopBarViewModel topBarViewModel) : base(true)
+            TopBarViewModel topBarViewModel) : base(true, topBarViewModel)
         {
-            this.TopBarVM = topBarViewModel;
             _requestsExchangeService = requestsExchangeService;
             this.personalInfo = new PersonalStatisticsModel();
         }
 
-        public TopBarViewModel TopBarVM { get; }
 
         public override void OnNavigatedTo()
         {

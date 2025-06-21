@@ -10,6 +10,8 @@
         SnapsToDevicePixels="True"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip"
+        xmlns:controls="clr-namespace:ClientApp.Views.Controls"
+        xmlns:converters="clr-namespace:ClientApp.Views.Converters"
         Style="{StaticResource MaterialDesignWindow}">
 
     <Window.Resources>
@@ -17,28 +19,38 @@
         <local:ViewModelToPageTemplateSelector x:Key="ViewModelToPageTemplateSelector" />
     </Window.Resources>
 
-    <Grid>
-        <!-- Frame for View Navigation -->
-        <Frame Content="{Binding CurrentViewModel}"
+    <DockPanel>
+        <Grid DockPanel.Dock="Top"  Visibility="{Binding CurrentViewModel.HasNavBar, Converter={StaticResource BoolToVisibilityConverter}}">
+           <!-- Top Bar -->
+            <controls:TopBar  DataContext="{Binding CurrentViewModel.NavBarVM}"/> 
+        </Grid>
+        
+
+        <!-- Main Content -->
+        <Grid >
+
+            <!-- Frame for View Navigation -->
+            <Frame Content="{Binding CurrentViewModel}"
                ContentTemplateSelector="{StaticResource ViewModelToPageTemplateSelector}" 
                NavigationUIVisibility="Hidden" />
 
-        <!-- Back Button --><!--
-        <Button Style="{StaticResource BackButtonStyle}"
+            <!--Back Button-->
+            <Button Style="{StaticResource BackButtonStyle}"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Margin="3"
                 Command="{Binding BackCmd}"
-                Visibility="{Binding CanGoBack, Converter={StaticResource BoolToVisibilityConverter}}"
-                Panel.ZIndex="1" />-->
+                Visibility="{Binding WindowBackBtn, Converter={StaticResource BoolToVisibilityConverter}}"
+                Panel.ZIndex="1" />
 
-        <!-- Error Message -->
-        <TextBlock Text="{Binding ServerErrorMessage}"
+            <!-- Error Message -->
+            <TextBlock Text="{Binding ServerErrorMessage}"
                    Style="{StaticResource ErrorMessageStyle}" 
                    Visibility="{Binding ServerErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Bottom"
                    Margin="10"
                    Panel.ZIndex="1" />
-    </Grid>
+        </Grid>
+    </DockPanel>
 </Window>

@@ -47,11 +47,27 @@ namespace ClientApp.ViewModels
                 _socketService.Connect();
                 _navigationService.NavigateTo<LoginViewModel>();
             }
-            catch( Exception ex) 
+            catch
             {
                 AttemptConnectionAsync();
             }
         }
+
+        public ICommand BackCmd => new RelayCommand(
+            _ => _navigationStore.GoBack()
+        );
+
+
+        public bool WindowBackBtn
+        {
+            get => _navigationStore.CanGoBack() && _navigationStore.CurrentViewModel.WindowBackBtn;
+        }
+
+        public bool NavBarBackBtn
+        {
+            get => _navigationStore.CanGoBack() && _navigationStore.CurrentViewModel.NavBarBackBtn;
+        }
+
 
 
         public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
@@ -62,6 +78,8 @@ namespace ClientApp.ViewModels
         private void OnCurrentViewModelChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));
+            OnPropertyChanged(nameof(WindowBackBtn));
+            OnPropertyChanged(nameof(NavBarBackBtn));
         }
 
         private async void AttemptConnectionAsync()

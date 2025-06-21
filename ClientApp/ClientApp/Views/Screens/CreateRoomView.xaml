@@ -11,10 +11,6 @@
       d:DesignHeight="500" d:DesignWidth="800"
              Style="{StaticResource UserControlStyle}"
  >
-    <DockPanel>
-        <!-- Top Bar -->
-        <controls:TopBar DataContext="{Binding TopBarVM}" DockPanel.Dock="Top" />
-
         <!-- Main Content -->
         <Grid Margin="20">
             <!-- Main layout with rows -->
@@ -122,5 +118,4 @@
                 Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
             </StackPanel>
         </Grid>
-    </DockPanel>
 </UserControl>

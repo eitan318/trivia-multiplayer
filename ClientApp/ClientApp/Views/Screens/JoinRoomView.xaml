@@ -8,13 +8,9 @@
       xmlns:controls="clr-namespace:ClientApp.Views.Controls"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
-             Style="{StaticResource UserControlStyle}"
->
-    <DockPanel>
-        <!-- Top Bar -->
-        <controls:TopBar DataContext="{Binding TopBarVM}" DockPanel.Dock="Top" />
-
-        <!-- Main Content -->
+             Style="{StaticResource UserControlStyle}">
+    
+    <!-- Main Content -->
         <Grid Margin="20">
             <!-- Define Grid Columns -->
             <Grid.ColumnDefinitions>
@@ -72,5 +68,4 @@
                 Foreground="Red" TextWrapping="Wrap" Margin="10" />
             </StackPanel>
         </Grid>
-    </DockPanel>
 </UserControl>

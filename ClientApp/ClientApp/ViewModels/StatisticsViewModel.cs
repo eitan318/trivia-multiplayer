@@ -20,7 +20,7 @@ namespace ClientApp.ViewModels
         public StatisticsViewModel(
             TopBarViewModel topBarViewModel,
             NavigateCommand<PersonalStatisticsViewModel> navToPersonalStatsCommand,
-            NavigateCommand<HighScoresViewModel> navToHighScoresCmd) : base(true)
+            NavigateCommand<HighScoresViewModel> navToHighScoresCmd) : base(true, topBarViewModel)
         {
             TopBarVM = topBarViewModel;
 
