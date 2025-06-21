@@ -10,7 +10,7 @@ using System.Windows.Navigation;
 
 namespace ClientApp.ViewModels
 {
-    internal class MainWindowViewModel : ViewModelBase
+    internal class MainWindowViewModel : ScreenViewModelBase
     {
         private readonly NavigationStore _navigationStore;
         private readonly ServerErrorMessageStore _errorMessageStore;
@@ -47,7 +47,7 @@ namespace ClientApp.ViewModels
                 _socketService.Connect();
                 _navigationService.NavigateTo<LoginViewModel>();
             }
-            catch
+            catch( Exception ex) 
             {
                 AttemptConnectionAsync();
             }
@@ -63,7 +63,7 @@ namespace ClientApp.ViewModels
             get => _navigationStore.CanGoBack() && _navigationStore.CurrentViewModel.HasBackBtn;
         }
 
-        
+
         public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
 
 

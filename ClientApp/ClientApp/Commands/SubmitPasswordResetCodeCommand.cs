@@ -12,12 +12,11 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Commands
 {
-    class SubmitPasswordResetCodeCommand : CommandBase
+    public class SubmitPasswordResetCodeCommand : CommandBase
     {
         private readonly INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
         private PasswordResetStore _state;
-        private CodeEntryViewModel _codeEntryViewModel;
 
 
 
@@ -25,12 +24,10 @@ namespace ClientApp.Commands
         /// Initializes the ViewModel, setting up the code boxes and the associated commands.
         /// </summary>
         public SubmitPasswordResetCodeCommand(
-            CodeEntryViewModel codeEntryViewModel,
             INavigationService navigationService,
             PasswordResetStore state,
             RequestsExchangeService requestsExchangeService)
         {
-            this._codeEntryViewModel = codeEntryViewModel;
             this._navigationService = navigationService;
             this._requestsExchangeService = requestsExchangeService;
             this._state = state;
@@ -42,8 +39,12 @@ namespace ClientApp.Commands
         /// </summary>
         public override async void Execute(object parameters) 
         {
+            if(parameters is not CodeEntryViewModel codeEntryViewModel)
+            {
+                return;
+            }
             // Concatenate all values from the code boxes and process the code
-            var code = string.Concat(_codeEntryViewModel.CodeBoxes.Select(box => box.Value));
+            var code = string.Concat(codeEntryViewModel.CodeBoxes.Select(box => box.Value));
             VerifyPasswordResetCodeRequest request = new VerifyPasswordResetCodeRequest(code);
             ResponseInfo<VerifyPasswordResetCodeResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<VerifyPasswordResetCodeResponse>(request);
             if (responseInfo.NormalResponse)
@@ -56,7 +57,7 @@ namespace ClientApp.Commands
                 }
                 else
                 {
-                    _codeEntryViewModel.ErrorMessage = response.Errors.GeneralError;
+                    codeEntryViewModel.ErrorMessage = response.Errors.GeneralError;
                 }
 
             }

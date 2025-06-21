@@ -10,7 +10,7 @@ using ClientApp.Stores;
 namespace ClientApp.ViewModels
 {
         
-    class GameAnsweringViewModel : ViewModelBase
+    class GameAnsweringViewModel : ScreenViewModelBase
     {
         private readonly RequestsExchangeService _requestsExchangeService;
         private readonly RoomDataStore _roomDataStore;

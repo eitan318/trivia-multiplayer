@@ -9,26 +9,22 @@ namespace ClientApp.ViewModels
     /// ViewModel for the MenuPage in the client application. Handles user interactions with the menu options,
     /// such as creating a room, joining a room, viewing statistics, and logging out.
     /// </summary>
-    internal class MenuViewModel : ViewModelBase
+    internal class MenuViewModel : ScreenViewModelBase
     {
-        private readonly UserStore _userStore;
+
         /// <summary>
         /// Private constructor for the MenuPageViewModel. Initializes the commands for the actions available in the menu.
         /// </summary>
         public MenuViewModel(
             INavigationService navigationService,
             RequestsExchangeService requestsExchangeService,
-            UserStore userStore)
+            TopBarViewModel topBarViewModel)
         {
-            this._userStore = userStore;
+            TopBarVM = topBarViewModel;
+
             NavToCreateRoomCmd = new NavigateCommand<CreateRoomViewModel>(navigationService);
             NavToJoinRoomCmd = new NavigateCommand<JoinRoomViewModel>(navigationService);
             NavToStatisticsCmd = new NavigateCommand<StatisticsViewModel>(navigationService);
-            LogoutCmd = new LogoutCommand(this,
-                navigationService,
-                requestsExchangeService);
-
-  
         }
 
 
@@ -36,7 +32,8 @@ namespace ClientApp.ViewModels
         public ICommand NavToCreateRoomCmd { get; }
         public ICommand NavToJoinRoomCmd { get; }
         public ICommand NavToStatisticsCmd { get; }
-        public ICommand LogoutCmd { get; }
+
+        public TopBarViewModel TopBarVM { get; }
 
 
 
@@ -50,8 +47,6 @@ namespace ClientApp.ViewModels
             set { _errorMessage = value; OnPropertyChanged(); }
         }
 
-
-        public string Username => _userStore.Username;
 
     }
 }

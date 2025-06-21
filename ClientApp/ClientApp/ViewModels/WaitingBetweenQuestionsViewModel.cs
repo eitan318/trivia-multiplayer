@@ -8,7 +8,7 @@ using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
-    class WaitingBetweenQuestionsViewModel : ViewModelBase
+    class WaitingBetweenQuestionsViewModel : ScreenViewModelBase
     {
         private readonly RequestsExchangeService _requestsExchangeService;
         private readonly INavigationService _navigationService;

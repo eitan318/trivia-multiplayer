@@ -7,18 +7,23 @@ using ClientApp.Services;
 namespace ClientApp.ViewModels
 {
 
-    class HighScoresViewModel : ViewModelBase
+    class HighScoresViewModel : ScreenViewModelBase
     {
         private readonly RequestsExchangeService _requestsExchangeService;
         private readonly int amountTopPlayers = 3;
         private CancellationTokenSource _refreshTopPlayersCTS;
 
-        public HighScoresViewModel(RequestsExchangeService requestsExchangeService) : base(true)
+        public HighScoresViewModel(RequestsExchangeService requestsExchangeService,
+            TopBarViewModel topBarViewModel) : base(true)
         {
+            this.TopBarVM = topBarViewModel;
             _requestsExchangeService = requestsExchangeService;
         }
 
         
+        public TopBarViewModel TopBarVM { get; }
+
+
         public override void OnNavigatedTo()
         {
             _refreshTopPlayersCTS = new CancellationTokenSource();

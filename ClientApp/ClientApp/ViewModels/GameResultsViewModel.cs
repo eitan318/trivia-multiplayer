@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace ClientApp.ViewModels
 {
-    class GameResultsViewModel : ViewModelBase
+    class GameResultsViewModel : ScreenViewModelBase
     {
         private List<PlayerResults> _playersResults;
         private readonly RequestsExchangeService _requestsExchangeService;

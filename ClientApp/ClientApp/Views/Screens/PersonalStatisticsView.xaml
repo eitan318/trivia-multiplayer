@@ -8,86 +8,89 @@
              xmlns:controls="clr-namespace:ClientApp.Views.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}">
+             Style="{StaticResource UserControlStyle}"
+             >
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+    <DockPanel>
+        <!-- Top Bar -->
+        <controls:TopBar DataContext="{Binding TopBarVM}" DockPanel.Dock="Top" />
+
+        <!-- Main Content -->
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <!-- Title -->
+                <RowDefinition Height="*" />
+                <!-- Main Content -->
+                <RowDefinition Height="5*" />
+            </Grid.RowDefinitions>
+
             <!-- Title -->
-            <RowDefinition Height="*" />
-            <!-- Main Content -->
-            <RowDefinition Height="Auto" />
-            <!-- Footer -->
-        </Grid.RowDefinitions>
-
-        <!-- Title -->
-        <Border Grid.Row="0"
+            <Border Grid.Row="0"
                 CornerRadius="10"
                 BorderThickness="0,2,0,2"
                 Padding="10"
-                BorderBrush="{StaticResource PrimaryColor}"
+                BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}"
                 Margin="100,0,100,0">
-            <TextBlock Text="📊 Personal Statistics"
-                       FontSize="28"
-                       FontWeight="Bold"
-                       HorizontalAlignment="Center" />
-        </Border>
+                <TextBlock Text="📊 Personal Statistics"
+                       Style="{StaticResource TitleStyle}" />
+            </Border>
 
-        <!-- Main Content -->
-        <Border Grid.Row="1"
+            <!-- Main Content -->
+            <Border Grid.Row="1"
                 Margin="0,20,0,20"
                 Padding="20"
                 CornerRadius="10"
                 BorderThickness="2"
-                BorderBrush="{StaticResource PrimaryColor}"
+                BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}"
                 >
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-                    <!-- Personal Info Header -->
-                    <TextBlock Text="Player Statistics Summary"
-                               FontSize="20"
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                        <!-- Personal Info Header -->
+                        <TextBlock Text="Player Statistics Summary"
+                               FontSize="24"
                                FontWeight="Bold"
                                Margin="0,0,0,15"
                                HorizontalAlignment="Center" />
 
-                    <!-- Statistics Grid -->
-                    <UniformGrid Columns="2" Margin="0,5,0,5" VerticalAlignment="Top" HorizontalAlignment="Stretch">
-                        <!-- Games Played -->
-                        <TextBlock Text="Games Played:" FontWeight="Bold" FontSize="16" />
-                        <TextBlock Text="{Binding PersonalInfo.GamesPlayed}" 
-                                   FontSize="16" 
+                        <!-- Statistics Grid -->
+                        <UniformGrid Columns="2" Margin="0,5,0,5" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                            <!-- Games Played -->
+                            <TextBlock Text="Games Played:" FontWeight="Bold" FontSize="20" />
+                            <TextBlock Text="{Binding PersonalInfo.GamesPlayed}" 
+                                   FontSize="20" 
                                    HorizontalAlignment="Right" 
                                    Margin="10,0,0,0" />
 
-                        <!-- Total Answers -->
-                        <TextBlock Text="Total Answers:" FontWeight="Bold" FontSize="16" />
-                        <TextBlock Text="{Binding PersonalInfo.TotalAnswers}" 
-                                   FontSize="16" 
+                            <!-- Total Answers -->
+                            <TextBlock Text="Total Answers:" FontWeight="Bold" FontSize="20" />
+                            <TextBlock Text="{Binding PersonalInfo.TotalAnswers}" 
+                                   FontSize="20" 
                                    HorizontalAlignment="Right" 
                                    Margin="10,0,0,0" />
 
-                        <!-- Correct Answers -->
-                        <TextBlock Text="Correct Answers:" FontWeight="Bold" FontSize="16" />
-                        <TextBlock Text="{Binding PersonalInfo.TotalCorrectAnswers}" 
-                                   FontSize="16" 
+                            <!-- Correct Answers -->
+                            <TextBlock Text="Correct Answers:" FontWeight="Bold" FontSize="20" />
+                            <TextBlock Text="{Binding PersonalInfo.TotalCorrectAnswers}" 
+                                   FontSize="20" 
                                    HorizontalAlignment="Right" 
                                    Margin="10,0,0,0" />
 
-                        <!-- Avg. Answer Time -->
-                        <TextBlock Text="Avg. Answer Time:" FontWeight="Bold" FontSize="16" />
-                        <TextBlock Text="{Binding PersonalInfo.AvgAnswerTime}" 
-                                   FontSize="16" 
+                            <!-- Avg. Answer Time -->
+                            <TextBlock Text="Avg. Answer Time:" FontWeight="Bold" FontSize="20" />
+                            <TextBlock Text="{Binding PersonalInfo.AvgAnswerTime}" 
+                                   FontSize="20" 
                                    HorizontalAlignment="Right" 
                                    Margin="10,0,0,0" />
-                    </UniformGrid>
-                </StackPanel>
-            </ScrollViewer>
-        </Border>
+                        </UniformGrid>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
 
-        <!-- Error Message -->
-        <TextBlock Text="{Binding ErrorMessage}"
+            <!-- Error Message -->
+            <TextBlock Text="{Binding ErrorMessage}"
                    Grid.Row="2"
                        Style="{StaticResource ErrorMessageStyle}"
                        Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
-    </Grid>
+        </Grid>
+    </DockPanel>
 </UserControl>

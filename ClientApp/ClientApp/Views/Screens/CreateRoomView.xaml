@@ -5,20 +5,27 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:ClientApp.Views.Screens"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:controls="clr-namespace:ClientApp.Views.Controls"
+             
       mc:Ignorable="d"
       d:DesignHeight="500" d:DesignWidth="800"
-      TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}" >
+             Style="{StaticResource UserControlStyle}"
+ >
+    <DockPanel>
+        <!-- Top Bar -->
+        <controls:TopBar DataContext="{Binding TopBarVM}" DockPanel.Dock="Top" />
 
-    <Grid>
-        <!-- Main layout with rows -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+        <!-- Main Content -->
+        <Grid Margin="20">
+            <!-- Main layout with rows -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <!-- Title Section -->
-        <TextBlock 
+            <!-- Title Section -->
+            <TextBlock 
             Text="Create Room" 
             FontSize="24" 
             FontWeight="Bold" 
@@ -27,26 +34,26 @@
             Margin="15" 
             Grid.Row="0" />
 
-        <!-- Input Fields Section -->
-        <Border Grid.Row="1"
+            <!-- Input Fields Section -->
+            <Border Grid.Row="1"
                 Margin="15"
                 Padding="30"
                 CornerRadius="16"
-                BorderBrush="{StaticResource PrimaryColor}"
+                BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}"
                 BorderThickness="2">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
 
-                <!-- Room Name -->
-                <TextBox 
+                    <!-- Room Name -->
+                    <TextBox 
                     materialDesign:HintAssist.Hint="Room Name" 
                     x:Name="RoomName_TB"
                     Text="{Binding CurrentRoomData.RoomName, UpdateSourceTrigger=PropertyChanged}"
@@ -55,8 +62,8 @@
                     FontSize="14"
                     Grid.Row="0" Grid.Column="0" />
 
-                <!-- Players -->
-                <materialDesign:NumericUpDown 
+                    <!-- Players -->
+                    <materialDesign:NumericUpDown 
                     materialDesign:HintAssist.Hint="Max Players"
                     Value="{Binding CurrentRoomData.MaxPlayers, UpdateSourceTrigger=PropertyChanged}" 
                     Maximum="50" 
@@ -66,8 +73,8 @@
                     FontSize="14"
                     Grid.Row="0" Grid.Column="1" />
 
-                <!-- Questions -->
-                <materialDesign:NumericUpDown 
+                    <!-- Questions -->
+                    <materialDesign:NumericUpDown 
                     materialDesign:HintAssist.Hint="Questions" 
                     Value="{Binding CurrentRoomData.NumOfQuestionsInGame, UpdateSourceTrigger=PropertyChanged}" 
                     Maximum="50" 
@@ -77,8 +84,8 @@
                     FontSize="14"
                     Grid.Row="1" Grid.Column="0" />
 
-                <!-- Timeout -->
-                <materialDesign:DecimalUpDown 
+                    <!-- Timeout -->
+                    <materialDesign:DecimalUpDown 
                     materialDesign:HintAssist.Hint="Timeout (sec)" 
                     Value="{Binding CurrentRoomData.TimePerQuestion, UpdateSourceTrigger=PropertyChanged}" 
                     ValueStep="0.5" 
@@ -88,8 +95,8 @@
                     FontSize="14"
                     Grid.Row="1" Grid.Column="1" />
 
-                <!-- Score Showing Time -->
-                <materialDesign:DecimalUpDown 
+                    <!-- Score Showing Time -->
+                    <materialDesign:DecimalUpDown 
                     materialDesign:HintAssist.Hint="Score Showing Time (sec)" 
                     Value="{Binding CurrentRoomData.ScoreShowingTime, UpdateSourceTrigger=PropertyChanged}" 
                     ValueStep="0.5" 
@@ -98,13 +105,13 @@
                     Margin="10" 
                     FontSize="14"
                     Grid.Row="2" Grid.Column="0" />
-            </Grid>
-        </Border>
+                </Grid>
+            </Border>
 
-        <!-- Action Button Section -->
-        <StackPanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,20,0,0">
-            <!-- Create Room Button -->
-            <Button Content="Create Room" 
+            <!-- Action Button Section -->
+            <StackPanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,20,0,0">
+                <!-- Create Room Button -->
+                <Button Content="Create Room" 
                     Command="{Binding CreateRoomCmd}" 
                     Style="{StaticResource OperationButtonStyle}" 
                     Padding="12,8"
@@ -112,11 +119,12 @@
                     Margin="0,0,0,10"
                     Width="200" />
 
-            <!-- Error Message -->
-            <TextBlock 
+                <!-- Error Message -->
+                <TextBlock 
                 Text="{Binding ErrorMessage}" 
                 Style="{StaticResource ErrorMessageStyle}" 
                 Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
-        </StackPanel>
-    </Grid>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </UserControl>

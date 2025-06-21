@@ -14,7 +14,7 @@ using System.Runtime.CompilerServices;
 
 namespace ClientApp.ViewModels
 {
-    class GameScoreBoardViewModel : ViewModelBase
+    class GameScoreBoardViewModel : ScreenViewModelBase
     {
         private readonly RequestsExchangeService _requestsExchangeService;
         private readonly INavigationService _navigationService;

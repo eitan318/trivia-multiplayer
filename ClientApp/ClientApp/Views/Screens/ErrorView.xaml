@@ -5,7 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:vm="clr-namespace:ClientApp.ViewModels"
       xmlns:local="clr-namespace:ClientApp.Views.Screens"
-      TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+             Style="{StaticResource UserControlStyle}"
+
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       >

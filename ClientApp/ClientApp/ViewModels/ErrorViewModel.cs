@@ -2,7 +2,7 @@
 
 namespace ClientApp.ViewModels
 {
-    class ErrorViewModel : ViewModelBase
+    class ErrorViewModel : ScreenViewModelBase
     {
         private ServerErrorMessageStore _errorMessageStore;
 

@@ -9,9 +9,10 @@ namespace ClientApp.ViewModels
     /// <summary>
     /// ViewModel for the Create Room page, managing the room creation process and player data.
     /// </summary>
-    class CreateRoomViewModel : ViewModelBase
+    class CreateRoomViewModel : ScreenViewModelBase
     {
         private readonly RoomDataStore _roomDataStore;
+        public TopBarViewModel TopBarVM { get; }
 
         /// <summary>
         /// Constructor for initializing the ViewModel.
@@ -19,8 +20,10 @@ namespace ClientApp.ViewModels
         public CreateRoomViewModel(
             RequestsExchangeService requestsExchangeService,
             INavigationService navigationService,
-            RoomDataStore roomDataStore) : base(true)
+            RoomDataStore roomDataStore,
+            TopBarViewModel topBarViewModel) : base(true)
         {
+                        this.TopBarVM = topBarViewModel;
             _roomDataStore = roomDataStore;
             _roomDataStore.CurrentRoomData = new RoomDataModel();
 

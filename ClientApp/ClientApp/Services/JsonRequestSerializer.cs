@@ -7,7 +7,7 @@ namespace ClientApp.Services
     /// <summary>
     /// Provides serialization functionality for client requests into JSON format.
     /// </summary>
-    class JsonRequestSerializer
+    public class JsonRequestSerializer
     {
         /// <summary>
         /// Serializes a request object into a byte array for transmission.

@@ -8,97 +8,102 @@
              xmlns:controls="clr-namespace:ClientApp.Views.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}">
+             Style="{StaticResource UserControlStyle}"
+>
+    <DockPanel>
+        <!-- Top Bar -->
+        <controls:TopBar DataContext="{Binding TopBarVM}" DockPanel.Dock="Top" />
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+        <!-- Main Content -->
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <!-- Title -->
+                <RowDefinition Height="*" />
+                <!-- Leaderboard -->
+                <RowDefinition Height="Auto" />
+                <!-- Footer -->
+            </Grid.RowDefinitions>
+
+
             <!-- Title -->
-            <RowDefinition Height="*" />
-            <!-- Leaderboard -->
-            <RowDefinition Height="Auto" />
-            <!-- Footer -->
-        </Grid.RowDefinitions>
-
-        <!-- Title -->
-        <Border Grid.Row="0"
+            <Border Grid.Row="0"
                 CornerRadius="10"
                 BorderThickness="0,2,0,2"
                 Padding="10"
-                BorderBrush="{StaticResource PrimaryColor}"
+                BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}"
                 Margin="100,0,100,0">
-            <TextBlock Text="🏆 High Scores"
-                       FontSize="28"
-                       FontWeight="Bold"
-                       HorizontalAlignment="Center" />
-        </Border>
+                <TextBlock Text="🏆 High Scores"
+                       Style="{DynamicResource TitleStyle}" />
+            </Border>
 
-        <!-- Leaderboard -->
-        <Border Grid.Row="1"
+            <!-- Leaderboard -->
+            <Border Grid.Row="1"
                 Margin="0,20,0,20"
                 Padding="10"
                 CornerRadius="10"
                 BorderThickness="0"
-                BorderBrush="{StaticResource PrimaryColor}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="400">
-                <ItemsControl ItemsSource="{Binding ResponseList}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Columns="1"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <!-- High Score Item -->
-                            <Border BorderThickness="1" 
-                                    BorderBrush="{DynamicResource PrimaryColor}" 
+                BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="400">
+                    <ItemsControl ItemsSource="{Binding ResponseList}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="1"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <!-- High Score Item -->
+                                <Border BorderThickness="1" 
+                                    BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}" 
                                     Padding="10" 
                                     Margin="0,5" 
                                     CornerRadius="5">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="2*" />
-                                    </Grid.ColumnDefinitions>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="2*" />
+                                        </Grid.ColumnDefinitions>
 
-                                    <!-- Rank -->
-                                    <TextBlock Grid.Column="0"
+                                        <!-- Rank -->
+                                        <TextBlock Grid.Column="0"
                                                Text="{Binding Rank, StringFormat='#{0}'}"
                                                FontSize="16"
                                                FontWeight="Bold"
                                                VerticalAlignment="Center"
                                                HorizontalAlignment="Center" />
 
-                                    <!-- Player Info -->
-                                    <StackPanel Grid.Column="1" Margin="10,0">
-                                        <TextBlock Text="{Binding PlayerUsername, StringFormat='User: {0}'}" 
+                                        <!-- Player Info -->
+                                        <StackPanel Grid.Column="1" Margin="10,0">
+                                            <TextBlock Text="{Binding PlayerUsername, StringFormat='User: {0}'}" 
                                                    FontSize="14" 
                                                    FontWeight="Bold" />
-                                        <TextBlock Text="{Binding RoomName, StringFormat='Game Room: {0}'}" 
+                                            <TextBlock Text="{Binding RoomName, StringFormat='Game Room: {0}'}" 
                                                    FontSize="13" />
-                                        <TextBlock Text="{Binding StartTime, StringFormat='Start Time: {0:yyyy-MM-dd HH:mm}'}" 
+                                            <TextBlock Text="{Binding StartTime, StringFormat='Start Time: {0:yyyy-MM-dd HH:mm}'}" 
                                                    FontSize="13" />
-                                    </StackPanel>
+                                        </StackPanel>
 
-                                    <!-- Total Score -->
-                                    <TextBlock Text="{Binding TotalScore, StringFormat='Score: {0}'}"
+                                        <!-- Total Score -->
+                                        <TextBlock Text="{Binding TotalScore, StringFormat='Score: {0}'}"
                                                Grid.Column="2"
                                                FontSize="16"
                                                FontWeight="Bold"
                                                HorizontalAlignment="Right"
                                                VerticalAlignment="Center" />
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
 
-        <!-- Error Message -->
-        <TextBlock Text="{Binding ErrorMessage}"
+            <!-- Error Message -->
+            <TextBlock Text="{Binding ErrorMessage}"
                        Style="{StaticResource ErrorMessageStyle}"
                        Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
-    </Grid>
+        </Grid>
+    </DockPanel>
+    
 </UserControl>

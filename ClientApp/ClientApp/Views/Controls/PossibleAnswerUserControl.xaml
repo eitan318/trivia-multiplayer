@@ -8,7 +8,7 @@
              d:DesignHeight="50" d:DesignWidth="400"
              TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}">
     <!-- Rounded Border -->
-    <Border BorderBrush="{StaticResource PrimaryColor}" 
+    <Border BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}" 
                 BorderThickness="0,2,0,2"
             CornerRadius="15"
             VerticalAlignment="Stretch"

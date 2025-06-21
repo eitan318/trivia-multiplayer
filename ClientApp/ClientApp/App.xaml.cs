@@ -6,6 +6,9 @@ using ClientApp.Views.Screens.ForgotPassword;
 using Microsoft.Extensions.DependencyInjection;
 using ClientApp.ViewModels.ForgotPassword;
 using ClientApp.Stores;
+using ClientApp.Views.Controls;
+using ClientApp.Commands;
+using System.Windows.Input;
 
 namespace ClientApp;
 
@@ -47,6 +50,10 @@ public partial class App : Application
         services.AddSingleton<JsonResponseDeserializer>();
 
 
+
+
+
+
         // Register ViewModels
         services.AddTransient<MainWindowViewModel>();
 
@@ -65,12 +72,37 @@ public partial class App : Application
         services.AddTransient<GameResultsViewModel>();
         services.AddTransient<WaitingBetweenQuestionsViewModel>();
         services.AddTransient<GameScoreBoardViewModel>();
+
+
+        services.AddTransient<TopBarViewModel>();
+
         
 
         // Password reset ViewModels
         services.AddTransient<EmailEntryViewModel>();
         services.AddTransient<CodeEntryViewModel>();
         services.AddTransient<ResetPasswordViewModel>();
+
+
+
+
+        // Register commands
+        services.AddTransient<LogoutCommand>();
+        services.AddTransient<CreateRoomCommand>();
+        services.AddTransient<JoinCommand>();
+        services.AddTransient<LeaveGameCommand>();
+        services.AddTransient<LeaveRoomCommand>();
+        services.AddTransient<LoginCommand>();
+        services.AddTransient<ResetPasswordCommand>();
+        services.AddTransient<SignupCommand>();
+        services.AddTransient<StartGameCommand>();
+        services.AddTransient<SubmitAnswerCommand>();
+        services.AddTransient<SubmitPasswordResetCodeCommand>();
+        services.AddTransient<SubmitPasswordResetEmailCommand>();
+        services.AddTransient(typeof(NavigateCommand<>));
+
+
+
 
         // Register Views
         services.AddTransient<LoginView>();

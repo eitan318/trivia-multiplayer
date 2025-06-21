@@ -7,14 +7,17 @@ using System.Windows.Input;
 
 namespace ClientApp.ViewModels
 {
-    class PersonalStatisticsViewModel : ViewModelBase
+    class PersonalStatisticsViewModel : ScreenViewModelBase
     {
         private readonly RequestsExchangeService _requestsExchangeService;
-        public PersonalStatisticsViewModel(RequestsExchangeService requestsExchangeService) : base(true)
+        public PersonalStatisticsViewModel(RequestsExchangeService requestsExchangeService,TopBarViewModel topBarViewModel) : base(true)
         {
+            this.TopBarVM = topBarViewModel;
             _requestsExchangeService = requestsExchangeService;
             this.personalInfo = new PersonalStatisticsModel();
         }
+
+        public TopBarViewModel TopBarVM { get; }
 
         public override void OnNavigatedTo()
         {

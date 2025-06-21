@@ -7,7 +7,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ClientApp.Views.Screens"
       xmlns:vm="clr-namespace:ClientApp.ViewModels"
-      TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+             Style="{StaticResource UserControlStyle}"
+
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
 
@@ -80,6 +81,7 @@
             <!-- Signup button bound to the Signup command -->
             <Button Content="Signup" 
                     Command="{Binding SignupCmd}"
+                    CommandParameter="{Binding}"
                     Style="{StaticResource OperationButtonStyle}"/>
 
             <!-- Navigate to Login button -->

@@ -7,19 +7,19 @@ using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
-    class SignupViewModel : ViewModelBase
+    class SignupViewModel : ScreenViewModelBase
     {
         private UserStore _userStore;
         public SignupViewModel(
-            INavigationService navigationService,
-            RequestsExchangeService requestsExchangeService,
+            SignupCommand signupCmd,
+            NavigateCommand<LoginViewModel> navToLoginCmd,
             UserStore userStore)
         {
             this._userStore = userStore;
 
             // Initialize commands for different actions
-            SignupCmd = new SignupCommand(this, navigationService, requestsExchangeService);
-            NavToLoginCmd = new NavigateCommand<LoginViewModel>(navigationService);
+            SignupCmd = signupCmd;
+            NavToLoginCmd = navToLoginCmd;
         }
 
 

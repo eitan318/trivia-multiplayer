@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace ClientApp.ViewModels
 {
-    class RoomAdminViewModel : ViewModelBase
+    class RoomAdminViewModel : ScreenViewModelBase
     {
         private UserStore userStore;
         private readonly RequestsExchangeService _requestsExchangeService;

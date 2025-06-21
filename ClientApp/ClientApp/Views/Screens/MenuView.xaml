@@ -4,59 +4,51 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:controls="clr-namespace:ClientApp.Views.Controls"
       mc:Ignorable="d"
-      TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+      Style="{StaticResource UserControlStyle}"
       d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <!-- Top Bar -->
-            <RowDefinition Height="Auto"/>
-            <!-- Buttons -->
-            <RowDefinition Height="4*"/>
-        </Grid.RowDefinitions>
-
+    <DockPanel>
         <!-- Top Bar -->
-        <DockPanel Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}">
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="0,0,10,0">
-                <Button Command="{Binding LogoutCmd}" Style="{StaticResource MaterialDesignIconButton}" Height="37" Margin="10,0,0,0">
-                    <materialDesign:PackIcon Kind="Logout" Width="30" Height="30"/>
+        <controls:TopBar DataContext="{Binding TopBarVM}" DockPanel.Dock="Top" />
+
+        <!-- Main Content -->
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <!-- Buttons -->
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Menu Buttons -->
+            <UniformGrid Grid.Row="0" Columns="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10">
+                <!-- Create Room Button -->
+                <Button Command="{Binding NavToCreateRoomCmd}" Style="{StaticResource MenuButtonStyle}" Margin="10">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <materialDesign:PackIcon Kind="Plus" Width="40" Height="40"/>
+                        <TextBlock Text="Create Room" FontSize="18" FontWeight="Bold" TextAlignment="Center" Margin="0,10,0,0"/>
+                        <TextBlock Text="Start a new trivia game and invite friends to join" FontSize="12" TextAlignment="Center" Foreground="Gray"/>
+                    </StackPanel>
                 </Button>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="0,0,10,0">
-                <materialDesign:PackIcon Kind="Account" Width="30" Height="30" VerticalAlignment="Center"/>
-                <TextBlock Text="{Binding Username}" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0"/>
-            </StackPanel>
-        </DockPanel>
 
-        <!-- Menu Buttons -->
-        <UniformGrid Grid.Row="1" Columns="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10">
-            <!-- Create Room Button -->
-            <Button Command="{Binding NavToCreateRoomCmd}" Style="{StaticResource MenuButtonStyle}" Margin="10">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <materialDesign:PackIcon Kind="Plus" Width="40" Height="40"/>
-                    <TextBlock Text="Create Room" FontSize="18" FontWeight="Bold" TextAlignment="Center" Margin="0,10,0,0"/>
-                    <TextBlock Text="Start a new trivia game and invite friends to join" FontSize="12" TextAlignment="Center" Foreground="Gray"/>
-                </StackPanel>
-            </Button>
+                <!-- Join Room Button -->
+                <Button Command="{Binding NavToJoinRoomCmd}" Style="{StaticResource MenuButtonStyle}" Margin="10">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <materialDesign:PackIcon Kind="AccountGroup" Width="40" Height="40"/>
+                        <TextBlock Text="Join Room" FontSize="18" FontWeight="Bold" TextAlignment="Center" Margin="0,10,0,0"/>
+                        <TextBlock Text="Browse available rooms and join an existing game" FontSize="12" TextAlignment="Center" Foreground="Gray"/>
+                    </StackPanel>
+                </Button>
 
-            <!-- Join Room Button -->
-            <Button Command="{Binding NavToJoinRoomCmd}" Style="{StaticResource MenuButtonStyle}" Margin="10">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <materialDesign:PackIcon Kind="AccountGroup" Width="40" Height="40"/>
-                    <TextBlock Text="Join Room" FontSize="18" FontWeight="Bold" TextAlignment="Center" Margin="0,10,0,0"/>
-                    <TextBlock Text="Browse available rooms and join an existing game" FontSize="12" TextAlignment="Center" Foreground="Gray"/>
-                </StackPanel>
-            </Button>
-
-            <!-- Statistics Button -->
-            <Button Command="{Binding NavToStatisticsCmd}" Style="{StaticResource MenuButtonStyle}" Margin="10">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <materialDesign:PackIcon Kind="ChartBar" Width="40" Height="40"/>
-                    <TextBlock Text="Statistics" FontSize="18" FontWeight="Bold" TextAlignment="Center" Margin="0,10,0,0"/>
-                    <TextBlock Text="View your performance stats and leaderboards" FontSize="12" TextAlignment="Center" Foreground="Gray"/>
-                </StackPanel>
-            </Button>
-        </UniformGrid>
-    </Grid>
+                <!-- Statistics Button -->
+                <Button Command="{Binding NavToStatisticsCmd}" Style="{StaticResource MenuButtonStyle}" Margin="10">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <materialDesign:PackIcon Kind="ChartBar" Width="40" Height="40"/>
+                        <TextBlock Text="Statistics" FontSize="18" FontWeight="Bold" TextAlignment="Center" Margin="0,10,0,0"/>
+                        <TextBlock Text="View your performance stats and leaderboards" FontSize="12" TextAlignment="Center" Foreground="Gray"/>
+                    </StackPanel>
+                </Button>
+            </UniformGrid>
+        </Grid>
+    </DockPanel>
 </UserControl>

@@ -7,21 +7,18 @@ using System.Collections.Generic;
 
 namespace ClientApp.Commands
 {
-    class LogoutCommand : CommandBase
+    public class LogoutCommand : CommandBase
     {
         private INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
-        MenuViewModel _menuViewModel;
 
         /// <summary>
         /// Private constructor for the MenuPageViewModel. Initializes the commands for the actions available in the menu.
         /// </summary>
         public LogoutCommand(
-            MenuViewModel menuViewModel,
             INavigationService navigationService,
             RequestsExchangeService requestsExchangeService)
         {
-            this._menuViewModel = menuViewModel;
             this._navigationService = navigationService;
             this._requestsExchangeService = requestsExchangeService;
         }

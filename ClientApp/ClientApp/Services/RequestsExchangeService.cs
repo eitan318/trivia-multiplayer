@@ -8,7 +8,7 @@ namespace ClientApp.Services
     /// <summary>
     /// Provides services for exchanging requests with a server and handling responses.
     /// </summary>
-    internal class RequestsExchangeService
+    public class RequestsExchangeService
     {
         private readonly SocketService _socketService;
         private readonly JsonResponseDeserializer _responseDiserializer;

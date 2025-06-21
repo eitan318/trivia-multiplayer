@@ -6,8 +6,8 @@ namespace ClientApp.Stores
 {
     public class NavigationStore : StoreBase
     {
-        private readonly Stack<ViewModelBase> _navigationHistory = new();
-        private ViewModelBase _currentViewModel;
+        private readonly Stack<ScreenViewModelBase> _navigationHistory = new();
+        private ScreenViewModelBase _currentViewModel;
 
         public bool CanGoBack()
         {
@@ -22,7 +22,7 @@ namespace ClientApp.Stores
             }
         }
 
-        public ViewModelBase CurrentViewModel
+        public ScreenViewModelBase CurrentViewModel
         {
             get => _currentViewModel;
             set

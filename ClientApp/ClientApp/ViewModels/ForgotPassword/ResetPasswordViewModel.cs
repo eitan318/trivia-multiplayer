@@ -8,7 +8,7 @@ namespace ClientApp.ViewModels.ForgotPassword
     /// <summary>
     /// Command that does the reset password step in the forgot password process.
     /// </summary>
-    class ResetPasswordViewModel : ViewModelBase
+    class ResetPasswordViewModel : ScreenViewModelBase
     {
         public ResetPasswordViewModel(
             INavigationService navigationService,

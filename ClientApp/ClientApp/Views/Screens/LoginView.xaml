@@ -5,8 +5,9 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:controls="clr-namespace:ClientApp.Views.Controls"
-      TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
       mc:Ignorable="d" 
+             Style="{StaticResource UserControlStyle}"
+
       d:DesignHeight="450" d:DesignWidth="800"
       >
 
@@ -73,6 +74,7 @@
                 <!-- Login Button -->
                 <Button Content="Login"
                     Command="{Binding LoginCmd}"
+                    CommandParameter="{Binding}"
                     Margin="0,20"
                     Padding="10,5" 
                     Width="200"

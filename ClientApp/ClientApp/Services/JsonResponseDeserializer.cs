@@ -7,7 +7,7 @@ namespace ClientApp.Services
     /// <summary>
     /// Provides functionality for deserializing JSON responses from the server.
     /// </summary>
-    class JsonResponseDeserializer
+    public class JsonResponseDeserializer
     {
         /// <summary>
         /// Deserializes a JSON response into a specified type.

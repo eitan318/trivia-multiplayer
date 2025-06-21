@@ -15,27 +15,6 @@ namespace ClientApp.ViewModels
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // Singleton Behavior
-
-        private static readonly object _lock = new object();
-        private static readonly Dictionary<Type, object> _instances = new();
-
-        /// <summary>
-        /// Protected constructor for derived classes to ensure that only classes inheriting from BaseViewModel 
-        /// can be instantiated.
-        /// </summary>
-        protected ViewModelBase(bool hasBackBtn = false) 
-        {
-            this.HasBackBtn = hasBackBtn;
-        }
-
-        public virtual void OnNavigatedTo() { }
-        public virtual void OnNavigatedAway() { }
-
-        public virtual void Dispose() { }
-
-        public bool HasBackBtn { get; private set; }
-
         /// <summary>
         /// Notifies subscribers that a property value has changed. This method is intended to be called in property setters.
         /// </summary>
@@ -44,7 +23,6 @@ namespace ClientApp.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
 
     }
 }

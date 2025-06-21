@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace ClientApp.Commands
 {
-    public class NavigateCommand<TViewModel> : ICommand where TViewModel : ViewModelBase
+    public class NavigateCommand<TViewModel> : ICommand where TViewModel : ScreenViewModelBase
     {
         private readonly INavigationService _navigationService;
 

@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace ClientApp.ViewModels
 {
-    class JoinRoomViewModel : ViewModelBase
+    class JoinRoomViewModel : ScreenViewModelBase
     {
         private RoomDataStore _roomDataStore;
         private readonly RequestsExchangeService _requestsExchangeService;

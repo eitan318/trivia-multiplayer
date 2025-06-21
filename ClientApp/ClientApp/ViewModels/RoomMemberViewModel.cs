@@ -10,7 +10,7 @@ using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
-    class RoomMemberViewModel : ViewModelBase
+    class RoomMemberViewModel : ScreenViewModelBase
     {
         private UserStore _userStore;
         private readonly RequestsExchangeService _requestsExchangeService;
