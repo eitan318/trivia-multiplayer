@@ -74,7 +74,6 @@ int Question::getOriginalAnswerNum(int shuffledAnswerId) const
         throw std::out_of_range("Invalid shuffledAnswerId");
     }
 
-    // m_originalToShuffledMap maps original -> shuffled, so we need to find where shuffledAnswerId exists
     return m_ShuffledToOriginalMap[shuffledAnswerId];
     throw std::logic_error("Mapping inconsistency detected");
 }

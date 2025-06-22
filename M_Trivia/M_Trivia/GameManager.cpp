@@ -83,14 +83,6 @@ GeneralResponseErrors GameManager::submitAnswer(const LoggedUser& user, std::sha
     Question q = originalQuestionAnswered.value();
 
     int answerOriginalNumber = answerId == -1 ? -1 : q.getOriginalAnswerNum(answerId);
-
-    int correctAnswerId = q.getCorrectAnswerId();
-    int orig = q.getOriginalAnswerNum(correctAnswerId);
-    if (orig != 0) {
-        throw;
-    }
-    
-
     bool isCorrect = q.getCorrectAnswerId() == answerId;
     double answerTime = game->getAnswerDouration(std::chrono::steady_clock::now());
     double  timeLimit = game->getQuestionTimeLimit();
