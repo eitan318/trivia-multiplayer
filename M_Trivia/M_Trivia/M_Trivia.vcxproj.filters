@@ -163,13 +163,13 @@
     <ClCompile Include="RoomAdminRequestHandler.cpp">
       <Filter>RequestHandlers</Filter>
     </ClCompile>
-    <ClCompile Include="RoomMemberRequestHandler.cpp">
-      <Filter>RequestHandlers</Filter>
-    </ClCompile>
     <ClCompile Include="RoomRequestHandler.cpp">
       <Filter>RequestHandlers</Filter>
     </ClCompile>
     <ClCompile Include="GetGameStateResponse.cpp" />
+    <ClCompile Include="Waiting1v1Manager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CreateRoomResponseErrors.hpp">
@@ -377,9 +377,6 @@
     <ClInclude Include="RoomAdminRequestHandler.hpp">
       <Filter>RequestHandlers</Filter>
     </ClInclude>
-    <ClInclude Include="RoomMemberRequestHandler.hpp">
-      <Filter>RequestHandlers</Filter>
-    </ClInclude>
     <ClInclude Include="RoomRequestHandler.hpp">
       <Filter>RequestHandlers</Filter>
     </ClInclude>
@@ -395,6 +392,9 @@
     <ClInclude Include="GameStatus.hpp" />
     <ClInclude Include="GetGameStateResponse.hpp">
       <Filter>Model\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="Waiting1v1Manager.hpp">
+      <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
