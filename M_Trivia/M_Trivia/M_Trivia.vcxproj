@@ -174,8 +174,6 @@
     <ClInclude Include="ApiClient.hpp" />
     <ClInclude Include="StatisticsManager.hpp" />
     <ClInclude Include="UserRecord.hpp" />
-    <ClInclude Include="Waiting1v1Manager.hpp" />
-    <ClInclude Include="Waiting1v1RequestHandler.hpp" />
     <ClInclude Include="WSAInitializer.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -212,8 +210,6 @@
     <ClCompile Include="SqliteDatabase.cpp" />
     <ClCompile Include="ApiClient.cpp" />
     <ClCompile Include="StatisticsManager.cpp" />
-    <ClCompile Include="Waiting1v1Manager.cpp" />
-    <ClCompile Include="Waiting1v1RequestHandler.cpp" />
     <ClCompile Include="WSAInitializer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
