@@ -176,7 +176,6 @@
     <ClInclude Include="UserRecord.hpp" />
     <ClInclude Include="Waiting1v1Manager.hpp" />
     <ClInclude Include="Waiting1v1RequestHandler.hpp" />
-    <ClInclude Include="Waiting1v1Manager.hpp" />
     <ClInclude Include="WSAInitializer.hpp" />
   </ItemGroup>
   <ItemGroup>
