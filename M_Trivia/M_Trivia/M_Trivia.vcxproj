@@ -142,6 +142,7 @@
     <ClInclude Include="PlayerGameData.hpp" />
     <ClInclude Include="QuestionDificultyLevel.h" />
     <ClInclude Include="RegexValidator.hpp" />
+    <ClInclude Include="Requests.hpp" />
     <ClInclude Include="RequestsCodes.hpp" />
     <ClInclude Include="ResetPasswordResponseErrors.hpp" />
     <ClInclude Include="RoomAdminRequestHandler.hpp" />
@@ -192,7 +193,6 @@
     <ClCompile Include="Question.cpp" />
     <ClCompile Include="RequestInfo.cpp" />
     <ClCompile Include="RequestResult.cpp" />
-    <ClCompile Include="Requests.hpp" />
     <ClCompile Include="ResetPasswordResponseErrors.cpp" />
     <ClCompile Include="RoomAdminRequestHandler.cpp" />
     <ClCompile Include="RoomRequestHandler.cpp" />
