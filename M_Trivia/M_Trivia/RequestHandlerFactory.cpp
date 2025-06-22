@@ -13,9 +13,9 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase& database)
 	m_loginManager(LoginManager::getInstance(database)),
 	m_statisticsManager(StatisticsManager::getInstance(database)),
 	m_roomManager(RoomManager::getInstance(database)),
-	m_gameManager(GameManager::getInstance(database)),
-	m_waiting1v1Manager(Waiting1v1Manager::getInstance())
-{}
+	m_gameManager(GameManager::getInstance(database))
+{
+}
 
 
 
@@ -65,10 +65,6 @@ GameManager& RequestHandlerFactory::getGameManager() const
 	return this->m_gameManager;
 }
 
-Waiting1v1Manager& RequestHandlerFactory::getWaiting1v1Manager() const
-{
-	return this->m_waiting1v1Manager;
-}
 
 StatisticsManager& RequestHandlerFactory::getStatisticsManger() const
 {

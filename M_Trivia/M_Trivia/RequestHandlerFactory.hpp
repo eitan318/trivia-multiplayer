@@ -5,7 +5,6 @@
 #include "StatisticsManager.hpp"
 #include "IRequestHandler.hpp"
 #include "GameManager.hpp"
-#include "Waiting1v1Manager.hpp"    
 #include "Room.hpp"
 #include <memory>
 
@@ -73,12 +72,6 @@ public:
     GameManager& getGameManager() const;
 
     /**
-	 * @brief Gets a reference to the getWaiting1v1Manager.
-	 * @return A reference to the getWaiting1v1Manager instance.
-	 */
-    Waiting1v1Manager& getWaiting1v1Manager() const;
-
-    /**
      * @brief Gets a reference to the StatisticsManager.
      * @return A reference to the StatisticsManager instance.
      */
@@ -90,7 +83,6 @@ private:
     StatisticsManager& m_statisticsManager; ///< The StatisticsManager instance used by the factory.
     LoginManager& m_loginManager; ///< The LoginManager instance used by the factory.
     GameManager& m_gameManager; ///< The GameManager instance used by the factory.
-    Waiting1v1Manager& m_waiting1v1Manager;
 
     /**
      * @brief Private constructor for creating a RequestHandlerFactory instance.
