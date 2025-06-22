@@ -1,5 +1,4 @@
 #include "RoomManager.hpp"
-#include "CreateRoomResponseErrors.hpp"
 #include "LoggedUser.hpp"
 #include "MyException.hpp"
 #include "Response.hpp"
@@ -21,16 +20,16 @@ RoomManager::RoomManager(IDatabase& database) : m_database(database) {
     this->m_rooms = std::vector<Room>();
 }
 
-CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser& player,
+GeneralResponseErrors RoomManager::createRoom(const LoggedUser& player,
     RoomData& roomData) {
 
-    CreateRoomResponseErrors createRoonResponseErrors;
+    GeneralResponseErrors createRoonResponseErrors;
     unsigned int totalQuestionCount;
 
     totalQuestionCount = this->m_database.getQuestionsCount();
 
     if (roomData.numOfQuestionsInGame > totalQuestionCount) {
-        createRoonResponseErrors.questionCountError =
+        createRoonResponseErrors.generalError =
             "Too many questions, there are only: " +
             std::to_string(totalQuestionCount);
     }

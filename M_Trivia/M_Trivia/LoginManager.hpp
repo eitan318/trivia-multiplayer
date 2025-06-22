@@ -2,7 +2,6 @@
 #include "IDatabase.hpp"
 #include "LoggedUser.hpp"
 #include "LoginResponseErrors.hpp"
-#include "PasswordCodeResponseErrors.hpp"
 #include "ResetPasswordResponseErrors.hpp"
 #include "SignupResponseErrors.hpp"
 #include "GeneralResponseErrors.hpp"
@@ -66,7 +65,7 @@ public:
      * @param code The reset code to be sent.
      * @return Status indicating the result of the email operation.
      */
-    PasswordCodeResponseErrors sendEmailCode(const std::string email,
+    GeneralResponseErrors sendEmailCode(const std::string email,
         unsigned int code);
 
     /**

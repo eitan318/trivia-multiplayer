@@ -14,7 +14,8 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase& database)
 	m_statisticsManager(StatisticsManager::getInstance(database)),
 	m_roomManager(RoomManager::getInstance(database)),
 	m_gameManager(GameManager::getInstance(database))
-{}
+{
+}
 
 
 
@@ -63,6 +64,7 @@ GameManager& RequestHandlerFactory::getGameManager() const
 {
 	return this->m_gameManager;
 }
+
 
 StatisticsManager& RequestHandlerFactory::getStatisticsManger() const
 {
