@@ -28,7 +28,6 @@ public:
      */
     Room(std::shared_ptr<RoomPreview> metadata);
 
-    Room(std::shared_ptr<RoomPreview> metadata, const std::vector<LoggedUser>& users);
 
 
     /**

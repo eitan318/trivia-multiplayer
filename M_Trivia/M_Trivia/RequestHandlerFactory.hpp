@@ -48,11 +48,15 @@ public:
     */
     std::shared_ptr<IRequestHandler> createRoomRequestHandler(const LoggedUser& loggedUser, Room* room) const;
 
+    std::shared_ptr<IRequestHandler> createWaiting1v1RequestHandler(const LoggedUser& loggedUser) const;
+
+
     /**
      * @brief Creates a new GameRequestHandler.
      * @return A pointer to a newly created GameRequestHandler.
      */
-    std::shared_ptr<IRequestHandler> createGameRequestHandler(LoggedUser user, std::shared_ptr<Game> game, std::shared_ptr<RoomPreview> roomPreview);
+    std::shared_ptr<IRequestHandler> createGameRequestHandler(LoggedUser user, std::shared_ptr<Game> game, 
+        std::shared_ptr<RoomPreview> roomPreview, std::shared_ptr<IRequestHandler> prevRequestHandler);
 
     /**
      * @brief Gets a reference to the LoginManager.

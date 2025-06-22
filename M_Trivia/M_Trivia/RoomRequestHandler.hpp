@@ -7,7 +7,7 @@
 #include "RequestInfo.hpp"
 #include "RequestResult.hpp"
 
-class RoomRequestHandler : public IRequestHandler {
+class RoomRequestHandler : public IRequestHandler , public std::enable_shared_from_this<RoomRequestHandler> {
 public:
 	RoomRequestHandler(RequestHandlerFactory& requestHandlerFactory, LoggedUser user, Room* room);
 	~RoomRequestHandler();

@@ -23,4 +23,6 @@ enum class RequestCodes : unsigned char {
 	GetGameResultRequest = 20,
 	GetGameStateRequest = 21,
 	Leave1v1WaitingListRequest = 22,
+	DidFound1v1MatchRequest = 23,
+	Join1v1WaitingListRequest = 24,
 };

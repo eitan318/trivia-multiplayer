@@ -7,12 +7,13 @@
 #include "Requests.hpp"
 
 GameRequestHandler::GameRequestHandler(const LoggedUser& user,
-    RequestHandlerFactory& handlerFactory, std::shared_ptr<Game> game, std::shared_ptr<RoomPreview> roomPreview) :
+    RequestHandlerFactory& handlerFactory, std::shared_ptr<Game> game, std::shared_ptr<RoomPreview> roomPreview, std::shared_ptr<IRequestHandler> prevRequestHandler) :
     m_gameManager(handlerFactory.getGameManager()),
     m_handlerFactory(handlerFactory),
     m_user(user),
     m_game(std::move(game)),
-    m_roomPreview(roomPreview)
+    m_roomPreview(roomPreview),
+    m_prevHandler(prevRequestHandler)
 {
     this->m_game->join(user);
     if (m_game->countActivePlayers() == m_roomPreview->currPlayersAmount) {
@@ -135,9 +136,7 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
     GeneralResponseErrors errors;
     LeaveGameResponse leaveGameResponse(std::make_unique<GeneralResponseErrors>(errors));
     Room* room = this->m_handlerFactory.getRoomManger().getRoom(this->m_roomPreview->roomData.id);
-    std::shared_ptr<IRequestHandler> nextHandler = std::move(this->m_roomPreview->admin == m_user ?
-        this->m_handlerFactory.createRoomAdminRequestHandler(this->m_user, room) :
-        this->m_handlerFactory.createRoomRequestHandler(this->m_user, room));
+    std::shared_ptr<IRequestHandler> nextHandler = m_prevHandler;
 
     this->m_gameManager.leaveGame(this->m_game, this->m_roomPreview, this->m_user);
 

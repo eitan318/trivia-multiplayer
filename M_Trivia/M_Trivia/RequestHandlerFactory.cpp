@@ -4,6 +4,7 @@
 #include "LoginRequestHandler.hpp"
 #include "MenuRequestHandler.hpp"
 #include "RoomAdminRequestHandler.hpp"
+#include "Waiting1v1RequestHandler.hpp"
 #include "GameRequestHandler.hpp"
 
 
@@ -14,7 +15,7 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase& database)
 	m_statisticsManager(StatisticsManager::getInstance(database)),
 	m_roomManager(RoomManager::getInstance(database)),
 	m_gameManager(GameManager::getInstance(database)),
-	m_waiting1v1Manager(Waiting1v1Manager::getInstance())
+	m_waiting1v1Manager(Waiting1v1Manager::getInstance(m_gameManager))
 {}
 
 
@@ -45,9 +46,15 @@ std::shared_ptr<IRequestHandler> RequestHandlerFactory::createRoomRequestHandler
 	return std::make_shared<RoomRequestHandler>(const_cast<RequestHandlerFactory&>(*this), loggedUser, room);
 }
 
-std::shared_ptr<IRequestHandler> RequestHandlerFactory::createGameRequestHandler(LoggedUser user, std::shared_ptr<Game> game, std::shared_ptr<RoomPreview> roomPreview)
+std::shared_ptr<IRequestHandler> RequestHandlerFactory::createWaiting1v1RequestHandler(const LoggedUser& loggedUser) const
 {
-	return std::make_shared<GameRequestHandler>(user,const_cast<RequestHandlerFactory&>(*this), game, roomPreview);
+	return std::make_shared<Waiting1v1RequestHandler>(const_cast<RequestHandlerFactory&>(*this), loggedUser);
+}
+
+std::shared_ptr<IRequestHandler> RequestHandlerFactory::createGameRequestHandler(LoggedUser user, std::shared_ptr<Game> game,
+	std::shared_ptr<RoomPreview> roomPreview, std::shared_ptr<IRequestHandler> prevRequestHandler)
+{
+	return std::make_shared<GameRequestHandler>(user,const_cast<RequestHandlerFactory&>(*this), game, roomPreview, prevRequestHandler);
 }
 
 LoginManager& RequestHandlerFactory::getLoginManager() const

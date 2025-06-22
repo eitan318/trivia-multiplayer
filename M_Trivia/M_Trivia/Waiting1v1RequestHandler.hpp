@@ -5,9 +5,9 @@
 #include "Waiting1v1Manager.hpp"
 
 
-class Waiting1v1RequestHandler : public IRequestHandler {
+class Waiting1v1RequestHandler : public IRequestHandler, public std::enable_shared_from_this<Waiting1v1RequestHandler> {
 public:
-    Waiting1v1RequestHandler(const LoggedUser& user, RequestHandlerFactory& handlerFactory);
+    Waiting1v1RequestHandler(RequestHandlerFactory& handlerFactory, const LoggedUser& user);
     
     ~Waiting1v1RequestHandler();
     /**
@@ -24,6 +24,8 @@ public:
      * handler.
      */
     RequestResult handleRequest(const RequestInfo & requestInfo) override;
+
+    void Cleanup() override;
 
 private:
     RequestResult leave1v1WaitingRoom(const RequestInfo& requestInfo);

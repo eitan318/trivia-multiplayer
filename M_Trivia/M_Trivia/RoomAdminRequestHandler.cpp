@@ -55,6 +55,7 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& requestInfo)
 	StartGameResponse startGameResponse(std::make_unique<GeneralResponseErrors>(errors));
 	RequestResult result;
 	result.response = JsonResponsePacketSerializer::serializeResponse(startGameResponse);
-	result.newHandler = errors.statusCode() == 0 ? this->m_handlerFactory.createGameRequestHandler(m_user, game, m_room->getRoomPreview()) : nullptr;
+	result.newHandler = errors.statusCode() == 0 ? this->m_handlerFactory.createGameRequestHandler(m_user, game, m_room->getRoomPreview(),
+		this->shared_from_this()) : nullptr;
 	return result;
 }

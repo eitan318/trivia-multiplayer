@@ -17,6 +17,8 @@ class Game {
 public:
     Game(const std::vector<Question>& questions, std::shared_ptr<RoomPreview> roomPreview, int gameId);
 
+
+
     // Deleted constructors and operators to prevent unintended copying or moving
     Game(const Game&) = delete;
     Game& operator=(const Game&) = delete;
@@ -136,6 +138,8 @@ public:
      * @brief Moves the game to the results phase.
      */
     void moveToGameResults();
+
+
 
     unsigned int getQuestionsAmount();
 
