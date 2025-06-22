@@ -30,11 +30,11 @@ LoginResponseErrors LoginManager::login(const std::string username,
     return errors;
 }
 
-PasswordCodeResponseErrors LoginManager::sendEmailCode(const std::string email,
+GeneralResponseErrors LoginManager::sendEmailCode(const std::string email,
     unsigned int code) {
-    PasswordCodeResponseErrors errors;
+    GeneralResponseErrors errors;
     if (!RegexValidator::validEmail(email)) {
-        errors.emailErrors = std::string() + "Invalid email format, Use: " +
+        errors.generalError = std::string() + "Invalid email format, Use: " +
             RegexValidator::emailRegexDescription.data();
     }
     else if (!this->m_database.emailExists(email)) {

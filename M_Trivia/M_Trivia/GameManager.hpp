@@ -34,7 +34,7 @@ public:
      *
      * @param gameId The ID of the game to delete.
      */
-    void deleteGame(int gameId);
+    void deleteGame(int roomId);
 
     std::shared_ptr<Game> getGame(unsigned int roomId);
 

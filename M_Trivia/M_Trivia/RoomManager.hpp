@@ -1,5 +1,4 @@
 #pragma once
-#include "CreateRoomResponseErrors.hpp"
 #include "IDatabase.hpp"
 #include "Room.hpp"
 #include "RoomPreview.hpp"
@@ -46,7 +45,7 @@ public:
      * @param player The user creating the room.
      * @param roomData The data defining the room's properties.
      */
-    CreateRoomResponseErrors createRoom(const LoggedUser& player, RoomData& roomData);
+    GeneralResponseErrors createRoom(const LoggedUser& player, RoomData& roomData);
 
     /**
      * @brief join an existing room. I set the id in room data

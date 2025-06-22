@@ -50,6 +50,3 @@ struct ResetPasswordRequest {
         j.at("ResetPasswordTocken").get_to(resetPasswordTocken);
     }
 };
-
-
-

@@ -76,8 +76,8 @@ namespace ClientApp.ViewModels
                         App.Current.Dispatcher.Invoke(() =>
                         {
                             SelectedAnswerIndex = -1;
-                            QuestionInfo = questionResponseInfo.Response.Question;
-                            QuestionNumber = questionResponseInfo.Response.QuestionNumber;
+                            QuestionInfo = questionResponseInfo.Response.Data.Question;
+                            QuestionNumber = questionResponseInfo.Response.Data.QuestionNumber;
                         });
                     }
                     else

@@ -1,13 +1,10 @@
 #include "GameRequestHandler.hpp"
-#include "RequestsCodes.hpp"
-#include "ServerErrorResponse.hpp"
 #include "JsonResponsePacketSerializer.hpp"
 #include "JsonRequestPacketDeserializer.hpp"
-#include "GetGameResultsResponse.hpp"
-#include "SubmitAnswerResponse.hpp"
-#include "GetQuestionResponse.hpp"
-#include "SubmitAnswerRequest.hpp"
-#include "GetGameStateResponse.hpp"
+#include "RequestsCodes.hpp"
+#include "GetQuestionResponseData.hpp"
+#include "Response.hpp"
+#include "Requests.hpp"
 
 GameRequestHandler::GameRequestHandler(const LoggedUser& user,
     RequestHandlerFactory& handlerFactory, std::shared_ptr<Game> game, std::shared_ptr<RoomPreview> roomPreview) :
@@ -53,7 +50,7 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& requestInfo)
     case RequestCodes::GetGameStateRequest:
         return this->getGameState(requestInfo);
     default:
-        ServerErrorResponse errorResponse("Invalid msg code.");
+        ServerErrorResponse errorResponse(GENERAL_SUCCESS_RESPONSE_STATUS, "Invalid msg code.");
         RequestResult requestResult(
             JsonResponsePacketSerializer::serializeResponse(errorResponse),
             nullptr);
@@ -70,8 +67,9 @@ void GameRequestHandler::Cleanup()
 RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
 {
     GeneralResponseErrors errors;
-    std::optional<Question> quetionForUser = this->m_game->getQuestionForUser(m_user);
-    if (!quetionForUser.has_value()) {
+    std::optional<Question> questionForUserOp = this->m_game->getQuestionForUser(m_user);
+
+    if (!questionForUserOp.has_value()) {
         if (this->m_game->userExistsInGame(m_user)) {
             errors.generalError = "Finished all questions";
         }
@@ -79,9 +77,9 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
             errors.generalError = "User does not exist in game";
         }
     }
-
+    Question questionForUser = questionForUserOp.has_value() ? questionForUserOp.value() : Question{};
     
-    GetQuestionResponse getQuestionResponse(std::make_unique<GeneralResponseErrors>(errors), quetionForUser, this->m_game->getCurrQuestionIdx() + 1);
+    GetQuestionResponse getQuestionResponse(std::make_unique<GeneralResponseErrors>(errors), GetQuestionResponseData{ questionForUser, this->m_game->getCurrQuestionIdx() + 1 });
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(getQuestionResponse),
@@ -92,10 +90,10 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
 RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 {
     SubmitAnswerRequest request =
-        JsonRequestPacketDeserializer<SubmitAnswerRequest>::deserializeRequest(
+        JsonRequestPacketDeserializer::deserializeRequest<SubmitAnswerRequest>(
             requestInfo.buffer);
 
-    int answerId = request.getAnswerId();
+    int answerId = request.answerId;
     GeneralResponseErrors errors;
 
     std::optional<Question> currQ = this->m_game->getQuestionForUser(m_user);
