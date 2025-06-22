@@ -1,6 +1,5 @@
 #include "RoomAdminRequestHandler.hpp"
 #include "RequestsCodes.hpp"
-#include "ServerErrorResponse.hpp"
 #include "JsonResponsePacketSerializer.hpp"
 #include "JsonRequestPacketDeserializer.hpp"
 
@@ -39,7 +38,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
 	case RequestCodes::StartGameRequest:
 		return startGame(requestInfo);
 	default:
-		ServerErrorResponse errorResponse("Invalid msg code.");
+		ServerErrorResponse errorResponse(GENERAL_SUCCESS_RESPONSE_STATUS, "Invalid msg code.");
 		RequestResult requestResult(
 			JsonResponsePacketSerializer::serializeResponse(errorResponse),
 			nullptr);

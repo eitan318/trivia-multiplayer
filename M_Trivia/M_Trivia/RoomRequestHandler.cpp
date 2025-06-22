@@ -1,11 +1,10 @@
 #include "RoomRequestHandler.hpp"
 #include "JsonResponsePacketSerializer.hpp"
-#include "GetRoomStateResponse.hpp"
 #include "RoomState.hpp"
 #include "RoomData.hpp"
 #include "RoomStatus.h"
 #include "RequestsCodes.hpp"
-#include "ServerErrorResponse.hpp"
+#include "Response.hpp"
 
 RequestResult RoomRequestHandler::getRoomState(const RequestInfo& requestinfo)
 {
@@ -48,7 +47,7 @@ RequestResult RoomRequestHandler::handleRequest(const RequestInfo& requestInfo) 
     case RequestCodes::LeaveRoomRequest:
 		return this->leaveRoom(requestInfo);
 	default:
-		ServerErrorResponse errorResponse("Invalid msg code.");
+		ServerErrorResponse errorResponse(GENERAL_SUCCESS_RESPONSE_STATUS, "Invalid msg code.");
 		RequestResult requestResult(
 			JsonResponsePacketSerializer::serializeResponse(errorResponse),
 			nullptr);
@@ -72,3 +71,7 @@ RoomRequestHandler::RoomRequestHandler(RequestHandlerFactory& requestHandlerFact
 	m_roomManager(m_handlerFactory.getRoomManger()),
 	m_handlerFactory(requestHandlerFactory)  
 {}
+
+RoomRequestHandler::~RoomRequestHandler()
+{
+}
