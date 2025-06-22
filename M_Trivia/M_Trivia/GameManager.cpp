@@ -42,7 +42,7 @@ void GameManager::leaveGame(std::shared_ptr<Game> game, std::shared_ptr<RoomPrev
     game->playerDeactivate(user);
     if (game->countActivePlayers() == 0) {
         roomPreview->closeGame();
-        deleteGame(game->getId());
+        deleteGame(roomPreview->roomData.id);
     }
 }
 
@@ -58,10 +58,10 @@ std::shared_ptr<Game> GameManager::createGame(std::shared_ptr<RoomPreview> roomP
     return game;
 }
 
-void GameManager::deleteGame(int gameId)
+void GameManager::deleteGame(int roomId)
 {
     std::lock_guard<std::mutex> lock(m_gamesMutex);
-    this->m_gamesByRoomId.erase(gameId);
+    this->m_gamesByRoomId.erase(roomId);
 }
 
 std::shared_ptr<Game> GameManager::getGame(unsigned int roomId)

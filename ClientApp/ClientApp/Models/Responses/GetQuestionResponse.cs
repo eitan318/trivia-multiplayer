@@ -7,9 +7,10 @@ namespace ClientApp.Models.Responses
     {
         private GetQuestionResponse() { }
 
+
         [JsonProperty]
-        public QuestionInfo Question { get; private set; }
-        [JsonProperty]
-        public uint QuestionNumber { get; private set; }
+
+
+        public GetQuestionResponseData Data { get; private set; }
     }
 }

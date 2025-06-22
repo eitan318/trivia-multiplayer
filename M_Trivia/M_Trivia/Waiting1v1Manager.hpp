@@ -1,5 +1,4 @@
 #pragma once
-#include "CreateRoomResponseErrors.hpp"
 #include "Room.hpp"
 #include "Game.hpp"
 #include "GameManager.hpp"

@@ -4,8 +4,8 @@
 #include "LoginRequestHandler.hpp"
 #include "RequestInfo.hpp"
 #include "RequestResult.hpp"
-#include "ServerErrorResponse.hpp"
 #include "SocketService.hpp"
+#include "Response.hpp"
 #include <Windows.h>
 #include <iostream>
 #include <mutex>
@@ -149,7 +149,7 @@ void Communicator::handleNewClient(SOCKET sock)
                 requestResult = handler->handleRequest(requestInfo);
             }
             catch (const std::exception& e) {
-                ServerErrorResponse errResponse(e.what());
+                ServerErrorResponse errResponse(GENERAL_SUCCESS_RESPONSE_STATUS, e.what());
                 RequestResult res(
                     JsonResponsePacketSerializer::serializeResponse(errResponse), nullptr);
                 requestResult = res;
@@ -157,7 +157,7 @@ void Communicator::handleNewClient(SOCKET sock)
         }
         else
         {
-            ServerErrorResponse errorResponse("Invalid msg code.");
+            ServerErrorResponse errorResponse(GENERAL_SUCCESS_RESPONSE_STATUS, "Invalid msg code.");
             requestResult = RequestResult(JsonResponsePacketSerializer::serializeResponse(errorResponse), nullptr);
         }
 

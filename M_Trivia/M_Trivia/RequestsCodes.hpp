@@ -1,5 +1,5 @@
 #pragma once
-#include "VerifyPasswordResetCodeRequest.hpp"
+
 enum class RequestCodes : unsigned char {
 	LoginRequest = 1,
 	SignupRequest = 2,
@@ -22,4 +22,5 @@ enum class RequestCodes : unsigned char {
 	SubmitAnswerRequest = 19,
 	GetGameResultRequest = 20,
 	GetGameStateRequest = 21,
+	Leave1v1WaitingListRequest = 22,
 };
