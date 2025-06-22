@@ -10,14 +10,17 @@
 #include "GetGameStateResponse.hpp"
 
 GameRequestHandler::GameRequestHandler(const LoggedUser& user,
-    RequestHandlerFactory& handlerFactory, std::shared_ptr<Game> game, Room* room) :
+    RequestHandlerFactory& handlerFactory, std::shared_ptr<Game> game, std::shared_ptr<RoomPreview> roomPreview) :
     m_gameManager(handlerFactory.getGameManager()),
     m_handlerFactory(handlerFactory),
     m_user(user),
     m_game(std::move(game)),
-    m_room(room)
+    m_roomPreview(roomPreview)
 {
     this->m_game->join(user);
+    if (m_game->countActivePlayers() == m_roomPreview->currPlayersAmount) {
+        m_roomPreview->enterGame();
+    }
 }
 
 GameRequestHandler::~GameRequestHandler() = default;
@@ -60,7 +63,7 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& requestInfo)
 void GameRequestHandler::Cleanup()
 {
     this->m_game->playerDeactivate(this->m_user);
-    this->m_handlerFactory.getRoomManger().leaveRoom(this->m_room->getId(), this->m_user);
+    this->m_handlerFactory.getRoomManger().leaveRoom(this->m_roomPreview->roomData.id, this->m_user);
     this->m_handlerFactory.getLoginManager().logout(this->m_user);
 }
 
@@ -133,11 +136,12 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
 {
     GeneralResponseErrors errors;
     LeaveGameResponse leaveGameResponse(std::make_unique<GeneralResponseErrors>(errors));
-    std::shared_ptr<IRequestHandler> nextHandler = std::move(this->m_room->isAdmin(this->m_user) ?
-        this->m_handlerFactory.createRoomAdminRequestHandler(this->m_user, this->m_room) :
-        this->m_handlerFactory.createRoomRequestHandler(this->m_user, this->m_room));
+    Room* room = this->m_handlerFactory.getRoomManger().getRoom(this->m_roomPreview->roomData.id);
+    std::shared_ptr<IRequestHandler> nextHandler = std::move(this->m_roomPreview->admin == m_user ?
+        this->m_handlerFactory.createRoomAdminRequestHandler(this->m_user, room) :
+        this->m_handlerFactory.createRoomRequestHandler(this->m_user, room));
 
-    this->m_gameManager.leaveGame(this->m_game, this->m_room, this->m_user);
+    this->m_gameManager.leaveGame(this->m_game, this->m_roomPreview, this->m_user);
 
 
     RequestResult requestResult(

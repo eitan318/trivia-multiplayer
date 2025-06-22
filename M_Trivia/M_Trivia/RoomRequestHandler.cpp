@@ -11,9 +11,9 @@ RequestResult RoomRequestHandler::getRoomState(const RequestInfo& requestinfo)
 {
     RoomState state = this->m_room->getRoomState();
     std::shared_ptr<IRequestHandler> nextHandler = nullptr;
-    if (this->m_room->gameStarted()) {
+    if (this->m_room->getRoomPreview()->gameStarted()) {
         std::shared_ptr<Game> game = this->m_handlerFactory.getGameManager().getGame(m_room->getId());
-        nextHandler = this->m_handlerFactory.createGameRequestHandler(m_user, game, m_room);
+        nextHandler = this->m_handlerFactory.createGameRequestHandler(m_user, game, m_room->getRoomPreview());
     }
 
     GetRoomStateResponse roomStateResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, state);

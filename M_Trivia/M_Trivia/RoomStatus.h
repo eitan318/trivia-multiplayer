@@ -4,5 +4,6 @@ enum RoomStatus {
     Closing,
     StartingGame,
     InGame,
-    NotInGame
+    NotInGame,
+    UnknownRoomStatus,
 };

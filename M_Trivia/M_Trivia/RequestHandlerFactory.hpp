@@ -51,7 +51,7 @@ public:
      * @brief Creates a new GameRequestHandler.
      * @return A pointer to a newly created GameRequestHandler.
      */
-    std::shared_ptr<IRequestHandler> createGameRequestHandler(LoggedUser user, std::shared_ptr<Game> game, Room* room);
+    std::shared_ptr<IRequestHandler> createGameRequestHandler(LoggedUser user, std::shared_ptr<Game> game, std::shared_ptr<RoomPreview> roomPreview);
 
     /**
      * @brief Gets a reference to the LoginManager.

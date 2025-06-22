@@ -16,7 +16,7 @@ private:
     std::string m_difficultyStr;
     std::string m_category;                    /**< The category ID of the question. */
     std::vector<std::string> m_possibleAnswers; /**< The list of possible answers, with the correct answer at index 0. */
-    std::vector<int> m_originalToShuffledMap;
+    std::vector<int> m_ShuffledToOriginalMap;
     int m_correctAnswerIdx;
     unsigned int m_id;
 

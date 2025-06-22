@@ -15,16 +15,7 @@
  */
 class Game {
 public:
-    /**
-     * @brief Constructs a Game object.
-     * @param questions List of questions for the game.
-     * @param neededPlayers List of players required to start the game.
-     * @param gameId Unique ID of the game.
-     * @param questionTimeLimit Time limit for each question in seconds.
-     * @param room Pointer to the associated Room object.
-     */
-    Game(const std::vector<Question>& questions, const std::vector<LoggedUser>& neededPlayers,
-        unsigned int gameId, unsigned int questionTimeLimit, Room* room);
+    Game(const std::vector<Question>& questions, std::shared_ptr<RoomPreview> roomPreview, int gameId);
 
     // Deleted constructors and operators to prevent unintended copying or moving
     Game(const Game&) = delete;
@@ -146,13 +137,14 @@ public:
      */
     void moveToGameResults();
 
+    unsigned int getQuestionsAmount();
+
 
     bool reachedTimeout() const;
 
 
 private:
     // Immutable configuration
-    const double m_questionTimeLimitSeconds; 
     const int m_gameId; 
     const int m_totalNeededPlayers;
 
@@ -161,7 +153,7 @@ private:
     std::map<LoggedUser, PlayerGameData> m_players; 
     int m_currQuestionIdx; 
     GameStatus m_status; 
-    Room* m_room; ///< Pointer to the associated Room object
+    const RoomData m_roomData;
 
     // Timing
     std::chrono::time_point<std::chrono::steady_clock> m_lastQuestionStartTime; 

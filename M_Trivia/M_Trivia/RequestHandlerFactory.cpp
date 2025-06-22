@@ -44,9 +44,9 @@ std::shared_ptr<IRequestHandler> RequestHandlerFactory::createRoomRequestHandler
 	return std::make_shared<RoomRequestHandler>(const_cast<RequestHandlerFactory&>(*this), loggedUser, room);
 }
 
-std::shared_ptr<IRequestHandler> RequestHandlerFactory::createGameRequestHandler(LoggedUser user, std::shared_ptr<Game> game, Room* room)
+std::shared_ptr<IRequestHandler> RequestHandlerFactory::createGameRequestHandler(LoggedUser user, std::shared_ptr<Game> game, std::shared_ptr<RoomPreview> roomPreview)
 {
-	return std::make_shared<GameRequestHandler>(user,const_cast<RequestHandlerFactory&>(*this), game, room);
+	return std::make_shared<GameRequestHandler>(user,const_cast<RequestHandlerFactory&>(*this), game, roomPreview);
 }
 
 LoginManager& RequestHandlerFactory::getLoginManager() const

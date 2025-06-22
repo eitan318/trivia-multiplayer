@@ -332,13 +332,12 @@ bool SqliteDatabase::addQuestions(int amount) const {
     return true;
 }
 
-std::optional<PlayerResults> SqliteDatabase::getPlayerResults(const std::string& username, unsigned int gameId) const {
+std::optional<PlayerResults> SqliteDatabase::getPlayerResults(const std::string& username, unsigned int gameId, unsigned int questionAmount) const {
     const char* query = R"(
     SELECT 
         username,
         SUM(CASE WHEN chosen_answer = 0 THEN 1 ELSE 0 END) AS correctAnswerCount,
         SUM(CASE WHEN chosen_answer != 0  AND chosen_answer != -1 THEN 1 ELSE 0 END) AS wrongAnswerCount,
-        SUM(CASE WHEN chosen_answer = -1 THEN 1 ELSE 0 END) AS motAnsweredCount,
         SUM(score),
         AVG(answer_time)
     FROM answers
@@ -364,9 +363,9 @@ std::optional<PlayerResults> SqliteDatabase::getPlayerResults(const std::string&
             reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)), // username
             sqlite3_column_int(stmt, 1),                                // correctAnswerCount
             sqlite3_column_int(stmt, 2),                                // wrongAnswerCount
-            sqlite3_column_int(stmt, 3),                                // nonAnswerCount
-            sqlite3_column_int(stmt, 4),                                // score
-            sqlite3_column_double(stmt, 5)                              // averageAnswerTime
+            sqlite3_column_int(stmt, 3),                                // score
+            sqlite3_column_double(stmt, 4),                         // averageAnswerTime
+            questionAmount
         );
     }
 

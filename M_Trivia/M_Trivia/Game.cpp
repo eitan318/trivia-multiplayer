@@ -1,23 +1,22 @@
 #include "Game.hpp"
 
-Game::Game(const std::vector<Question>& questions, const std::vector<LoggedUser>& neededPlayers, unsigned int gameId,
-    unsigned int questionTimeLimit, Room* room)
-    : m_gameId(gameId), m_questions(std::move(questions)), m_questionTimeLimitSeconds(questionTimeLimit),
-    m_totalNeededPlayers(neededPlayers.size()), m_room(room), m_status(GameStatus::AnsweringQuestion), m_currQuestionIdx(0)
+Game::Game(const std::vector<Question>& questions, std::shared_ptr<RoomPreview> roomPreview, int gameId)
+    : m_gameId(gameId),
+    m_questions(std::move(questions)),
+    m_roomData(roomPreview->roomData),            
+    m_totalNeededPlayers(roomPreview->currPlayersAmount),
+    m_status(GameStatus::AnsweringQuestion),
+    m_currQuestionIdx(0)
 {
     this->m_lastQuestionStartTime = std::chrono::steady_clock::now();
-
 }
 
+
 void Game::join(const LoggedUser& player) {
-    std::lock_guard<std::mutex> lock(m_playersMutex);
     Question shuffledCopy = Question(this->m_questions[0]);
     shuffledCopy.shuffle();
+    std::lock_guard<std::mutex> lock(m_playersMutex);
     m_players.emplace(player, PlayerGameData(shuffledCopy));
-    
-    if (countActivePlayers() == m_totalNeededPlayers) {
-        this->m_room->enterGame();
-    }
 }
 
 GameStatus Game::getStatus() const
@@ -86,6 +85,11 @@ void Game::moveToGameResults() {
     this->m_status = GameStatus::GameResultsShow;
 }
 
+unsigned int Game::getQuestionsAmount()
+{
+    return this->m_roomData.numOfQuestionsInGame;
+}
+
 
 double Game::getAnswerDouration(const std::chrono::time_point<std::chrono::steady_clock>& answerMoment) const
 {
@@ -95,6 +99,7 @@ double Game::getAnswerDouration(const std::chrono::time_point<std::chrono::stead
 
 bool Game::didEveryActiveAnswered() const
 {
+    std::lock_guard<std::mutex> lock(m_playersMutex);
     for (const auto& [player, playerData] : this->m_players) {
         if (playerData.m_isActive && !playerData.answeredLastQuestion) {
             return false;
@@ -111,7 +116,7 @@ bool Game::reachedTimeout() const
     double communicationDelay = 1;
 
     return std::chrono::duration<double>(now - this->m_lastQuestionStartTime).count() >
-        this->m_room->getRoomPreview().roomData.timePerQuestion + communicationDelay;
+        this->m_roomData.timePerQuestion + communicationDelay;
 }
 
 
@@ -141,7 +146,7 @@ unsigned int Game::getCurrQuestionIdx() const
 
 unsigned int Game::getQuestionTimeLimit() const
 {
-    return m_questionTimeLimitSeconds;
+    return this->m_roomData.timePerQuestion;
 }
 
 
@@ -157,6 +162,7 @@ void Game::playerDeactivate(const LoggedUser& user)
 
 int Game::countActivePlayers()
 {
+    std::lock_guard<std::mutex> lock(m_playersMutex);
     unsigned int countActive = 0;
     for (const auto& [player, playerData] : this->m_players) {
         if (playerData.m_isActive) {
@@ -168,5 +174,5 @@ int Game::countActivePlayers()
 
 unsigned int Game::getScoreShowingTime() const
 {
-    return m_room->getRoomPreview().roomData.scoreShowingTime;
+    return m_roomData.scoreShowingTime;
 }
