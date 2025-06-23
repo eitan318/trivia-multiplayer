@@ -10,7 +10,7 @@ using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
-    class RoomMemberViewModel : ViewModelBase
+    class RoomMemberViewModel : ScreenViewModelBase
     {
         private UserStore _userStore;
         private readonly RequestsExchangeService _requestsExchangeService;
@@ -18,19 +18,27 @@ namespace ClientApp.ViewModels
         private CancellationTokenSource _checkRoomStateCTS;
         private LoggedUser _admin;
         private readonly int refreshMS = 300;
-
         public RoomMemberViewModel(
             INavigationService navigationService,
             RoomDataStore roomDataStore,
             UserStore userStore,
-            RequestsExchangeService requestsExchangeService)
+            RequestsExchangeService requestsExchangeService,
+            AmIAdminStore amIAdminStore,
+            LeaveRoomCommand leaveRoomCommand)
         {
+            amIAdminStore.AmIAdmin = false;
+
             this._navigationService = navigationService;
             this._userStore = userStore;
             this._requestsExchangeService = requestsExchangeService;
-            this.LeaveRoomCmd = new LeaveRoomCommand(navigationService, requestsExchangeService, null);
+            this.LeaveRoomCmd = leaveRoomCommand;
             this.RoomDataStore = roomDataStore;
+
+            Players.CollectionChanged += (s, e) => OnPropertyChanged(nameof(PlayersInfo));
+
         }
+
+
 
         public override void OnNavigatedTo()
         {
@@ -43,6 +51,8 @@ namespace ClientApp.ViewModels
             _checkRoomStateCTS.Cancel();
             _checkRoomStateCTS.Dispose();
         }
+
+        public string PlayersInfo => $"{this.Players.Count() + 1}/{this.RoomDataStore.CurrentRoomData.MaxPlayers}";
 
         public ObservableCollection<LoggedUser> Players { get; set; } = new ObservableCollection<LoggedUser>();
 
@@ -84,6 +94,9 @@ namespace ClientApp.ViewModels
             var getRoomStatusRequest = new GetRoomStateRequest();
             ResponseInfo<GetRoomStateResponse> responseInfo =
                 await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(getRoomStatusRequest);
+            
+            if (!responseInfo.NormalResponse)
+                return;
             GetRoomStateResponse response = (GetRoomStateResponse)responseInfo.Response;
             RoomState roomState = response.RoomState;
 
@@ -103,14 +116,14 @@ namespace ClientApp.ViewModels
                 }
             });
 
-            if (roomState.RoomStatus == RoomStatus.Closed)
+            if (roomState.RoomStatus == RoomStatus.Closing)
             {
                 LeaveRoomCmd.Execute(null);
             }
 
-            if (roomState.RoomStatus == RoomStatus.InGame)
+            if (roomState.RoomStatus == RoomStatus.StartingGame)
             {
-                _navigationService.NavigateTo<GameViewModel>();
+                _navigationService.NavigateTo<GameAnsweringViewModel>();
             }
         }
     }

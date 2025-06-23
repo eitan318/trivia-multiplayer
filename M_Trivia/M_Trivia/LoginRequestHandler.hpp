@@ -41,7 +41,9 @@ public:
      * @param requestInfo The request information to handle.
      * @return The result of handling the request.
      */
-    RequestResult handleRequest(const RequestInfo& requestInfo, SOCKET socket) override;
+    RequestResult handleRequest(const RequestInfo& requestInfo) override;
+
+    void Cleanup() override;
 
 private:
     RequestHandlerFactory
@@ -52,7 +54,7 @@ private:
      * @param requestInfo The request information for login.
      * @return The result of the login process.
      */
-    RequestResult login(const RequestInfo& requestInfo, SOCKET) const;
+    RequestResult login(const RequestInfo& requestInfo) const;
 
     /**
      * @brief Handles signup requests.

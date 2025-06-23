@@ -7,13 +7,20 @@ using System.Windows.Input;
 
 namespace ClientApp.ViewModels
 {
-    class PersonalStatisticsViewModel : ViewModelBase
+    class PersonalStatisticsViewModel : ScreenViewModelBase
     {
         private readonly RequestsExchangeService _requestsExchangeService;
-        public PersonalStatisticsViewModel(RequestsExchangeService requestsExchangeService) : base(true)
+        public PersonalStatisticsViewModel(
+            RequestsExchangeService requestsExchangeService,
+            TopBarViewModel topBarViewModel) : base(true, topBarViewModel)
         {
             _requestsExchangeService = requestsExchangeService;
             this.personalInfo = new PersonalStatisticsModel();
+        }
+
+
+        public override void OnNavigatedTo()
+        {
             SetStats();
         }
 
@@ -64,8 +71,6 @@ namespace ClientApp.ViewModels
                 {
 
                 }
-
-
             }
             catch (Exception ex)    
             {

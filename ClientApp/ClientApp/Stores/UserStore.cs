@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Stores
 {
-    class UserStore : StoreBase
+    public class UserStore : StoreBase
     {
         private string _username;
 

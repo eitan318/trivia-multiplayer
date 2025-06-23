@@ -9,27 +9,36 @@ using System.Windows.Input;
 
 namespace ClientApp.ViewModels
 {
-    class RoomAdminViewModel : ViewModelBase
+    class RoomAdminViewModel : ScreenViewModelBase
     {
         private UserStore userStore;
         private readonly RequestsExchangeService _requestsExchangeService;
         private CancellationTokenSource _checkRoomStateCTS;
         private readonly int refreshMS = 300;
         private LoggedUser _admin;
+        private string _errorMessage;
 
+        
         public RoomAdminViewModel(
-            INavigationService navigationService,
             RequestsExchangeService requestsExchangeService,
             RoomDataStore roomDataStore,
-            UserStore userState)
+            UserStore userState,
+            StartGameCommand startGameCommand,
+            LeaveRoomCommand leaveRoomCommand,
+            AmIAdminStore amIAdminStore)
         {
+            amIAdminStore.AmIAdmin = true;
 
             this.userStore = userState;
             this._requestsExchangeService = requestsExchangeService;
-            this.StartGameCmd = new StartGameCommand(navigationService, requestsExchangeService, this);
-            this.CloseRoomCmd = new CloseRoomCommand(navigationService, requestsExchangeService, this);
+            this.StartGameCmd = startGameCommand;
+            this.CloseRoomCmd = leaveRoomCommand;
             this.RoomDataStore = roomDataStore;
+
+            Players.CollectionChanged += (s, e) => OnPropertyChanged(nameof(PlayersInfo));
         }
+
+        public string PlayersInfo => $"{this.Players.Count() + 1}/{this.RoomDataStore.CurrentRoomData.MaxPlayers}";
 
         public override void OnNavigatedTo()
         {
@@ -65,7 +74,15 @@ namespace ClientApp.ViewModels
             }
         }
 
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set
+            { 
+                _errorMessage = value;
+                OnPropertyChanged();
+            }
+        }
 
         private async Task PeriodicallyCheckRoomStateLoop(CancellationToken token)
         {
@@ -88,6 +105,8 @@ namespace ClientApp.ViewModels
             var getRoomStatusRequest = new GetRoomStateRequest();
             ResponseInfo<GetRoomStateResponse> responseInfo =
                 await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(getRoomStatusRequest);
+            if (!responseInfo.NormalResponse)
+                return;
             GetRoomStateResponse response = responseInfo.Response;
             RoomState roomState = response.RoomState;
 

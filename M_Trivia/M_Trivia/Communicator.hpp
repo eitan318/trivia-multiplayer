@@ -87,4 +87,7 @@ public:
      * @param clientSocket The socket associated with the new client.
      */
     void handleNewClient(SOCKET clientSocket);
+
+
+    void clientExited(SOCKET sock);
 };

@@ -1,5 +1,6 @@
 ﻿using ClientApp.Commands;
 using ClientApp.Services;
+using ClientApp.Views.Controls;
 using ClientApp.Views.Screens;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,17 +11,24 @@ namespace ClientApp.ViewModels
     /// ViewModel for the StatisticsPage in the client application. Handles user interactions for navigating
     /// to personal statistics and high scores pages.
     /// </summary>
-    class StatisticsViewModel : ViewModelBase
+    class StatisticsViewModel : ScreenViewModelBase
     {   
         /// <summary>
         /// Private constructor for the StatisticsPageViewModel. Initializes the commands for navigating to
         /// personal statistics and high scores pages.
         /// </summary>
-        public StatisticsViewModel(INavigationService navigationService) : base(true)
+        public StatisticsViewModel(
+            TopBarViewModel topBarViewModel,
+            NavigateCommand<PersonalStatisticsViewModel> navToPersonalStatsCommand,
+            NavigateCommand<HighScoresViewModel> navToHighScoresCmd) : base(true, topBarViewModel)
         {
-            this.NavToPersonalStatisticsCmd = new NavigateCommand<PersonalStatisticsViewModel>(navigationService);
-            this.NavToHighScoresCmd = new NavigateCommand<HighScoresViewModel>(navigationService);
+            TopBarVM = topBarViewModel;
+
+            this.NavToPersonalStatisticsCmd = navToPersonalStatsCommand;
+            this.NavToHighScoresCmd = navToHighScoresCmd;
         }
+
+        public TopBarViewModel TopBarVM { get; }
 
 
         public ICommand NavToPersonalStatisticsCmd { get; }

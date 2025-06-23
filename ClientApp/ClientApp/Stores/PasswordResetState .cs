@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Stores
 {
-    class PasswordResetStore : StoreBase
+    public class PasswordResetStore : StoreBase
     {
         private string _email;
         private string _resetCode;

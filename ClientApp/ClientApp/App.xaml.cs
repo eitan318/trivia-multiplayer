@@ -6,6 +6,9 @@ using ClientApp.Views.Screens.ForgotPassword;
 using Microsoft.Extensions.DependencyInjection;
 using ClientApp.ViewModels.ForgotPassword;
 using ClientApp.Stores;
+using ClientApp.Views.Controls;
+using ClientApp.Commands;
+using System.Windows.Input;
 
 namespace ClientApp;
 
@@ -16,8 +19,13 @@ public partial class App : Application
 {
     private readonly IServiceProvider? _serviceProvider;
 
+    [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+    private static extern bool AllocConsole();
+
     public App()
     {
+         //AllocConsole();
+
         // Configure services
         var services = new ServiceCollection();
         ConfigureServices(services);
@@ -42,6 +50,10 @@ public partial class App : Application
         services.AddSingleton<JsonResponseDeserializer>();
 
 
+
+
+
+
         // Register ViewModels
         services.AddTransient<MainWindowViewModel>();
 
@@ -56,12 +68,41 @@ public partial class App : Application
         services.AddTransient<CreateRoomViewModel>();
         services.AddTransient<JoinRoomViewModel>();
         services.AddTransient<ErrorViewModel>();
-        services.AddTransient<GameViewModel>();
+        services.AddTransient<GameAnsweringViewModel>();
+        services.AddTransient<GameResultsViewModel>();
+        services.AddTransient<WaitingBetweenQuestionsViewModel>();
+        services.AddTransient<GameScoreBoardViewModel>();
 
-        //   Password reset ViewModels
+
+        services.AddTransient<TopBarViewModel>();
+
+        
+
+        // Password reset ViewModels
         services.AddTransient<EmailEntryViewModel>();
         services.AddTransient<CodeEntryViewModel>();
         services.AddTransient<ResetPasswordViewModel>();
+
+
+
+
+        // Register commands
+        services.AddTransient<LogoutCommand>();
+        services.AddTransient<CreateRoomCommand>();
+        services.AddTransient<JoinCommand>();
+        services.AddTransient<LeaveGameCommand>();
+        services.AddTransient<LeaveRoomCommand>();
+        services.AddTransient<LoginCommand>();
+        services.AddTransient<ResetPasswordCommand>();
+        services.AddTransient<SignupCommand>();
+        services.AddTransient<StartGameCommand>();
+        services.AddTransient<SubmitAnswerCommand>();
+        services.AddTransient<SubmitPasswordResetCodeCommand>();
+        services.AddTransient<SubmitPasswordResetEmailCommand>();
+        services.AddTransient(typeof(NavigateCommand<>));
+
+
+
 
         // Register Views
         services.AddTransient<LoginView>();
@@ -75,7 +116,10 @@ public partial class App : Application
         services.AddTransient<CreateRoomView>();
         services.AddTransient<JoinRoomView>();
         services.AddTransient<ErrorView>();
-        services.AddTransient<GameView>();
+        services.AddTransient<GameAnsweringView>();
+        services.AddTransient<GameResultsView>();
+        services.AddTransient<WaitingBetweenQuestionsView>();
+        services.AddTransient<GameScoreBoardView>();
 
         // Password reset Views
         services.AddTransient<EmailEntryView>();
@@ -85,9 +129,10 @@ public partial class App : Application
         // Register stores
         services.AddSingleton<UserStore>();
         services.AddSingleton<PasswordResetStore>();
-        services.AddSingleton<ErrorMessageStore>();
+        services.AddSingleton<ServerErrorMessageStore>();
         services.AddSingleton<NavigationStore>();
         services.AddSingleton<RoomDataStore>();
+        services.AddSingleton<AmIAdminStore>();
 
         // Register MainWindow
         services.AddTransient<MainWindow>(sp =>

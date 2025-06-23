@@ -10,15 +10,12 @@ namespace ClientApp.Commands
     class SignupCommand : CommandBase 
     {
         private readonly INavigationService _navigationService;
-        private SignupViewModel _signupViewModel;
         private readonly RequestsExchangeService _requestsExchangeService;
 
         public SignupCommand(
-            SignupViewModel signupViewModel,
             INavigationService navigationService,
             RequestsExchangeService requestsExchangeService)
         {
-            this._signupViewModel = signupViewModel;
             this._navigationService = navigationService;
             this._requestsExchangeService = requestsExchangeService; 
 
@@ -30,44 +27,49 @@ namespace ClientApp.Commands
         /// </summary>
         public override async void Execute(object parameter)
         {
+            if (parameter is not SignupViewModel signupViewModel)
+            {
+                return;
+            }
+
             const string cannotBeEmptyString = "Cannot be empty";
 
             // Reset error messages
-            _signupViewModel.ErrorMessage = "";
-            _signupViewModel.UsernameErrorMessage = "";
-            _signupViewModel.PasswordErrorMessage = "";
-            _signupViewModel.EmailErrorMessage = "";
-            _signupViewModel.PhoneNumberErrorMessage = "";
-            _signupViewModel.HouseAddressErrorMessage = "";
-            _signupViewModel.BirthDateErrorMessage = "";
+            signupViewModel.ErrorMessage = "";
+            signupViewModel.UsernameErrorMessage = "";
+            signupViewModel.PasswordErrorMessage = "";
+            signupViewModel.EmailErrorMessage = "";
+            signupViewModel.PhoneNumberErrorMessage = "";
+            signupViewModel.HouseAddressErrorMessage = "";
+            signupViewModel.BirthDateErrorMessage = "";
 
             bool requiredNotEmpty = true;
 
             // Trim input values
-            string trimmedUsername = _signupViewModel.Username?.Trim();
-            string trimmedPassword = _signupViewModel.Password?.Trim();
-            string trimmedEmail = _signupViewModel.Email?.Trim();
-            string trimmedPhoneNumber = _signupViewModel.PhoneNumber?.Trim();
-            string trimmedHouseAddress = _signupViewModel.HouseAddress?.Trim();
-            string trimmedBirthDate = _signupViewModel.BirthDate?.ToString("dd/MM/yyyy")??"";
+            string trimmedUsername = signupViewModel.Username?.Trim();
+            string trimmedPassword = signupViewModel.Password?.Trim();
+            string trimmedEmail = signupViewModel.Email?.Trim();
+            string trimmedPhoneNumber = signupViewModel.PhoneNumber?.Trim();
+            string trimmedHouseAddress = signupViewModel.HouseAddress?.Trim();
+            string trimmedBirthDate = signupViewModel.BirthDate?.ToString("dd/MM/yyyy")??"";
 
 
             // Validate each field
-            if (string.IsNullOrWhiteSpace(_signupViewModel.Username))
+            if (string.IsNullOrWhiteSpace(signupViewModel.Username))
             {
-                _signupViewModel.UsernameErrorMessage = cannotBeEmptyString;
+                signupViewModel.UsernameErrorMessage = cannotBeEmptyString;
                 requiredNotEmpty = false;
             }
 
-            if (string.IsNullOrWhiteSpace(_signupViewModel.Password))
+            if (string.IsNullOrWhiteSpace(signupViewModel.Password))
             {
-                _signupViewModel.PasswordErrorMessage = cannotBeEmptyString;
+                signupViewModel.PasswordErrorMessage = cannotBeEmptyString;
                 requiredNotEmpty = false;
             }
 
-            if (string.IsNullOrWhiteSpace(_signupViewModel.Email))
+            if (string.IsNullOrWhiteSpace(signupViewModel.Email))
             {
-                _signupViewModel.EmailErrorMessage = cannotBeEmptyString;
+                signupViewModel.EmailErrorMessage = cannotBeEmptyString;
                 requiredNotEmpty = false;
             }
 
@@ -96,27 +98,21 @@ namespace ClientApp.Commands
                     }
                     else
                     {
-                        if(_signupViewModel.UsernameErrorMessage == "")
-                            _signupViewModel.UsernameErrorMessage = signupResponse.Errors.UsernameError;
-                        if (_signupViewModel.PasswordErrorMessage == "") 
-                            _signupViewModel.PasswordErrorMessage = signupResponse.Errors.PasswordError;
-                        if (_signupViewModel.EmailErrorMessage == "")
-                            _signupViewModel.EmailErrorMessage = signupResponse.Errors.EmailError;
-                        _signupViewModel.HouseAddressErrorMessage = signupResponse.Errors.HouseAddressError;
-                        _signupViewModel.PhoneNumberErrorMessage = signupResponse.Errors.PhoneNumberError;
-                        _signupViewModel.BirthDateErrorMessage = signupResponse.Errors.BirthDateError;
+                        if(signupViewModel.UsernameErrorMessage == "")
+                            signupViewModel.UsernameErrorMessage = signupResponse.Errors.UsernameError;
+                        if (signupViewModel.PasswordErrorMessage == "") 
+                            signupViewModel.PasswordErrorMessage = signupResponse.Errors.PasswordError;
+                        if (signupViewModel.EmailErrorMessage == "")
+                            signupViewModel.EmailErrorMessage = signupResponse.Errors.EmailError;
+                        signupViewModel.HouseAddressErrorMessage = signupResponse.Errors.HouseAddressError;
+                        signupViewModel.PhoneNumberErrorMessage = signupResponse.Errors.PhoneNumberError;
+                        signupViewModel.BirthDateErrorMessage = signupResponse.Errors.BirthDateError;
                     } 
-                }
-                else
-                {
-                    ErrorResponse errorResponse = responseInfo.ErrorResponse;
-                    _signupViewModel.ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
-
                 }
             }
             catch (Exception ex)
             {
-                _signupViewModel.ErrorMessage = $"Signup failed (sent from client side): {ex.Message}";
+                signupViewModel.ErrorMessage = $"Signup failed (sent from client side): {ex.Message}";
             }
         }
     }

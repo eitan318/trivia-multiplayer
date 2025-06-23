@@ -4,6 +4,7 @@
 #include "RoomManager.hpp"
 #include "StatisticsManager.hpp"
 #include "IRequestHandler.hpp"
+#include "GameManager.hpp"
 #include "Room.hpp"
 #include <memory>
 
@@ -41,10 +42,16 @@ public:
     std::shared_ptr<IRequestHandler> createRoomAdminRequestHandler(const LoggedUser& loggedUser, Room* room) const;
 
     /**
-     * @brief Creates a new RoomMemberRequestHandler.
-     * @return A pointer to a newly created RoomMemberRequestHandler.
+     * @brief Creates a new RoomAdminRequestHandler.
+     * @return A pointer to a newly created RoomAdminRequestHandler.
+    */
+    std::shared_ptr<IRequestHandler> createRoomRequestHandler(const LoggedUser& loggedUser, Room* room) const;
+
+    /**
+     * @brief Creates a new GameRequestHandler.
+     * @return A pointer to a newly created GameRequestHandler.
      */
-    std::shared_ptr<IRequestHandler> createRoomMemberRequestHandler(const LoggedUser& loggedUser, Room* room) const;
+    std::shared_ptr<IRequestHandler> createGameRequestHandler(LoggedUser user, std::shared_ptr<Game> game, std::shared_ptr<RoomPreview> roomPreview);
 
     /**
      * @brief Gets a reference to the LoginManager.
@@ -59,6 +66,12 @@ public:
     RoomManager& getRoomManger() const;
 
     /**
+     * @brief Gets a reference to the GameManager.
+     * @return A reference to the GameManager instance.
+     */
+    GameManager& getGameManager() const;
+
+    /**
      * @brief Gets a reference to the StatisticsManager.
      * @return A reference to the StatisticsManager instance.
      */
@@ -69,6 +82,7 @@ private:
     IDatabase& m_database; ///< The database instance used across the managers.
     StatisticsManager& m_statisticsManager; ///< The StatisticsManager instance used by the factory.
     LoginManager& m_loginManager; ///< The LoginManager instance used by the factory.
+    GameManager& m_gameManager; ///< The GameManager instance used by the factory.
 
     /**
      * @brief Private constructor for creating a RequestHandlerFactory instance.

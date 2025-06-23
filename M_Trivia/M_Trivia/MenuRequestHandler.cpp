@@ -1,22 +1,13 @@
 #include "MenuRequestHandler.hpp"
-#include "CreateRoomRequest.hpp"
-#include "CreateRoomResponse.hpp"
-#include "GetHighScoreRequest.hpp"
-#include "GetHighScoreResponse.hpp"
-#include "GetPersonalStatisticsResponse.hpp"
-#include "GetPlayersInRoomRequest.hpp"
-#include "GetPlayersInRoomResponse.hpp"
-#include "GetRoomsResponse.hpp"
-#include "JoinRoomRequest.hpp"
-#include "JoinRoomResponseErrors.hpp"
 #include "JsonRequestPacketDeserializer.hpp"
 #include "JsonResponsePacketSerializer.hpp"
 #include "LoginManager.hpp"
 #include "RequestHandlerFactory.hpp"
 #include "RequestsCodes.hpp"
 #include "RoomManager.hpp"
+#include "Requests.hpp"
 #include "RoomPreview.hpp"
-#include "ServerErrorResponse.hpp"
+#include "Response.hpp"
 
 MenuRequestHandler::MenuRequestHandler(const LoggedUser& user,
     RequestHandlerFactory& handlerFactory)
@@ -40,36 +31,33 @@ bool MenuRequestHandler::isRequestRelevant(
 }
 
 RequestResult
-MenuRequestHandler::handleRequest(const RequestInfo& requestInfo, SOCKET socket) {
-    try {
-        switch (static_cast<RequestCodes>(requestInfo.code)) {
-        case RequestCodes::CreateRoomRequest:
-            return this->createRoom(requestInfo);
-        case RequestCodes::GetPlayersInRoomRequest:
-            return this->getPlayersInRoom(requestInfo);
-        case RequestCodes::GetRoomsRequest:
-            return this->getRooms(requestInfo);
-        case RequestCodes::JoinRoomRequest:
-            return this->joinRoom(requestInfo);
-        case RequestCodes::LogoutRequest:
-            return this->logout(requestInfo);
-        case RequestCodes::GetHighScoresRequest:
-            return this->getHighScore(requestInfo);
-        case RequestCodes::PersonalStatisticsRequest:
-            return this->getPersonalStats(requestInfo);
-        default:
-            ServerErrorResponse errorResponse("Invalid msg code.");
-            RequestResult requestResult(
-                JsonResponsePacketSerializer::serializeResponse(errorResponse),
-                nullptr);
-        }
+MenuRequestHandler::handleRequest(const RequestInfo& requestInfo) {
+    switch (static_cast<RequestCodes>(requestInfo.code)) {
+    case RequestCodes::CreateRoomRequest:
+        return this->createRoom(requestInfo);
+    case RequestCodes::GetPlayersInRoomRequest:
+        return this->getPlayersInRoom(requestInfo);
+    case RequestCodes::GetRoomsRequest:
+        return this->getRooms(requestInfo);
+    case RequestCodes::JoinRoomRequest:
+        return this->joinRoom(requestInfo);
+    case RequestCodes::LogoutRequest:
+        return this->logout(requestInfo);
+    case RequestCodes::GetHighScoresRequest:
+        return this->getHighScore(requestInfo);
+    case RequestCodes::PersonalStatisticsRequest:
+        return this->getPersonalStats(requestInfo);
+    default:
+        ServerErrorResponse errorResponse(GENERAL_SUCCESS_RESPONSE_STATUS, "Invalid msg code.");
+        RequestResult requestResult(
+            JsonResponsePacketSerializer::serializeResponse(errorResponse),
+            nullptr);
     }
-    catch (const std::exception& e) {
-        ServerErrorResponse errResponse(e.what());
-        RequestResult res(
-            JsonResponsePacketSerializer::serializeResponse(errResponse), nullptr);
-        return res;
-    }
+}
+
+void MenuRequestHandler::Cleanup()
+{
+    this->m_handlerFactory.getLoginManager().logout(this->m_user);
 }
 
 RequestResult MenuRequestHandler::logout(const RequestInfo& info) const {
@@ -86,7 +74,8 @@ RequestResult MenuRequestHandler::logout(const RequestInfo& info) const {
 RequestResult
 MenuRequestHandler::getRooms(const RequestInfo& requestInfo) const {
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
-    std::vector<RoomPreview> rooms = roomManager.getRooms();
+    std::vector<RoomPreview> rooms = roomManager.getActiveRooms();
+
     GetRoomsResponse getRoomsResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, rooms);
 
     RequestResult requestResult(
@@ -97,10 +86,10 @@ MenuRequestHandler::getRooms(const RequestInfo& requestInfo) const {
 
 RequestResult
 MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInfo) const {
-    GetPlayersInRoomRequest request = JsonRequestPacketDeserializer<
-        GetPlayersInRoomRequest>::deserializeRequest(requestInfo.buffer);
+    GetPlayersInRoomRequest request = JsonRequestPacketDeserializer::deserializeRequest<
+        GetPlayersInRoomRequest>(requestInfo.buffer);
 
-    int id = request.getRoomId();
+    int id = request.roomId;
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
 
     Room* room = roomManager.getRoom(id);
@@ -119,7 +108,7 @@ MenuRequestHandler::getPersonalStats(const RequestInfo& requestInfo) const {
         this->m_handlerFactory.getStatisticsManger();
     PersonalStatistics ps =
         statsManager.getPlayerStatistics(this->m_user.getUsername());
-    GetPersonalStatisticsResponse personalStatsResponse(ps, (unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS);
+    GetPersonalStatisticsResponse personalStatsResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, ps);
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(personalStatsResponse),
@@ -130,13 +119,13 @@ MenuRequestHandler::getPersonalStats(const RequestInfo& requestInfo) const {
 RequestResult
 MenuRequestHandler::getHighScore(const RequestInfo& requestInfo) const {
     GetHighScoreRequest request =
-        JsonRequestPacketDeserializer<GetHighScoreRequest>::deserializeRequest(
+        JsonRequestPacketDeserializer::deserializeRequest<GetHighScoreRequest>(
             requestInfo.buffer);
 
     StatisticsManager& statsManager =
         this->m_handlerFactory.getStatisticsManger();
     std::vector<HighScoreInfo> highestScores =
-        statsManager.getBestScores(request.getTopPlayersLimit());
+        statsManager.getBestScores(request.topPlayersAmount);
 
     GetHighScoreResponse highScoreResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, highestScores);
 
@@ -150,21 +139,21 @@ RequestResult
 MenuRequestHandler::joinRoom(const RequestInfo& requestInfo) const {
 
     JoinRoomRequest request =
-        JsonRequestPacketDeserializer<JoinRoomRequest>::deserializeRequest(
+        JsonRequestPacketDeserializer::deserializeRequest<JoinRoomRequest>(
             requestInfo.buffer);
 
-    int roomId = request.getRoomId();
+    int roomId = request.roomId;
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
 
-    JoinRoomResponseErrors joinRoomResponseErrors =
+    GeneralResponseErrors joinRoomResponseErrors =
         m_handlerFactory.getRoomManger().joinRoom(roomId, this->m_user);
 
-    JoinRoomResponse joinRoomResponse(std::make_unique<JoinRoomResponseErrors>(joinRoomResponseErrors));
+    JoinRoomResponse joinRoomResponse(std::make_unique<GeneralResponseErrors>(joinRoomResponseErrors));
 
     std::shared_ptr<IRequestHandler> nextHandler;
 
-    if (joinRoomResponseErrors.statusCode == 0)
-        nextHandler = std::move(this->m_handlerFactory.createRoomMemberRequestHandler(this->m_user, roomManager.getRoom(roomId)));
+    if (joinRoomResponseErrors.statusCode() == 0)
+        nextHandler = std::move(this->m_handlerFactory.createRoomRequestHandler(this->m_user, roomManager.getRoom(roomId)));
     else
         nextHandler = nullptr;
 
@@ -178,26 +167,21 @@ MenuRequestHandler::joinRoom(const RequestInfo& requestInfo) const {
 RequestResult
 MenuRequestHandler::createRoom(const RequestInfo& requestInfo) const {
     CreateRoomRequest request =
-        JsonRequestPacketDeserializer<CreateRoomRequest>::deserializeRequest(
+        JsonRequestPacketDeserializer::deserializeRequest<CreateRoomRequest>(
             requestInfo.buffer);
    
-    RoomData data;
-    data.maxPlayers = request.getMaxUsers();
-    data.numOfQuestionsInGame = request.getQuestionCount();
-    data.name = request.getRoomName();
-    data.timePerQuestion = request.getAnswerTimeout();
-
+    RoomData data = request.roomData;
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
 
-    CreateRoomResponseErrors createRoomResponseErrors =
+    GeneralResponseErrors createRoomResponseErrors =
         roomManager.createRoom(this->m_user, data);
 
-    CreateRoomResponse createRoomResponse(std::make_unique<CreateRoomResponseErrors>(createRoomResponseErrors), data);
+    CreateRoomResponse createRoomResponse(std::make_unique<GeneralResponseErrors>(createRoomResponseErrors), data);
 
 
     std::shared_ptr<IRequestHandler> nextHandler;
 
-    if (createRoomResponseErrors.statusCode == 0)
+    if (createRoomResponseErrors.statusCode() == 0)
         nextHandler = std::move(this->m_handlerFactory.createRoomAdminRequestHandler(this->m_user, roomManager.getRoom(data.id)));
     else
         nextHandler = nullptr;

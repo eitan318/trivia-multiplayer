@@ -3,16 +3,17 @@ using ClientApp.Services;
 using ClientApp.Stores;
 using Microsoft.Xaml.Behaviors.Core;
 using System;
+using System.DirectoryServices.ActiveDirectory;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Navigation;
 
 namespace ClientApp.ViewModels
 {
-    internal class MainWindowViewModel : ViewModelBase
+    internal class MainWindowViewModel : ScreenViewModelBase
     {
         private readonly NavigationStore _navigationStore;
-        private readonly ErrorMessageStore _errorMessageStore;
+        private readonly ServerErrorMessageStore _errorMessageStore;
         private readonly INavigationService _navigationService;
         private readonly SocketService _socketService;
 
@@ -21,7 +22,7 @@ namespace ClientApp.ViewModels
 
         public MainWindowViewModel(
             NavigationStore navigationStore,
-            ErrorMessageStore errorMessageStore,
+            ServerErrorMessageStore errorMessageStore,
             INavigationService navigationService,
             RequestsExchangeService requestsExchangeService,
             SocketService socketService)
@@ -32,6 +33,14 @@ namespace ClientApp.ViewModels
             _navigationService = navigationService;
 
             _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
+
+            _errorMessageStore.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(ServerErrorMessageStore.ErrorMessage))
+                {
+                    OnPropertyChanged(nameof(ServerErrorMessage));
+                }
+            };
 
             try
             {
@@ -49,21 +58,28 @@ namespace ClientApp.ViewModels
         );
 
 
-        public bool CanGoBack
+        public bool WindowBackBtn
         {
-            get => _navigationStore.CanGoBack() && _navigationStore.CurrentViewModel.HasBackBtn;
+            get => _navigationStore.CanGoBack() && _navigationStore.CurrentViewModel.WindowBackBtn;
         }
 
-        
+        public bool NavBarBackBtn
+        {
+            get => _navigationStore.CanGoBack() && _navigationStore.CurrentViewModel.NavBarBackBtn;
+        }
+
+
+
         public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
 
 
-
+        public string ServerErrorMessage => _errorMessageStore.ErrorMessage;
 
         private void OnCurrentViewModelChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));
-            OnPropertyChanged(nameof(CanGoBack));
+            OnPropertyChanged(nameof(WindowBackBtn));
+            OnPropertyChanged(nameof(NavBarBackBtn));
         }
 
         private async void AttemptConnectionAsync()
@@ -85,6 +101,8 @@ namespace ClientApp.ViewModels
                     await Task.Delay(2000); // Wait for 2 seconds before retrying
                 }
             }
+            _errorMessageStore.ErrorType = "";
+            _errorMessageStore.ErrorMessage = "";
 
             _navigationService.NavigateTo<LoginViewModel>();
         }

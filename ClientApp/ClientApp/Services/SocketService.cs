@@ -11,7 +11,7 @@ namespace ClientApp.Services
     public class SocketService : IDisposable
     {
         private readonly Socket _socket;
-        private readonly string _ipAddress;
+        private string _ipAddress;
         private readonly int _port;
         private bool _disposed;
 
@@ -25,6 +25,11 @@ namespace ClientApp.Services
             _ipAddress = ipAddress;
             _port = port;
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        }
+
+        public void UpdateIpAddress(string ipAddress)
+        {
+            this._ipAddress = ipAddress;
         }
 
         /// <summary>

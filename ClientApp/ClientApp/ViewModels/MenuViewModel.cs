@@ -1,6 +1,7 @@
 ﻿using ClientApp.Commands;
 using System.Windows.Input;
 using ClientApp.Services;
+using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
@@ -8,21 +9,22 @@ namespace ClientApp.ViewModels
     /// ViewModel for the MenuPage in the client application. Handles user interactions with the menu options,
     /// such as creating a room, joining a room, viewing statistics, and logging out.
     /// </summary>
-    internal class MenuViewModel : ViewModelBase
+    internal class MenuViewModel : ScreenViewModelBase
     {
+
         /// <summary>
         /// Private constructor for the MenuPageViewModel. Initializes the commands for the actions available in the menu.
         /// </summary>
         public MenuViewModel(
-            INavigationService navigationService,
-            RequestsExchangeService requestsExchangeService)
+            TopBarViewModel topBarViewModel,
+            NavigateCommand<CreateRoomViewModel> navToCreateRoomCommand,
+            NavigateCommand<JoinRoomViewModel> navToJoinRoomCommand,
+            NavigateCommand<StatisticsViewModel> navToStatisticsCommand
+            ) : base(false, topBarViewModel)
         {
-            NavToCreateRoomCmd = new NavigateCommand<CreateRoomViewModel>(navigationService);
-            NavToJoinRoomCmd = new NavigateCommand<JoinRoomViewModel>(navigationService);
-            NavToStatisticsCmd = new NavigateCommand<StatisticsViewModel>(navigationService);
-            LogoutCmd = new LogoutCommand(this,
-                navigationService,
-                requestsExchangeService);
+            NavToCreateRoomCmd = navToCreateRoomCommand;
+            NavToJoinRoomCmd = navToJoinRoomCommand;
+            NavToStatisticsCmd = navToStatisticsCommand;
         }
 
 
@@ -30,7 +32,6 @@ namespace ClientApp.ViewModels
         public ICommand NavToCreateRoomCmd { get; }
         public ICommand NavToJoinRoomCmd { get; }
         public ICommand NavToStatisticsCmd { get; }
-        public ICommand LogoutCmd { get; }
 
 
 

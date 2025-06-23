@@ -11,7 +11,7 @@ namespace ClientApp.Services
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly NavigationStore _navigationStore;
-        private readonly Dictionary<Type, ViewModelBase> _viewModelCache = new(); // ViewModel caching
+        private readonly Dictionary<Type, ScreenViewModelBase> _viewModelCache = new(); // ViewModel caching
 
         public NavigationService(IServiceProvider serviceProvider, NavigationStore navigationStore)
         {
@@ -19,7 +19,7 @@ namespace ClientApp.Services
             _navigationStore = navigationStore;
         }
 
-        public void NavigateTo<TViewModel>() where TViewModel : ViewModelBase
+        public void NavigateTo<TViewModel>() where TViewModel : ScreenViewModelBase
         {
             var type = typeof(TViewModel);
 
@@ -41,10 +41,11 @@ namespace ClientApp.Services
 
         public void GoBack()
         {
-            if (_navigationStore.CanGoBack())
+            if(_navigationStore.CanGoBack())
             {
-                _navigationStore.GoBack();
+                 _navigationStore.GoBack();
             }
+            
         }
 
         // Optional: Add a method to clear or remove ViewModels from the cache

@@ -12,7 +12,7 @@ namespace ClientApp.ViewModels.ForgotPassword
     /// ViewModel for the email input step in the forgot password process. Handles the user's input of their email address
     /// and processes the request to initiate the password recovery process.
     /// </summary>
-    class EmailEntryViewModel : ViewModelBase
+    public class EmailEntryViewModel : ScreenViewModelBase
     {
         private PasswordResetStore _state;
 
@@ -20,15 +20,11 @@ namespace ClientApp.ViewModels.ForgotPassword
         /// Initializes the ViewModel, setting up the command for submitting the email.
         /// </summary>
         public EmailEntryViewModel(
-            INavigationService navigationService,
-            PasswordResetStore state,
-            RequestsExchangeService requestsExchangeService) : base(true)
+            SubmitPasswordResetEmailCommand submitPasswordResetEmailCommand,
+            PasswordResetStore state) : base(true)
         {
             _state = state;
-            SubmitEmailCmd = new SubmitPasswordResetEmailCommand(this, 
-                navigationService,
-                state,
-                requestsExchangeService);
+            SubmitEmailCmd = submitPasswordResetEmailCommand;
         }
 
         //Commands

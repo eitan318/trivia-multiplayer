@@ -1,6 +1,4 @@
 ﻿using ClientApp.Commands;
-using ClientApp.Services;
-using ClientApp.Stores;
 using System.Windows.Input;
 
 namespace ClientApp.ViewModels.ForgotPassword
@@ -8,17 +6,12 @@ namespace ClientApp.ViewModels.ForgotPassword
     /// <summary>
     /// Command that does the reset password step in the forgot password process.
     /// </summary>
-    class ResetPasswordViewModel : ViewModelBase
+    public class ResetPasswordViewModel : ScreenViewModelBase
     {
         public ResetPasswordViewModel(
-            INavigationService navigationService,
-            RequestsExchangeService requestsExchangeService,
-            PasswordResetStore state) : base(true)
+            ResetPasswordCommand resetPasswordCommand) : base(true)
         {
-            ResetPasswordCmd = new ResetPasswordCommand(this, 
-                navigationService,
-                requestsExchangeService,
-                state);
+            ResetPasswordCmd = resetPasswordCommand;
         }
 
 

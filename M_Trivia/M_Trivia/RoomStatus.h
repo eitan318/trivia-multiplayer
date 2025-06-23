@@ -1,7 +1,9 @@
 #pragma once
 
 enum RoomStatus {
-    Closed,
+    Closing,
+    StartingGame,
     InGame,
-    NotInGame
+    NotInGame,
+    UnknownRoomStatus,
 };

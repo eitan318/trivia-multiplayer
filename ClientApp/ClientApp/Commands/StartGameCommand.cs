@@ -9,20 +9,22 @@ namespace ClientApp.Commands
     {
         private INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
-        RoomAdminViewModel _roomAdminViewModel;
 
         public StartGameCommand(INavigationService navigationService, 
-            RequestsExchangeService requestsExchangeService, 
-            RoomAdminViewModel roomAdminViewModel)
+            RequestsExchangeService requestsExchangeService 
+            )
         {
             _navigationService = navigationService;
             _requestsExchangeService = requestsExchangeService;
-            _roomAdminViewModel = roomAdminViewModel;
 
         }
 
         public override async void Execute(object parameter)
         {
+            if(parameter is not RoomAdminViewModel roomAdminViewModel)
+            {
+                return;
+            }
             try
             {
                 var request = new StartGameRequest();
@@ -33,23 +35,18 @@ namespace ClientApp.Commands
                     var startGameResponse = responseInfo.Response;
                     if(startGameResponse.Status == 0)
                     {
-                        _navigationService.NavigateTo<GameViewModel>(); //Will be game in next version
+                        _navigationService.NavigateTo<GameAnsweringViewModel>(); 
                     }
                     else
                     {
-                        _roomAdminViewModel.ErrorMessage = startGameResponse.Errors.GeneralError;
+                        roomAdminViewModel.ErrorMessage = startGameResponse.Errors.GeneralError;
                     }
                 }
-                else
-                {
-                    _roomAdminViewModel.ErrorMessage = "SERVER ERROR: " + responseInfo.ErrorResponse.Message;
-                }
-  
 
             }
             catch (Exception ex)
             {
-                _roomAdminViewModel.ErrorMessage = $"Failed to start game in room: {ex.Message}";
+                roomAdminViewModel.ErrorMessage = $"Failed to start game in room: {ex.Message}";
             }
         }
         

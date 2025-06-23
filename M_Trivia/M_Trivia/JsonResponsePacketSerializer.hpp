@@ -37,8 +37,8 @@ public:
      * @param response The templated `Response` object to serialize.
      * @return A vector of characters containing the serialized response.
      */
-    template<ResponseCodes Code, typename ErrorType = IResponseErrors>
-    static std::vector<char> serializeResponse(const Response<Code, ErrorType>& response) {
+    template<ResponseCodes Code, typename ErrorType = IResponseErrors, typename DataType = std::monostate>
+    static std::vector<char> serializeResponse(const Response<Code, ErrorType, DataType>& response) {
         std::vector<char> res;
 
         // Add the message code as the first byte
