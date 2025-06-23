@@ -44,14 +44,13 @@ struct UserRecord {
      * @param j The JSON object to initialize the UserRecord.
      */
     explicit UserRecord(const nlohmann::json& j) {
-        j.at("username").get_to(username);
-        j.at("password").get_to(password);
-        j.at("email").get_to(email);
-        j.at("houseAddress").get_to(houseAddress);
-        j.at("phoneNumber").get_to(phoneNumber);
-        j.at("birthDate").get_to(birthDate);
+        j.at("Username").get_to(username);
+        j.at("Password").get_to(password);
+        j.at("Email").get_to(email);
+        j.at("HouseAddress").get_to(houseAddress);
+        j.at("PhoneNumber").get_to(phoneNumber);
+        j.at("BirthDate").get_to(birthDate);
     }
-
 
 };
 
@@ -61,10 +60,10 @@ struct UserRecord {
  * @param ur UserRecord instance to populate.
  */
 inline void from_json(const nlohmann::json& j, UserRecord& ur) {
-    j.at("username").get_to(ur.username);
-    j.at("password").get_to(ur.password);
-    j.at("email").get_to(ur.email);
-    j.at("houseAddress").get_to(ur.houseAddress);
-    j.at("phoneNumber").get_to(ur.phoneNumber);
-    j.at("birthDate").get_to(ur.birthDate);
+    j.at("Username").get_to(ur.username);
+    j.at("Password").get_to(ur.password);
+    j.at("Email").get_to(ur.email);
+    j.at("HouseAddress").get_to(ur.houseAddress);
+    j.at("PhoneNumber").get_to(ur.phoneNumber);
+    j.at("BirthDate").get_to(ur.birthDate);
 }
