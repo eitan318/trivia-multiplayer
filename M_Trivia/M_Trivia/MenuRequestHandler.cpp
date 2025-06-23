@@ -24,6 +24,7 @@ bool MenuRequestHandler::isRequestRelevant(
     case RequestCodes::LogoutRequest:
     case RequestCodes::GetHighScoresRequest:
     case RequestCodes::PersonalStatisticsRequest:
+    case RequestCodes::Join1v1WaitingListRequest:
         return true;
     default:
         return false;
@@ -47,6 +48,8 @@ MenuRequestHandler::handleRequest(const RequestInfo& requestInfo) {
         return this->getHighScore(requestInfo);
     case RequestCodes::PersonalStatisticsRequest:
         return this->getPersonalStats(requestInfo);
+    case RequestCodes::Join1v1WaitingListRequest:
+        return this->join1v1WaitingList(requestInfo);
     default:
         ServerErrorResponse errorResponse(GENERAL_SUCCESS_RESPONSE_STATUS, "Invalid msg code.");
         RequestResult requestResult(
@@ -92,7 +95,7 @@ MenuRequestHandler::getPlayersInRoom(const RequestInfo& requestInfo) const {
     int id = request.roomId;
     RoomManager& roomManager = m_handlerFactory.getRoomManger();
 
-    Room* room = roomManager.getRoom(id);
+    std::shared_ptr<Room> room = roomManager.getRoom(id);
     
     GetPlayersInRoomResponse getPlayersInRoomResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, room->getUsersVector());
 
@@ -161,6 +164,17 @@ MenuRequestHandler::joinRoom(const RequestInfo& requestInfo) const {
         JsonResponsePacketSerializer::serializeResponse(joinRoomResponse),
         nextHandler);
 
+    return requestResult;
+}
+
+RequestResult MenuRequestHandler::join1v1WaitingList(const RequestInfo& requestInfo) const
+{
+    GeneralResponseErrors errors = this->m_handlerFactory.getWaiting1v1Manager().joinWaitingList(this->m_user);
+    Join1v1WaitingListResponse response(std::make_unique<GeneralResponseErrors>(errors));
+    RequestResult requestResult{
+        JsonResponsePacketSerializer::serializeResponse(response),
+        errors.statusCode() == 0 ? this->m_handlerFactory.createWaiting1v1RequestHandler(this->m_user) : nullptr
+    };
     return requestResult;
 }
 

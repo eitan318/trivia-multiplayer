@@ -58,6 +58,7 @@ std::shared_ptr<Game> GameManager::createGame(std::shared_ptr<RoomPreview> roomP
     return game;
 }
 
+
 void GameManager::deleteGame(int roomId)
 {
     std::lock_guard<std::mutex> lock(m_gamesMutex);

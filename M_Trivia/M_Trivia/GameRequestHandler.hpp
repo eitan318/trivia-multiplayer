@@ -21,8 +21,8 @@ public:
      * @param user The currently logged-in user.
      * @param handlerFactory The factory for creating other request handlers.
      */
-    GameRequestHandler(const LoggedUser& user,
-        RequestHandlerFactory& handlerFactory, std::shared_ptr<Game> game, std::shared_ptr<RoomPreview> roomPreview);
+    GameRequestHandler(const LoggedUser& user, RequestHandlerFactory& handlerFactory, std::shared_ptr<Game> game,
+        std::shared_ptr<RoomPreview> roomPreview, std::shared_ptr<IRequestHandler> prevRequestHandler);
 
     /**
      * @brief Default destructor.
@@ -51,6 +51,7 @@ private:
     RequestHandlerFactory& m_handlerFactory;
     GameManager& m_gameManager;
     std::shared_ptr<Game> m_game;
+    std::shared_ptr<IRequestHandler> m_prevHandler;
 
     /**
      * @brief gets a the current question and sends to clients.

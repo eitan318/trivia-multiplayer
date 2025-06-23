@@ -66,6 +66,8 @@ private:
      */
     RequestResult joinRoom(const RequestInfo& requestInfo) const;
 
+    RequestResult join1v1WaitingList(const RequestInfo& requestInfo) const;
+
     /**
      * @brief Handles a request to create a new room.
      * @param requestInfo The request information, including room configuration

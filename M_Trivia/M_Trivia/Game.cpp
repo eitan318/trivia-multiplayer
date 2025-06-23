@@ -12,6 +12,7 @@ Game::Game(const std::vector<Question>& questions, std::shared_ptr<RoomPreview> 
 }
 
 
+
 void Game::join(const LoggedUser& player) {
     Question shuffledCopy = Question(this->m_questions[0]);
     shuffledCopy.shuffle();

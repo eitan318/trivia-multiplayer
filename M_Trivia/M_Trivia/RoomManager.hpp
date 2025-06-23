@@ -13,7 +13,7 @@ class RoomManager
 {
 private:
     static unsigned int ids;     ///< Counter for generating unique room IDs.
-    std::vector<Room> m_rooms; 
+    std::vector<std::shared_ptr<Room>> m_rooms; 
     mutable std::mutex m_roomsMutex;
     IDatabase& m_database;       ///< Pointer to the database interface for accessing data.
 
@@ -65,7 +65,6 @@ public:
      */
     std::vector<RoomPreview> getActiveRooms() const;
 
-
     /**
      * Attempts to start the game in the current room.
      *
@@ -79,7 +78,7 @@ public:
      * @return A reference to the Room object.
      * @throws MyException if the room does not exist.
      */
-    Room* getRoom(int ID);
+    std::shared_ptr<Room> getRoom(int ID);
 
 
     void leaveRoom(unsigned int roomId,

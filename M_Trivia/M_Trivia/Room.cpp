@@ -2,12 +2,8 @@
 #include "Response.hpp"
 #include <algorithm>
 
-Room::Room(std::shared_ptr<RoomPreview> metadata)
-    : m_metadata(std::move(metadata)), m_users {metadata->admin} {
-}
-
-Room::Room(std::shared_ptr<RoomPreview> metadata, const std::vector<LoggedUser>& users)
-    : m_metadata(std::move(metadata)), m_users(users) {
+Room::Room(std::shared_ptr<RoomPreview> metadata, const LoggedUser& admin)
+    : m_metadata(std::move(metadata)), m_users {admin} {
 }
 
 
@@ -39,7 +35,6 @@ void Room::removeUser(const LoggedUser& loggeduser) {
 const std::vector<LoggedUser>& Room::getUsersVector() const {
     return m_users;
 }
-
 
 
 

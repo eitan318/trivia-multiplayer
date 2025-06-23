@@ -8,7 +8,7 @@ public:
 	 * other request handlers.
 	 */
 	RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory,
-		LoggedUser loggedUser, Room* room);
+		LoggedUser loggedUser, std::shared_ptr<Room> room);
 
 	/**
 	 * @brief Destructor for RoomAdminRequestHandler.
