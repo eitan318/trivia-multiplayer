@@ -10,7 +10,7 @@ namespace ClientApp.ViewModels
     class HighScoresViewModel : ScreenViewModelBase
     {
         private readonly RequestsExchangeService _requestsExchangeService;
-        private readonly int amountTopPlayers = 3;
+        private readonly int amountTopPlayers = 10;
         private CancellationTokenSource _refreshTopPlayersCTS;
 
         public HighScoresViewModel(RequestsExchangeService requestsExchangeService,
