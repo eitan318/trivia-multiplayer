@@ -43,6 +43,7 @@ RequestResult Waiting1v1RequestHandler::handleRequest(const RequestInfo& request
 
 void Waiting1v1RequestHandler::Cleanup()
 {
+	this->m_waiting1v1Manager.leaveWaitingList(this->m_user);
 	this->m_handlerFactory.getLoginManager().logout(this->m_user);
 }
 

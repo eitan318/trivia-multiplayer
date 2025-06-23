@@ -13,12 +13,13 @@ class Waiting1v1Manager
 {
 private:
     static unsigned int ids;     ///< Counter for generating unique room IDs.
-    std::map<LoggedUser, std::shared_ptr<Game>> m_waitingList;
+    std::vector<LoggedUser> m_waitingList;
+    std::map<LoggedUser, std::shared_ptr<Game>> m_matchedPlayers;
     mutable std::mutex m_waitingListMutex;
     std::shared_ptr<RoomPreview> m_gameRoomPreview;
     GameManager& m_gameManager;
     std::condition_variable m_condition;
-    std::atomic<bool> m_running = true;
+    std::atomic<bool> m_running;
     std::thread m_workerThread;
 
     /**
@@ -52,6 +53,6 @@ public:
     GeneralResponseErrors leaveWaitingList(const LoggedUser& loggedUser);
 
     std::shared_ptr<RoomPreview> getGameRoomPreview();
-    std::pair<GeneralResponseErrors, std::shared_ptr<Game>> didPlayerFoundMatch(const LoggedUser& loggedUser) const;
+    std::pair<GeneralResponseErrors, std::shared_ptr<Game>> didPlayerFoundMatch(const LoggedUser& loggedUser);
 
 };
