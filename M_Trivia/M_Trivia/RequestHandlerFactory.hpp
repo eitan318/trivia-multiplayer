@@ -40,13 +40,13 @@ public:
      * @brief Creates a new RoomAdminRequestHandler.
      * @return A pointer to a newly created RoomAdminRequestHandler.
     */
-    std::shared_ptr<IRequestHandler> createRoomAdminRequestHandler(const LoggedUser& loggedUser, Room* room) const;
+    std::shared_ptr<IRequestHandler> createRoomAdminRequestHandler(const LoggedUser& loggedUser, std::shared_ptr<Room> room) const;
 
     /**
      * @brief Creates a new RoomAdminRequestHandler.
      * @return A pointer to a newly created RoomAdminRequestHandler.
     */
-    std::shared_ptr<IRequestHandler> createRoomRequestHandler(const LoggedUser& loggedUser, Room* room) const;
+    std::shared_ptr<IRequestHandler> createRoomRequestHandler(const LoggedUser& loggedUser, std::shared_ptr<Room> room) const;
 
     std::shared_ptr<IRequestHandler> createWaiting1v1RequestHandler(const LoggedUser& loggedUser) const;
 

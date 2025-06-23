@@ -26,7 +26,7 @@ public:
      * @param roomdata The metadata associated with the room.
      * @param user The initial user to add to the room.
      */
-    Room(std::shared_ptr<RoomPreview> metadata);
+    Room(std::shared_ptr<RoomPreview> metadata, const LoggedUser& admin);
 
 
 

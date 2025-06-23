@@ -24,7 +24,7 @@ RequestResult RoomRequestHandler::getRoomState(const RequestInfo& requestinfo)
     return requestResult;
 }
 
-RequestResult RoomRequestHandler::leaveRoom(RequestInfo requestInfo)
+RequestResult RoomRequestHandler::leaveRoom(const RequestInfo& requestinfo)
 {
 	this->m_roomManager.leaveRoom(this->m_room->getId(), this->m_user);
 	LeaveRoomResponse leaveRoomResponse(GENERAL_SUCCESS_RESPONSE_STATUS);
@@ -67,7 +67,7 @@ bool RoomRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
     }
 }
 
-RoomRequestHandler::RoomRequestHandler(RequestHandlerFactory& requestHandlerFactory, LoggedUser user, Room* room)
+RoomRequestHandler::RoomRequestHandler(RequestHandlerFactory& requestHandlerFactory, const LoggedUser& user, std::shared_ptr<Room> room)
 	: m_user(user),m_room(room),
 	m_roomManager(m_handlerFactory.getRoomManger()),
 	m_handlerFactory(requestHandlerFactory)  

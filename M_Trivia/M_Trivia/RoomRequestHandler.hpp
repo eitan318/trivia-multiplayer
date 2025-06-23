@@ -9,7 +9,7 @@
 
 class RoomRequestHandler : public IRequestHandler , public std::enable_shared_from_this<RoomRequestHandler> {
 public:
-	RoomRequestHandler(RequestHandlerFactory& requestHandlerFactory, LoggedUser user, Room* room);
+	RoomRequestHandler(RequestHandlerFactory& requestHandlerFactory, const LoggedUser& user, std::shared_ptr<Room> room);
 	~RoomRequestHandler();
 	RequestResult handleRequest(const RequestInfo& requestInfo) override;
 	bool isRequestRelevant(const RequestInfo& requestInfo) const override;
@@ -17,10 +17,10 @@ public:
 
 protected:
 	RequestResult getRoomState(const RequestInfo& requestinfo);
-	RequestResult leaveRoom(RequestInfo requestInfo);
+	RequestResult leaveRoom(const RequestInfo& requestinfo);
 
 	RequestHandlerFactory& m_handlerFactory;
-	Room* m_room;
+	std::shared_ptr<Room> m_room;
 	LoggedUser m_user;
 	RoomManager& m_roomManager;
 };

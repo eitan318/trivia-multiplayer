@@ -135,7 +135,7 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
 {
     GeneralResponseErrors errors;
     LeaveGameResponse leaveGameResponse(std::make_unique<GeneralResponseErrors>(errors));
-    Room* room = this->m_handlerFactory.getRoomManger().getRoom(this->m_roomPreview->roomData.id);
+    std::shared_ptr<Room> room = this->m_handlerFactory.getRoomManger().getRoom(this->m_roomPreview->roomData.id);
     std::shared_ptr<IRequestHandler> nextHandler = m_prevHandler;
 
     this->m_gameManager.leaveGame(this->m_game, this->m_roomPreview, this->m_user);

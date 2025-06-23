@@ -5,7 +5,7 @@
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory,
 	LoggedUser loggedUser, 
-	Room* room) : RoomRequestHandler(handlerFactory,
+	std::shared_ptr<Room> room) : RoomRequestHandler(handlerFactory,
 		loggedUser, 
 		room)
 {

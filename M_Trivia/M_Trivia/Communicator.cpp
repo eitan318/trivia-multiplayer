@@ -148,7 +148,7 @@ void Communicator::handleNewClient(SOCKET sock)
             try {
                 requestResult = handler->handleRequest(requestInfo);
             }
-            catch (const std::exception& e) {
+            catch (std::exception& e) {
                 ServerErrorResponse errResponse(GENERAL_SUCCESS_RESPONSE_STATUS, e.what());
                 RequestResult res(
                     JsonResponsePacketSerializer::serializeResponse(errResponse), nullptr);

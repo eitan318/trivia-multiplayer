@@ -17,7 +17,7 @@ RoomManager::~RoomManager() {}
 
 
 RoomManager::RoomManager(IDatabase& database) : m_database(database) {
-    this->m_rooms = std::vector<Room>();
+    this->m_rooms = std::vector<std::shared_ptr<Room>>();
 }
 
 GeneralResponseErrors RoomManager::createRoom(const LoggedUser& player,
@@ -38,7 +38,8 @@ GeneralResponseErrors RoomManager::createRoom(const LoggedUser& player,
         std::lock_guard<std::mutex> lock(this->m_roomsMutex);
         int roomid = ids++;
         roomData.id = roomid;
-        this->m_rooms.emplace_back(std::make_shared<RoomPreview>(roomData, 1, RoomStatus::NotInGame, player));
+        std::shared_ptr<RoomPreview> roomPreview = std::make_shared<RoomPreview>(roomData, 1, RoomStatus::NotInGame);
+        this->m_rooms.emplace_back(std::make_shared<Room>(roomPreview, player));
     }
     return createRoonResponseErrors;
 }
@@ -47,8 +48,8 @@ GeneralResponseErrors RoomManager::createRoom(const LoggedUser& player,
 
 void RoomManager::deleteRoom(int ID) {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
-    std::erase_if(m_rooms, [ID](const Room& room) {
-        return room.getRoomPreview()->roomData.id == ID;
+    std::erase_if(m_rooms, [ID](std::shared_ptr<Room> room) {
+        return room->getRoomPreview()->roomData.id == ID;
         });
 }
 
@@ -58,17 +59,20 @@ std::vector<RoomPreview> RoomManager::getActiveRooms() const {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     std::vector<RoomPreview> roomsvec;
     for (const auto& room : m_rooms) {
-        if (room.getRoomStatus() != RoomStatus::Closing)
-        {
-            roomsvec.push_back(*room.getRoomPreview());
+        if (room->getRoomStatus() != RoomStatus::Closing) {
+            std::shared_ptr<RoomPreview> preview = room->getRoomPreview();
+            if (preview) { 
+                roomsvec.push_back(*preview);  
+            }
         }
     }
     return roomsvec;
 }
 
+
 void RoomManager::leaveRoom(unsigned int roomId,
     const LoggedUser& loggedUser) {
-    Room* room = this->getRoom(roomId);
+    std::shared_ptr<Room> room = this->getRoom(roomId);
     bool isAdmin = room->isAdmin(loggedUser);
 
     room->removeUser(loggedUser);
@@ -86,7 +90,7 @@ void RoomManager::leaveRoom(unsigned int roomId,
 
 GeneralResponseErrors RoomManager::startGameOfRoom(unsigned int roomId)
 {
-    Room* room = getRoom(roomId);
+    std::shared_ptr<Room> room = getRoom(roomId);
     //std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     GeneralResponseErrors errors;
     RoomStatus s = room->getRoomStatus();
@@ -112,7 +116,7 @@ GeneralResponseErrors RoomManager::joinRoom(unsigned int id,
     const LoggedUser& loggedUser) {
 
     GeneralResponseErrors errors;
-    Room* room = this->getRoom(id);
+    std::shared_ptr<Room> room = this->getRoom(id);
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     if (room != nullptr) {
         if (room->hasUser(loggedUser)) {
@@ -137,12 +141,13 @@ GeneralResponseErrors RoomManager::joinRoom(unsigned int id,
 
 
 
-Room* RoomManager::getRoom(int ID) {
+std::shared_ptr<Room> RoomManager::getRoom(int ID) {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
 
-    auto it = std::ranges::find_if(m_rooms, [ID](const Room& room) {
-        return room.getRoomPreview()->roomData.id == ID;
+    auto it = std::ranges::find_if(m_rooms, [ID](const std::shared_ptr<Room>& room) {
+        return room && room->getRoomPreview() && room->getRoomPreview()->roomData.id == ID;
         });
 
-    return it != m_rooms.end() ? &(*it) : nullptr;
+    return it != m_rooms.end() ? *it : nullptr; // Dereference iterator to get the shared_ptr
 }
+

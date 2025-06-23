@@ -5,8 +5,7 @@ Waiting1v1Manager::Waiting1v1Manager(GameManager& gameManager) :
     m_gameRoomPreview(std::make_shared<RoomPreview>(
         RoomData{ 0,"1v1", 2, 10, 5, 2 },
         0,
-        RoomStatus::NotInGame,
-        LoggedUser{ "no" }
+        RoomStatus::NotInGame
     ))
 {
     
