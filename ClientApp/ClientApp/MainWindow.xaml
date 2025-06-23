@@ -30,8 +30,7 @@
         <Grid >
 
             <!-- Frame for View Navigation -->
-            <Frame Content="{Binding CurrentViewModel}"
-               ContentTemplateSelector="{StaticResource ViewModelToPageTemplateSelector}" 
+            <Frame x:Name="MainContentFrame"
                NavigationUIVisibility="Hidden" />
 
             <!--Back Button-->

@@ -1,10 +1,6 @@
 ﻿using ClientApp.Commands;
 using ClientApp.Services;
 using ClientApp.Stores;
-using Microsoft.Xaml.Behaviors.Core;
-using System;
-using System.DirectoryServices.ActiveDirectory;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Navigation;
 
@@ -32,6 +28,11 @@ namespace ClientApp.ViewModels
             _errorMessageStore = errorMessageStore;
             _navigationService = navigationService;
 
+            
+        }
+
+        public void Initialize()
+        {
             _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
 
             _errorMessageStore.PropertyChanged += (sender, args) =>
@@ -54,18 +55,18 @@ namespace ClientApp.ViewModels
         }
 
         public ICommand BackCmd => new RelayCommand(
-            _ => _navigationStore.GoBack()
+            _ => _navigationService.GoBack()
         );
 
 
         public bool WindowBackBtn
         {
-            get => _navigationStore.CanGoBack() && _navigationStore.CurrentViewModel.WindowBackBtn;
+            get => _navigationService.CanGoBack() && _navigationStore.CurrentViewModel.WindowBackBtn;
         }
 
         public bool NavBarBackBtn
         {
-            get => _navigationStore.CanGoBack() && _navigationStore.CurrentViewModel.NavBarBackBtn;
+            get => _navigationService.CanGoBack() && _navigationStore.CurrentViewModel.NavBarBackBtn;
         }
 
 
