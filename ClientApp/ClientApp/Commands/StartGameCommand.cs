@@ -27,8 +27,8 @@ namespace ClientApp.Commands
             }
             try
             {
-                var request = new StartGameRequest();
-                ResponseInfo<StartGameResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<StartGameResponse>(request);
+                ResponseInfo<StartGameResponse> responseInfo = await _requestsExchangeService.
+                    ExchangeRequest<StartGameResponse>(RequestsCodes.StartGameRequest);
 
                 if (responseInfo.NormalResponse)
                 {

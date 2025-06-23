@@ -17,6 +17,13 @@ namespace ClientApp.Models.Responses
         {
         }
     }
+    abstract class Response<TError, TData> : Response<TError>
+    {
+        [JsonProperty("Data")]
+        public TData Data { get; private set; }
+
+        public Response() { }
+    }
 
 
 }

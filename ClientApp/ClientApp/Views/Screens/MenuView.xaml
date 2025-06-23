@@ -44,6 +44,17 @@
                         <TextBlock Text="View your performance stats and leaderboards" FontSize="12" TextAlignment="Center" Foreground="Gray"/>
                     </StackPanel>
                 </Button>
-            </UniformGrid>
+
+            <!-- 1v1 Button -->
+            <Button Command="{Binding Join1v1WaitingCmd}"
+                    CommandParameter="{Binding}"
+                    Style="{StaticResource MenuButtonStyle}" Margin="10">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <materialDesign:PackIcon Kind="ChartBar" Width="40" Height="40"/>
+                    <TextBlock Text="1v1" FontSize="18" FontWeight="Bold" TextAlignment="Center" Margin="0,10,0,0"/>
+                    <TextBlock Text="Match and compete against someone your level" FontSize="12" TextAlignment="Center" Foreground="Gray"/>
+                </StackPanel>
+            </Button>
+        </UniformGrid>
         </Grid>
 </UserControl>

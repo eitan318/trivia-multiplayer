@@ -12,8 +12,7 @@ namespace ClientApp.Commands
         private readonly RequestsExchangeService _requestsExchangeService;
         public JoinCommand(
             INavigationService navigationService,
-            RequestsExchangeService requestsExchangeService,
-            RoomDataStore roomDataStore
+            RequestsExchangeService requestsExchangeService
             )
         {
             this._navigationService = navigationService;

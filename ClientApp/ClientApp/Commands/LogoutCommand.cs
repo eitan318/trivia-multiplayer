@@ -28,8 +28,7 @@ namespace ClientApp.Commands
         /// </summary>
         public override async void Execute(object parameter)
         {
-            LogoutRequest request = new LogoutRequest();
-            ResponseInfo<LogoutResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<LogoutResponse>(request);
+            ResponseInfo<LogoutResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<LogoutResponse>(RequestsCodes.LogoutRequest);
 
             if (responseInfo.NormalResponse)
             {

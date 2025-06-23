@@ -65,8 +65,7 @@ namespace ClientApp.ViewModels
 
         public async Task getAllPlayersResults()
         {
-            GetGameResultRequest getPlayersResultsrequest = new GetGameResultRequest();
-            var responseInfo = await _requestsExchangeService.ExchangeRequest<GetGameResultsResponse>(getPlayersResultsrequest);
+            var responseInfo = await _requestsExchangeService.ExchangeRequest<GetGameResultsResponse>(RequestsCodes.GetGameResultRequest);
             if (!responseInfo.NormalResponse)
                 return;
             GetGameResultsResponse playersResultsResponse = responseInfo.Response;

@@ -91,9 +91,8 @@ namespace ClientApp.ViewModels
 
         private async Task PeriodicallyCheckRoomState()
         {
-            var getRoomStatusRequest = new GetRoomStateRequest();
             ResponseInfo<GetRoomStateResponse> responseInfo =
-                await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(getRoomStatusRequest);
+                await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(RequestsCodes.GetRoomStateRequest);
             
             if (!responseInfo.NormalResponse)
                 return;

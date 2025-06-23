@@ -59,8 +59,7 @@ namespace ClientApp.ViewModels
         {
             try
             {
-                PersonalStatisticsRequest request = new PersonalStatisticsRequest();
-                var responseInfo = await _requestsExchangeService.ExchangeRequest<PersonalStatisticsResponse>(request);
+                var responseInfo = await _requestsExchangeService.ExchangeRequest<PersonalStatisticsResponse>(RequestsCodes.PersonalStatisticsRequest);
 
                 if (responseInfo.NormalResponse)
                 {

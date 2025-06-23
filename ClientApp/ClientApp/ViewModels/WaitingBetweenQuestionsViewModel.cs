@@ -58,9 +58,8 @@ namespace ClientApp.ViewModels
 
         private async Task CheckGameStatus()
         {
-            var getRoomStatusRequest = new GetGameStateRequest();
             ResponseInfo<GetGameStateResponse> responseInfo =
-                await _requestsExchangeService.ExchangeRequest<GetGameStateResponse>(getRoomStatusRequest);
+                await _requestsExchangeService.ExchangeRequest<GetGameStateResponse>(RequestsCodes.GetGameStateRequrst);
 
             if (!responseInfo.NormalResponse)
                 return;

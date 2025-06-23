@@ -66,8 +66,7 @@ namespace ClientApp.ViewModels
         {
             try
             {
-                var getQuestionRequest = new GetQuestionRequest();
-                var questionResponseInfo = await _requestsExchangeService.ExchangeRequest<GetQuestionResponse>(getQuestionRequest);
+                var questionResponseInfo = await _requestsExchangeService.ExchangeRequest<GetQuestionResponse>(RequestsCodes.GetQuestionRequest);
 
                 if (questionResponseInfo.NormalResponse)
                 {

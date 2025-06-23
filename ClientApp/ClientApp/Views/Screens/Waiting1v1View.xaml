@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="ClientApp.Views.Screens.Waiting1v1View"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid Margin="20">
+        <!-- Background -->
+        <Border CornerRadius="22"
+                Background="{DynamicResource MaterialDesign.Brush.Background}"
+                BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}"
+                BorderThickness="3"
+                Padding="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <TextBlock Text="Searching for Opponent"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource MaterialDesign.Brush.Primary}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Margin="0,10" />
+
+                <!-- Search Animation -->
+                <Border CornerRadius="100" Grid.Row="1" Width="150" Height="150" Background="Transparent" BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="5">
+                    <ProgressBar
+                    IsIndeterminate="True"
+                    Style="{StaticResource MaterialDesignCircularProgressBar}"
+                    Width="120"
+                    Height="120"
+                    Value="0"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center" />
+                </Border>
+
+                <TextBlock Text="Searching..." Grid.Row="1"
+                               FontSize="18"
+                               FontWeight="Medium"
+                               Foreground="{DynamicResource MaterialDesign.Brush.Primary}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="0,10" />
+
+                <!-- Button -->
+                <Button Grid.Row="2"
+                        Content="Cancel Search"
+                        Command="{Binding LeaveWaitingListCmd}"
+                        CommandParameter="{Binding}"
+                        Style="{StaticResource OperationButtonStyle}"
+                        Height="50"
+                        HorizontalAlignment="Center"
+                        Margin="20"
+                        Width="200" />
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
+

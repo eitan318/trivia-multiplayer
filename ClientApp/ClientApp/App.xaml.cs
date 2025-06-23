@@ -72,6 +72,7 @@ public partial class App : Application
         services.AddTransient<GameResultsViewModel>();
         services.AddTransient<WaitingBetweenQuestionsViewModel>();
         services.AddTransient<GameScoreBoardViewModel>();
+        services.AddTransient<Waiting1v1ViewModel>();
 
 
         services.AddTransient<TopBarViewModel>();
@@ -87,6 +88,7 @@ public partial class App : Application
 
 
         // Register commands
+        services.AddTransient(typeof(NavigateCommand<>));
         services.AddTransient<LogoutCommand>();
         services.AddTransient<CreateRoomCommand>();
         services.AddTransient<JoinCommand>();
@@ -99,8 +101,8 @@ public partial class App : Application
         services.AddTransient<SubmitAnswerCommand>();
         services.AddTransient<SubmitPasswordResetCodeCommand>();
         services.AddTransient<SubmitPasswordResetEmailCommand>();
-        services.AddTransient(typeof(NavigateCommand<>));
-
+        services.AddTransient<Join1v1WaitingListCommand>();
+        services.AddTransient<LeaveWaitingListCommand>();
 
 
 

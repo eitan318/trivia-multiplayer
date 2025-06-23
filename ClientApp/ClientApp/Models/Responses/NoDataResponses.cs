@@ -1,4 +1,5 @@
 ﻿using ClientApp.Models.ResponseErrors;
+using Newtonsoft.Json;
 
 namespace ClientApp.Models.Responses
 {
@@ -11,4 +12,7 @@ namespace ClientApp.Models.Responses
     class JoinRoomResponse : Response<GeneralResponseErrors> { }
     class SignupResponse : Response<SignupResponseErrors> { }
     class StartGameResponse : Response<GeneralResponseErrors> { }
+    class Leave1v1WaitingListResponse : Response<GeneralResponseErrors> { }
+    class Join1v1WaitingListResponse : Response<GeneralResponseErrors> { }
+
 }

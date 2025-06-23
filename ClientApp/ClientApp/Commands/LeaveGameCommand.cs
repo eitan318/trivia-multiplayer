@@ -28,8 +28,8 @@ namespace ClientApp.Commands
                 gameAnsweringViewModel.Timer.Stop();
             }
 
-            LeaveGameRequest request = new LeaveGameRequest();
-            ResponseInfo<LeaveGameResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<LeaveGameResponse>(request);
+            ResponseInfo<LeaveGameResponse> responseInfo = await _requestsExchangeService.
+                ExchangeRequest<LeaveGameResponse>(RequestsCodes.LeaveGameRequest);
 
             if (responseInfo.NormalResponse)
             {
