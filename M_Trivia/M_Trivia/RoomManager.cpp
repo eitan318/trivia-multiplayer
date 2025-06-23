@@ -13,7 +13,8 @@ RoomManager& RoomManager::getInstance(IDatabase& database) {
     return instance;
 }
 
-RoomManager::~RoomManager() {}
+RoomManager::~RoomManager() {
+}
 
 
 RoomManager::RoomManager(IDatabase& database) : m_database(database) {
@@ -56,7 +57,7 @@ void RoomManager::deleteRoom(int ID) {
 
 
 std::vector<RoomPreview> RoomManager::getActiveRooms() const {
-    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
+    //std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     std::vector<RoomPreview> roomsvec;
     for (const auto& room : m_rooms) {
         if (room->getRoomStatus() != RoomStatus::Closing) {

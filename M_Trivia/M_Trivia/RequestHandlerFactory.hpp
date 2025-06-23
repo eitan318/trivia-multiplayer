@@ -89,11 +89,11 @@ public:
     StatisticsManager& getStatisticsManger() const;
 
 private:
-    RoomManager& m_roomManager; ///< The RoomManager instance used by the factory.
-    IDatabase& m_database; ///< The database instance used across the managers.
-    StatisticsManager& m_statisticsManager; ///< The StatisticsManager instance used by the factory.
-    LoginManager& m_loginManager; ///< The LoginManager instance used by the factory.
-    GameManager& m_gameManager; ///< The GameManager instance used by the factory.
+    RoomManager& m_roomManager;
+    IDatabase& m_database; 
+    StatisticsManager& m_statisticsManager; 
+    LoginManager& m_loginManager;
+    GameManager& m_gameManager; 
     Waiting1v1Manager& m_waiting1v1Manager;
 
     /**

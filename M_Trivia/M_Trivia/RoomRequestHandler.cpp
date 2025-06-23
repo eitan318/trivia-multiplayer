@@ -68,10 +68,12 @@ bool RoomRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const
 }
 
 RoomRequestHandler::RoomRequestHandler(RequestHandlerFactory& requestHandlerFactory, const LoggedUser& user, std::shared_ptr<Room> room)
-	: m_user(user),m_room(room),
-	m_roomManager(m_handlerFactory.getRoomManger()),
-	m_handlerFactory(requestHandlerFactory)  
-{}
+	: m_user(user),
+	m_room(room),
+	m_handlerFactory(requestHandlerFactory),
+	m_roomManager(m_handlerFactory.getRoomManger()) {
+
+}
 
 RoomRequestHandler::~RoomRequestHandler()
 {
