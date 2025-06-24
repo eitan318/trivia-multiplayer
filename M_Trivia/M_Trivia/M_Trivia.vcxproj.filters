@@ -104,6 +104,9 @@
     <ClCompile Include="AddAnswerManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
+    <ClCompile Include="QuestionRecord.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Response.hpp">
@@ -259,6 +262,9 @@
     <ClInclude Include="Waiting1v1RequestHandler.hpp" />
     <ClInclude Include="AddAnswerManager.hpp">
       <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionRecord.hpp">
+      <Filter>Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

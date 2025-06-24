@@ -142,6 +142,7 @@
     <ClInclude Include="MenuRequestHandler.hpp" />
     <ClInclude Include="PlayerGameData.hpp" />
     <ClInclude Include="QuestionDificultyLevel.h" />
+    <ClInclude Include="QuestionRecord.hpp" />
     <ClInclude Include="RegexValidator.hpp" />
     <ClInclude Include="Requests.hpp" />
     <ClInclude Include="RequestsCodes.hpp" />
@@ -193,6 +194,7 @@
     <ClCompile Include="LoginResponseErrors.cpp" />
     <ClCompile Include="PersonalStatistics.cpp" />
     <ClCompile Include="Question.cpp" />
+    <ClCompile Include="QuestionRecord.cpp" />
     <ClCompile Include="RequestInfo.cpp" />
     <ClCompile Include="RequestResult.cpp" />
     <ClCompile Include="ResetPasswordResponseErrors.cpp" />

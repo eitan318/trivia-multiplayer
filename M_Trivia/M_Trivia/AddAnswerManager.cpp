@@ -7,7 +7,7 @@ AddAnswerManager& AddAnswerManager::getInstance(IDatabase& database)
 
 }
 
-void AddAnswerManager::addQuetion() 
+void AddAnswerManager::addQuetion(Question question) 
 {
 
 }

@@ -32,6 +32,7 @@ public:
         const std::string& newPassword) const;
     unsigned int getQuestionsCount() const;
     bool addExampleUsers() const;
+    bool addQuestionToDB(const nlohmann::json& question) const;
 
 private:
     ~SqliteDatabase() { close(); };
@@ -44,7 +45,6 @@ private:
     bool createAnswersTable() const;
     bool createGamesTable() const;
     bool addQuestions(int amount) const;
-    bool addQuestionToDB(const nlohmann::json& question) const;
 
     sqlite3* db;
 };
