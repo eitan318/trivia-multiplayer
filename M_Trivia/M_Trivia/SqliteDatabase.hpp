@@ -44,6 +44,7 @@ private:
     bool createAnswersTable() const;
     bool createGamesTable() const;
     bool addQuestions(int amount) const;
+    bool addQuestionToDB(const nlohmann::json& question) const;
 
     sqlite3* db;
 };

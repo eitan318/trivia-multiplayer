@@ -258,18 +258,47 @@ bool SqliteDatabase::createAnswersTable() const {
 
 bool SqliteDatabase::addQuestions(int amount) const {
     std::string url = ApiClient::generateTriviaQuestionsUrl(45, 9, "multiple");
-    std::string questionsJsonStr =
-        ApiClient::getQuestionsJson(url.c_str()); // Fetch questions JSON
+    std::string questionsJsonStr = ApiClient::getQuestionsJson(url.c_str());
     nlohmann::json questionsJson = nlohmann::json::parse(questionsJsonStr);
 
-    // Check if the API response code is successful
     if (questionsJson["response_code"] != 0) {
         std::cerr << "Failed to fetch questions from API. Response code: "
             << questionsJson["response_code"] << std::endl;
         return false;
     }
 
-    // Prepare the SQL insert query
+    try {
+        for (const auto& question : questionsJson["results"]) 
+        {
+            if (!addQuestionToDB(question)) 
+            {
+                throw MyException("Failed to add question to database.");
+            }
+        }
+    }
+    catch (const MyException& error) 
+    {
+        throw error.what();
+        return false;
+    }
+    return true;
+}
+
+bool SqliteDatabase::addQuestionToDB(const nlohmann::json& question) const {
+    const std::string& difficulty = question["difficulty"];
+    const std::string& category = question["category"];
+    const std::string& questionText = question["question"];
+    const std::string& correctAnswer = question["correct_answer"];
+    const auto& incorrectAnswers = question["incorrect_answers"];
+
+    if (incorrectAnswers.size() != 3) {
+        throw MyException("Expected exactly 3 incorrect answers for question: " + questionText);
+    }
+
+    const std::string incorrectAnswer1 = incorrectAnswers[0].get<std::string>();
+    const std::string incorrectAnswer2 = incorrectAnswers[1].get<std::string>();
+    const std::string incorrectAnswer3 = incorrectAnswers[2].get<std::string>();
+
     const char* insertQuery = R"(
         INSERT INTO Questions (difficulty, category, question, answer, incorrect_answer_1, incorrect_answer_2, incorrect_answer_3)
         VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -277,55 +306,26 @@ bool SqliteDatabase::addQuestions(int amount) const {
 
     sqlite3_stmt* stmt;
     if (sqlite3_prepare_v2(db, insertQuery, -1, &stmt, nullptr) != SQLITE_OK) {
-        throw MyException(std::string("Failed to prepare insert statement: ") +
-            sqlite3_errmsg(db));
+        throw MyException("Failed to prepare insert statement: " + std::string(sqlite3_errmsg(db)));
     }
 
-    // Parse and insert questions into the database
     try {
-        for (const auto& question : questionsJson["results"]) {
-            const std::string& difficulty = question["difficulty"];
-            const std::string& category = question["category"];
-            const std::string& questionText = question["question"];
-            const std::string& correctAnswer = question["correct_answer"];
-            const auto& incorrectAnswers = question["incorrect_answers"];
+        sqlite3_bind_text(stmt, 1, difficulty.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, category.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 3, questionText.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 4, correctAnswer.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 5, incorrectAnswer1.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 6, incorrectAnswer2.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 7, incorrectAnswer3.c_str(), -1, SQLITE_STATIC);
 
-            // Ensure `incorrect_answers` has 3 entries
-            if (incorrectAnswers.size() != 3) {
-                throw MyException(
-                    "Expected exactly 3 incorrect answers for question: " +
-                    questionText);
-            }
-
-            // Extract incorrect answers as separate strings
-            const std::string incorrectAnswer1 =
-                incorrectAnswers[0].get<std::string>();
-            const std::string incorrectAnswer2 =
-                incorrectAnswers[1].get<std::string>();
-            const std::string incorrectAnswer3 =
-                incorrectAnswers[2].get<std::string>();
-
-            // Bind values to the SQL statement
-            sqlite3_bind_text(stmt, 1, difficulty.c_str(), -1, SQLITE_STATIC);
-            sqlite3_bind_text(stmt, 2, category.c_str(), -1, SQLITE_STATIC);
-            sqlite3_bind_text(stmt, 3, questionText.c_str(), -1, SQLITE_STATIC);
-            sqlite3_bind_text(stmt, 4, correctAnswer.c_str(), -1, SQLITE_STATIC);
-            sqlite3_bind_text(stmt, 5, incorrectAnswer1.c_str(), -1, SQLITE_STATIC);
-            sqlite3_bind_text(stmt, 6, incorrectAnswer2.c_str(), -1, SQLITE_STATIC);
-            sqlite3_bind_text(stmt, 7, incorrectAnswer3.c_str(), -1, SQLITE_STATIC);
-
-            // Execute the statement
-            if (sqlite3_step(stmt) != SQLITE_DONE) {
-                throw MyException(std::string("Failed to insert question: ") +
-                    sqlite3_errmsg(db));
-            }
-
-            sqlite3_reset(stmt);
+        if (sqlite3_step(stmt) != SQLITE_DONE) {
+            throw MyException("Failed to insert question: " + std::string(sqlite3_errmsg(db)));
         }
     }
     catch (...) {
         sqlite3_finalize(stmt);
-        throw; // Rethrow the exception after cleaning up
+        throw;
+        return false;
     }
 
     sqlite3_finalize(stmt);
