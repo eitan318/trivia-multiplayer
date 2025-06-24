@@ -63,7 +63,7 @@ public partial class App : Application
         services.AddSingleton<CreateRoomViewModel>();
         services.AddSingleton<JoinRoomViewModel>();
         services.AddSingleton<ErrorViewModel>();
-        services.AddSingleton<GameAnsweringViewModel>();
+        services.AddTransient<GameAnsweringViewModel>();
         services.AddSingleton<GameResultsViewModel>();
         services.AddSingleton<WaitingBetweenQuestionsViewModel>();
         services.AddSingleton<GameScoreBoardViewModel>();
@@ -130,6 +130,10 @@ public partial class App : Application
         services.AddTransient<ResetPasswordView>();
         services.AddTransient<Waiting1v1View>();
 
+
+
+
+
         // Register stores
         services.AddSingleton<UserStore>();
         services.AddSingleton<PasswordResetStore>();
@@ -146,5 +150,28 @@ public partial class App : Application
             return new MainWindow(viewModel);
         });
     }
+    protected override void OnExit(ExitEventArgs e)
+    {
+        base.OnExit(e);
+
+        DisposeViewModels();
+    }
+
+    private void DisposeViewModels()
+    {
+        if (_serviceProvider == null) return;
+
+        using (var scope = _serviceProvider.CreateScope())
+        {
+            foreach (var service in _serviceProvider.GetServices<object>())
+            {
+                if (service is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                }
+            }
+        }
+    }
+
 }
 

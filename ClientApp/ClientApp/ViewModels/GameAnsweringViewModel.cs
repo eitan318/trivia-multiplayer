@@ -9,7 +9,6 @@ using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
-        
     class GameAnsweringViewModel : ScreenViewModelBase
     {
         private readonly RequestsExchangeService _requestsExchangeService;
@@ -19,8 +18,8 @@ namespace ClientApp.ViewModels
         private uint _questionNumber;
         private QuestionInfo _questionInfo;
         private string _errorMessage;
-        private int _selectedAnswerIndex = -1; // -1 indicates no selection
-        private List<PossibleAnswerViewModel> _possibleAnswers; // Cached list
+        private int _selectedAnswerIndex = -1;
+        private List<PossibleAnswerViewModel> _possibleAnswers;
         private readonly INavigationService _navigationService;
         public CountdownTimerViewModel Timer => _countdownTimerViewModel;
 
@@ -38,8 +37,10 @@ namespace ClientApp.ViewModels
             LeaveGameCmd = leaveGameCommand;
 
             _countdownTimerViewModel = new CountdownTimerViewModel(_msTimerInterval);
+            Timer.Stop();
             _countdownTimerViewModel.TimerEnded += async (sender, args) => await HandleTimerEndAsync();
                 _navigationService = navigationService;
+
         }
 
         public override async void OnNavigatedTo()

@@ -3,6 +3,7 @@ using ClientApp.Models.Responses;
 using ClientApp.Services;
 using System.Windows.Input;
 using ClientApp.Models.Requests;
+using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
@@ -16,8 +17,18 @@ namespace ClientApp.ViewModels
             LeaveWaitingListCommand leaveWaitingListCommand,
             Join1v1WaitingListCommand join1V1WaitingListCommand,
             RequestsExchangeService requestsExchangeService,
-            NavigateCommand<GameAnsweringViewModel> start1v1GameCommand)
+            NavigateCommand<GameAnsweringViewModel> start1v1GameCommand, 
+            AmIAdminStore amIAdminStore,
+            RoomDataStore roomDataStore)
         {
+            amIAdminStore.AmIAdmin = false;
+            roomDataStore.CurrentRoomData = new Models.RoomDataModel();
+            roomDataStore.CurrentRoomData.Id = 0;
+            roomDataStore.CurrentRoomData.TimePerQuestion = 10;
+            roomDataStore.CurrentRoomData.RoomName = "dfs";
+            roomDataStore.CurrentRoomData.ScoreShowingTime = 3;
+            roomDataStore.CurrentRoomData.NumOfQuestionsInGame = 3;
+
             this.LeaveWaitingListCmd = leaveWaitingListCommand;
             this.Start1v1GameCommand = start1v1GameCommand;
             this._requestsExchangeService = requestsExchangeService;

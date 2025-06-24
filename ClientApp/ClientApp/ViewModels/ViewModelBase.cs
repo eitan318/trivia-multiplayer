@@ -8,7 +8,7 @@ namespace ClientApp.ViewModels
     /// The base class for all view models in the application. Implements the INotifyPropertyChanged interface 
     /// to support data binding and property change notification. It also provides singleton behavior for view models.
     /// </summary>
-    public abstract class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged, IDisposable
     {
         /// <summary>
         /// Event raised whenever a property value changes, allowing subscribers to respond to the change.
@@ -23,6 +23,8 @@ namespace ClientApp.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public virtual void Dispose() { }
 
     }
 }

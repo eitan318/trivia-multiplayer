@@ -61,7 +61,9 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& requestInfo)
 void GameRequestHandler::Cleanup()
 {
     this->m_game->playerDeactivate(this->m_user);
-    this->m_handlerFactory.getRoomManger().leaveRoom(this->m_roomPreview->roomData.id, this->m_user);
+    if (this->m_roomPreview->roomData.id != 0) {
+        this->m_handlerFactory.getRoomManger().leaveRoom(this->m_roomPreview->roomData.id, this->m_user);
+    }
     this->m_handlerFactory.getLoginManager().logout(this->m_user);
 }
 

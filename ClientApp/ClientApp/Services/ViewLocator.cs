@@ -56,7 +56,6 @@ namespace ClientApp.Services
             if (!_viewModelViewMap.TryGetValue(viewModelType, out var viewType))
             {
                 throw new InvalidOperationException($"No view was mapped to {viewModelType.FullName}.");
-            
             }
 
             var view = _serviceProvider.GetService(viewType) as FrameworkElement;
