@@ -15,6 +15,8 @@ public:
 
 	QuestionRecord(const QuestionRecord& other);
 
+	QuestionRecord() = default;
+
 	std::string getQuestion();
 
 	std::string getDifficultyLevel();
@@ -38,6 +40,9 @@ private:
 		 * @param q The Question object to serialize.
 		 */
 	friend void to_json(nlohmann::json& j, const QuestionRecord& q);
+	
+	inline void from_json(const nlohmann::json& j, QuestionRecord& q);
+
 };
 
 /**
@@ -53,4 +58,14 @@ inline void to_json(nlohmann::json& j, const QuestionRecord& q) {
 		{"RightAnswer", q.m_rightAnswer},
 		{"Category", q.m_category},
 	};
+}
+
+inline void from_json(const nlohmann::json& j, QuestionRecord& q) {
+	q = QuestionRecord(
+		j.at("Question").get<std::string>(),
+		j.at("DifficultyLevel").get<std::string>(),
+		j.at("RightAnswer").get<std::string>(),
+		j.at("WrongAnswers").get<std::vector<std::string>>(),
+		j.at("Category").get<std::string>()
+	);
 }
