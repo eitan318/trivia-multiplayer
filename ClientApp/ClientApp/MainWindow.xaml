@@ -14,11 +14,6 @@
         xmlns:converters="clr-namespace:ClientApp.Views.Converters"
         Style="{StaticResource MaterialDesignWindow}">
 
-    <Window.Resources>
-        <!-- Template Selector -->
-        <local:ViewModelToPageTemplateSelector x:Key="ViewModelToPageTemplateSelector" />
-    </Window.Resources>
-
     <DockPanel>
         <Grid DockPanel.Dock="Top"  Visibility="{Binding CurrentViewModel.HasNavBar, Converter={StaticResource BoolToVisibilityConverter}}">
            <!-- Top Bar -->
