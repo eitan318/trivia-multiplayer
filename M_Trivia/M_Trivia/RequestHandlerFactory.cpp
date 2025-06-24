@@ -15,7 +15,7 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase& database)
 	m_statisticsManager(StatisticsManager::getInstance(database)),
 	m_roomManager(RoomManager::getInstance(database)),
 	m_gameManager(GameManager::getInstance(database)),
-	m_waiting1v1Manager(Waiting1v1Manager::getInstance(m_gameManager),
+	m_waiting1v1Manager(Waiting1v1Manager::getInstance(m_gameManager)),
 	m_addAnswerManager(AddAnswerManager::getInstance(database))
 {}
 
