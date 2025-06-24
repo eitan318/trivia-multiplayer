@@ -172,4 +172,6 @@ public:
      * @brief Virtual destructor for proper cleanup of derived classes.
      */
     virtual ~IDatabase() = default;
+
+    virtual bool addQuestionToDB(QuestionRecord& questionRecord) const = 0;
 };

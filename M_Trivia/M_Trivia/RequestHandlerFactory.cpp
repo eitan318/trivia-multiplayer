@@ -81,3 +81,8 @@ StatisticsManager& RequestHandlerFactory::getStatisticsManger() const
 {
 	return this->m_statisticsManager;
 }
+
+AddAnswerManager& RequestHandlerFactory::getAddAnswerManager() const
+{
+	return this->m_addAnswerManager;
+}

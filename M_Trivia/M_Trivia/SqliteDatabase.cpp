@@ -268,36 +268,47 @@ bool SqliteDatabase::addQuestions(int amount) const {
     }
 
     try {
-        for (const auto& question : questionsJson["results"]) 
-        {
-            if (!addQuestionToDB(question)) 
-            {
+        for (const auto& question : questionsJson["results"]) {
+            std::string questionText = question["question"];
+            std::string difficulty = question["difficulty"];
+            std::string correctAnswer = question["correct_answer"];
+            std::string category = question["category"];
+            std::vector<std::string> wrongAnswers;
+
+            for (const auto& wrong : question["incorrect_answers"]) {
+                wrongAnswers.push_back(wrong.get<std::string>());
+            }
+
+            if (wrongAnswers.size() != 3) {
+                throw MyException("Expected exactly 3 incorrect answers for question: " + questionText);
+            }
+
+            QuestionRecord qRec(questionText, difficulty, correctAnswer, wrongAnswers, category);
+
+            if (!addQuestionToDB(qRec)) {
                 throw MyException("Failed to add question to database.");
             }
         }
     }
-    catch (const MyException& error) 
-    {
-        throw error.what();
+    catch (const MyException& error) {
+        std::cerr << "Exception: " << error.what() << std::endl;
         return false;
     }
+
     return true;
 }
 
-bool SqliteDatabase::addQuestionToDB(const nlohmann::json& question) const {
-    const std::string& difficulty = question["difficulty"];
-    const std::string& category = question["category"];
-    const std::string& questionText = question["question"];
-    const std::string& correctAnswer = question["correct_answer"];
-    const auto& incorrectAnswers = question["incorrect_answers"];
+
+bool SqliteDatabase::addQuestionToDB(QuestionRecord& questionRecord) const {
+    const std::string& difficulty = questionRecord.getDifficultyLevel();
+    const std::string& category = questionRecord.getCategory();
+    const std::string& questionText = questionRecord.getQuestion();
+    const std::string& correctAnswer = questionRecord.getRightAnswer();
+    const std::vector<std::string>& incorrectAnswers = questionRecord.getWrongAnswers();
 
     if (incorrectAnswers.size() != 3) {
         throw MyException("Expected exactly 3 incorrect answers for question: " + questionText);
     }
-
-    const std::string incorrectAnswer1 = incorrectAnswers[0].get<std::string>();
-    const std::string incorrectAnswer2 = incorrectAnswers[1].get<std::string>();
-    const std::string incorrectAnswer3 = incorrectAnswers[2].get<std::string>();
 
     const char* insertQuery = R"(
         INSERT INTO Questions (difficulty, category, question, answer, incorrect_answer_1, incorrect_answer_2, incorrect_answer_3)
@@ -314,9 +325,9 @@ bool SqliteDatabase::addQuestionToDB(const nlohmann::json& question) const {
         sqlite3_bind_text(stmt, 2, category.c_str(), -1, SQLITE_STATIC);
         sqlite3_bind_text(stmt, 3, questionText.c_str(), -1, SQLITE_STATIC);
         sqlite3_bind_text(stmt, 4, correctAnswer.c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 5, incorrectAnswer1.c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 6, incorrectAnswer2.c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 7, incorrectAnswer3.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 5, incorrectAnswers[0].c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 6, incorrectAnswers[1].c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 7, incorrectAnswers[2].c_str(), -1, SQLITE_STATIC);
 
         if (sqlite3_step(stmt) != SQLITE_DONE) {
             throw MyException("Failed to insert question: " + std::string(sqlite3_errmsg(db)));
@@ -325,12 +336,12 @@ bool SqliteDatabase::addQuestionToDB(const nlohmann::json& question) const {
     catch (...) {
         sqlite3_finalize(stmt);
         throw;
-        return false;
     }
 
     sqlite3_finalize(stmt);
     return true;
 }
+
 
 std::optional<PlayerResults> SqliteDatabase::getPlayerResults(const std::string& username, unsigned int gameId, unsigned int questionAmount) const {
     const char* query = R"(
