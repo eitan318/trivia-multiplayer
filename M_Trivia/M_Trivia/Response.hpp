@@ -34,6 +34,7 @@ enum class ResponseCodes : unsigned char {
     C_Leave1v1WaitingListResponse = 24,
     C_DidFound1v1MatchResponse = 25,
     C_Join1v1WaitingListResponse = 26,
+    C_AddQuestionResponse = 27,
 };
 
 #define GENERAL_SUCCESS_RESPONSE_STATUS 0
@@ -150,6 +151,7 @@ using ResetPasswordResponse = Response<ResponseCodes::C_ResetPasswordResponse, R
 using JoinRoomResponse = Response<ResponseCodes::C_JoinRoomResponse, GeneralResponseErrors>;
 using Leave1v1WaitingListResponse = Response<ResponseCodes::C_Leave1v1WaitingListResponse, GeneralResponseErrors>;
 using Join1v1WaitingListResponse = Response<ResponseCodes::C_Join1v1WaitingListResponse, GeneralResponseErrors>;
+using AddQuestionResponse = Response<ResponseCodes::C_AddQuestionResponse, GeneralResponseErrors>;
 
 // Responses with data and custom JSON key
 DEFINE_RESPONSE_WITH_DATA(DidFound1v1MatchResponse, ResponseCodes::C_DidFound1v1MatchResponse, GeneralResponseErrors, bool, "FoundMatch");

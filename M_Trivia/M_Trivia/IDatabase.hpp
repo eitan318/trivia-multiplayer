@@ -2,6 +2,7 @@
 #include "HighScoreInfo.hpp"
 #include "Question.hpp"
 #include "UserRecord.hpp"
+#include "QuestionRecord.hpp"
 #include <list>
 #include <string>
 #include <vector>
