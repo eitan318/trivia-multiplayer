@@ -62,68 +62,14 @@
     <ClCompile Include="LoggedUser.cpp">
       <Filter>Model</Filter>
     </ClCompile>
-    <ClCompile Include="CreateRoomResponse.cpp">
-      <Filter>Model\Responses</Filter>
-    </ClCompile>
     <ClCompile Include="SignupResponseErrors.cpp">
       <Filter>Model\ResponseErrors</Filter>
-    </ClCompile>
-    <ClCompile Include="GetHighScoreResponse.cpp">
-      <Filter>Model\Responses</Filter>
-    </ClCompile>
-    <ClCompile Include="GetPersonalStatisticsResponse.cpp">
-      <Filter>Model\Responses</Filter>
-    </ClCompile>
-    <ClCompile Include="GetPlayersInRoomResponse.cpp">
-      <Filter>Model\Responses</Filter>
-    </ClCompile>
-    <ClCompile Include="GetRoomsResponse.cpp">
-      <Filter>Model\Responses</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerErrorResponse.cpp">
-      <Filter>Model\Responses</Filter>
     </ClCompile>
     <ClCompile Include="ResetPasswordResponseErrors.cpp">
       <Filter>Model\ResponseErrors</Filter>
     </ClCompile>
-    <ClCompile Include="PasswordCodeResponseErrors.cpp">
-      <Filter>Model\ResponseErrors</Filter>
-    </ClCompile>
     <ClCompile Include="LoginResponseErrors.cpp">
       <Filter>Model\ResponseErrors</Filter>
-    </ClCompile>
-    <ClCompile Include="SignupRequest.cpp">
-      <Filter>Model\Requests</Filter>
-    </ClCompile>
-    <ClCompile Include="SendPasswordResetCodeRequest.cpp">
-      <Filter>Model\Requests</Filter>
-    </ClCompile>
-    <ClCompile Include="ResetPasswordRequest.cpp">
-      <Filter>Model\Requests</Filter>
-    </ClCompile>
-    <ClCompile Include="LoginRequest.cpp">
-      <Filter>Model\Requests</Filter>
-    </ClCompile>
-    <ClCompile Include="JoinRoomRequest.cpp">
-      <Filter>Model\Requests</Filter>
-    </ClCompile>
-    <ClCompile Include="GetPlayersInRoomRequest.cpp">
-      <Filter>Model\Requests</Filter>
-    </ClCompile>
-    <ClCompile Include="GetHighScoreRequest.cpp">
-      <Filter>Model\Requests</Filter>
-    </ClCompile>
-    <ClCompile Include="CreateRoomRequest.cpp">
-      <Filter>Model\Requests</Filter>
-    </ClCompile>
-    <ClCompile Include="CreateRoomResponseErrors.cpp">
-      <Filter>Model\ResponseErrors</Filter>
-    </ClCompile>
-    <ClCompile Include="VerifyPasswordResetCodeRequest.cpp">
-      <Filter>Model\Requests</Filter>
-    </ClCompile>
-    <ClCompile Include="VerifyPasswordResetCodeResponse.cpp">
-      <Filter>Model\Responses</Filter>
     </ClCompile>
     <ClCompile Include="RequestInfo.cpp">
       <Filter>Model</Filter>
@@ -131,17 +77,8 @@
     <ClCompile Include="GeneralResponseErrors.cpp">
       <Filter>Model\ResponseErrors</Filter>
     </ClCompile>
-    <ClCompile Include="GetGameResultsResponse.cpp">
-      <Filter>Model\Responses</Filter>
-    </ClCompile>
-    <ClCompile Include="GetRoomStateResponse.cpp">
-      <Filter>Model\Responses</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GetRoomStateResponse.cpp" />
-    <ClCompile Include="SubmitAnswerRequest.cpp">
-      <Filter>Model\Requests</Filter>
-    </ClCompile>
     <ClCompile Include="GameRequestHandler.cpp">
       <Filter>RequestHandlers</Filter>
     </ClCompile>
@@ -150,12 +87,6 @@
     </ClCompile>
     <ClCompile Include="RoomRequestHandler.cpp">
       <Filter>RequestHandlers</Filter>
-    </ClCompile>
-    <ClCompile Include="GetQuestionResponse.cpp">
-      <Filter>Model\Responses</Filter>
-    </ClCompile>
-    <ClCompile Include="SubmitAnswerResponse.cpp">
-      <Filter>Model\Responses</Filter>
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>Managers</Filter>
@@ -166,62 +97,17 @@
     <ClCompile Include="RoomRequestHandler.cpp">
       <Filter>RequestHandlers</Filter>
     </ClCompile>
-    <ClCompile Include="GetGameStateResponse.cpp" />
     <ClCompile Include="Waiting1v1Manager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Waiting1v1RequestHandler.cpp" />
+    <ClCompile Include="AddAnswerManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CreateRoomResponseErrors.hpp">
-      <Filter>Model\ResponseErrors</Filter>
-    </ClInclude>
-    <ClInclude Include="CreateRoomRequest.hpp">
-      <Filter>Model\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="CreateRoomResponse.hpp">
-      <Filter>Model\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="GetHighScoreResponse.hpp">
-      <Filter>Model\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="GetPersonalStatisticsResponse.hpp">
-      <Filter>Model\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="GetPlayersInRoomResponse.hpp">
-      <Filter>Model\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="GetRoomsResponse.hpp">
-      <Filter>Model\Responses</Filter>
-    </ClInclude>
     <ClInclude Include="Response.hpp">
       <Filter>Model\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerErrorResponse.hpp">
-      <Filter>Model\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="SignupRequest.hpp">
-      <Filter>Model\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="GetHighScoreRequest.hpp">
-      <Filter>Model\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="GetPlayersInRoomRequest.hpp">
-      <Filter>Model\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="JoinRoomRequest.hpp">
-      <Filter>Model\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="LoginRequest.hpp">
-      <Filter>Model\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="PersonalStatisticsRequest.hpp">
-      <Filter>Model\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="ResetPasswordRequest.hpp">
-      <Filter>Model\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="SendPasswordResetCodeRequest.hpp">
-      <Filter>Model\Requests</Filter>
     </ClInclude>
     <ClInclude Include="SignupResponseErrors.hpp">
       <Filter>Model\ResponseErrors</Filter>
@@ -230,9 +116,6 @@
       <Filter>Model\ResponseErrors</Filter>
     </ClInclude>
     <ClInclude Include="LoginResponseErrors.hpp">
-      <Filter>Model\ResponseErrors</Filter>
-    </ClInclude>
-    <ClInclude Include="PasswordCodeResponseErrors.hpp">
       <Filter>Model\ResponseErrors</Filter>
     </ClInclude>
     <ClInclude Include="ResetPasswordResponseErrors.hpp">
@@ -322,20 +205,8 @@
     <ClInclude Include="Communicator.hpp" />
     <ClInclude Include="Room.hpp" />
     <ClInclude Include="Server.hpp" />
-    <ClInclude Include="VerifyPasswordResetCodeRequest.hpp">
-      <Filter>Model\Requests</Filter>
-    </ClInclude>
-    <ClInclude Include="VerifyPasswordResetCodeResponse.hpp">
-      <Filter>Model\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="GetRoomStateResponse.hpp">
-      <Filter>Model\Responses</Filter>
-    </ClInclude>
     <ClInclude Include="GeneralResponseErrors.hpp">
       <Filter>Model\ResponseErrors</Filter>
-    </ClInclude>
-    <ClInclude Include="GetGameResultsResponse.hpp">
-      <Filter>Model\Responses</Filter>
     </ClInclude>
     <ClInclude Include="RoomState.hpp">
       <Filter>Model</Filter>
@@ -343,9 +214,6 @@
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameManager.hpp">
       <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="SubmitAnswerRequest.hpp">
-      <Filter>Model\Requests</Filter>
     </ClInclude>
     <ClInclude Include="GameRequestHandler.hpp">
       <Filter>RequestHandlers</Filter>
@@ -368,12 +236,6 @@
     <ClInclude Include="QuestionDificultyLevel.h">
       <Filter>enums</Filter>
     </ClInclude>
-    <ClInclude Include="GetQuestionResponse.hpp">
-      <Filter>Model\Responses</Filter>
-    </ClInclude>
-    <ClInclude Include="SubmitAnswerResponse.hpp">
-      <Filter>Model\Responses</Filter>
-    </ClInclude>
     <ClInclude Include="RoomAdminRequestHandler.hpp">
       <Filter>RequestHandlers</Filter>
     </ClInclude>
@@ -384,16 +246,18 @@
       <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="RoomAdminRequestHandler.hpp" />
-    <ClInclude Include="RoomMemberRequestHandler.hpp" />
     <ClInclude Include="RoomRequestHandler.hpp" />
     <ClInclude Include="PlayerGameData.hpp">
       <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="GameStatus.hpp" />
-    <ClInclude Include="GetGameStateResponse.hpp">
-      <Filter>Model\Responses</Filter>
-    </ClInclude>
     <ClInclude Include="Waiting1v1Manager.hpp">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="GetQuestionResponseData.hpp" />
+    <ClInclude Include="Requests.hpp" />
+    <ClInclude Include="Waiting1v1RequestHandler.hpp" />
+    <ClInclude Include="AddAnswerManager.hpp">
       <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
