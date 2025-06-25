@@ -34,6 +34,7 @@ enum class ResponseCodes : unsigned char {
     C_Leave1v1WaitingListResponse = 24,
     C_DidFound1v1MatchResponse = 25,
     C_Join1v1WaitingListResponse = 26,
+    C_Get1v1GameSettingsResponse = 27,
 };
 
 #define GENERAL_SUCCESS_RESPONSE_STATUS 0
@@ -154,6 +155,7 @@ using Join1v1WaitingListResponse = Response<ResponseCodes::C_Join1v1WaitingListR
 // Responses with data and custom JSON key
 DEFINE_RESPONSE_WITH_DATA(DidFound1v1MatchResponse, ResponseCodes::C_DidFound1v1MatchResponse, GeneralResponseErrors, bool, "FoundMatch");
 DEFINE_RESPONSE_WITH_DATA(CreateRoomResponse, ResponseCodes::C_CreateRoomResponse, GeneralResponseErrors, RoomData, "RoomData");
+DEFINE_RESPONSE_WITH_DATA(Get1v1GameSettingsResponse, ResponseCodes::C_Get1v1GameSettingsResponse, GeneralResponseErrors, RoomData, "GameSettigns");
 DEFINE_RESPONSE_WITH_DATA(GetGameResultsResponse, ResponseCodes::C_GetGameResultsResponse, IResponseErrors, std::vector<PlayerResults>, "Results");
 DEFINE_RESPONSE_WITH_DATA(GetGameStateResponse, ResponseCodes::C_GetGameStateResponse, IResponseErrors, GameStatus, "GameStatus");
 DEFINE_RESPONSE_WITH_DATA(GetHighScoreResponse, ResponseCodes::C_GetHighScoreResponse, IResponseErrors, std::vector<HighScoreInfo>, "Statistics");

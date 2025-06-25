@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Commands
 {
-    public class SubmitPasswordResetCodeCommand : CommandBase
+    public class SubmitPasswordResetCodeCommand : CommandBase, IAsyncCommand
     {
         private readonly INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
@@ -37,7 +37,7 @@ namespace ClientApp.Commands
         /// Submits the entered verification code. If the code is correct, it proceeds to the password reset step.
         /// If the code is incorrect, an error message is displayed.
         /// </summary>
-        public override async void Execute(object parameters) 
+        public override async Task ExecuteAsync(object parameters) 
         {
             if(parameters is not CodeEntryViewModel codeEntryViewModel)
             {

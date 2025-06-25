@@ -7,7 +7,7 @@ using ClientApp.Stores;
 
 namespace ClientApp.Commands
 {
-    class SignupCommand : CommandBase 
+    class SignupCommand : CommandBase , IAsyncCommand
     {
         private readonly INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
@@ -25,7 +25,7 @@ namespace ClientApp.Commands
         /// Attempts to sign up the user by validating the input fields and sending the signup request.
         /// If the signup is successful, navigates to the login page. If there are errors, displays error messages.
         /// </summary>
-        public override async void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             if (parameter is not SignupViewModel signupViewModel)
             {

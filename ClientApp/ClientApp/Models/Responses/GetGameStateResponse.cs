@@ -8,6 +8,6 @@ namespace ClientApp.Models.Responses
         private GetGameStateResponse() { }
 
         [JsonProperty]
-        public GameStatus GameStatus { get; set; }
+        public GameStatus GameStatus { get; private set; }
     }
 }

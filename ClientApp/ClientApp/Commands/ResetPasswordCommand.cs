@@ -7,7 +7,7 @@ using ClientApp.ViewModels.ForgotPassword;
 
 namespace ClientApp.Commands
 {
-    public class ResetPasswordCommand : CommandBase
+    public class ResetPasswordCommand : CommandBase, IAsyncCommand
     {
         private readonly RequestsExchangeService _requestsExchangeService;
         private readonly INavigationService _navigationService;
@@ -28,7 +28,7 @@ namespace ClientApp.Commands
         /// then sends a reset password request to the server. If successful, navigates to the login page.
         /// If there are errors, an appropriate error message is displayed.
         /// </summary>
-        public override async void Execute(object parameters)
+        public override async Task ExecuteAsync(object parameters)
         {
             if (parameters is not ResetPasswordViewModel resetPasswordViewModel)
             {

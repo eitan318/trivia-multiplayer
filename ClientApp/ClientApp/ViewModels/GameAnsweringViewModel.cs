@@ -63,8 +63,8 @@ namespace ClientApp.ViewModels
             Timer.Dispose();
         }
 
-        public ICommand SubmitCmd { get; }
-        public ICommand LeaveGameCmd { get; }
+        public IAsyncCommand SubmitCmd { get; }
+        public IAsyncCommand LeaveGameCmd { get; }
 
         public async Task NextQuestion()
         {
@@ -102,7 +102,7 @@ namespace ClientApp.ViewModels
         {
             if (SubmitCmd.CanExecute(null))
             {
-                SubmitCmd.Execute(null);
+                SubmitCmd.ExecuteAsync(null);
             }
             else
             {

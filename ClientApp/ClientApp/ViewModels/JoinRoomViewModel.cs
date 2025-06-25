@@ -17,7 +17,7 @@ namespace ClientApp.ViewModels
         private readonly int refreshMS = 300;
 
         public JoinRoomViewModel(
-            JoinCommand joinCommand,
+            JoinRoomCommand joinCommand,
             RequestsExchangeService requestsExchangeService,
             RoomDataStore roomDataStore) : base(true)
         {

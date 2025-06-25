@@ -5,7 +5,7 @@ using ClientApp.Services;
 using ClientApp.Stores;
 using ClientApp.ViewModels;
 
-public class LoginCommand : CommandBase
+public class LoginCommand : CommandBase, IAsyncCommand
 {
     private readonly INavigationService _navigationService;
     private readonly UserStore _userStore;
@@ -31,7 +31,7 @@ public class LoginCommand : CommandBase
         return false;
     }
 
-    public override async void Execute(object parameter)
+    public override async Task ExecuteAsync(object parameter)
     {
         if (parameter is LoginViewModel loginViewModel)
         {

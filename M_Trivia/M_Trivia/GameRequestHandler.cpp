@@ -7,7 +7,9 @@
 #include "Requests.hpp"
 
 GameRequestHandler::GameRequestHandler(const LoggedUser& user,
-    RequestHandlerFactory& handlerFactory, std::shared_ptr<Game> game, std::shared_ptr<RoomPreview> roomPreview, std::shared_ptr<IRequestHandler> prevRequestHandler) :
+    RequestHandlerFactory& handlerFactory, std::shared_ptr<Game> game,
+    std::shared_ptr<RoomPreview> roomPreview,
+    std::shared_ptr<IRequestHandler> prevRequestHandler) :
     m_gameManager(handlerFactory.getGameManager()),
     m_handlerFactory(handlerFactory),
     m_user(user),

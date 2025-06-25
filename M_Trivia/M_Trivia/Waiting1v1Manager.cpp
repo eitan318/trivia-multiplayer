@@ -104,7 +104,7 @@ GeneralResponseErrors Waiting1v1Manager::leaveWaitingList(const LoggedUser& logg
 }
 
 
-std::shared_ptr<RoomPreview> Waiting1v1Manager::getGameRoomPreview()
+std::shared_ptr<RoomPreview> Waiting1v1Manager::getDefault1v1GameSettings()
 {
     return this->m_gameRoomPreview;
 }

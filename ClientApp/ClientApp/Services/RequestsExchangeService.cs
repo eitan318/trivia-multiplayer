@@ -79,7 +79,7 @@ namespace ClientApp.Services
                 
                 codeBuffer = await _socketService.ReceiveDataAsync(1);
                 byte[] lengthBuffer = await _socketService.ReceiveDataAsync(4);
-                int length = BitConverter.ToInt32(lengthBuffer, 0);
+                int length = BitConverter.ToInt32(lengthBuffer, 0); // If length is super big..
                 payloadBuffer = await _socketService.ReceiveDataAsync(length);
             }
             catch (SocketException ex)

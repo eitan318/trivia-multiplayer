@@ -12,7 +12,7 @@ using ClientApp.Stores;
 
 namespace ClientApp.Commands
 {
-    public class CreateRoomCommand : CommandBase
+    public class CreateRoomCommand : CommandBase, IAsyncCommand
     {
         private readonly INavigationService _navigationService;
         private RoomDataStore _roomDataStore;
@@ -46,7 +46,7 @@ namespace ClientApp.Commands
         /// <summary>
         /// Executes the process of creating a room and fetching players.
         /// </summary>
-        public override async void Execute(object parameters)
+        public override async Task ExecuteAsync(object parameters)
         {
             if(parameters is not CreateRoomViewModel createRoomViewModel)
             {

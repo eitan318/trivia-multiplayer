@@ -4,6 +4,7 @@ using ClientApp.Services;
 using System.Windows.Input;
 using ClientApp.Models.Requests;
 using ClientApp.Stores;
+using System.Diagnostics;
 
 namespace ClientApp.ViewModels
 {
@@ -13,21 +14,20 @@ namespace ClientApp.ViewModels
         private CancellationTokenSource _refreshRoomsCTS;
         private readonly int refreshMS = 300;
         private RequestsExchangeService _requestsExchangeService;
+        private readonly RoomDataStore _roomDataStore;
         public Waiting1v1ViewModel(
             LeaveWaitingListCommand leaveWaitingListCommand,
             Join1v1WaitingListCommand join1V1WaitingListCommand,
+            Set1v1GameSettingsCommand set1v1GameSettingsCommand,
             RequestsExchangeService requestsExchangeService,
             NavigateCommand<GameAnsweringViewModel> start1v1GameCommand, 
             AmIAdminStore amIAdminStore,
-            RoomDataStore roomDataStore)
+            Is1v1GameStore is1V1GameStore)
         {
             amIAdminStore.AmIAdmin = false;
-            roomDataStore.CurrentRoomData = new Models.RoomDataModel();
-            roomDataStore.CurrentRoomData.Id = 0;
-            roomDataStore.CurrentRoomData.TimePerQuestion = 10;
-            roomDataStore.CurrentRoomData.RoomName = "dfs";
-            roomDataStore.CurrentRoomData.ScoreShowingTime = 3;
-            roomDataStore.CurrentRoomData.NumOfQuestionsInGame = 3;
+            is1V1GameStore.is1v1Game = true;
+
+            this._set1v1GameSettingsCmd = set1v1GameSettingsCommand;
 
             this.LeaveWaitingListCmd = leaveWaitingListCommand;
             this.Start1v1GameCommand = start1v1GameCommand;
@@ -35,15 +35,37 @@ namespace ClientApp.ViewModels
         }
 
 
-        public ICommand LeaveWaitingListCmd { get; set; }
+        private IAsyncCommand _set1v1GameSettingsCmd;
+        public IAsyncCommand LeaveWaitingListCmd { get; set; }
         public ICommand Start1v1GameCommand { get; set; }
 
-        public override void OnNavigatedTo()
+        public override async void OnNavigatedTo()
         {
             base.OnNavigatedTo();
+
+            // Execute the command asynchronously
+            try
+            {
+                if (_set1v1GameSettingsCmd is IAsyncCommand asyncCommand)
+                {
+                    await asyncCommand.ExecuteAsync(null);
+                }
+                else
+                {
+                    _set1v1GameSettingsCmd.Execute(null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error executing _set1v1GameSettingsCmd: {ex.Message}");
+            }
+
+            // Start the periodic check
             _refreshRoomsCTS = new CancellationTokenSource();
-            Task.Run(() => PeriodicallyCheckForMatch(_refreshRoomsCTS.Token)); 
+            _ = PeriodicallyCheckForMatch(_refreshRoomsCTS.Token);
         }
+
+
 
         public override void OnNavigatedAway()
         {
@@ -88,7 +110,7 @@ namespace ClientApp.ViewModels
                 return;
             }
 
-            if(responseInfo.Response.Status != 0) 
+            if (responseInfo.Response.Status != 0) 
             {
                 this.ErrorMessage = responseInfo.Response.Errors.GeneralError;
             }
@@ -97,6 +119,7 @@ namespace ClientApp.ViewModels
                 this.Start1v1GameCommand.Execute(null);
             }
         }
+
 
     }
 }

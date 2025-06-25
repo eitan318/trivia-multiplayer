@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace ClientApp.Commands
 {
-    public class LogoutCommand : CommandBase
+    public class LogoutCommand : CommandBase, IAsyncCommand
     {
         private INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
@@ -26,7 +26,7 @@ namespace ClientApp.Commands
         /// <summary>
         /// Logs the user out and navigates to the LoginPage if the logout is successful.
         /// </summary>
-        public override async void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             ResponseInfo<LogoutResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<LogoutResponse>(RequestsCodes.LogoutRequest);
 

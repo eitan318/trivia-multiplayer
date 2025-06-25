@@ -94,7 +94,7 @@ public partial class App : Application
         services.AddTransient(typeof(NavigateCommand<>));
         services.AddTransient<LogoutCommand>();
         services.AddTransient<CreateRoomCommand>();
-        services.AddTransient<JoinCommand>();
+        services.AddTransient<JoinRoomCommand>();
         services.AddTransient<LeaveGameCommand>();
         services.AddTransient<LeaveRoomCommand>();
         services.AddTransient<LoginCommand>();
@@ -106,6 +106,7 @@ public partial class App : Application
         services.AddTransient<SubmitPasswordResetEmailCommand>();
         services.AddTransient<Join1v1WaitingListCommand>();
         services.AddTransient<LeaveWaitingListCommand>();
+        services.AddTransient<Set1v1GameSettingsCommand>();
 
 
 
@@ -141,6 +142,7 @@ public partial class App : Application
         services.AddSingleton<NavigationStore>();
         services.AddSingleton<RoomDataStore>();
         services.AddSingleton<AmIAdminStore>();
+        services.AddSingleton<Is1v1GameStore>();
 
 
         // Register MainWindow

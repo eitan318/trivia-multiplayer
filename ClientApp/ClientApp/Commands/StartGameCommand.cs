@@ -5,7 +5,7 @@ using ClientApp.ViewModels;
 
 namespace ClientApp.Commands
 {
-    class StartGameCommand : CommandBase
+    class StartGameCommand : CommandBase, IAsyncCommand
     {
         private INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
@@ -19,7 +19,7 @@ namespace ClientApp.Commands
 
         }
 
-        public override async void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             if(parameter is not RoomAdminViewModel roomAdminViewModel)
             {

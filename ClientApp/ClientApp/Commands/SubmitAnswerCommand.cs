@@ -5,7 +5,7 @@ using ClientApp.ViewModels;
 
 namespace ClientApp.Commands
 {
-    public class SubmitAnswerCommand : CommandBase
+    public class SubmitAnswerCommand : CommandBase, IAsyncCommand
     {
         private readonly RequestsExchangeService _requestsExchangeService;
         private readonly INavigationService _navigationService;
@@ -17,7 +17,7 @@ namespace ClientApp.Commands
             _navigationService = navigationService;
         }
 
-        public override async void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
             if (parameter is not GameAnsweringViewModel gameAnsweringViewModel)
             {

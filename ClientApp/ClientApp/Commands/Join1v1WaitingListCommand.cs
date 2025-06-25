@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Commands
 {
-    class Join1v1WaitingListCommand : CommandBase
+    class Join1v1WaitingListCommand : CommandBase, IAsyncCommand
     {
         private INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
@@ -23,7 +23,7 @@ namespace ClientApp.Commands
             this._requestsExchangeService = requestsExchangeService;
         }
 
-        public override async void Execute(object parameters)
+        public override async Task ExecuteAsync(object parameters)
         {
             if (parameters is not MenuViewModel menuViewModel) 
             {

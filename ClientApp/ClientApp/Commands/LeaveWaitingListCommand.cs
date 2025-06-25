@@ -6,7 +6,7 @@ using ClientApp.Stores;
 
 namespace ClientApp.Commands
 {
-    class LeaveWaitingListCommand : CommandBase
+    class LeaveWaitingListCommand : CommandBase, IAsyncCommand
     {
         private INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;

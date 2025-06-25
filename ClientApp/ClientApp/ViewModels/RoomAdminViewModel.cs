@@ -25,8 +25,10 @@ namespace ClientApp.ViewModels
             UserStore userState,
             StartGameCommand startGameCommand,
             LeaveRoomCommand leaveRoomCommand,
+            Is1v1GameStore is1v1GameStore,
             AmIAdminStore amIAdminStore)
         {
+            is1v1GameStore.is1v1Game = false;
             amIAdminStore.AmIAdmin = true;
 
             this.userStore = userState;

@@ -52,7 +52,9 @@ public:
 
     GeneralResponseErrors leaveWaitingList(const LoggedUser& loggedUser);
 
-    std::shared_ptr<RoomPreview> getGameRoomPreview();
+
+
+    std::shared_ptr<RoomPreview> getDefault1v1GameSettings();
     std::pair<GeneralResponseErrors, std::shared_ptr<Game>> didPlayerFoundMatch(const LoggedUser& loggedUser);
 
 };
