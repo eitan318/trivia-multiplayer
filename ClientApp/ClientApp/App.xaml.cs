@@ -63,7 +63,7 @@ public partial class App : Application
         services.AddSingleton<CreateRoomViewModel>();
         services.AddSingleton<JoinRoomViewModel>();
         services.AddSingleton<ErrorViewModel>();
-        services.AddTransient<GameAnsweringViewModel>();
+        services.AddSingleton<GameAnsweringViewModel>();
         services.AddSingleton<GameResultsViewModel>();
         services.AddSingleton<WaitingBetweenQuestionsViewModel>();
         services.AddSingleton<GameScoreBoardViewModel>();

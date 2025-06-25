@@ -50,7 +50,10 @@ namespace ClientApp.Services
 
         public FrameworkElement GetView(object viewModel)
         {
-            if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
+            if (viewModel == null)
+            {
+                throw new ArgumentNullException(nameof(viewModel));
+            }
 
             var viewModelType = viewModel.GetType();
             if (!_viewModelViewMap.TryGetValue(viewModelType, out var viewType))
@@ -58,17 +61,23 @@ namespace ClientApp.Services
                 throw new InvalidOperationException($"No view was mapped to {viewModelType.FullName}.");
             }
 
-            var view = _serviceProvider.GetService(viewType) as FrameworkElement;
-
-            if (view == null)
+            FrameworkElement? view = null; 
+            App.Current.Dispatcher.Invoke(() =>
             {
-                throw new InvalidOperationException($"The view {viewType.FullName} could not be resolved.");
-            }
+                view = _serviceProvider.GetService(viewType) as FrameworkElement;
+                 if (view == null)
+                {
+                    throw new InvalidOperationException($"The view {viewType.FullName} could not be resolved.");
+                }
 
-            // Set the DataContext of the view to the ViewModel
-            view.DataContext = viewModel;
+                // Set the DataContext of the view to the ViewModel
+                view.DataContext = viewModel;
+            });
+
+           
             return view;
         }
+
     }
 }
 

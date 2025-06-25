@@ -28,7 +28,6 @@ namespace ClientApp.Services
             }
             _navigationStore.CurrentViewModel = viewModel;
             ChangeView(viewModel);
-
         }
 
 
@@ -49,13 +48,16 @@ namespace ClientApp.Services
         private void ChangeView(ScreenViewModelBase viewModel)
         {
             var viewLocator = _serviceProvider.GetService<ViewLocator>();
-            var view = viewLocator.GetView(viewModel);
-
-            var mainWindow = Application.Current.MainWindow;
-            if (mainWindow is MainWindow window)
+            App.Current.Dispatcher.Invoke(() =>
             {
-                window.MainContentFrame.Content = view;
-            }
+                var view = viewLocator.GetView(viewModel);
+
+                var mainWindow = Application.Current.MainWindow;
+                if (mainWindow is MainWindow window)
+                {
+                    window.MainContentFrame.Content = view;
+                }
+            });
         }
     }
 }

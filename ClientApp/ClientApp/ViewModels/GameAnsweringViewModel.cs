@@ -45,7 +45,10 @@ namespace ClientApp.ViewModels
 
         public override async void OnNavigatedTo()
         {
-            SelectedAnswerIndex = -1;
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                SelectedAnswerIndex = -1;
+            });
             await NextQuestion();
         }
 

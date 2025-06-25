@@ -70,6 +70,7 @@ namespace ClientApp.ViewModels
                 this._navigationService.NavigateTo<GameScoreBoardViewModel>();
             if (response.GameStatus == GameStatus.GameResultsShow)
                 this._navigationService.NavigateTo<GameResultsViewModel>();
+            
         }
 
     }

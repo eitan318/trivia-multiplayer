@@ -122,7 +122,11 @@ namespace ClientApp.ViewModels
 
             if (roomState.RoomStatus == RoomStatus.StartingGame)
             {
-                _navigationService.NavigateTo<GameAnsweringViewModel>();
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                     _navigationService.NavigateTo<GameAnsweringViewModel>();
+                });
+
             }
         }
     }
