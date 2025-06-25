@@ -4,6 +4,7 @@
 #include "MyException.hpp"
 #include "RegexValidator.hpp"
 #include "UserRecord.hpp"
+#include "HashService.hpp"
 #include <string>
 
 LoginManager::LoginManager(IDatabase& database) : m_database(database) {}
@@ -16,11 +17,14 @@ LoginResponseErrors LoginManager::login(const std::string username,
     const std::string password) {
     LoginResponseErrors errors;
 
+    std::hash <std::string> hash;
+    unsigned long hashedPassword = hash(password);
+
     if (this->m_loggedUsers.find(username) != m_loggedUsers.end()) {
         errors.generalError = "User already logged in";
     }
     else if (!this->m_database.doesUserExist(username) ||
-        !this->m_database.doesPasswordMatch(username, password)) {
+        !this->m_database.doesPasswordMatch(username, hashedPassword)) {
         errors.generalError = "Unknown username or wrong password";
     }
 
@@ -95,7 +99,7 @@ LoginManager::resetPassword(const std::string& email,
     }
 
     if (resetPasswordErrors.statusCode() == 0) {
-        this->m_database.updatePassword(userRecord.username, newPassword);
+        this->m_database.updatePassword(userRecord.username, HashService::HashString(newPassword));
         this->prevResetPasswordTocken = resetPasswordTocken;
     }
 
@@ -153,9 +157,12 @@ SignupResponseErrors LoginManager::signup(const UserRecord& userRecord) const {
             RegexValidator::birthDateRegexDescription.data();
     }
 
+    std::hash <std::string> hash;
+    unsigned long hashedPassword = hash(userRecord.password);
+
 
     if (signupErrors.statusCode() == 0) {
-        this->m_database.addNewUser(userRecord);
+        this->m_database.addNewUser(userRecord, hashedPassword);
     }
 
     return signupErrors;

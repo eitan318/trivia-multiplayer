@@ -43,14 +43,14 @@ public:
      * @return 1 if the password matches, 0 otherwise.
      */
     virtual int doesPasswordMatch(const std::string& username,
-        const std::string& password) const = 0;
+        unsigned long password) const = 0;
 
     /**
      * @brief Adds a new user to the database.
      * @param userRecord The user information to add.
      * @return 1 if the user is successfully added, 0 otherwise.
      */
-    virtual int addNewUser(const UserRecord& userRecord) const = 0;
+    virtual int addNewUser(const UserRecord& userRecord, unsigned long hashedPassword) const = 0;
 
     /**
      * @brief Creates the initial database structure, if it doesn't already exist.
@@ -91,7 +91,7 @@ public:
      * @param newPassword The new password to set.
      */
     virtual void updatePassword(const std::string& username,
-        const std::string& newPassword) const = 0;
+        unsigned long newPasswordHash) const = 0;
 
     /**
      * @brief Retrieves the total number of questions in the database.

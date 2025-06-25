@@ -5,6 +5,7 @@
 #include "json.hpp"
 #include <io.h>
 #include <iostream>
+#include "HashService.hpp"
 
 SqliteDatabase& SqliteDatabase::getInstance() {
     static SqliteDatabase instance;
@@ -66,7 +67,7 @@ int SqliteDatabase::doesUserExist(const std::string& username) const {
 }
 
 int SqliteDatabase::doesPasswordMatch(const std::string& username,
-    const std::string& password) const {
+    unsigned long hashedPassword) const {
     const char* query = "SELECT password FROM users WHERE username = ?";
     sqlite3_stmt* stmt;
 
@@ -78,10 +79,9 @@ int SqliteDatabase::doesPasswordMatch(const std::string& username,
 
     sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
     if (sqlite3_step(stmt) == SQLITE_ROW) {
-        std::string realPassword =
-            reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
+        unsigned long realPassword = sqlite3_column_int64(stmt, 0);
         sqlite3_finalize(stmt);
-        return password == realPassword;
+        return hashedPassword == realPassword;
     }
     else {
         sqlite3_finalize(stmt);
@@ -90,7 +90,7 @@ int SqliteDatabase::doesPasswordMatch(const std::string& username,
     }
 }
 
-int SqliteDatabase::addNewUser(const UserRecord& userRecord) const {
+int SqliteDatabase::addNewUser(const UserRecord& userRecord, unsigned long hashedPassword) const {
     const char* query =
         "INSERT INTO users (username, password, email, house_address, "
         "phone_number, birth_date) VALUES (?,?,?,?,?,?)";
@@ -102,7 +102,7 @@ int SqliteDatabase::addNewUser(const UserRecord& userRecord) const {
     }
 
     sqlite3_bind_text(stmt, 1, userRecord.username.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 2, userRecord.password.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int64(stmt, 2, hashedPassword);
     sqlite3_bind_text(stmt, 3, userRecord.email.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 4, userRecord.houseAddress.c_str(), -1,
         SQLITE_TRANSIENT);
@@ -168,7 +168,7 @@ bool SqliteDatabase::createUsersTable() const {
     const char* query = R"(
         CREATE TABLE Users (
             username TEXT PRIMARY KEY,
-            password TEXT NOT NULL,
+            password INTEGER NOT NULL,
             email TEXT,
 			house_address TEXT,
 			phone_number TEXT,
@@ -653,7 +653,7 @@ unsigned int SqliteDatabase::getQuestionsCount() const {
 }
 
 void SqliteDatabase::updatePassword(const std::string& username,
-    const std::string& newPassword) const {
+    unsigned long newPasswordHash) const {
     const char* query = R"(UPDATE users SET password = ? WHERE username = ?)";
 
     sqlite3_stmt* stmt;
@@ -664,7 +664,7 @@ void SqliteDatabase::updatePassword(const std::string& username,
     }
 
     try {
-        sqlite3_bind_text(stmt, 1, newPassword.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int64(stmt, 1, newPasswordHash);
         sqlite3_bind_text(stmt, 2, username.c_str(), -1, SQLITE_TRANSIENT);
 
         if (sqlite3_step(stmt) != SQLITE_DONE) {
@@ -714,11 +714,11 @@ bool SqliteDatabase::addExampleUsers() const {
     UserRecord d5;
     d5.username = '6';
     d5.password = 'a';
-    addNewUser(d);
-    addNewUser(d1);
-    addNewUser(d2);
-    addNewUser(d3);
-    addNewUser(d4);
-    addNewUser(d5);
+    addNewUser(d, HashService::HashString(d.password));
+    addNewUser(d1, HashService::HashString(d1.password));
+    addNewUser(d2, HashService::HashString(d2.password));
+    addNewUser(d3, HashService::HashString(d3.password));
+    addNewUser(d4, HashService::HashString(d4.password));
+    addNewUser(d5, HashService::HashString(d5.password));
     return true;
 }
