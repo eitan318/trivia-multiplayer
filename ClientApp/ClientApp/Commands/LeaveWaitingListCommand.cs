@@ -1,8 +1,8 @@
 ﻿using ClientApp.Models.Responses;
-using ClientApp.Models.Requests;
 using ClientApp.Services;
 using ClientApp.ViewModels;
 using ClientApp.Stores;
+using ClientApp.Models;
 
 namespace ClientApp.Commands
 {

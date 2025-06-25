@@ -1,4 +1,3 @@
-
 namespace ClientApp.Models.Requests {
 
 class VerifyPasswordResetCodeRequest : IRequest {

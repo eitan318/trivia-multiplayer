@@ -1,5 +1,4 @@
-﻿
-namespace ClientApp.Models.Requests
+﻿namespace ClientApp.Models.Requests
 {
     
     class GetPlayersInRoomRequest : IRequest

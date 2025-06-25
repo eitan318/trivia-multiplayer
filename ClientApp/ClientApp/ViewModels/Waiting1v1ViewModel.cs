@@ -2,9 +2,9 @@
 using ClientApp.Models.Responses;
 using ClientApp.Services;
 using System.Windows.Input;
-using ClientApp.Models.Requests;
 using ClientApp.Stores;
 using System.Diagnostics;
+using ClientApp.Models;
 
 namespace ClientApp.ViewModels
 {
