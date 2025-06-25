@@ -9,8 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Assets\TriviaIcon.png" />
-    <None Remove="Assets\TriviaIcon2.png" />
     <None Remove="Assets\TriviaIcon3.ico" />
   </ItemGroup>
 
@@ -22,12 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\TriviaIcon.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\TriviaIcon2.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Assets\TriviaIcon3.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
