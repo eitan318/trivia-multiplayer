@@ -46,7 +46,7 @@ namespace ClientApp.ViewModels
         public virtual void OnNavigatedTo() { }
         public virtual void OnNavigatedAway() { }
 
-        public virtual void Dispose() { }
+
 
         public bool WindowBackBtn { get; private set; }
         public TopBarViewModel NavBarVM { get; private set; }

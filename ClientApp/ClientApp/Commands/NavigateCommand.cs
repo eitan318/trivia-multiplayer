@@ -23,6 +23,7 @@ namespace ClientApp.Commands
 
         public void Execute(object? parameter)
         {
+
             _navigationService.NavigateTo<TViewModel>();
         }
     }

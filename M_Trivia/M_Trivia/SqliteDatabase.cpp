@@ -215,7 +215,8 @@ bool SqliteDatabase::createGamesTable() const {
         CREATE TABLE Games (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             room_name TEXT NOT NULL,
-            start_time INTEGER NOT NULL
+            start_time INTEGER NOT NULL,
+            is_1v1_game INTEGER NOT NULL
         )
     )";
     sqlite3_stmt* stmt;
@@ -375,132 +376,53 @@ std::optional<PlayerResults> SqliteDatabase::getPlayerResults(const std::string&
 
 
 
-unsigned int SqliteDatabase::createGame(const std::string& roomName, time_t startTime) const {
+unsigned int SqliteDatabase::createGame(const std::string& roomName, time_t startTime, bool is1v1) const {
 
-    // Corrected SQL query string
     const char* query = R"(
-        INSERT INTO Games (room_name, start_time) VALUES (?, ?)
+        INSERT INTO Games (room_name, start_time, is_1v1_game) VALUES (?, ?, ?)
     )";
 
     sqlite3_stmt* stmt;
 
-    // Prepare the statement
     if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
         throw MyException(std::string("Failed to prepare statement: ") +
             sqlite3_errmsg(db));
     }
 
-    // Bind the roomName parameter
     if (sqlite3_bind_text(stmt, 1, roomName.c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK) {
         sqlite3_finalize(stmt);
         throw MyException(std::string("Failed to bind roomName parameter: ") +
             sqlite3_errmsg(db));
     }
 
-    // Bind the formatted startTime parameter
     if (sqlite3_bind_int64(stmt, 2, static_cast<sqlite3_int64>(startTime)) != SQLITE_OK) {
         sqlite3_finalize(stmt);
         throw MyException(std::string("Failed to bind startTime parameter: ") +
             sqlite3_errmsg(db));
     }
 
-    // Execute the statement
+    if (sqlite3_bind_int64(stmt, 3, static_cast<sqlite3_int64>(is1v1)) != SQLITE_OK) {
+        sqlite3_finalize(stmt);
+        throw MyException(std::string("Failed to bind is_1v1_game parameter: ") +
+            sqlite3_errmsg(db));
+    }
+
     if (sqlite3_step(stmt) != SQLITE_DONE) {
         sqlite3_finalize(stmt);
         throw MyException(std::string("Failed to execute statement: ") +
             sqlite3_errmsg(db));
     }
 
-    // Get the last inserted row ID (gameId)
     unsigned int gameId = static_cast<unsigned int>(sqlite3_last_insert_rowid(db));
 
-    // Finalize the statement
     sqlite3_finalize(stmt);
 
     return gameId;
 }
 
 
-int SqliteDatabase::getNumOfTotalAnswers(const std::string& username) const {
-    const char* query = "SELECT COUNT(*) FROM answers WHERE username = ? AND NOT chosen_answer = -1";
-    sqlite3_stmt* stmt;
 
-    if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
-        throw std::runtime_error(std::string("Failed to prepare SQL statement:") + sqlite3_errmsg(db));
-    }
 
-    sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
-
-    int numOfTotalAnswers = 0;
-    if (sqlite3_step(stmt) == SQLITE_ROW) {
-        numOfTotalAnswers = sqlite3_column_int(stmt, 0);
-    }
-
-    sqlite3_finalize(stmt);
-    return numOfTotalAnswers;
-}
-
-int SqliteDatabase::getNumOfTotalCorrectAnswers(
-    const std::string& username) const {
-    const char* query =
-        "SELECT COUNT(*) FROM answers WHERE username = ? AND chosen_answer = 0";
-    sqlite3_stmt* stmt;
-
-    if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
-        throw std::runtime_error(std::string("Failed to prepare SQL statement: ") + sqlite3_errmsg(db));
-    }
-
-    sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
-
-    int numOfCorrectAnswers = 0;
-    if (sqlite3_step(stmt) == SQLITE_ROW) {
-        numOfCorrectAnswers = sqlite3_column_int(stmt, 0);
-    }
-
-    sqlite3_finalize(stmt);
-    return numOfCorrectAnswers;
-}
-
-int SqliteDatabase::getNumOfPlayerGames(const std::string& username) const {
-    const char* query =
-        "SELECT COUNT(DISTINCT game_id) FROM answers WHERE username = ?";
-    sqlite3_stmt* stmt;
-
-    if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
-        throw std::runtime_error(std::string("Failed to prepare SQL statement: ") + sqlite3_errmsg(db));
-    }
-
-    sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
-
-    int games = 0;
-    if (sqlite3_step(stmt) == SQLITE_ROW) {
-        games = sqlite3_column_int(stmt, 0);
-    }
-
-    sqlite3_finalize(stmt);
-    return games;
-}
-
-float SqliteDatabase::getAvgAnswerTime(const std::string& username) const {
-    const char* query = "SELECT AVG(answer_time) FROM answers WHERE username = ? AND NOT chosen_answer = -1";
-    sqlite3_stmt* stmt;
-
-    if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
-        throw std::runtime_error(std::string("Failed to prepare SQL statement: ") + sqlite3_errmsg(db));
-    }
-
-    sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
-
-    double avgAnswerTime = 0.0f; // Default value
-    if (sqlite3_step(stmt) == SQLITE_ROW) {
-        if (sqlite3_column_type(stmt, 0) != SQLITE_NULL) {
-            avgAnswerTime = sqlite3_column_double(stmt, 0);
-        }
-    }
-
-    sqlite3_finalize(stmt);
-    return avgAnswerTime;
-}
 
 UserRecord SqliteDatabase::getUserRecord(const std::string& email) const {
     const char* query =
@@ -567,11 +489,12 @@ UserRecord SqliteDatabase::getUserRecord(const std::string& email) const {
     }
 }
 
-std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit) const {
+
+std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit, bool in1v1) const {
     const char* query = R"(
         SELECT a.username, a.game_id, g.room_name, g.start_time, SUM(a.score) AS total_score
         FROM answers a
-        JOIN Games g ON a.game_id = g.id
+        JOIN Games g ON a.game_id = g.id AND g.is_1v1_game = ?
         GROUP BY a.game_id, a.username
         ORDER BY total_score DESC
         LIMIT ?;
@@ -585,7 +508,8 @@ std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit) const {
         throw std::runtime_error(std::string("Failed to prepare SQL statement: ") + sqlite3_errmsg(db));
     }
 
-    sqlite3_bind_int(stmt, 1, limit);
+    sqlite3_bind_int(stmt, 1, in1v1);
+    sqlite3_bind_int(stmt, 2, limit);
 
     for (unsigned int i = 1; sqlite3_step(stmt) == SQLITE_ROW; i++) {
         HighScoreInfo bsi;
@@ -602,6 +526,48 @@ std::vector<HighScoreInfo> SqliteDatabase::getBestScores(int limit) const {
     sqlite3_finalize(stmt);
 
     return results;
+}
+
+PersonalStatistics SqliteDatabase::getPersonalStatistics(const std::string& username, bool is1v1Game) const
+{
+    const char* query = R"(
+        SELECT 
+            COUNT(*) FILTER (WHERE chosen_answer = 0) AS correct_answer_count,
+            COUNT(DISTINCT game_id) AS num_of_player_games,
+            COUNT(*) FILTER (WHERE chosen_answer != -1) AS total_answer_count,
+            AVG(answer_time) AS avg_answer_time 
+        FROM answers a
+        JOIN games g ON a.game_id = g.id
+        WHERE a.username = ? AND g.is_1v1_game = ?
+    )";
+
+    sqlite3_stmt* stmt;
+
+    if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
+        throw std::runtime_error(
+            std::string("Failed to prepare SQL statement: ") + sqlite3_errmsg(db));
+    }
+
+    // Bind parameters
+    sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 2, static_cast<int>(is1v1Game));
+
+    PersonalStatistics personalStats;
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        personalStats = PersonalStatistics(
+            username,
+            sqlite3_column_int(stmt, 0),  // correct_answer_count
+            sqlite3_column_int(stmt, 1),  // num_of_player_games
+            sqlite3_column_int(stmt, 2),  // total_answer_count
+            sqlite3_column_type(stmt, 3) != SQLITE_NULL
+            ? sqlite3_column_double(stmt, 3)  // avg_answer_time
+            : 0.0  
+        );
+    }
+
+    sqlite3_finalize(stmt);
+    return personalStats;
 }
 
 std::vector<Question> SqliteDatabase::getRandQuestions(int amount) const {

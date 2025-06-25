@@ -12,7 +12,6 @@ namespace ClientApp.ViewModels
     class CreateRoomViewModel : ScreenViewModelBase
     {
         private readonly RoomDataStore _roomDataStore;
-        public TopBarViewModel TopBarVM { get; }
 
         /// <summary>
         /// Constructor for initializing the ViewModel.
@@ -22,7 +21,6 @@ namespace ClientApp.ViewModels
             TopBarViewModel topBarViewModel,
             CreateRoomCommand createRoomCommand) : base(true)
         {
-            this.TopBarVM = topBarViewModel;
             _roomDataStore = roomDataStore;
             _roomDataStore.CurrentRoomData = new RoomDataModel();
 

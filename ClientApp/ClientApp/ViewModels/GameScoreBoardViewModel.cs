@@ -76,9 +76,8 @@ namespace ClientApp.ViewModels
 
         private async Task CheckGameStatus()
         {
-            GetGameStateRequest getRoomStatusRequest = new GetGameStateRequest();
             ResponseInfo<GetGameStateResponse> responseInfo =
-                await _requestsExchangeService.ExchangeRequest<GetGameStateResponse>(getRoomStatusRequest);
+                await _requestsExchangeService.ExchangeRequest<GetGameStateResponse>(RequestsCodes.GetGameStateRequrst);
 
 
             if (!responseInfo.NormalResponse)
@@ -93,8 +92,7 @@ namespace ClientApp.ViewModels
 
         private async Task GetPlayersResults() 
         {
-            GetGameResultRequest getPlayersResultsrequest = new GetGameResultRequest();
-            ResponseInfo<GetGameResultsResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<GetGameResultsResponse>(getPlayersResultsrequest);
+            ResponseInfo<GetGameResultsResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<GetGameResultsResponse>(RequestsCodes.GetGameResultRequest);
             
             if (!responseInfo.NormalResponse)
                 return;

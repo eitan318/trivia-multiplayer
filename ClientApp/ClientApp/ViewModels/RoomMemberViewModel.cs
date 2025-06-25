@@ -24,8 +24,10 @@ namespace ClientApp.ViewModels
             UserStore userStore,
             RequestsExchangeService requestsExchangeService,
             AmIAdminStore amIAdminStore,
+            Is1v1GameStore is1v1GameStore,
             LeaveRoomCommand leaveRoomCommand)
         {
+            is1v1GameStore.is1v1Game = false;
             amIAdminStore.AmIAdmin = false;
 
             this._navigationService = navigationService;
@@ -71,7 +73,7 @@ namespace ClientApp.ViewModels
 
         public RoomDataStore RoomDataStore { get; set; }
 
-        public ICommand LeaveRoomCmd { get; }
+        public IAsyncCommand LeaveRoomCmd { get; }
 
         private async Task PeriodicallyCheckRoomStateLoop(CancellationToken token)
         {
@@ -91,9 +93,8 @@ namespace ClientApp.ViewModels
 
         private async Task PeriodicallyCheckRoomState()
         {
-            var getRoomStatusRequest = new GetRoomStateRequest();
             ResponseInfo<GetRoomStateResponse> responseInfo =
-                await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(getRoomStatusRequest);
+                await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(RequestsCodes.GetRoomStateRequest);
             
             if (!responseInfo.NormalResponse)
                 return;
@@ -118,12 +119,16 @@ namespace ClientApp.ViewModels
 
             if (roomState.RoomStatus == RoomStatus.Closing)
             {
-                LeaveRoomCmd.Execute(null);
+                LeaveRoomCmd.ExecuteAsync(null);
             }
 
             if (roomState.RoomStatus == RoomStatus.StartingGame)
             {
-                _navigationService.NavigateTo<GameAnsweringViewModel>();
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                     _navigationService.NavigateTo<GameAnsweringViewModel>();
+                });
+
             }
         }
     }

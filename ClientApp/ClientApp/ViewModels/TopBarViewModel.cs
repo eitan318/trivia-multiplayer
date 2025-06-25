@@ -1,13 +1,13 @@
 ﻿using ClientApp.Commands;
 using ClientApp.Services;
 using ClientApp.Stores;
+using System.ComponentModel;
 using System.Windows.Input;
 
 namespace ClientApp.ViewModels
 {
     public class TopBarViewModel : ViewModelBase
     {
-        private readonly INavigationService _navigationService;
         private readonly NavigationStore _navigationStore;
         private readonly UserStore _userStore;
 
@@ -15,30 +15,39 @@ namespace ClientApp.ViewModels
 
         public ICommand LogoutCmd { get; }
 
-        public ICommand BackCmd => new RelayCommand(
-            _ => _navigationService.GoBack()
-        );
+        public ICommand BackCmd { get; }
 
-        public bool ShowBackButton => _navigationStore.CurrentViewModel.NavBarBackBtn;
+        public bool ShowBackButton => _navigationStore.CurrentViewModel?.NavBarBackBtn ?? false;
 
-        public TopBarViewModel(LogoutCommand logoutCmd,
-            UserStore userStore,
-            INavigationService navigationService,
-            NavigationStore navigationStore)
+        public TopBarViewModel(LogoutCommand logoutCmd, 
+            UserStore userStore, 
+            NavigationStore navigationStore,
+            INavigationService navigationService)
         {
-            this._navigationService = navigationService;
             _navigationStore = navigationStore;
-            LogoutCmd = logoutCmd;
             _userStore = userStore;
 
-            // Subscribe to changes in the UserStore
-            _userStore.PropertyChanged += (s, e) =>
+            LogoutCmd = logoutCmd;
+            BackCmd = new RelayCommand(_ => navigationService.GoBack());
+
+            _navigationStore.PropertyChanged += NavigationStore_PropertyChanged;
+            _userStore.PropertyChanged += UserStore_PropertyChanged;
+        }
+
+        private void NavigationStore_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(NavigationStore.CurrentViewModel))
             {
-                if (e.PropertyName == nameof(UserStore.Username))
-                {
-                    OnPropertyChanged(nameof(TopBarUsername)); // Notify that Username has changed
-                }
-            };
+                OnPropertyChanged(nameof(ShowBackButton));
+            }
+        }
+
+        private void UserStore_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(UserStore.Username))
+            {
+                OnPropertyChanged(nameof(TopBarUsername));
+            }
         }
     }
 }

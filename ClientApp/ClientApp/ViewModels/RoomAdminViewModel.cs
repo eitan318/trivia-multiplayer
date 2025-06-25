@@ -25,8 +25,10 @@ namespace ClientApp.ViewModels
             UserStore userState,
             StartGameCommand startGameCommand,
             LeaveRoomCommand leaveRoomCommand,
+            Is1v1GameStore is1v1GameStore,
             AmIAdminStore amIAdminStore)
         {
+            is1v1GameStore.is1v1Game = false;
             amIAdminStore.AmIAdmin = true;
 
             this.userStore = userState;
@@ -102,9 +104,8 @@ namespace ClientApp.ViewModels
 
         private async Task PeriodicallyCheckRoomState()
         {
-            var getRoomStatusRequest = new GetRoomStateRequest();
             ResponseInfo<GetRoomStateResponse> responseInfo =
-                await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(getRoomStatusRequest);
+                await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(RequestsCodes.GetRoomStateRequest);
             if (!responseInfo.NormalResponse)
                 return;
             GetRoomStateResponse response = responseInfo.Response;

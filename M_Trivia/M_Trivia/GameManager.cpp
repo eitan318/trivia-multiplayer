@@ -47,11 +47,11 @@ void GameManager::leaveGame(std::shared_ptr<Game> game, std::shared_ptr<RoomPrev
 }
 
 
-std::shared_ptr<Game> GameManager::createGame(std::shared_ptr<RoomPreview> roomPreview)
+std::shared_ptr<Game> GameManager::createGame(std::shared_ptr<RoomPreview> roomPreview, bool is1v1)
 {
     std::lock_guard<std::mutex> lock(m_gamesMutex); 
     std::vector<Question> questions = this->m_database.getRandQuestions(roomPreview->roomData.numOfQuestionsInGame);
-    unsigned int gameId = this->m_database.createGame(roomPreview->roomData.name, std::time(nullptr));
+    unsigned int gameId = this->m_database.createGame(roomPreview->roomData.name, std::time(nullptr), is1v1);
     std::shared_ptr<Game> game = std::make_shared<Game>(questions, roomPreview, gameId);
 
     this->m_gamesByRoomId[roomPreview->roomData.id] = game;

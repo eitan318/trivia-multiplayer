@@ -6,7 +6,7 @@ using ClientApp.ViewModels;
 
 namespace ClientApp.Commands
 {
-    class LeaveRoomCommand : CommandBase
+    class LeaveRoomCommand : CommandBase, IAsyncCommand
     {
         private INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;

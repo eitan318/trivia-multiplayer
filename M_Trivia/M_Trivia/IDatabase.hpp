@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include "PlayerResults.hpp"
+#include "PersonalStatistics.hpp"
 
 /**
  * @brief Interface for a database handling user and game-related data.
@@ -62,36 +63,6 @@ public:
      * @return A list of questions.
      */
     virtual std::vector<Question> getRandQuestions(int amount) const = 0;
-
-    /**
-     * @brief Retrieves the total number of answers submitted by a user.
-     * @param username The username to query.
-     * @return The total number of answers submitted.
-     */
-    virtual int getNumOfTotalAnswers(const std::string& username) const = 0;
-
-    /**
-     * @brief Retrieves the total number of correct answers submitted by a user.
-     * @param username The username to query.
-     * @return The total number of correct answers.
-     */
-    virtual int
-        getNumOfTotalCorrectAnswers(const std::string& username) const = 0;
-
-    /**
-     * @brief Retrieves the total number of games played by a user.
-     * @param username The username to query.
-     * @return The total number of games played.
-     */
-    virtual int getNumOfPlayerGames(const std::string& username) const = 0;
-
-    /**
-     * @brief Retrieves the average answer time for a user.
-     * @param username The username to query.
-     * @return The average answer time in seconds.
-     */
-    virtual float getAvgAnswerTime(const std::string& username) const = 0;
-
     /**
      * @brief Checks if an email exists in the database.
      * @param email The email to check.
@@ -111,7 +82,7 @@ public:
      * @param limit The maximum number of high scores to retrieve.
      * @return A vector of HighScoreInfo objects.
      */
-    virtual std::vector<HighScoreInfo> getBestScores(int limit) const = 0;
+    virtual std::vector<HighScoreInfo> getBestScores(int limit, bool in1v1) const = 0;
 
     /**
      * @brief Updates a user's password.
@@ -147,7 +118,7 @@ public:
      *
      * @return The ID of the newly created game.
      */
-    virtual unsigned int createGame(const std::string& roomName, time_t startTime) const = 0;
+    virtual unsigned int createGame(const std::string& roomName, time_t startTime, bool is1v1) const = 0;
 
     /**
      * Retrieves the results of a player for a specific game.
@@ -158,6 +129,8 @@ public:
      */
     virtual std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId, unsigned int questionAmount) const = 0;
 
+
+    virtual PersonalStatistics getPersonalStatistics(const std::string& username, bool is1v1Game) const = 0;
 
     
     /**

@@ -7,7 +7,9 @@
 #include "Requests.hpp"
 
 GameRequestHandler::GameRequestHandler(const LoggedUser& user,
-    RequestHandlerFactory& handlerFactory, std::shared_ptr<Game> game, std::shared_ptr<RoomPreview> roomPreview, std::shared_ptr<IRequestHandler> prevRequestHandler) :
+    RequestHandlerFactory& handlerFactory, std::shared_ptr<Game> game,
+    std::shared_ptr<RoomPreview> roomPreview,
+    std::shared_ptr<IRequestHandler> prevRequestHandler) :
     m_gameManager(handlerFactory.getGameManager()),
     m_handlerFactory(handlerFactory),
     m_user(user),
@@ -61,7 +63,9 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& requestInfo)
 void GameRequestHandler::Cleanup()
 {
     this->m_game->playerDeactivate(this->m_user);
-    this->m_handlerFactory.getRoomManger().leaveRoom(this->m_roomPreview->roomData.id, this->m_user);
+    if (this->m_roomPreview->roomData.id != 0) {
+        this->m_handlerFactory.getRoomManger().leaveRoom(this->m_roomPreview->roomData.id, this->m_user);
+    }
     this->m_handlerFactory.getLoginManager().logout(this->m_user);
 }
 

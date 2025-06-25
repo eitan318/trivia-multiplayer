@@ -13,4 +13,5 @@ namespace ClientApp.Models.Responses
 
         public GetQuestionResponseData Data { get; private set; }
     }
+
 }

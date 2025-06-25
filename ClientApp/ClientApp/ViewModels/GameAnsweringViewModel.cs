@@ -9,7 +9,6 @@ using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
-        
     class GameAnsweringViewModel : ScreenViewModelBase
     {
         private readonly RequestsExchangeService _requestsExchangeService;
@@ -19,8 +18,8 @@ namespace ClientApp.ViewModels
         private uint _questionNumber;
         private QuestionInfo _questionInfo;
         private string _errorMessage;
-        private int _selectedAnswerIndex = -1; // -1 indicates no selection
-        private List<PossibleAnswerViewModel> _possibleAnswers; // Cached list
+        private int _selectedAnswerIndex = -1;
+        private List<PossibleAnswerViewModel> _possibleAnswers;
         private readonly INavigationService _navigationService;
         public CountdownTimerViewModel Timer => _countdownTimerViewModel;
 
@@ -38,13 +37,18 @@ namespace ClientApp.ViewModels
             LeaveGameCmd = leaveGameCommand;
 
             _countdownTimerViewModel = new CountdownTimerViewModel(_msTimerInterval);
+            Timer.Stop();
             _countdownTimerViewModel.TimerEnded += async (sender, args) => await HandleTimerEndAsync();
                 _navigationService = navigationService;
+
         }
 
         public override async void OnNavigatedTo()
         {
-            SelectedAnswerIndex = -1;
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                SelectedAnswerIndex = -1;
+            });
             await NextQuestion();
         }
 
@@ -59,15 +63,14 @@ namespace ClientApp.ViewModels
             Timer.Dispose();
         }
 
-        public ICommand SubmitCmd { get; }
-        public ICommand LeaveGameCmd { get; }
+        public IAsyncCommand SubmitCmd { get; }
+        public IAsyncCommand LeaveGameCmd { get; }
 
         public async Task NextQuestion()
         {
             try
             {
-                var getQuestionRequest = new GetQuestionRequest();
-                var questionResponseInfo = await _requestsExchangeService.ExchangeRequest<GetQuestionResponse>(getQuestionRequest);
+                var questionResponseInfo = await _requestsExchangeService.ExchangeRequest<GetQuestionResponse>(RequestsCodes.GetQuestionRequest);
 
                 if (questionResponseInfo.NormalResponse)
                 {
@@ -99,7 +102,7 @@ namespace ClientApp.ViewModels
         {
             if (SubmitCmd.CanExecute(null))
             {
-                SubmitCmd.Execute(null);
+                SubmitCmd.ExecuteAsync(null);
             }
             else
             {

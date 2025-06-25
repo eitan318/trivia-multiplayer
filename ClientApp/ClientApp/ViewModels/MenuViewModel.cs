@@ -19,12 +19,14 @@ namespace ClientApp.ViewModels
             TopBarViewModel topBarViewModel,
             NavigateCommand<CreateRoomViewModel> navToCreateRoomCommand,
             NavigateCommand<JoinRoomViewModel> navToJoinRoomCommand,
+            Join1v1WaitingListCommand join1v1WaitingListCommand,
             NavigateCommand<StatisticsViewModel> navToStatisticsCommand
             ) : base(false, topBarViewModel)
         {
             NavToCreateRoomCmd = navToCreateRoomCommand;
             NavToJoinRoomCmd = navToJoinRoomCommand;
             NavToStatisticsCmd = navToStatisticsCommand;
+            Join1v1WaitingCmd = join1v1WaitingListCommand;
         }
 
 
@@ -32,6 +34,7 @@ namespace ClientApp.ViewModels
         public ICommand NavToCreateRoomCmd { get; }
         public ICommand NavToJoinRoomCmd { get; }
         public ICommand NavToStatisticsCmd { get; }
+        public ICommand Join1v1WaitingCmd { get; }
 
 
 

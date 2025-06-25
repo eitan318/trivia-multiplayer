@@ -6,7 +6,7 @@
 #include <ranges> 
 
 
-unsigned int RoomManager::ids = 0;
+unsigned int RoomManager::ids = 1;
 
 RoomManager& RoomManager::getInstance(IDatabase& database) {
     static RoomManager instance(database);

@@ -139,6 +139,7 @@
     <ClInclude Include="IResponseErrors.hpp" />
     <ClInclude Include="LoginResponseErrors.hpp" />
     <ClInclude Include="MenuRequestHandler.hpp" />
+    <ClInclude Include="PersonalStatisticsResponseData.hpp" />
     <ClInclude Include="PlayerGameData.hpp" />
     <ClInclude Include="QuestionDificultyLevel.h" />
     <ClInclude Include="RegexValidator.hpp" />

@@ -58,9 +58,8 @@ namespace ClientApp.ViewModels
 
         private async Task CheckGameStatus()
         {
-            var getRoomStatusRequest = new GetGameStateRequest();
             ResponseInfo<GetGameStateResponse> responseInfo =
-                await _requestsExchangeService.ExchangeRequest<GetGameStateResponse>(getRoomStatusRequest);
+                await _requestsExchangeService.ExchangeRequest<GetGameStateResponse>(RequestsCodes.GetGameStateRequrst);
 
             if (!responseInfo.NormalResponse)
                 return;
@@ -71,6 +70,7 @@ namespace ClientApp.ViewModels
                 this._navigationService.NavigateTo<GameScoreBoardViewModel>();
             if (response.GameStatus == GameStatus.GameResultsShow)
                 this._navigationService.NavigateTo<GameResultsViewModel>();
+            
         }
 
     }

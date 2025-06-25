@@ -1,85 +1,56 @@
 ﻿<UserControl x:Class="ClientApp.Views.Screens.PersonalStatisticsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ClientApp.Views.Screens"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:controls="clr-namespace:ClientApp.Views.Controls"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
-             Style="{StaticResource UserControlStyle}"
-             >
+             Style="{StaticResource UserControlStyle}">
+
+    <!-- Main Content -->
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <!-- Title -->
+            <RowDefinition Height="Auto" />
+            <!-- Main Content -->
+            <RowDefinition Height="*" />
+            <!-- Error Message -->
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <Border Grid.Row="0" Style="{StaticResource TitleBorderStyle}">
+            <TextBlock Text="📊 Personal Statistics" Style="{StaticResource TitleStyle}" />
+        </Border>
 
         <!-- Main Content -->
-        <Grid Margin="20">
-            <Grid.RowDefinitions>
-                <!-- Title -->
-                <RowDefinition Height="*" />
-                <!-- Main Content -->
-                <RowDefinition Height="5*" />
-            </Grid.RowDefinitions>
-
-            <!-- Title -->
-            <Border Style="{StaticResource TitleBorderStyle}">
-                <TextBlock Text="📊 Personal Statistics" Style="{StaticResource TitleStyle}" />
-            </Border>
-
-            <!-- Main Content -->
-            <Border Grid.Row="1"
-                Margin="0,20,0,20"
-                Padding="20"
-                CornerRadius="10"
-                BorderThickness="2"
-                BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}"
-                >
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-                        <!-- Personal Info Header -->
-                        <TextBlock Text="Player Statistics Summary"
-                               FontSize="24"
-                               FontWeight="Bold"
-                               Margin="0,0,0,15"
-                               HorizontalAlignment="Center" />
-
-                        <!-- Statistics Grid -->
-                        <UniformGrid Columns="2" Margin="0,5,0,5" VerticalAlignment="Top" HorizontalAlignment="Stretch">
-                            <!-- Games Played -->
-                            <TextBlock Text="Games Played:" FontWeight="Bold" FontSize="20" />
-                            <TextBlock Text="{Binding PersonalInfo.GamesPlayed}" 
-                                   FontSize="20" 
-                                   HorizontalAlignment="Right" 
-                                   Margin="10,0,0,0" />
-
-                            <!-- Total Answers -->
-                            <TextBlock Text="Total Answers:" FontWeight="Bold" FontSize="20" />
-                            <TextBlock Text="{Binding PersonalInfo.TotalAnswers}" 
-                                   FontSize="20" 
-                                   HorizontalAlignment="Right" 
-                                   Margin="10,0,0,0" />
-
-                            <!-- Correct Answers -->
-                            <TextBlock Text="Correct Answers:" FontWeight="Bold" FontSize="20" />
-                            <TextBlock Text="{Binding PersonalInfo.TotalCorrectAnswers}" 
-                                   FontSize="20" 
-                                   HorizontalAlignment="Right" 
-                                   Margin="10,0,0,0" />
-
-                            <!-- Avg. Answer Time -->
-                            <TextBlock Text="Avg. Answer Time:" FontWeight="Bold" FontSize="20" />
-                            <TextBlock Text="{Binding PersonalInfo.AvgAnswerTime}" 
-                                   FontSize="20" 
-                                   HorizontalAlignment="Right" 
-                                   Margin="10,0,0,0" />
-                        </UniformGrid>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+                <!-- Regular Personal stats -->
+                <Border Style="{StaticResource ListItemStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Player Statistics Summary" Style="{StaticResource SubtitleStyle}" />
+                        <controls:PersonalStatisticsUserControl DataContext="{Binding PlayerRegularStats}" />
                     </StackPanel>
-                </ScrollViewer>
-            </Border>
+                </Border>
 
-            <!-- Error Message -->
-            <TextBlock Text="{Binding ErrorMessage}"
-                   Grid.Row="2"
-                       Style="{StaticResource ErrorMessageStyle}"
-                       Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
-        </Grid>
+                <!-- 1v1 Personal stats -->
+                <Border Style="{StaticResource ListItemStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Player 1v1 Statistics" Style="{StaticResource SubtitleStyle}" />
+                        <controls:PersonalStatisticsUserControl DataContext="{Binding Player1v1Stats}" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Error Message -->
+        <TextBlock Grid.Row="2"
+                   Text="{Binding ErrorMessage}"
+                   Style="{StaticResource ErrorMessageStyle}"
+                   Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
+    </Grid>
 </UserControl>

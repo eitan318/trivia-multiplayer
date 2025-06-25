@@ -11,7 +11,6 @@ namespace ClientApp.Services
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly NavigationStore _navigationStore;
-        private readonly Dictionary<Type, ScreenViewModelBase> _viewModelCache = new(); // ViewModel caching
 
         public NavigationService(IServiceProvider serviceProvider, NavigationStore navigationStore)
         {
@@ -21,42 +20,44 @@ namespace ClientApp.Services
 
         public void NavigateTo<TViewModel>() where TViewModel : ScreenViewModelBase
         {
-            var type = typeof(TViewModel);
+            var viewModel = _serviceProvider.GetService<TViewModel>();
 
-            // Check if the ViewModel is already in the cache
-            if (!_viewModelCache.TryGetValue(type, out var viewModel))
+            if (viewModel == null)
             {
-                // Resolve ViewModel via service provider and cache it
-                viewModel = _serviceProvider.GetService(type) as TViewModel;
-                if (viewModel == null)
-                    throw new InvalidOperationException($"Service for {type.Name} could not be resolved.");
-
-                _viewModelCache[type] = viewModel;
+                throw new InvalidOperationException($"ViewModel of type {typeof(TViewModel).FullName} could not be resolved.");
             }
-
-            // Set the current ViewModel
             _navigationStore.CurrentViewModel = viewModel;
+            ChangeView(viewModel);
         }
 
 
         public void GoBack()
         {
-            if(_navigationStore.CanGoBack())
+            if(CanGoBack())
             {
-                 _navigationStore.GoBack();
+                _navigationStore.GoBack();
+                ChangeView(_navigationStore.CurrentViewModel);
             }
             
         }
-
-        // Optional: Add a method to clear or remove ViewModels from the cache
-        public void ClearViewModelCache()
+        public bool CanGoBack()
         {
-            _viewModelCache.Clear();
+            return _navigationStore.CanGoBack();
         }
 
-        public void RemoveViewModelFromCache<TViewModel>() where TViewModel : ViewModelBase
+        private void ChangeView(ScreenViewModelBase viewModel)
         {
-            _viewModelCache.Remove(typeof(TViewModel));
+            var viewLocator = _serviceProvider.GetService<ViewLocator>();
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                var view = viewLocator.GetView(viewModel);
+
+                var mainWindow = Application.Current.MainWindow;
+                if (mainWindow is MainWindow window)
+                {
+                    window.MainContentFrame.Content = view;
+                }
+            });
         }
     }
 }

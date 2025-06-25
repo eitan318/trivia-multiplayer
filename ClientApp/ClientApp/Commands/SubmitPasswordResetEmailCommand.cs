@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Commands
 {
-    public class SubmitPasswordResetEmailCommand : CommandBase
+    public class SubmitPasswordResetEmailCommand : CommandBase, IAsyncCommand
     {
         private readonly RequestsExchangeService _requestsExchangeService;
         private readonly INavigationService _navigationService;
@@ -34,7 +34,7 @@ namespace ClientApp.Commands
         /// Submits the entered email address to initiate the password recovery process. 
         /// If the email is valid, the process moves to the next step; otherwise, an error message is displayed.
         /// </summary>
-        public override async void Execute(object parameters)
+        public override async Task ExecuteAsync(object parameters)
         {
             if(parameters is not EmailEntryViewModel emailEntryViewModel)
             {

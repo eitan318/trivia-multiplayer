@@ -65,5 +65,46 @@ namespace ClientApp.Services
             }
             
         }
+
+
+        internal async Task<ResponseInfo<T>> ExchangeRequest<T>(RequestsCodes requestCode) where T : class 
+        {    
+            byte[] requestData = _requestSerializer.SerializeRequest(requestCode);
+
+            byte[] codeBuffer = null;
+            byte[] payloadBuffer = null;
+            try
+            {
+                await _socketService.SendDataAsync(new ArraySegment<byte>(requestData));
+                
+                codeBuffer = await _socketService.ReceiveDataAsync(1);
+                byte[] lengthBuffer = await _socketService.ReceiveDataAsync(4);
+                int length = BitConverter.ToInt32(lengthBuffer, 0); // If length is super big..
+                payloadBuffer = await _socketService.ReceiveDataAsync(length);
+            }
+            catch (SocketException ex)
+            {
+                // Handle socket-related exceptions
+                _errorMessageStore.ErrorMessage = $"Connection error: {ex.Message}";
+                return new ResponseInfo<T>(false, null, new ErrorResponse(ex.Message));
+            }
+
+
+            byte responseCode = codeBuffer[0];
+
+            bool success = (byte)ResponsesCodes.ErrorResponse != responseCode;
+
+            if (success)
+            {
+                return new ResponseInfo<T>(success, this._responseDiserializer.DeserializeResponse<T>(payloadBuffer, responseCode), null);
+            }
+            else 
+            {
+                ErrorResponse errorResponse = this._responseDiserializer.DeserializeResponse<ErrorResponse>(payloadBuffer, responseCode);
+                this._errorMessageStore.ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
+                return new ResponseInfo<T>(success, null, errorResponse);
+            }
+            
+        }
     }
 }

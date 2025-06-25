@@ -1,10 +1,4 @@
 ﻿using ClientApp.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClientApp.Services
 {
@@ -12,5 +6,6 @@ namespace ClientApp.Services
     {
         void NavigateTo<TViewModel>() where TViewModel : ScreenViewModelBase;
         void GoBack();
+        bool CanGoBack();
     }
 }

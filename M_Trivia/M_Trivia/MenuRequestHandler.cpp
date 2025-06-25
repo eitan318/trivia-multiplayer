@@ -109,9 +109,12 @@ RequestResult
 MenuRequestHandler::getPersonalStats(const RequestInfo& requestInfo) const {
     StatisticsManager& statsManager =
         this->m_handlerFactory.getStatisticsManger();
-    PersonalStatistics ps =
-        statsManager.getPlayerStatistics(this->m_user.getUsername());
-    GetPersonalStatisticsResponse personalStatsResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, ps);
+    PersonalStatistics personalStats =
+        statsManager.getPlayerStatistics(this->m_user.getUsername(), false);
+    PersonalStatistics personal1v1Stats =
+        statsManager.getPlayerStatistics(this->m_user.getUsername(), true);
+    PersonalStatisticsResponseData stats = PersonalStatisticsResponseData { personalStats, personal1v1Stats };
+    GetPersonalStatisticsResponse personalStatsResponse((unsigned int)GENERAL_SUCCESS_RESPONSE_STATUS, stats);
 
     RequestResult requestResult(
         JsonResponsePacketSerializer::serializeResponse(personalStatsResponse),

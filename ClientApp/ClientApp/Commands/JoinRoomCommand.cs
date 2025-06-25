@@ -6,14 +6,13 @@ using ClientApp.ViewModels;
 
 namespace ClientApp.Commands
 {
-    public class JoinCommand : CommandBase
+    public class JoinRoomCommand : CommandBase, IAsyncCommand
     {
         private INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
-        public JoinCommand(
+        public JoinRoomCommand(
             INavigationService navigationService,
-            RequestsExchangeService requestsExchangeService,
-            RoomDataStore roomDataStore
+            RequestsExchangeService requestsExchangeService
             )
         {
             this._navigationService = navigationService;
@@ -28,7 +27,7 @@ namespace ClientApp.Commands
             return joinRoomViewModel.SelectedRoom != null;
         }
 
-        public override async void Execute(object parameters)
+        public override async Task ExecuteAsync(object parameters)
         {
             if (parameters is not JoinRoomViewModel joinRoomViewModel) 
             {

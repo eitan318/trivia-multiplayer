@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClientApp.Stores
 {
-    public class StoreBase
+    public class StoreBase :INotifyPropertyChanged
     {
         
         public event PropertyChangedEventHandler PropertyChanged;

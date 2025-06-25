@@ -17,7 +17,7 @@ namespace ClientApp.ViewModels
         private readonly int refreshMS = 300;
 
         public JoinRoomViewModel(
-            JoinCommand joinCommand,
+            JoinRoomCommand joinCommand,
             RequestsExchangeService requestsExchangeService,
             RoomDataStore roomDataStore) : base(true)
         {
@@ -29,12 +29,14 @@ namespace ClientApp.ViewModels
 
         public override void OnNavigatedTo()
         {
+            base.OnNavigatedTo();
             _refreshRoomsCTS = new CancellationTokenSource();
             Task.Run(() => PeriodicallyRefreshRooms(_refreshRoomsCTS.Token)); 
         }
 
         public override void OnNavigatedAway()
         {
+            base.OnNavigatedAway();
             _refreshRoomsCTS?.Cancel();
             _refreshRoomsCTS?.Dispose();
         }
@@ -133,8 +135,7 @@ namespace ClientApp.ViewModels
         {
             try
             {
-                var request = new GetRoomsRequest();
-                var responseInfo = await _requestsExchangeService.ExchangeRequest<GetRoomsResponse>(request);
+                var responseInfo = await _requestsExchangeService.ExchangeRequest<GetRoomsResponse>(RequestsCodes.GetRoomsRequest);
 
                 App.Current.Dispatcher.Invoke(() =>
                 {

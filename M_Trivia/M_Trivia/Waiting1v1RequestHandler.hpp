@@ -30,6 +30,7 @@ public:
 private:
     RequestResult leave1v1WaitingRoom(const RequestInfo& requestInfo);
     RequestResult didFoundMatch(const RequestInfo& requestInfo);
+    RequestResult get1v1GameSettings(const RequestInfo& requestInfo);
     RequestHandlerFactory& m_handlerFactory;
     LoggedUser m_user;
     Waiting1v1Manager& m_waiting1v1Manager;

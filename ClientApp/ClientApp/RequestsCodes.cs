@@ -23,5 +23,9 @@ namespace ClientApp.Models.Requests
         SubmitAnswerRequest = 19,
         GetGameResultRequest = 20, 
         GetGameStateRequrst = 21, 
+        Leave1v1WaitingListRequest = 22,    
+	    DidFound1v1MatchRequest = 23,
+	    Join1v1WaitingListRequest = 24,
+        Get1v1GameDataResquest = 25,
     }
 }
