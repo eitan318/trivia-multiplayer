@@ -15,8 +15,8 @@ public:
     bool open() override;
     bool close() override;
     int doesUserExist(const std::string&) const override;
-    int doesPasswordMatch(const std::string&, const std::string&) const override;
-    int addNewUser(const UserRecord&) const override;
+    int doesPasswordMatch(const std::string&, unsigned long hashedPassword) const override;
+    int addNewUser(const UserRecord&, unsigned long hashedPassword) const override;
     void addUserAnswer(const std::string& username, unsigned int gameId, unsigned int questionId,
         int chosenAnswerInQuestion, int score, double answerTimeSec) const override;
     std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId, unsigned int questionAmount) const;
@@ -27,7 +27,7 @@ public:
     PersonalStatistics getPersonalStatistics(const std::string& username, bool is1v1Game) const override;
     std::vector<Question> getRandQuestions(int amount) const override;
     void updatePassword(const std::string& username,
-        const std::string& newPassword) const override;
+        unsigned long newPasswordHash) const override;
     unsigned int getQuestionsCount() const override;
     bool addExampleUsers() const override;
     bool addQuestionToDB(QuestionRecord& questionRecord) const override;

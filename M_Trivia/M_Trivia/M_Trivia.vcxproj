@@ -137,6 +137,7 @@
     <ClInclude Include="GameStatus.hpp" />
     <ClInclude Include="GeneralResponseErrors.hpp" />
     <ClInclude Include="GetQuestionResponseData.hpp" />
+    <ClInclude Include="HashService.hpp" />
     <ClInclude Include="IResponseErrors.hpp" />
     <ClInclude Include="LoginResponseErrors.hpp" />
     <ClInclude Include="MenuRequestHandler.hpp" />
