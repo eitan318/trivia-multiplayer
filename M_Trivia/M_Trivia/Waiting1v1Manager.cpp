@@ -1,5 +1,7 @@
 #include "Waiting1v1Manager.hpp"
 
+unsigned int Waiting1v1Manager::ids = 0;
+
 Waiting1v1Manager::Waiting1v1Manager(GameManager& gameManager) :
     m_gameManager(gameManager),
     m_workerThread(&Waiting1v1Manager::processingPlayers, this),
@@ -22,6 +24,7 @@ Waiting1v1Manager::~Waiting1v1Manager()
     {
         std::lock_guard<std::mutex> lock(this->m_waitingListMutex);
         m_running = false;
+        m_matchedPlayers.clear();
     }
     m_condition.notify_all(); // Wake up the thread
     if (m_workerThread.joinable()) {
@@ -55,13 +58,19 @@ void Waiting1v1Manager::processingPlayers()
 
         lock.unlock();
 
-        std::shared_ptr<Game> game = this->m_gameManager.createGame(this->m_gameRoomPreview, true);
+
+        RoomPreview gameRoomPreview(this->m_gameRoomPreview);
+        gameRoomPreview.roomData.id = ids;
+        ids += 2;
+        std::shared_ptr<Game> game = this->m_gameManager.createGame(gameRoomPreview, true);
+        std::shared_ptr<RoomPreview> roomPreview = std::make_shared<RoomPreview>(gameRoomPreview);
+
 
         game->join(user1);
         game->join(user2);
 
-        this->m_matchedPlayers[user1] = game;
-        this->m_matchedPlayers[user2] = game;
+        this->m_matchedPlayers[user1] = std::pair<std::shared_ptr<Game>, std::shared_ptr<RoomPreview>>(game, roomPreview);
+        this->m_matchedPlayers[user2] = std::pair<std::shared_ptr<Game>, std::shared_ptr<RoomPreview>>(game, roomPreview);
     }
 }
 
@@ -79,6 +88,9 @@ GeneralResponseErrors Waiting1v1Manager::joinWaitingList(const LoggedUser& logge
     GeneralResponseErrors errors;
     {
         std::lock_guard<std::mutex> lock(this->m_waitingListMutex);
+        if (m_matchedPlayers.find(loggedUser) != m_matchedPlayers.end()) {
+            this->m_matchedPlayers.erase(loggedUser);
+        }
         this->m_waitingList.emplace_back(loggedUser);
     }
     m_condition.notify_one();
@@ -101,23 +113,23 @@ GeneralResponseErrors Waiting1v1Manager::leaveWaitingList(const LoggedUser& logg
 }
 
 
-RoomPreview Waiting1v1Manager::getDefault1v1GameSettings()
+RoomData Waiting1v1Manager::getDefault1v1GameSettings()
 {
-    return this->m_gameRoomPreview;
+    return this->m_gameRoomPreview.roomData;
 }
 
-std::pair<GeneralResponseErrors, std::shared_ptr<Game>> Waiting1v1Manager::didPlayerFoundMatch(const LoggedUser& loggedUser)
+
+std::tuple<GeneralResponseErrors, std::shared_ptr<Game>, std::shared_ptr<RoomPreview>>
+Waiting1v1Manager::didPlayerFoundMatch(const LoggedUser& loggedUser)
 {
     std::lock_guard<std::mutex> lock(this->m_waitingListMutex);
 
     auto it = this->m_matchedPlayers.find(loggedUser);
     if (it != this->m_matchedPlayers.end()) {
-        std::shared_ptr<Game> game = it->second;
-        this->m_matchedPlayers.erase(it);
-        return { GeneralResponseErrors{}, game }; 
+        auto [game, roomPreview] = it->second; // Extract the pair
+        return { GeneralResponseErrors{}, std::move(game), std::move(roomPreview) };
     }
 
-    return { GeneralResponseErrors("User not found in waiting list"), nullptr }; // Return error and default match status
+    return { GeneralResponseErrors("User not found in waiting list"), nullptr, nullptr }; // Return error and default match status
 }
-
 

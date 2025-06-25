@@ -3,8 +3,12 @@
 #include "Game.hpp"
 #include "GameManager.hpp"
 #include "GeneralResponseErrors.hpp"
+#include "RoomPreview.hpp"
 #include <mutex>
 #include <vector>
+#include <tuple>
+
+
 
 /**
  * @brief Manages the lifecycle of rooms in the application.
@@ -14,7 +18,7 @@ class Waiting1v1Manager
 private:
     static unsigned int ids;     ///< Counter for generating unique room IDs.
     std::vector<LoggedUser> m_waitingList;
-    std::map<LoggedUser, std::shared_ptr<Game>> m_matchedPlayers;
+    std::map<LoggedUser, std::pair<std::shared_ptr<Game>, std::shared_ptr<RoomPreview>>> m_matchedPlayers;
     mutable std::mutex m_waitingListMutex;
     RoomPreview m_gameRoomPreview;
     GameManager& m_gameManager;
@@ -50,10 +54,15 @@ public:
 
     GeneralResponseErrors joinWaitingList(const LoggedUser& loggedUser);
 
+
+
     GeneralResponseErrors leaveWaitingList(const LoggedUser& loggedUser);
 
-    RoomPreview getDefault1v1GameSettings();
+    RoomData getDefault1v1GameSettings();
 
-    std::pair<GeneralResponseErrors, std::shared_ptr<Game>> didPlayerFoundMatch(const LoggedUser& loggedUser);
+    std::tuple<GeneralResponseErrors, std::shared_ptr<Game>, std::shared_ptr<RoomPreview>> didPlayerFoundMatch(const LoggedUser& loggedUser);
+
+
+
 
 };
