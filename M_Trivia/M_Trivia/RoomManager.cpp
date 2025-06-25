@@ -37,7 +37,7 @@ GeneralResponseErrors RoomManager::createRoom(const LoggedUser& player,
 
     if (createRoonResponseErrors.statusCode() == 0) {
         std::lock_guard<std::mutex> lock(this->m_roomsMutex);
-        int roomid = ids++;
+        int roomid = ids += 2;
         roomData.id = roomid;
         std::shared_ptr<RoomPreview> roomPreview = std::make_shared<RoomPreview>(roomData, 1, RoomStatus::NotInGame);
         this->m_rooms.emplace_back(std::make_shared<Room>(roomPreview, player));

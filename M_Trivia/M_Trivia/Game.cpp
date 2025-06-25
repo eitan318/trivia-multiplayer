@@ -1,16 +1,15 @@
 #include "Game.hpp"
 
-Game::Game(const std::vector<Question>& questions, std::shared_ptr<RoomPreview> roomPreview, int gameId)
-    : m_gameId(gameId),
-    m_questions(std::move(questions)),
-    m_roomData(roomPreview->roomData),            
-    m_totalNeededPlayers(roomPreview->currPlayersAmount),
-    m_status(GameStatus::AnsweringQuestion),
-    m_currQuestionIdx(0)
+Game::Game(const std::vector<Question>& questions, RoomPreview roomPreview, int gameId)
+: m_gameId(gameId),
+m_questions(std::move(questions)),
+m_roomData(roomPreview.roomData),
+m_totalNeededPlayers(roomPreview.currPlayersAmount),
+m_status(GameStatus::AnsweringQuestion),
+m_currQuestionIdx(0)
 {
     this->m_lastQuestionStartTime = std::chrono::steady_clock::now();
 }
-
 
 
 void Game::join(const LoggedUser& player) {
@@ -24,6 +23,7 @@ GameStatus Game::getStatus() const
 {
     return this->m_status;
 }
+
 
 Game::~Game()
 {
