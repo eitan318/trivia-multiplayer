@@ -12,6 +12,8 @@ struct PersonalStatistics {
     int gamesPlayed;           
     int totalAnswers;         
     double avgAnswerTime;      
+    
+    PersonalStatistics() = default;
 
     /**
      * @brief Constructs a PersonalStatistics object with all member variables initialized.

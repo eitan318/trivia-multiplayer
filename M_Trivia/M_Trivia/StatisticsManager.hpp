@@ -47,5 +47,5 @@ public:
      * @param username The username of the player.
      * @return A PersonalStatistics object containing the player's statistics.
      */
-    PersonalStatistics getPlayerStatistics(const std::string& username) const;
+    PersonalStatistics getPlayerStatistics(const std::string& username, bool in1v1Game) const;
 };

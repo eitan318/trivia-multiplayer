@@ -130,6 +130,7 @@ public:
 #include "RoomPreview.hpp"
 #include "RoomState.hpp"
 #include "GetQuestionResponseData.hpp"
+#include "PersonalStatisticsResponseData.hpp"
 #include <string>
 
 
@@ -159,7 +160,7 @@ DEFINE_RESPONSE_WITH_DATA(Get1v1GameSettingsResponse, ResponseCodes::C_Get1v1Gam
 DEFINE_RESPONSE_WITH_DATA(GetGameResultsResponse, ResponseCodes::C_GetGameResultsResponse, IResponseErrors, std::vector<PlayerResults>, "Results");
 DEFINE_RESPONSE_WITH_DATA(GetGameStateResponse, ResponseCodes::C_GetGameStateResponse, IResponseErrors, GameStatus, "GameStatus");
 DEFINE_RESPONSE_WITH_DATA(GetHighScoreResponse, ResponseCodes::C_GetHighScoreResponse, IResponseErrors, std::vector<HighScoreInfo>, "Statistics");
-DEFINE_RESPONSE_WITH_DATA(GetPersonalStatisticsResponse, ResponseCodes::C_GetPersonalStatsResponse, IResponseErrors, PersonalStatistics, "Statistics");
+DEFINE_RESPONSE_WITH_DATA(GetPersonalStatisticsResponse, ResponseCodes::C_GetPersonalStatsResponse, IResponseErrors, PersonalStatisticsResponseData, "Statistics");
 DEFINE_RESPONSE_WITH_DATA(GetPlayersInRoomResponse, ResponseCodes::C_GetPlayersInRoomResponse, IResponseErrors, std::vector<LoggedUser>, "Players");
 DEFINE_RESPONSE_WITH_DATA(GetRoomsResponse, ResponseCodes::C_GetRoomsResponse, IResponseErrors, std::vector<RoomPreview>, "Rooms");
 DEFINE_RESPONSE_WITH_DATA(GetRoomStateResponse, ResponseCodes::C_GetRoomStateResponse, IResponseErrors, RoomState, "RoomState");

@@ -6,6 +6,9 @@ namespace ClientApp.Models.Responses
     {
         private PersonalStatisticsResponse() {}
         [JsonProperty]
-        public PersonalStatisticsModel Statistics { get; private set; }
+        public PersonalStatisticsResponseData Statistics { get; private set; }
     }
+
+
+
 }

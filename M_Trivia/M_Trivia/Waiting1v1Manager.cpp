@@ -32,23 +32,20 @@ Waiting1v1Manager::~Waiting1v1Manager()
 void Waiting1v1Manager::processingPlayers()
 {
     while (m_running) {
+        std::unique_lock<std::mutex> lock(this->m_waitingListMutex); // Lock the mutex
 
-        std::unique_lock<std::mutex> lock(this->m_waitingListMutex); // not guard allow conditional flow
-
+        // Wait until the condition is met
         m_condition.wait(lock, [this]() {
             return !m_running || m_waitingList.size() >= 2;
             });
 
         if (!m_running) {
-            break; 
+            break;
         }
-
 
         if (this->m_waitingList.size() < 2) {
             continue;
         }
-
-
 
         LoggedUser user1 = m_waitingList[0];
         LoggedUser user2 = m_waitingList[1];
@@ -56,9 +53,9 @@ void Waiting1v1Manager::processingPlayers()
         m_waitingList.erase(m_waitingList.begin());
         m_waitingList.erase(m_waitingList.begin());
 
-        //unlock
+        lock.unlock();
 
-        std::shared_ptr<Game> game = this->m_gameManager.createGame(this->m_gameRoomPreview);
+        std::shared_ptr<Game> game = this->m_gameManager.createGame(this->m_gameRoomPreview, true);
 
         game->join(user1);
         game->join(user2);
@@ -67,6 +64,7 @@ void Waiting1v1Manager::processingPlayers()
         this->m_matchedPlayers[user2] = game;
     }
 }
+
 
 
 Waiting1v1Manager& Waiting1v1Manager::getInstance(GameManager& gameManager)

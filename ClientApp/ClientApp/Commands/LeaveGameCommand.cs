@@ -47,7 +47,7 @@ namespace ClientApp.Commands
 
             if (_is1v1GameStore.is1v1Game)
             {
-                _navigationService.NavigateTo<RoomAdminViewModel>();
+                _navigationService.NavigateTo<MenuViewModel>();
             }
             else
             {
