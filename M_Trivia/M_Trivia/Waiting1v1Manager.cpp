@@ -1,13 +1,13 @@
 #include "Waiting1v1Manager.hpp"
 
-Waiting1v1Manager::Waiting1v1Manager(GameManager& gameManager) : 
-    m_gameManager(gameManager), 
+Waiting1v1Manager::Waiting1v1Manager(GameManager& gameManager) :
+    m_gameManager(gameManager),
     m_workerThread(&Waiting1v1Manager::processingPlayers, this),
-    m_gameRoomPreview(std::make_shared<RoomPreview>(
+    m_gameRoomPreview(RoomPreview(
         RoomData{ 0,"1v1", 2, 10, 5, 2 },
         0,
         RoomStatus::NotInGame
-    )),
+        )),
     m_running(true),
     m_waitingList()
 
@@ -94,7 +94,6 @@ GeneralResponseErrors Waiting1v1Manager::leaveWaitingList(const LoggedUser& logg
     if (it != m_waitingList.end()) {
         m_waitingList.erase(it);
         m_condition.notify_one();
-
         return GeneralResponseErrors{}; // No error
     }
 
@@ -102,7 +101,7 @@ GeneralResponseErrors Waiting1v1Manager::leaveWaitingList(const LoggedUser& logg
 }
 
 
-std::shared_ptr<RoomPreview> Waiting1v1Manager::getDefault1v1GameSettings()
+RoomPreview Waiting1v1Manager::getDefault1v1GameSettings()
 {
     return this->m_gameRoomPreview;
 }

@@ -15,7 +15,7 @@
  */
 class Game {
 public:
-    Game(const std::vector<Question>& questions, std::shared_ptr<RoomPreview> roomPreview, int gameId);
+    Game(const std::vector<Question>& questions, RoomPreview roomPreview, int gameId);
 
 
 

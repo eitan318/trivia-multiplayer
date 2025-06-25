@@ -50,7 +50,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
 RequestResult RoomAdminRequestHandler::startGame(const RequestInfo& requestInfo)
 {
 	GeneralResponseErrors errors = this->m_roomManager.startGameOfRoom(this->m_room->getId());
-	std::shared_ptr<Game> game = this->m_handlerFactory.getGameManager().createGame(this->m_room->getRoomPreview(), false);
+	std::shared_ptr<Game> game = this->m_handlerFactory.getGameManager().createGame(*this->m_room->getRoomPreview(), false);
 
 	StartGameResponse startGameResponse(std::make_unique<GeneralResponseErrors>(errors));
 	RequestResult result;

@@ -69,7 +69,7 @@ RequestResult Waiting1v1RequestHandler::didFoundMatch(const RequestInfo& request
 	DidFound1v1MatchResponse response(std::make_unique<GeneralResponseErrors>(errors), didFoundMatch);
 
 	std::shared_ptr<IRequestHandler> nextHandler = didFoundMatch ?
-		m_handlerFactory.createGameRequestHandler(this->m_user, game, this->m_waiting1v1Manager.getDefault1v1GameSettings(), 
+		m_handlerFactory.createGameRequestHandler(this->m_user, game, std::make_shared<RoomPreview>(this->m_waiting1v1Manager.getDefault1v1GameSettings()), 
 			m_handlerFactory.createMenuRequestHandler(m_user)) : nullptr;
 
 	return RequestResult(
@@ -80,10 +80,10 @@ RequestResult Waiting1v1RequestHandler::didFoundMatch(const RequestInfo& request
 
 
 RequestResult Waiting1v1RequestHandler::get1v1GameSettings(const RequestInfo& requestInfo) {
-	std::shared_ptr<RoomPreview> defaultSettings = this->m_waiting1v1Manager.getDefault1v1GameSettings();
+	RoomPreview defaultSettings = this->m_waiting1v1Manager.getDefault1v1GameSettings();
 	GeneralResponseErrors errors;
 
-	Get1v1GameSettingsResponse response(std::make_unique<GeneralResponseErrors>(errors), defaultSettings->roomData);
+	Get1v1GameSettingsResponse response(std::make_unique<GeneralResponseErrors>(errors), defaultSettings.roomData);
 
 	return RequestResult(
 		JsonResponsePacketSerializer::serializeResponse(response),

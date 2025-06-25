@@ -16,7 +16,7 @@ private:
     std::vector<LoggedUser> m_waitingList;
     std::map<LoggedUser, std::shared_ptr<Game>> m_matchedPlayers;
     mutable std::mutex m_waitingListMutex;
-    std::shared_ptr<RoomPreview> m_gameRoomPreview;
+    RoomPreview m_gameRoomPreview;
     GameManager& m_gameManager;
     std::condition_variable m_condition;
     std::atomic<bool> m_running;
@@ -52,9 +52,8 @@ public:
 
     GeneralResponseErrors leaveWaitingList(const LoggedUser& loggedUser);
 
+    RoomPreview getDefault1v1GameSettings();
 
-
-    std::shared_ptr<RoomPreview> getDefault1v1GameSettings();
     std::pair<GeneralResponseErrors, std::shared_ptr<Game>> didPlayerFoundMatch(const LoggedUser& loggedUser);
 
 };
