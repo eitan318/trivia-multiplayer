@@ -1,6 +1,7 @@
 #pragma once
 #include "SqliteDatabase.hpp"
 #include "QuestionRecord.hpp"
+#include "GeneralResponseErrors.hpp"
 
 class AddAnswerManager 
 {
@@ -13,7 +14,7 @@ public:
      */
     static AddAnswerManager& getInstance(IDatabase& database);
 
-    void addQuetion(QuestionRecord& question);
+    GeneralResponseErrors addQuetion(QuestionRecord& question);
 private:
     /**
     * Constructs a AddAnswerManager instance with a reference to the database.

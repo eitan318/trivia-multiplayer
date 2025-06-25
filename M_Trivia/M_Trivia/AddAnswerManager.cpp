@@ -7,9 +7,17 @@ AddAnswerManager& AddAnswerManager::getInstance(IDatabase& database)
 
 }
 
-void AddAnswerManager::addQuetion(QuestionRecord& question) 
+GeneralResponseErrors AddAnswerManager::addQuetion(QuestionRecord& question)
 {
-	this->m_database.addQuestionToDB(question);
+	GeneralResponseErrors errors;
+	if (this->m_database.addQuestionToDB(question)) 
+	{
+		return errors;
+	}
+	else 
+	{
+		return errors.generalError = "Error adding Question To Database";
+	}
 }
 
 AddAnswerManager::AddAnswerManager(IDatabase& dataBase) : m_database(dataBase)
