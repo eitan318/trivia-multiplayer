@@ -36,8 +36,7 @@ namespace ClientApp.ViewModels
         }
 
         public ICommand BackCmd => new RelayCommand(
-            _ => _navigationService.GoBack(),
-            _ => WindowBackBtn // Enable only when the back button is available
+            _ => _navigationService.GoBack()
         );
 
         public bool WindowBackBtn =>
