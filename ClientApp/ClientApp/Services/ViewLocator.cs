@@ -65,7 +65,7 @@ namespace ClientApp.Services
             App.Current.Dispatcher.Invoke(() =>
             {
                 view = _serviceProvider.GetService(viewType) as FrameworkElement;
-                 if (view == null)
+                if (view == null)
                 {
                     throw new InvalidOperationException($"The view {viewType.FullName} could not be resolved.");
                 }

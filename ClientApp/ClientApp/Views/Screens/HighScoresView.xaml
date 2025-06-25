@@ -10,22 +10,11 @@
              d:DesignHeight="450" d:DesignWidth="800"
              Style="{StaticResource UserControlStyle}"
 >
-        <Grid Margin="20">
-            <Grid.RowDefinitions>
-                <!-- Title -->
-                <RowDefinition Height="*" />
-                <!-- Leaderboard -->
-                <RowDefinition Height="Auto" />
-                <!-- Footer -->
-            </Grid.RowDefinitions>
-
-
+        <Grid>
+        <StackPanel>
             <Border Style="{StaticResource TitleBorderStyle}">
                 <TextBlock Text="🏆 High Scores" Style="{StaticResource TitleStyle}" />
             </Border>
-
-
-
 
             <!-- Leaderboard -->
             <Border Grid.Row="1"
@@ -90,6 +79,9 @@
             <TextBlock Text="{Binding ErrorMessage}"
                        Style="{StaticResource ErrorMessageStyle}"
                        Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
+        </StackPanel>
+
+
         </Grid>
     
 </UserControl>
