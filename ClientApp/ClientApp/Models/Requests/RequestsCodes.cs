@@ -1,4 +1,4 @@
-namespace ClientApp.Models
+namespace ClientApp.Models.Requests
 {
     enum RequestsCodes
     {

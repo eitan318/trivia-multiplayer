@@ -3,7 +3,7 @@ using ClientApp.Services;
 using ClientApp.Stores;
 using System.Windows.Media.Animation;
 using System.Diagnostics;
-using ClientApp.Models;
+using ClientApp.Models.Requests;
 
 namespace ClientApp.Commands
 {

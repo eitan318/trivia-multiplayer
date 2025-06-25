@@ -2,7 +2,7 @@
 using ClientApp.Services;
 using ClientApp.ViewModels;
 using ClientApp.Stores;
-using ClientApp.Models;
+using ClientApp.Models.Requests;
 
 namespace ClientApp.Commands
 {

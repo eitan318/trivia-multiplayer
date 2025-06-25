@@ -9,10 +9,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\TriviaIcon.png" />
+    <None Remove="Assets\TriviaIcon2.png" />
+    <None Remove="Assets\TriviaIcon3.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="App.Metrics.Health.Formatters.Json" Version="3.2.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\TriviaIcon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\TriviaIcon2.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\TriviaIcon3.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

@@ -4,7 +4,7 @@ using ClientApp.Services;
 using System.Windows.Input;
 using ClientApp.Stores;
 using System.Diagnostics;
-using ClientApp.Models;
+using ClientApp.Models.Requests;
 
 namespace ClientApp.ViewModels
 {
