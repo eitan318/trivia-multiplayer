@@ -2,6 +2,7 @@
 
 #include "RoomData.hpp"
 #include "UserRecord.hpp"
+#include "QuestionRecord.hpp"
 #include "json.hpp"
 #include <string>
 
@@ -25,6 +26,7 @@ DEFINE_REQUEST_STRUCT(SendPasswordResetCodeRequest, std::string, email, "Email")
 DEFINE_REQUEST_STRUCT(SignupRequest, UserRecord, userRecord, "UserRecord");
 DEFINE_REQUEST_STRUCT(SubmitAnswerRequest, unsigned int, answerId, "ChosenAnswerId");
 DEFINE_REQUEST_STRUCT(VerifyPasswordResetCodeRequest, std::string, resetCode, "PasswordResetCode");
+DEFINE_REQUEST_STRUCT(AddQuestionRequest, QuestionRecord, questionToAdd, "QuestionToAdd");
 
 
 

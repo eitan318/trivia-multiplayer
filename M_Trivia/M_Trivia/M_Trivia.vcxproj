@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AddAnswerManager.hpp" />
     <ClInclude Include="Communicator.hpp" />
     <ClInclude Include="EmailSender.hpp" />
     <ClInclude Include="Game.hpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="PersonalStatisticsResponseData.hpp" />
     <ClInclude Include="PlayerGameData.hpp" />
     <ClInclude Include="QuestionDificultyLevel.h" />
+    <ClInclude Include="QuestionRecord.hpp" />
     <ClInclude Include="RegexValidator.hpp" />
     <ClInclude Include="Requests.hpp" />
     <ClInclude Include="RequestsCodes.hpp" />
@@ -181,6 +183,7 @@
     <ClInclude Include="WSAInitializer.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddAnswerManager.cpp" />
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="EmailSender.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -192,6 +195,7 @@
     <ClCompile Include="LoginResponseErrors.cpp" />
     <ClCompile Include="PersonalStatistics.cpp" />
     <ClCompile Include="Question.cpp" />
+    <ClCompile Include="QuestionRecord.cpp" />
     <ClCompile Include="RequestInfo.cpp" />
     <ClCompile Include="RequestResult.cpp" />
     <ClCompile Include="ResetPasswordResponseErrors.cpp" />

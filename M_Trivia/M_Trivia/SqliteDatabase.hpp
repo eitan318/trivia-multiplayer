@@ -4,6 +4,7 @@
 #include "Question.hpp"
 #include "UserRecord.hpp"
 #include "PlayerResults.hpp"
+#include "QuestionRecord.hpp"
 #include "sqlite3.h"
 #include <string>
 #include <vector>
@@ -29,6 +30,7 @@ public:
         const std::string& newPassword) const override;
     unsigned int getQuestionsCount() const override;
     bool addExampleUsers() const override;
+    bool addQuestionToDB(QuestionRecord& questionRecord) const override;
 
 private:
     ~SqliteDatabase() { close(); };

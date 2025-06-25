@@ -6,6 +6,7 @@
 #include "IRequestHandler.hpp"
 #include "GameManager.hpp"
 #include "Waiting1v1Manager.hpp"    
+#include "AddAnswerManager.hpp"
 #include "Room.hpp"
 #include <memory>
 
@@ -88,6 +89,13 @@ public:
      */
     StatisticsManager& getStatisticsManger() const;
 
+    /**
+     * @brief Gets a reference to the AddAnswerManager.
+     * @return A reference to the AddAnswerManager instance.
+     */
+    AddAnswerManager& getAddAnswerManager() const;
+
+
 private:
     RoomManager& m_roomManager;
     IDatabase& m_database; 
@@ -95,6 +103,7 @@ private:
     LoginManager& m_loginManager;
     GameManager& m_gameManager; 
     Waiting1v1Manager& m_waiting1v1Manager;
+    AddAnswerManager& m_addAnswerManager;
 
     /**
      * @brief Private constructor for creating a RequestHandlerFactory instance.

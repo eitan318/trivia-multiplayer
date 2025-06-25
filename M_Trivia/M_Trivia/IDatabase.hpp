@@ -2,6 +2,7 @@
 #include "HighScoreInfo.hpp"
 #include "Question.hpp"
 #include "UserRecord.hpp"
+#include "QuestionRecord.hpp"
 #include <list>
 #include <string>
 #include <vector>
@@ -145,4 +146,6 @@ public:
      * @brief Virtual destructor for proper cleanup of derived classes.
      */
     virtual ~IDatabase() = default;
+
+    virtual bool addQuestionToDB(QuestionRecord& questionRecord) const = 0;
 };
