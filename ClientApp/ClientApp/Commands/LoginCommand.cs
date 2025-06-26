@@ -1,92 +1,72 @@
-﻿using ClientApp.Models.Requests;
+﻿using ClientApp.Commands;
+using ClientApp.Models.Requests;
 using ClientApp.Models.Responses;
 using ClientApp.Services;
 using ClientApp.Stores;
 using ClientApp.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Navigation;
 
-namespace ClientApp.Commands
+public class LoginCommand : CommandBase, IAsyncCommand
 {
-    class LoginCommand : CommandBase
+    private readonly INavigationService _navigationService;
+    private readonly UserStore _userStore;
+    private readonly RequestsExchangeService _requestsExchangeService;
+
+    public LoginCommand(
+        INavigationService navigationService,
+        UserStore userStore,
+        RequestsExchangeService requestsExchangeService)
     {
-        private readonly INavigationService _navigationService;
-        private UserStore _userStore;
-        private readonly RequestsExchangeService _requestsExchangeService;
-        private LoginViewModel _loginViewModel;
-        
-        public LoginCommand( LoginViewModel loginViewModel,
-            INavigationService navigationService,
-            UserStore userStore,
-            RequestsExchangeService requestsExchangeService)
+        _navigationService = navigationService;
+        _userStore = userStore;
+        _requestsExchangeService = requestsExchangeService;
+    }
+
+    public override bool CanExecute(object parameter)
+    {
+        if (parameter is LoginViewModel loginViewModel)
         {
-            this._navigationService = navigationService;
-            this._requestsExchangeService = requestsExchangeService;
-            this._userStore = userStore;
-            this._loginViewModel = loginViewModel;
+            return !string.IsNullOrWhiteSpace(loginViewModel.Username) &&
+                   !string.IsNullOrWhiteSpace(loginViewModel.Password);
         }
+        return false;
+    }
 
-
-        public override bool CanExecute(object parameter)
+    public override async Task ExecuteAsync(object parameter)
+    {
+        if (parameter is LoginViewModel loginViewModel)
         {
-            return !string.IsNullOrWhiteSpace(_loginViewModel.Username) &&
-                !string.IsNullOrWhiteSpace(_loginViewModel.Password);
-        }
-
-        /// <summary>
-        /// Attempts to log in the user by validating the username and password.
-        /// If successful, navigates to the menu page. If there is an error, shows the error messages.
-        /// </summary>
-        public override async void Execute(object parameter)
-        {
-            _loginViewModel.ErrorMessage = "";
-            _loginViewModel.UsernameErrorMessage = "";
-            _loginViewModel.PasswordErrorMessage = "";
+            loginViewModel.ErrorMessage = "";
+            loginViewModel.UsernameErrorMessage = "";
+            loginViewModel.PasswordErrorMessage = "";
 
             try
             {
-                // Trim input values
-                string trimmedUsername = _loginViewModel.Username?.Trim();
-                string trimmedPassword = _loginViewModel.Password?.Trim();
+                string trimmedUsername = loginViewModel.Username?.Trim();
+                string trimmedPassword = loginViewModel.Password?.Trim();
+                _userStore.Username = trimmedUsername;
 
-                this._userStore.Username = _loginViewModel.Username;
+                var loginRequest = new LoginRequest(trimmedUsername, trimmedPassword);
+                var responseInfo = await _requestsExchangeService.ExchangeRequest<LoginResponse>(loginRequest);
 
-                // Prepare the login request and send it
-                LoginRequest loginRequest = new LoginRequest(trimmedUsername, trimmedPassword);
-                ResponseInfo<LoginResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<LoginResponse>(loginRequest);
-
-                // Handle server error response
                 if (responseInfo.NormalResponse)
                 {
-                    LoginResponse loginResponse = responseInfo.Response;
-                    if(loginResponse.Status == 0)
+                    var loginResponse = responseInfo.Response;
+                    if (loginResponse.Status == 0)
                     {
-                        this._navigationService.NavigateTo<MenuViewModel>();
+                        _navigationService.NavigateTo<MenuViewModel>();
                     }
                     else
                     {
-                        _loginViewModel.UsernameErrorMessage = loginResponse.Errors.UsernameError;
-                        _loginViewModel.PasswordErrorMessage = loginResponse.Errors.PasswordError;
-                        _loginViewModel.ErrorMessage = loginResponse.Errors.GeneralError;
+                        loginViewModel.UsernameErrorMessage = loginResponse.Errors.UsernameError;
+                        loginViewModel.PasswordErrorMessage = loginResponse.Errors.PasswordError;
+                        loginViewModel.ErrorMessage = loginResponse.Errors.GeneralError;
                     }
-
-                }
-                else
-                {
-                    ErrorResponse errorResponse = responseInfo.ErrorResponse;
-                    _loginViewModel.ErrorMessage = "SERVER ERROR: " + errorResponse.Message;
                 }
             }
             catch (Exception ex)
             {
-                _loginViewModel.ErrorMessage = $"Login failed: {ex.Message}";
+                loginViewModel.ErrorMessage = $"Login failed: {ex.Message}";
             }
         }
-
     }
 }

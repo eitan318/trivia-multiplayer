@@ -1,6 +1,4 @@
 #include "RoomManager.hpp"
-#include "CreateRoomResponseErrors.hpp"
-#include "JoinRoomResponseErrors.hpp"
 #include "LoggedUser.hpp"
 #include "MyException.hpp"
 #include "Response.hpp"
@@ -8,40 +6,41 @@
 #include <ranges> 
 
 
-unsigned int RoomManager::ids = 0;
+unsigned int RoomManager::ids = 1;
 
 RoomManager& RoomManager::getInstance(IDatabase& database) {
     static RoomManager instance(database);
     return instance;
 }
 
-RoomManager::~RoomManager() {}
+RoomManager::~RoomManager() {
+}
 
 
 RoomManager::RoomManager(IDatabase& database) : m_database(database) {
-    this->m_rooms = std::vector<Room>();
+    this->m_rooms = std::vector<std::shared_ptr<Room>>();
 }
 
-CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser& player,
+GeneralResponseErrors RoomManager::createRoom(const LoggedUser& player,
     RoomData& roomData) {
 
-    CreateRoomResponseErrors createRoonResponseErrors;
+    GeneralResponseErrors createRoonResponseErrors;
     unsigned int totalQuestionCount;
 
     totalQuestionCount = this->m_database.getQuestionsCount();
 
     if (roomData.numOfQuestionsInGame > totalQuestionCount) {
-        createRoonResponseErrors.questionCountError =
+        createRoonResponseErrors.generalError =
             "Too many questions, there are only: " +
             std::to_string(totalQuestionCount);
     }
-    createRoonResponseErrors.statusCode = !createRoonResponseErrors.noErrors();
 
-    if (createRoonResponseErrors.statusCode == 0) {
+    if (createRoonResponseErrors.statusCode() == 0) {
         std::lock_guard<std::mutex> lock(this->m_roomsMutex);
-        int roomid = ids++;
+        int roomid = ids += 2;
         roomData.id = roomid;
-        this->m_rooms.emplace_back(roomData, player);
+        std::shared_ptr<RoomPreview> roomPreview = std::make_shared<RoomPreview>(roomData, 1, RoomStatus::NotInGame);
+        this->m_rooms.emplace_back(std::make_shared<Room>(roomPreview, player));
     }
     return createRoonResponseErrors;
 }
@@ -50,87 +49,81 @@ CreateRoomResponseErrors RoomManager::createRoom(const LoggedUser& player,
 
 void RoomManager::deleteRoom(int ID) {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
-    std::erase_if(m_rooms, [ID](const Room& room) {
-        return room.getRoomPreview().roomData.id == ID;
+    std::erase_if(m_rooms, [ID](std::shared_ptr<Room> room) {
+        return room->getRoomPreview()->roomData.id == ID;
         });
 }
 
 
 
-std::vector<RoomPreview> RoomManager::getRooms() const {
-    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
+std::vector<RoomPreview> RoomManager::getActiveRooms() const {
+    //std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     std::vector<RoomPreview> roomsvec;
     for (const auto& room : m_rooms) {
-        roomsvec.push_back(room.getRoomPreview());
+        if (room->getRoomStatus() != RoomStatus::Closing) {
+            std::shared_ptr<RoomPreview> preview = room->getRoomPreview();
+            if (preview) { 
+                roomsvec.push_back(*preview);  
+            }
+        }
     }
     return roomsvec;
 }
 
 
-CloseRoomResponseErrors RoomManager::closeRoom(unsigned int roomId, const LoggedUser& closer)
-{
-    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
-    Room* room = getRoom(roomId);
-    CloseRoomResponseErrors errors;
-    if (room->getRoomStatus() == RoomStatus::Closed) {
-        errors.generalError = "Room already closed";
-    }
-
-    errors.statusCode = !errors.noErrors();
-
-    if (errors.statusCode == GENERAL_SUCCESS_RESPONSE_STATUS) {
-        leaveRoom(roomId, closer);
-        room->close();
-    }
-    return errors;
-}
-
 void RoomManager::leaveRoom(unsigned int roomId,
     const LoggedUser& loggedUser) {
-    Room* room = this->getRoom(roomId);
+    std::shared_ptr<Room> room = this->getRoom(roomId);
+    bool isAdmin = room->isAdmin(loggedUser);
+
     room->removeUser(loggedUser);
     if (room->getUsersVector().empty()) {
         this->deleteRoom(room->getId());
     }
+    else {
+        if (isAdmin) {
+            room->getRoomPreview()->close();
+        }
+    }
+
 }
 
 
-
-StartGameResponseErrors RoomManager::startGameOfRoom(unsigned int roomId)
+GeneralResponseErrors RoomManager::startGameOfRoom(unsigned int roomId)
 {
-    std::lock_guard<std::mutex> lock(this->m_roomsMutex);
-    Room* room = getRoom(roomId);
-    StartGameResponseErrors errors;
-    if (room->getRoomStatus() == RoomStatus::Closed) {
+    std::shared_ptr<Room> room = getRoom(roomId);
+    //std::lock_guard<std::mutex> lock(this->m_roomsMutex);
+    GeneralResponseErrors errors;
+    RoomStatus s = room->getRoomStatus();
+    if (s == RoomStatus::Closing) {
         errors.generalError = "Cannot start game of a closed room.";
     }
-    else if (room->getRoomStatus() == RoomStatus::InGame) {
+    else if (s == RoomStatus::InGame || s == RoomStatus::StartingGame) {
         errors.generalError = "Room is already in game.";
     }
     else if (room->getUsersVector().size() < 2) {
         errors.generalError = "Not enougth palyers.";
     }
 
-    errors.statusCode = !errors.noErrors();
-    if (errors.statusCode == GENERAL_SUCCESS_RESPONSE_STATUS) {
-        room->startGame();
+    if (errors.statusCode() == GENERAL_SUCCESS_RESPONSE_STATUS) {
+        room->getRoomPreview()->startGame();
     }
     return errors;
 }
 
 
 
-JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
+GeneralResponseErrors RoomManager::joinRoom(unsigned int id,
     const LoggedUser& loggedUser) {
 
-    JoinRoomResponseErrors errors;
-    Room* room = this->getRoom(id);
+    GeneralResponseErrors errors;
+    std::shared_ptr<Room> room = this->getRoom(id);
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
     if (room != nullptr) {
         if (room->hasUser(loggedUser)) {
             errors.generalError = "You are already inside this room.";
         }
-        else if (room->getRoomPreview().roomData.maxPlayers ==
+        else if (room->getRoomPreview()->roomData.maxPlayers ==
             room->getUsersVector().size()) {
             errors.generalError = "Room is already full.";
         }
@@ -144,19 +137,18 @@ JoinRoomResponseErrors RoomManager::joinRoom(unsigned int id,
     else {
         errors.generalError = "room does not exist.";
     }
-    errors.statusCode = !errors.noErrors();
     return errors;
 }
 
 
 
-Room* RoomManager::getRoom(int ID) {
+std::shared_ptr<Room> RoomManager::getRoom(int ID) {
     std::lock_guard<std::mutex> lock(this->m_roomsMutex);
 
-    auto it = std::ranges::find_if(m_rooms, [ID](const Room& room) {
-        return room.getRoomPreview().roomData.id == ID;
+    auto it = std::ranges::find_if(m_rooms, [ID](const std::shared_ptr<Room>& room) {
+        return room && room->getRoomPreview() && room->getRoomPreview()->roomData.id == ID;
         });
 
-    return it != m_rooms.end() ? &(*it) : nullptr;
+    return it != m_rooms.end() ? *it : nullptr; // Dereference iterator to get the shared_ptr
 }
 

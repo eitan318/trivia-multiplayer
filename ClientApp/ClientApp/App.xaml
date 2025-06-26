@@ -5,30 +5,20 @@
              xmlns:local="clr-namespace:ClientApp"
              xmlns:converters="clr-namespace:ClientApp.Views.Converters"
              xmlns:controls="clr-namespace:ClientApp.Views.Controls"
-             xmlns:views="clr-namespace:ClientApp.Views.Screens"
-             xmlns:vm="clr-namespace:ClientApp.ViewModels"
-             >
-    <Application.Resources>
+             xmlns:vm="clr-namespace:ClientApp.ViewModels">
 
+    <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Purple" SecondaryColor="Lime" />
-                
+                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Cyan" SecondaryColor="Lime" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
-
-                <ResourceDictionary Source="Views/Controls/HyperLink.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/ClientApp;component/Views/SharedStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
+            <!-- Application-specific resources -->
             <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
             <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
-
-            <SolidColorBrush x:Key="ErrorBrush" Color="Red" />
-
-
-
         </ResourceDictionary>
     </Application.Resources>
-
-
 </Application>

@@ -4,8 +4,8 @@
 #include "LoginRequestHandler.hpp"
 #include "RequestInfo.hpp"
 #include "RequestResult.hpp"
-#include "ServerErrorResponse.hpp"
 #include "SocketService.hpp"
+#include "Response.hpp"
 #include <Windows.h>
 #include <iostream>
 #include <mutex>
@@ -122,7 +122,6 @@ void Communicator::handleNewClient(SOCKET sock)
 
     while (handler != nullptr)
     {
-
         int msgLen;
         std::string msgStr;
         unsigned int requestCode;
@@ -135,23 +134,30 @@ void Communicator::handleNewClient(SOCKET sock)
         catch (std::exception &e)
         {
             std::cerr << "Client " << sock << " probably exited ungracefully." << std::endl;
-            this->m_handlerFactory.getLoginManager().logout(sock);
+            handler->Cleanup();
             break;
         }
         time_t requestRecievalTime = time(nullptr);
-        std::cout << "Received: " << msgStr << std::endl;
+        std::cout << "Received: " << "("<< requestCode << ")" << msgStr << std::endl;
         std::vector<char> requestBuffer(msgStr.begin(), msgStr.end());
 
         RequestInfo requestInfo(requestCode, requestRecievalTime, requestBuffer);
         RequestResult requestResult;
         if (handler->isRequestRelevant(requestInfo))
         {
-            requestResult = handler->handleRequest(requestInfo, sock);
+            try {
+                requestResult = handler->handleRequest(requestInfo);
+            }
+            catch (std::exception& e) {
+                ServerErrorResponse errResponse(GENERAL_SUCCESS_RESPONSE_STATUS, e.what());
+                RequestResult res(
+                    JsonResponsePacketSerializer::serializeResponse(errResponse), nullptr);
+                requestResult = res;
+            }
         }
         else
         {
-            ServerErrorResponse errorResponse("Invalid msg code.");
-
+            ServerErrorResponse errorResponse(GENERAL_SUCCESS_RESPONSE_STATUS, "Invalid msg code.");
             requestResult = RequestResult(JsonResponsePacketSerializer::serializeResponse(errorResponse), nullptr);
         }
 
@@ -165,7 +171,7 @@ void Communicator::handleNewClient(SOCKET sock)
 
         // Send response back to the client
         SocketService::sendData(sock, requestResult.response);
-        std::cout << "Sent: " << std::string(requestResult.response.begin(), requestResult.response.end()) << std::endl;
+        std::cout << "Sent: " << (int)requestResult.response[0] << std::string(requestResult.response.begin(), requestResult.response.end()) << std::endl;
     }
 
     closesocket(sock);
@@ -176,3 +182,4 @@ void Communicator::handleNewClient(SOCKET sock)
         this->m_clients.erase(sock);
     }
 }
+

@@ -2,10 +2,9 @@
 #include "IDatabase.hpp"
 #include "LoggedUser.hpp"
 #include "LoginResponseErrors.hpp"
-#include "PasswordCodeResponseErrors.hpp"
 #include "ResetPasswordResponseErrors.hpp"
 #include "SignupResponseErrors.hpp"
-#include "VerifyPasswordResetCodeResponseErrors.hpp"
+#include "GeneralResponseErrors.hpp"
 #include <unordered_map>
 #include <WinSock2.h>
 
@@ -18,7 +17,6 @@ private:
     unsigned int prevRandomCode;
     std::string prevResetPasswordTocken;
     std::unordered_map<std::string, LoggedUser> m_loggedUsers; ///< List of currently logged-in users.
-    std::unordered_map<SOCKET, std::string> m_usernames;
 
 
     /**
@@ -59,7 +57,7 @@ public:
      * @return Status indicating the result of the login operation.
      */
     LoginResponseErrors login(const std::string username,
-        const std::string password, SOCKET socket);
+        const std::string password);
 
     /**
      * @brief Sends a password reset code to the user's email.
@@ -67,7 +65,7 @@ public:
      * @param code The reset code to be sent.
      * @return Status indicating the result of the email operation.
      */
-    PasswordCodeResponseErrors sendEmailCode(const std::string email,
+    GeneralResponseErrors sendEmailCode(const std::string email,
         unsigned int code);
 
     /**
@@ -80,7 +78,7 @@ public:
         resetPassword(const std::string& username, const std::string& newPassword,
             const std::string& resetPasswordTocken);
 
-    VerifyPasswordResetCodeResponseErrors
+    GeneralResponseErrors
         verifyResetPasswordCode(const std::string& codeFromClient, const std::string& resetPasswordTocken);
 
     /**
@@ -88,17 +86,14 @@ public:
      * @param email The user's email address.
      * @return The username associated with the email.
      */
-    std::string getUsername(const std::string& email) const;
+    std::string getUsernameByEmail(const std::string& email) const;
 
     /**
      * @brief Logs out a user, removing them from the list of active sessions.
-     * @param username The username of the user to log out.
+     * @param user The user to log out.
      */
-    void logout(const std::string& user);
+    void logout(const LoggedUser& user);
 
-    /**
-	 * @brief Logs out a user, removing them from the list of active sessions.
-	 * @param username The username of the user to log out.
-	 */
-    void logout(const SOCKET sock);
+
+
 };

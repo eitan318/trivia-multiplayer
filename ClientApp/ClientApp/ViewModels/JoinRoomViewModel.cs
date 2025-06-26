@@ -5,10 +5,11 @@ using ClientApp.Models;
 using ClientApp.Services;
 using System.Windows.Input;
 using ClientApp.Stores;
+using System.Collections.ObjectModel;
 
 namespace ClientApp.ViewModels
 {
-    class JoinRoomViewModel : ViewModelBase
+    class JoinRoomViewModel : ScreenViewModelBase
     {
         private RoomDataStore _roomDataStore;
         private readonly RequestsExchangeService _requestsExchangeService;
@@ -16,24 +17,26 @@ namespace ClientApp.ViewModels
         private readonly int refreshMS = 300;
 
         public JoinRoomViewModel(
-            INavigationService navigationService,
+            JoinRoomCommand joinCommand,
             RequestsExchangeService requestsExchangeService,
             RoomDataStore roomDataStore) : base(true)
         {
             this._requestsExchangeService = requestsExchangeService;
             this._roomDataStore = roomDataStore;
-            JoinCmd = new JoinCommand(this, navigationService, requestsExchangeService, roomDataStore);
+            JoinCmd = joinCommand;
         }
 
 
         public override void OnNavigatedTo()
         {
+            base.OnNavigatedTo();
             _refreshRoomsCTS = new CancellationTokenSource();
             Task.Run(() => PeriodicallyRefreshRooms(_refreshRoomsCTS.Token)); 
         }
 
         public override void OnNavigatedAway()
         {
+            base.OnNavigatedAway();
             _refreshRoomsCTS?.Cancel();
             _refreshRoomsCTS?.Dispose();
         }
@@ -44,20 +47,33 @@ namespace ClientApp.ViewModels
         // Fields
         private List<RoomPreview> _rooms;
         private RoomPreview? _selectedRoom;
+        private string _searchQuery;
+        private ObservableCollection<RoomPreview> _filteredRooms;
+
+        public ObservableCollection<RoomPreview> FilteredRooms
+        {
+            get => _filteredRooms;
+            set
+            {
+                _filteredRooms = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SearchQuery
+        {
+            get => _searchQuery;
+            set
+            {
+                _searchQuery = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         // Error message fields
         private string _errorMessage;
 
-        // Properties
-        public List<RoomPreview> Rooms
-        {
-            get => _rooms;
-            set
-            {
-                _rooms = value;
-                OnPropertyChanged();
-            }
-        }
 
         public RoomPreview? SelectedRoom
         {
@@ -97,13 +113,29 @@ namespace ClientApp.ViewModels
                 // Task was canceled; no further action needed
             }
         }
+          private void UpdateFilteredRooms()
+          {
+              if (string.IsNullOrWhiteSpace(SearchQuery))
+              {
+                  FilteredRooms = new ObservableCollection<RoomPreview>(_rooms);
+              }
+              else
+              {
+                  var lowerQuery = SearchQuery.ToLower();
+                var filtered = _rooms
+                  .Where(room => room.RoomData.Id.ToString().Contains(lowerQuery) ||
+                                   room.RoomData.RoomName.ToLower().Contains(lowerQuery))
+                    .ToList();
+                  FilteredRooms = new ObservableCollection<RoomPreview>(filtered);
+              }
+          }
+
 
         public async Task Refresh()
         {
             try
             {
-                var request = new GetRoomsRequest();
-                var responseInfo = await _requestsExchangeService.ExchangeRequest<GetRoomsResponse>(request);
+                var responseInfo = await _requestsExchangeService.ExchangeRequest<GetRoomsResponse>(RequestsCodes.GetRoomsRequest);
 
                 App.Current.Dispatcher.Invoke(() =>
                 {
@@ -114,13 +146,10 @@ namespace ClientApp.ViewModels
                         var currentlySelectedRoomId = SelectedRoom?.RoomData.Id;
                         var matchingRoom = refreshedRooms.FirstOrDefault(r => r.RoomData.Id == currentlySelectedRoomId);
 
-                        Rooms = refreshedRooms;
+                        _rooms = refreshedRooms;
 
                         SelectedRoom = matchingRoom;
-                    }
-                    else
-                    {
-                        ErrorMessage = "SERVER ERROR: " + responseInfo.ErrorResponse.Message;
+                        UpdateFilteredRooms();
                     }
                 });
             }

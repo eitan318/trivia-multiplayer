@@ -7,7 +7,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ClientApp.Views.Screens"
       xmlns:vm="clr-namespace:ClientApp.ViewModels"
-      TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+             Style="{StaticResource UserControlStyle}"
+
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
 
@@ -20,10 +21,8 @@
 
             <!-- Page header -->
             <TextBlock Text="Let's Get Started!" 
-                       FontSize="20" 
-                       FontWeight="Bold" 
-                       TextAlignment="Center" 
-                       Margin="0,0,0,20"/>
+                       Style="{StaticResource TitleStyle}" 
+                       />
 
             <!-- Username input -->
             <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 
@@ -32,8 +31,7 @@
                      Margin="0,10"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
             <TextBlock Text="{Binding UsernameErrorMessage}" 
-                       Foreground="Red" 
-                       FontSize="12"
+                       Style="{StaticResource ErrorMessageStyle}"
                        Visibility="{Binding UsernameErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
 
             <!-- Password input -->
@@ -44,8 +42,7 @@
                     InnerTextBoxStyle="{StaticResource MaterialDesignFloatingHintTextBox}"
                     materialDesign:HintAssist.Hint="Password"/>
             <TextBlock Text="{Binding PasswordErrorMessage}" 
-                       Foreground="{StaticResource ErrorBrush}" 
-                       FontSize="12"
+                       Style="{StaticResource ErrorMessageStyle}"
                        Visibility="{Binding PasswordErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
 
             <!-- Email input -->
@@ -53,8 +50,7 @@
                      materialDesign:HintAssist.Hint="Email" Margin="0,10" 
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
             <TextBlock Text="{Binding EmailErrorMessage}" 
-                       Foreground="{StaticResource ErrorBrush}" 
-                       FontSize="12"
+                       Style="{StaticResource ErrorMessageStyle}"
                        Visibility="{Binding EmailErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
 
             <!-- Phone number input -->
@@ -62,8 +58,7 @@
                      materialDesign:HintAssist.Hint="PhoneNumber" Margin="0,10"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
             <TextBlock Text="{Binding PhoneNumberErrorMessage}" 
-                       Foreground="{StaticResource ErrorBrush}" 
-                       FontSize="12"
+                       Style="{StaticResource ErrorMessageStyle}"
                        Visibility="{Binding PhoneNumberErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
 
             <!-- House address input -->
@@ -71,41 +66,35 @@
                      materialDesign:HintAssist.Hint="HouseAddress" Margin="0,10"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
             <TextBlock Text="{Binding HouseAddressErrorMessage}" 
-                       Foreground="{StaticResource ErrorBrush}" 
-                       FontSize="12"
+                       Style="{StaticResource ErrorMessageStyle}"
                        Visibility="{Binding HouseAddressErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
 
             <DatePicker 
             SelectedDate="{Binding BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBlock Text="{Binding BirthDateErrorMessage}" 
-               Foreground="{StaticResource ErrorBrush}" 
-               FontSize="12"
+               Style="{StaticResource ErrorMessageStyle}"
                Visibility="{Binding BirthDateErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
             
             
             
             <!-- Signup button bound to the Signup command -->
-            <Button Content="Signup" Margin="0,20" Padding="10,5" 
-                    Command="{Binding SignupCmd}" />
+            <Button Content="Signup" 
+                    Command="{Binding SignupCmd}"
+                    CommandParameter="{Binding}"
+                    Style="{StaticResource OperationButtonStyle}"/>
 
             <!-- Navigate to Login button -->
-            <TextBlock Text="Login" 
-               Padding="10,5" 
-               Cursor="Hand"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"
-               Style="{DynamicResource MaterialDesignButtonTextBlock}">
-                <TextBlock.InputBindings>
-                    <MouseBinding Gesture="LeftClick" Command="{Binding NavToLoginCmd}" />
-                </TextBlock.InputBindings>
-            </TextBlock>
+             <Button Content="Login"
+                    Command="{Binding NavToLoginCmd}"
+                    Style="{StaticResource LoginToggleStyle}" />
 
 
-            <!-- Error message display -->
+
+
+                <!-- Error message display -->
             <TextBlock Text="{Binding ErrorMessage}"
-                       Foreground="{StaticResource ErrorBrush}" 
-                       TextAlignment="Center"
+                       Style="{StaticResource ErrorMessageStyle}" 
                        Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
         </StackPanel>
     </Grid>

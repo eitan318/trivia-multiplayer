@@ -66,6 +66,8 @@ private:
      */
     RequestResult joinRoom(const RequestInfo& requestInfo) const;
 
+    RequestResult join1v1WaitingList(const RequestInfo& requestInfo) const;
+
     /**
      * @brief Handles a request to create a new room.
      * @param requestInfo The request information, including room configuration
@@ -102,5 +104,8 @@ public:
      * @return A RequestResult containing the serialized response and the next
      * handler.
      */
-    RequestResult handleRequest(const RequestInfo& requestInfo, SOCKET socket) override;
+    RequestResult handleRequest(const RequestInfo& requestInfo) override;
+
+
+    void Cleanup() override;
 };

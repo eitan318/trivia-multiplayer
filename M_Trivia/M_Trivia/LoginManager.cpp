@@ -4,7 +4,7 @@
 #include "MyException.hpp"
 #include "RegexValidator.hpp"
 #include "UserRecord.hpp"
-#include "VerifyPasswordResetCodeResponseErrors.hpp"
+#include "HashService.hpp"
 #include <string>
 
 LoginManager::LoginManager(IDatabase& database) : m_database(database) {}
@@ -14,40 +14,39 @@ LoginManager& LoginManager::getInstance(IDatabase& database) {
 }
 
 LoginResponseErrors LoginManager::login(const std::string username,
-    const std::string password, SOCKET sock) {
+    const std::string password) {
     LoginResponseErrors errors;
+
+    std::hash <std::string> hash;
+    unsigned long hashedPassword = hash(password);
 
     if (this->m_loggedUsers.find(username) != m_loggedUsers.end()) {
         errors.generalError = "User already logged in";
     }
     else if (!this->m_database.doesUserExist(username) ||
-        !this->m_database.doesPasswordMatch(username, password)) {
+        !this->m_database.doesPasswordMatch(username, hashedPassword)) {
         errors.generalError = "Unknown username or wrong password";
     }
-    errors.statusCode = !errors.noErrors();
 
-    if (errors.statusCode == 0) {
+    if (errors.statusCode() == 0) {
         m_loggedUsers.emplace(username, LoggedUser(username));
-        m_usernames.emplace(sock, username);
     }
     return errors;
 }
 
-PasswordCodeResponseErrors LoginManager::sendEmailCode(const std::string email,
+GeneralResponseErrors LoginManager::sendEmailCode(const std::string email,
     unsigned int code) {
-    PasswordCodeResponseErrors errors;
+    GeneralResponseErrors errors;
     if (!RegexValidator::validEmail(email)) {
-        errors.emailErrors = std::string() + "Invalid email format, Use: " +
+        errors.generalError = std::string() + "Invalid email format, Use: " +
             RegexValidator::emailRegexDescription.data();
     }
     else if (!this->m_database.emailExists(email)) {
-        errors.statusCode = 0;
         return errors;
     }
     this->prevRandomCode = code;
 
-    errors.statusCode = !errors.noErrors();
-    if (errors.statusCode == 0) {
+    if (errors.statusCode() == 0) {
         EmailSender::sendEmail("servicehandler055@gmail.com", email,
             "Reset Password Code",
             "Code: " + std::to_string(code));
@@ -56,16 +55,13 @@ PasswordCodeResponseErrors LoginManager::sendEmailCode(const std::string email,
     return errors;
 }
 
-VerifyPasswordResetCodeResponseErrors
-LoginManager::verifyResetPasswordCode(const std::string& codeFromClient,
+GeneralResponseErrors LoginManager::verifyResetPasswordCode(const std::string& codeFromClient,
     const std::string& resetPasswordTocken) {
     this->prevResetPasswordTocken = resetPasswordTocken;
-    VerifyPasswordResetCodeResponseErrors errors;
+    GeneralResponseErrors errors;
     if (codeFromClient != std::to_string(this->prevRandomCode)) {
         errors.generalError = "Wrong code";
     }
-
-    errors.statusCode = !errors.noErrors();
 
     return errors;
 }
@@ -92,7 +88,6 @@ LoginManager::resetPassword(const std::string& email,
             RegexValidator::passwordRegexDescription.data();
     }
 
-    resetPasswordErrors.statusCode = !resetPasswordErrors.noErrors();
 
     UserRecord userRecord;
     try {
@@ -103,15 +98,15 @@ LoginManager::resetPassword(const std::string& email,
         return resetPasswordErrors;
     }
 
-    if (resetPasswordErrors.statusCode == 0) {
-        this->m_database.updatePassword(userRecord.username, newPassword);
+    if (resetPasswordErrors.statusCode() == 0) {
+        this->m_database.updatePassword(userRecord.username, HashService::HashString(newPassword));
         this->prevResetPasswordTocken = resetPasswordTocken;
     }
 
     return resetPasswordErrors;
 }
 
-std::string LoginManager::getUsername(const std::string& email) const {
+std::string LoginManager::getUsernameByEmail(const std::string& email) const {
     return this->m_database.getUserRecord(email).username;
 }
 
@@ -162,33 +157,20 @@ SignupResponseErrors LoginManager::signup(const UserRecord& userRecord) const {
             RegexValidator::birthDateRegexDescription.data();
     }
 
-    signupErrors.statusCode = !signupErrors.noErrors();
+    std::hash <std::string> hash;
+    unsigned long hashedPassword = hash(userRecord.password);
 
-    if (signupErrors.statusCode == 0) {
-        this->m_database.addNewUser(userRecord);
+
+    if (signupErrors.statusCode() == 0) {
+        this->m_database.addNewUser(userRecord, hashedPassword);
     }
 
     return signupErrors;
 }
 
-void LoginManager::logout(const std::string& user) {
-    auto it = m_loggedUsers.find(user);
+void LoginManager::logout(const LoggedUser& user) {
+    auto it = m_loggedUsers.find(user.getUsername());
     if (it != m_loggedUsers.end()) {
-        // Remove the associated socket
-        auto socketIt = std::find_if(m_usernames.begin(), m_usernames.end(),
-            [&user](const auto& pair) { return pair.second == user; });
-        if (socketIt != m_usernames.end()) {
-            m_usernames.erase(socketIt);
-        }
         m_loggedUsers.erase(it);
     }
 }
-
-void LoginManager::logout(const SOCKET sock) {
-    auto it = m_usernames.find(sock);
-    if (it != m_usernames.end()) {
-        m_loggedUsers.erase(it->second); // Remove user from logged users
-        m_usernames.erase(it);          // Remove socket from usernames map
-    }
-}
-

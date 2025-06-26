@@ -1,18 +1,16 @@
 ﻿using ClientApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace ClientApp.Stores
 {
-    public class NavigationStore : StoreBase
+    public class NavigationStore : StoreBase 
     {
-        private readonly Stack<ViewModelBase> _navigationHistory = new();
-        private ViewModelBase _currentViewModel;
+        private readonly Stack<ScreenViewModelBase> _navigationHistory = new();
+        private ScreenViewModelBase _currentViewModel;
 
-        public bool CanGoBack()
-        {
-            return this._navigationHistory.Count > 0;
-        }
+        public bool CanGoBack() => _navigationHistory.Count > 0;
 
         public void GoBack()
         {
@@ -22,7 +20,7 @@ namespace ClientApp.Stores
             }
         }
 
-        public ViewModelBase CurrentViewModel
+        public ScreenViewModelBase CurrentViewModel
         {
             get => _currentViewModel;
             set
@@ -42,18 +40,16 @@ namespace ClientApp.Stores
                 }
 
                 _currentViewModel?.OnNavigatedAway();
-
-                // Update the ViewModel
                 _currentViewModel = value;
-
-                // Call OnNavigatedTo for the new ViewModel
                 _currentViewModel?.OnNavigatedTo();
 
+                OnPropertyChanged(nameof(CurrentViewModel));
                 CurrentViewModelChanged?.Invoke();
-            }
 
+            }
         }
 
+        
         public event Action CurrentViewModelChanged;
     }
 }

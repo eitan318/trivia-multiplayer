@@ -10,7 +10,7 @@ struct RoomState{
         m_answerTimeOut(answerTimeOut),
         m_roomStatus(roomStatus)
     {}
-    unsigned int m_roomStatus;
+    RoomStatus m_roomStatus;
     std::vector<LoggedUser> m_players;
     unsigned int m_answerCount;
     double m_answerTimeOut;
@@ -19,7 +19,7 @@ struct RoomState{
 // Define a to_json function for RoomState
 inline void to_json(nlohmann::json& j, const RoomState& roomState) {
     j = nlohmann::json{
-        {"RoomStatus", roomState.m_roomStatus},
+        {"RoomStatus", roomState.m_roomStatus}, // Dereference shared_ptr or fallback
         {"Players", roomState.m_players},
         {"AnswerCount", roomState.m_answerCount},
         {"AnswerTimeOut", roomState.m_answerTimeOut}

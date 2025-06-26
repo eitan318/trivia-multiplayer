@@ -5,7 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ClientApp.Views.Screens"
       mc:Ignorable="d" 
-      TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+             Style="{StaticResource UserControlStyle}"
+
       d:DesignHeight="450" d:DesignWidth="800"
              >
 
@@ -22,10 +23,7 @@
         <!-- Page header -->
         <TextBlock Grid.Row="0" 
            Text="Forgot Password" 
-           FontSize="24" 
-           FontWeight="Bold" 
-           HorizontalAlignment="Center" 
-           Margin="0,20,0,10"/>
+           Style="{StaticResource TitleStyle}"/>
 
         <!-- Instruction for entering the email -->
         <TextBlock Grid.Row="1" 
@@ -51,13 +49,14 @@
         Width="150" 
         Height="40" 
         HorizontalAlignment="Center"
-        Style="{StaticResource MaterialDesignRaisedButton}"
-        Command="{Binding SubmitEmailCmd}" />
+        Style="{StaticResource OperationButtonStyle}"
+        Command="{Binding SubmitEmailCmd}" 
+        CommandParameter="{Binding}"
+                />
 
         <!-- Error message display -->
         <TextBlock Text="{Binding ErrorMessage}" 
-               Grid.Row="4" Foreground="{StaticResource ErrorBrush}" 
-               TextAlignment="Center" 
-               Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
+        Style="{StaticResource ErrorMessageStyle}"
+                   Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
     </Grid>
 </UserControl>

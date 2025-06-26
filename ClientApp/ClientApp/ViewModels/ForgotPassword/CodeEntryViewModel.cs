@@ -11,7 +11,7 @@ namespace ClientApp.ViewModels.ForgotPassword
     /// ViewModel for the code input step in the forgot password process. Handles user input for the verification code
     /// and manages navigation between steps in the forgot password flow.
     /// </summary>
-    class CodeEntryViewModel : ViewModelBase
+    public class CodeEntryViewModel : ScreenViewModelBase
     {
         
         /// <summary>
@@ -19,24 +19,19 @@ namespace ClientApp.ViewModels.ForgotPassword
         /// </summary>
         /// <param name="parent">The parent ViewModel that controls the overall flow of the forgot password process.</param>
         public CodeEntryViewModel(
-            INavigationService navigationService, 
-            PasswordResetStore state,
-            RequestsExchangeService requestsExchangeService) : base(true)
+            SubmitPasswordResetCodeCommand submitCodeCommand) : base(true)
         {
             // Initialize 6 code boxes for user input
             CodeBoxes = new ObservableCollection<CodeBox>(
                 Enumerable.Range(0, 6).Select(_ => new CodeBox()));
 
             // Setup commands for submitting the code and retrying the email verification
-            SubmitCodeCmd = new SubmitPasswordResetCodeCommand(this, navigationService, state, requestsExchangeService);
-            RetryCmd = new NavigateCommand<EmailEntryViewModel>(navigationService);
+            SubmitCodeCmd = submitCodeCommand;
         }
 
         
         // Commands
         public ICommand SubmitCodeCmd { get; }
-        public ICommand RetryCmd { get; }
-
 
 
         // Error message field

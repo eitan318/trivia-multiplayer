@@ -1,20 +1,20 @@
 ﻿namespace ClientApp.Models
 {
-    public class RoomPreview
+    class RoomPreview
     {
         public RoomDataModel RoomData { get; set; }
         public uint CurrPlayersAmount { get; set; }
         public RoomStatus Status { get; set; }
 
         public string PlayersInfo => $"{CurrPlayersAmount}/{RoomData.MaxPlayers}";
-
+        public string RoomDisplayName => $"{RoomData.RoomName} (#{RoomData.Id})";
         public string StatusInfo
         {
             get
             {
                 return Status switch
                 {
-                    RoomStatus.Closed => "Closed - something went wrong",
+                    RoomStatus.Closing => "Closed - but some are still inGame",
                     RoomStatus.InGame => "InGame",
                     RoomStatus.NotInGame => "Available",
                     _ => "Unknown Status"
