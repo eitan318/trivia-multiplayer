@@ -13,7 +13,8 @@
         xmlns:controls="clr-namespace:ClientApp.Views.Controls"
         xmlns:converters="clr-namespace:ClientApp.Views.Converters"
         Style="{StaticResource MaterialDesignWindow}"
-        Icon="/Assets/TriviaIcon3.ico">
+        Icon="/Assets/TriviaIcon3.ico"
+        MinHeight="300" MinWidth="600">
 
     <DockPanel>
         <Grid DockPanel.Dock="Top"  Visibility="{Binding CurrentViewModel.HasNavBar, Converter={StaticResource BoolToVisibilityConverter}}">

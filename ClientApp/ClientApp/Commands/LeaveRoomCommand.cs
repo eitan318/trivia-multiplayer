@@ -19,7 +19,7 @@ namespace ClientApp.Commands
             this._navigationService = navigationService;
             this._requestsExchangeService = requestsExchangeService;
         }
-        public override async void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
                 var leaverRoomRequest = new LeaveRoomRequest();
                 ResponseInfo<LeaveRoomResponse> responseInfo =
@@ -37,6 +37,7 @@ namespace ClientApp.Commands
                 }
 
         }
+
 
     }
 }

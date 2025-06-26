@@ -27,76 +27,74 @@
 
             <!-- Input Fields Section -->
             <Border Grid.Row="1"
-                Margin="15"
-                Padding="30"
+                Margin="5"
                 CornerRadius="16"
                 BorderBrush="{DynamicResource MaterialDesign.Brush.Primary}"
                 BorderThickness="2">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
+                <ScrollViewer>
+                    <UniformGrid>
 
-                    <!-- Room Name -->
-                    <TextBox 
-                    materialDesign:HintAssist.Hint="Room Name" 
-                    x:Name="RoomName_TB"
-                    Text="{Binding CurrentRoomData.RoomName, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                    Margin="10" 
-                    FontSize="14"
-                    Grid.Row="0" Grid.Column="0" />
+                        <!-- Room Name -->
+                        <TextBox 
+                            materialDesign:HintAssist.Hint="Room Name" 
+                            x:Name="RoomName_TB"
+                            Text="{Binding CurrentRoomData.RoomName, UpdateSourceTrigger=PropertyChanged}"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Margin="10" 
+                            FontSize="14"
+                            Grid.Row="0" Grid.Column="0" 
+                            VerticalAlignment="Center"/>
 
-                    <!-- Players -->
-                    <materialDesign:NumericUpDown 
-                    materialDesign:HintAssist.Hint="Max Players"
-                    Value="{Binding CurrentRoomData.MaxPlayers, UpdateSourceTrigger=PropertyChanged}" 
-                    Maximum="50" 
-                    Minimum="1" 
-                    Style="{StaticResource MaterialDesignFloatingHintNumericUpDown}" 
-                    Margin="10"
-                    FontSize="14"
-                    Grid.Row="0" Grid.Column="1" />
+                        <!-- Players -->
+                        <materialDesign:NumericUpDown 
+                            materialDesign:HintAssist.Hint="Max Players"
+                            Value="{Binding CurrentRoomData.MaxPlayers, UpdateSourceTrigger=PropertyChanged}" 
+                            Maximum="50" 
+                            Minimum="1" 
+                            Style="{StaticResource MaterialDesignFloatingHintNumericUpDown}" 
+                            Margin="10"
+                            FontSize="14"
+                            Grid.Row="0" Grid.Column="1"
+                            VerticalAlignment="Center"/>
 
-                    <!-- Questions -->
-                    <materialDesign:NumericUpDown 
-                    materialDesign:HintAssist.Hint="Questions" 
-                    Value="{Binding CurrentRoomData.NumOfQuestionsInGame, UpdateSourceTrigger=PropertyChanged}" 
-                    Maximum="50" 
-                    Minimum="1" 
-                    Style="{StaticResource MaterialDesignFloatingHintNumericUpDown}" 
-                    Margin="10" 
-                    FontSize="14"
-                    Grid.Row="1" Grid.Column="0" />
+                        <!-- Questions -->
+                        <materialDesign:NumericUpDown 
+                            materialDesign:HintAssist.Hint="Questions" 
+                            Value="{Binding CurrentRoomData.NumOfQuestionsInGame, UpdateSourceTrigger=PropertyChanged}" 
+                            Maximum="50" 
+                            Minimum="1" 
+                            Style="{StaticResource MaterialDesignFloatingHintNumericUpDown}" 
+                            Margin="10" 
+                            FontSize="14"
+                            Grid.Row="1" Grid.Column="0"
+                            VerticalAlignment="Center"/>
 
-                    <!-- Timeout -->
-                    <materialDesign:DecimalUpDown 
-                    materialDesign:HintAssist.Hint="Timeout (sec)" 
-                    Value="{Binding CurrentRoomData.TimePerQuestion, UpdateSourceTrigger=PropertyChanged}" 
-                    ValueStep="0.5" 
-                    Minimum="1" 
-                    Style="{StaticResource MaterialDesignFloatingHintDecimalUpDown}" 
-                    Margin="10" 
-                    FontSize="14"
-                    Grid.Row="1" Grid.Column="1" />
+                        <!-- Timeout -->
+                        <materialDesign:DecimalUpDown 
+                            materialDesign:HintAssist.Hint="Timeout (sec)" 
+                            Value="{Binding CurrentRoomData.TimePerQuestion, UpdateSourceTrigger=PropertyChanged}" 
+                            ValueStep="0.5" 
+                            Minimum="1" 
+                            Style="{StaticResource MaterialDesignFloatingHintDecimalUpDown}" 
+                            Margin="10" 
+                            FontSize="14"
+                            Grid.Row="1" Grid.Column="1"
+                            VerticalAlignment="Center"/>
 
-                    <!-- Score Showing Time -->
-                    <materialDesign:DecimalUpDown 
-                    materialDesign:HintAssist.Hint="Score Showing Time (sec)" 
-                    Value="{Binding CurrentRoomData.ScoreShowingTime, UpdateSourceTrigger=PropertyChanged}" 
-                    ValueStep="0.5" 
-                    Minimum="1" 
-                    Style="{StaticResource MaterialDesignFloatingHintDecimalUpDown}" 
-                    Margin="10" 
-                    FontSize="14"
-                    Grid.Row="2" Grid.Column="0" />
-                </Grid>
+                        <!-- Score Showing Time -->
+                        <materialDesign:DecimalUpDown 
+                            materialDesign:HintAssist.Hint="Score Showing Time (sec)" 
+                            Value="{Binding CurrentRoomData.ScoreShowingTime, UpdateSourceTrigger=PropertyChanged}" 
+                            ValueStep="0.5" 
+                            Minimum="1" 
+                            Style="{StaticResource MaterialDesignFloatingHintDecimalUpDown}" 
+                            Margin="10" 
+                            FontSize="14"
+                            Grid.Row="2" Grid.Column="0" 
+                            VerticalAlignment="Center"/>
+                    </UniformGrid>
+                </ScrollViewer>
+                
             </Border>
 
             <!-- Action Button Section -->

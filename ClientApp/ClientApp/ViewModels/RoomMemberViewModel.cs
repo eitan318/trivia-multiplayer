@@ -18,6 +18,9 @@ namespace ClientApp.ViewModels
         private CancellationTokenSource _checkRoomStateCTS;
         private LoggedUser _admin;
         private readonly int refreshMS = 300;
+        private readonly AmIAdminStore _amIAdminStore;
+        private readonly Is1v1GameStore _is1v1GameStore;
+
         public RoomMemberViewModel(
             INavigationService navigationService,
             RoomDataStore roomDataStore,
@@ -27,8 +30,8 @@ namespace ClientApp.ViewModels
             Is1v1GameStore is1v1GameStore,
             LeaveRoomCommand leaveRoomCommand)
         {
-            is1v1GameStore.is1v1Game = false;
-            amIAdminStore.AmIAdmin = false;
+            this._amIAdminStore = amIAdminStore;
+            this._is1v1GameStore = is1v1GameStore;
 
             this._navigationService = navigationService;
             this._userStore = userStore;
@@ -44,6 +47,8 @@ namespace ClientApp.ViewModels
 
         public override void OnNavigatedTo()
         {
+            _is1v1GameStore.is1v1Game = false;
+            _amIAdminStore.AmIAdmin = false; 
             this._checkRoomStateCTS = new CancellationTokenSource();
             Task.Run(() => PeriodicallyCheckRoomStateLoop(_checkRoomStateCTS.Token));
         }

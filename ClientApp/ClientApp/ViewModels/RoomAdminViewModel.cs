@@ -17,6 +17,8 @@ namespace ClientApp.ViewModels
         private readonly int refreshMS = 300;
         private LoggedUser _admin;
         private string _errorMessage;
+        private readonly AmIAdminStore _amIAdminStore;
+        private readonly Is1v1GameStore _is1v1GameStore;
 
         
         public RoomAdminViewModel(
@@ -28,8 +30,8 @@ namespace ClientApp.ViewModels
             Is1v1GameStore is1v1GameStore,
             AmIAdminStore amIAdminStore)
         {
-            is1v1GameStore.is1v1Game = false;
-            amIAdminStore.AmIAdmin = true;
+            this._amIAdminStore = amIAdminStore;
+            this._is1v1GameStore = is1v1GameStore;
 
             this.userStore = userState;
             this._requestsExchangeService = requestsExchangeService;
@@ -44,6 +46,8 @@ namespace ClientApp.ViewModels
 
         public override void OnNavigatedTo()
         {
+            _is1v1GameStore.is1v1Game = false;
+            _amIAdminStore.AmIAdmin = true;
             this._checkRoomStateCTS = new CancellationTokenSource();
             Task.Run(() => PeriodicallyCheckRoomStateLoop(_checkRoomStateCTS.Token));
         }

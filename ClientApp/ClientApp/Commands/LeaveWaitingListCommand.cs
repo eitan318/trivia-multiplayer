@@ -19,7 +19,7 @@ namespace ClientApp.Commands
             this._requestsExchangeService = requestsExchangeService;
         }
 
-        public override async void Execute(object parameters)
+        public override async Task ExecuteAsync(object parameters)
         {
             if (parameters is not Waiting1v1ViewModel waiting1v1ViewModel) 
             {

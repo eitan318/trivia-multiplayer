@@ -14,7 +14,8 @@ namespace ClientApp.ViewModels
         private CancellationTokenSource _refreshRoomsCTS;
         private readonly int refreshMS = 300;
         private RequestsExchangeService _requestsExchangeService;
-        private readonly RoomDataStore _roomDataStore;
+        private readonly AmIAdminStore _amIAdminStore;
+        private readonly Is1v1GameStore _is1v1GameStore;
         public Waiting1v1ViewModel(
             LeaveWaitingListCommand leaveWaitingListCommand,
             Join1v1WaitingListCommand join1V1WaitingListCommand,
@@ -22,10 +23,11 @@ namespace ClientApp.ViewModels
             RequestsExchangeService requestsExchangeService,
             NavigateCommand<GameAnsweringViewModel> start1v1GameCommand, 
             AmIAdminStore amIAdminStore,
-            Is1v1GameStore is1V1GameStore)
+            Is1v1GameStore is1v1GameStore)
         {
-            amIAdminStore.AmIAdmin = false;
-            is1V1GameStore.is1v1Game = true;
+            this._amIAdminStore = amIAdminStore;
+            this._is1v1GameStore = is1v1GameStore;
+
 
             this._set1v1GameSettingsCmd = set1v1GameSettingsCommand;
 
@@ -42,6 +44,8 @@ namespace ClientApp.ViewModels
         public override async void OnNavigatedTo()
         {
             base.OnNavigatedTo();
+            _amIAdminStore.AmIAdmin = false;
+            _is1v1GameStore.is1v1Game = true;
 
             // Execute the command asynchronously
             try

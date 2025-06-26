@@ -31,7 +31,7 @@
 
             <!-- Enlarged Leave Room Button -->
             <Button Margin="0,30,0,0"
-                    Content="Leave Room"
+                    Content="Leave Game"
                     Style="{StaticResource OperationButtonStyle}"
                     Command="{Binding LeaveGameCmd}"
                     Width="200"
