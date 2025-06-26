@@ -78,7 +78,6 @@
       <Filter>Model\ResponseErrors</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GetRoomStateResponse.cpp" />
     <ClCompile Include="GameRequestHandler.cpp">
       <Filter>RequestHandlers</Filter>
     </ClCompile>
@@ -100,18 +99,20 @@
     <ClCompile Include="Waiting1v1Manager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="Waiting1v1RequestHandler.cpp" />
     <ClCompile Include="AddAnswerManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="QuestionRecord.cpp">
       <Filter>Model</Filter>
     </ClCompile>
+    <ClCompile Include="Waiting1v1RequestHandler.cpp">
+      <Filter>RequestHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="ResponseCodes.hpp">
+      <Filter>enums</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Response.hpp">
-      <Filter>Model\Responses</Filter>
-    </ClInclude>
     <ClInclude Include="SignupResponseErrors.hpp">
       <Filter>Model\ResponseErrors</Filter>
     </ClInclude>
@@ -177,9 +178,6 @@
     </ClInclude>
     <ClInclude Include="RequestResult.hpp">
       <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="RequestsCodes.hpp">
-      <Filter>Model\Requests</Filter>
     </ClInclude>
     <ClInclude Include="RoomData.hpp">
       <Filter>Model</Filter>
@@ -253,18 +251,38 @@
     <ClInclude Include="PlayerGameData.hpp">
       <Filter>Model</Filter>
     </ClInclude>
-    <ClInclude Include="GameStatus.hpp" />
     <ClInclude Include="Waiting1v1Manager.hpp">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="GetQuestionResponseData.hpp" />
-    <ClInclude Include="Requests.hpp" />
-    <ClInclude Include="Waiting1v1RequestHandler.hpp" />
     <ClInclude Include="AddAnswerManager.hpp">
       <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="QuestionRecord.hpp">
       <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Waiting1v1RequestHandler.hpp">
+      <Filter>RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="Response.hpp">
+      <Filter>Model\RequestsAndResponses</Filter>
+    </ClInclude>
+    <ClInclude Include="GetQuestionResponseData.hpp">
+      <Filter>Model\ResponseData</Filter>
+    </ClInclude>
+    <ClInclude Include="PersonalStatisticsResponseData.hpp">
+      <Filter>Model\ResponseData</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStatus.hpp">
+      <Filter>enums</Filter>
+    </ClInclude>
+    <ClInclude Include="HashService.hpp">
+      <Filter>Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Requests.hpp">
+      <Filter>Model\RequestsAndResponses</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestsCodes.hpp">
+      <Filter>enums</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -283,12 +301,6 @@
     <Filter Include="Model">
       <UniqueIdentifier>{c1933ba4-65ab-4b53-8015-ecdb6342d910}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Model\Requests">
-      <UniqueIdentifier>{3320da5e-def5-4b67-9876-d7c2b62b2663}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Model\Responses">
-      <UniqueIdentifier>{bb1eb810-7ee3-4e1d-95de-87ee1ad8225a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Model\ResponseErrors">
       <UniqueIdentifier>{cb0481a9-b1ce-4db6-adb3-cbbfb0341f80}</UniqueIdentifier>
     </Filter>
@@ -300,6 +312,12 @@
     </Filter>
     <Filter Include="enums">
       <UniqueIdentifier>{f81da6dc-a234-4e62-9d09-a94f70aa02bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model\RequestsAndResponses">
+      <UniqueIdentifier>{0f1eec9b-2dee-43c1-b48e-19cb17f1009d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model\ResponseData">
+      <UniqueIdentifier>{c476cd7c-81d5-41f5-9c67-4d8a270ecb59}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -200,6 +200,7 @@
     <ClCompile Include="RequestInfo.cpp" />
     <ClCompile Include="RequestResult.cpp" />
     <ClCompile Include="ResetPasswordResponseErrors.cpp" />
+    <ClCompile Include="ResponseCodes.hpp" />
     <ClCompile Include="RoomAdminRequestHandler.cpp" />
     <ClCompile Include="RoomRequestHandler.cpp" />
     <ClCompile Include="SignupResponseErrors.cpp" />
