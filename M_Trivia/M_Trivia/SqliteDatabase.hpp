@@ -19,7 +19,7 @@ public:
     int addNewUser(const UserRecord&, unsigned long hashedPassword) const override;
     void addUserAnswer(const std::string& username, unsigned int gameId, unsigned int questionId,
         int chosenAnswerInQuestion, int score, double answerTimeSec) const override;
-    std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId, unsigned int questionAmount) const;
+    std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId, unsigned int questionAmount, LastAnswerState lastAnswerState) const;
     unsigned int createGame(const std::string& roomName, time_t startTime, bool is1v1) const override;
     bool emailExists(const std::string& email) const override;
     UserRecord getUserRecord(const std::string& email) const override;

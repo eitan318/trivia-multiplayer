@@ -139,6 +139,7 @@
     <ClInclude Include="GetQuestionResponseData.hpp" />
     <ClInclude Include="HashService.hpp" />
     <ClInclude Include="IResponseErrors.hpp" />
+    <ClInclude Include="LastAnswerState.hpp" />
     <ClInclude Include="LoginResponseErrors.hpp" />
     <ClInclude Include="MenuRequestHandler.hpp" />
     <ClInclude Include="PersonalStatisticsResponseData.hpp" />

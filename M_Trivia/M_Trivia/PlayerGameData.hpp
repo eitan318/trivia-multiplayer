@@ -1,15 +1,16 @@
 #pragma once
 #include <chrono>
+#include "LastAnswerState.hpp"
 
 class PlayerGameData {
 public:
     Question question;
     bool m_isActive;
-    bool answeredLastQuestion;
+    LastAnswerState lastAnswerState;
 
     PlayerGameData() = default;
     PlayerGameData(const Question& q)
-        : question(q), answeredLastQuestion(false), m_isActive(true)
+        : question(q), lastAnswerState(LastAnswerState::NoAnswer), m_isActive(true)
     {
     }
 };

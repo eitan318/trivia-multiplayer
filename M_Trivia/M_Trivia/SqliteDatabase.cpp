@@ -344,7 +344,7 @@ bool SqliteDatabase::addQuestionToDB(QuestionRecord& questionRecord) const {
 }
 
 
-std::optional<PlayerResults> SqliteDatabase::getPlayerResults(const std::string& username, unsigned int gameId, unsigned int questionAmount) const {
+std::optional<PlayerResults> SqliteDatabase::getPlayerResults(const std::string& username, unsigned int gameId, unsigned int questionAmount, LastAnswerState lastAnswerState) const {
     const char* query = R"(
     SELECT 
         username,
@@ -377,7 +377,8 @@ std::optional<PlayerResults> SqliteDatabase::getPlayerResults(const std::string&
             sqlite3_column_int(stmt, 2),                                // wrongAnswerCount
             sqlite3_column_int(stmt, 3),                                // score
             sqlite3_column_double(stmt, 4),                         // averageAnswerTime
-            questionAmount
+            questionAmount,
+            lastAnswerState
         );
     }
 

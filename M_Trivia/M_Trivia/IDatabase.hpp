@@ -128,7 +128,7 @@ public:
      * @param gameId The ID of the game to retrieve results for.
      * @return An optional containing the player's results if found, or std::nullopt if no results are available.
      */
-    virtual std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId, unsigned int questionAmount) const = 0;
+    virtual std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId, unsigned int questionAmount, LastAnswerState lastAnswerState) const = 0;
 
 
     virtual PersonalStatistics getPersonalStatistics(const std::string& username, bool is1v1Game) const = 0;

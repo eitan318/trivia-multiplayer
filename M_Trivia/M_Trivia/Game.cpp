@@ -71,9 +71,9 @@ bool Game::userExistsInGame(const LoggedUser& user) const
     return m_players.find(user) != m_players.end();
 }
 
-void Game::userAnswered(const LoggedUser& user)
+void Game::userAnswered(const LoggedUser& user, LastAnswerState answerState)
 {
-    this->m_players[user].answeredLastQuestion = true;
+    this->m_players[user].lastAnswerState = answerState;
 }
 
 void Game::moveToScoreBoard()
@@ -102,7 +102,7 @@ bool Game::didEveryActiveAnswered() const
 {
     std::lock_guard<std::mutex> lock(m_playersMutex);
     for (const auto& [player, playerData] : this->m_players) {
-        if (playerData.m_isActive && !playerData.answeredLastQuestion) {
+        if (playerData.m_isActive && playerData.lastAnswerState == LastAnswerState::NoAnswer) {
             return false;
         }
     }
@@ -131,7 +131,7 @@ void Game::setNextQuestion()
         Question nextQuestionShuffledCopy(this->m_questions[this->m_currQuestionIdx]);
         nextQuestionShuffledCopy.shuffle();
         playerData.question = nextQuestionShuffledCopy;
-        playerData.answeredLastQuestion = false;
+        playerData.lastAnswerState = LastAnswerState::NoAnswer;
     }
     this->m_lastQuestionStartTime = std::chrono::steady_clock::now();
 }

@@ -9,6 +9,7 @@
 #include <mutex>
 #include <optional>
 #include <chrono>
+#include "LastAnswerState.hpp"
 
 /**
  * @brief Represents a game, managing players, questions, and game state.
@@ -63,7 +64,7 @@ public:
      * @brief Marks a user as having answered the current question.
      * @param user The player who answered.
      */
-    void userAnswered(const LoggedUser& user);
+    void userAnswered(const LoggedUser& user, LastAnswerState answerState);
 
     /**
      * @brief Checks if all active players have answered the current question.

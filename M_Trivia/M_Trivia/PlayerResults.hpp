@@ -1,6 +1,7 @@
 #pragma once
 #include "json.hpp"
 #include <string>
+#include "LastAnswerState.hpp"
 
 
 struct PlayerResults {
@@ -10,11 +11,13 @@ struct PlayerResults {
     unsigned int notAnsweredCount = 0;
     int score = 0;
     double averageAnswerTime = 0.0;
+    LastAnswerState lastAnswerState;
+    
 
     // Parameterized constructor
     PlayerResults(const std::string& uname, unsigned int correct, unsigned int wrong, 
-        int score, double avgTime, unsigned int questionAmount)
-        : username(uname), correctAnswerCount(correct), wrongAnswerCount(wrong),
+        int score, double avgTime, unsigned int questionAmount, LastAnswerState lastAnswerState)
+        : username(uname), correctAnswerCount(correct), wrongAnswerCount(wrong), lastAnswerState(lastAnswerState),
         averageAnswerTime(avgTime), notAnsweredCount(questionAmount - correctAnswerCount - wrongAnswerCount), score(score) {
     }
 };
@@ -29,5 +32,6 @@ inline void to_json(nlohmann::json& j, const PlayerResults& playerResults) {
         {"NotAnsweredCount", playerResults.notAnsweredCount},
         {"Score", playerResults.score},
         {"AverageAnswerTime", playerResults.averageAnswerTime},
+        {"LastAnswerState", playerResults.lastAnswerState},
     };
 }

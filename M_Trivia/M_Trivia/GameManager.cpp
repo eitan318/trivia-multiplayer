@@ -29,7 +29,7 @@ void GameManager::handleTimeout(std::shared_ptr<Game> game) {
         return;
 
     for (const auto& [player, playerData] : game->getPlayers()) {
-        if (!playerData.answeredLastQuestion) {
+        if (playerData.lastAnswerState == LastAnswerState::NoAnswer) {
             submitAnswer(player, game, -1); // Submit default answer
         }
     }
@@ -75,7 +75,7 @@ GeneralResponseErrors GameManager::submitAnswer(const LoggedUser& user, std::sha
     int answerId)
 {
     std::optional<Question> originalQuestionAnswered = game->getQuestionForUser(user);
-    game->userAnswered(user);
+
 
     GeneralResponseErrors errors;
     if (!originalQuestionAnswered.has_value()) {
@@ -85,6 +85,10 @@ GeneralResponseErrors GameManager::submitAnswer(const LoggedUser& user, std::sha
 
     int answerOriginalNumber = answerId == -1 ? -1 : q.getOriginalAnswerNum(answerId);
     bool isCorrect = q.getCorrectAnswerId() == answerId;
+
+    LastAnswerState answerState = answerId == -1 ? LastAnswerState::NoAnswer : 
+        (isCorrect ? LastAnswerState::Correct : LastAnswerState::Wrong);
+    game->userAnswered(user, answerState);
     double answerTime = game->getAnswerDouration(std::chrono::steady_clock::now());
     double  timeLimit = game->getQuestionTimeLimit();
     if (answerTime > timeLimit + 1)
@@ -109,7 +113,7 @@ std::vector<PlayerResults> GameManager::getGameResults(std::shared_ptr<Game> gam
 
     auto players = game->getPlayers();
     for (const auto& [player, _] : players) {
-        std::optional<PlayerResults> playerResults = this->m_database.getPlayerResults(player.getUsername(), game->getId(), game->getQuestionsAmount());
+        std::optional<PlayerResults> playerResults = this->m_database.getPlayerResults(player.getUsername(), game->getId(), game->getQuestionsAmount(), _.lastAnswerState);
         if (playerResults.has_value()) {
             playersResults.emplace_back(playerResults.value());
         }
