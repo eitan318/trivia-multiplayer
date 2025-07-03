@@ -55,6 +55,16 @@
                                                    FontWeight="Bold"
                                                    Foreground="Gray"
                                                    VerticalAlignment="Center"/>
+
+
+                                        <materialDesign:PackIcon
+                                            Kind="{Binding LastAnswerState, Converter={StaticResource AnswerStateToIconConverter}}"
+                                            Width="40"
+                                            Height="40"/>
+
+  
+
+
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>

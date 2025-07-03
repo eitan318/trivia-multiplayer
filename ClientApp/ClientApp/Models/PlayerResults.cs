@@ -1,4 +1,6 @@
-﻿namespace ClientApp.Models
+﻿using ClientApp.Enums;
+
+namespace ClientApp.Models
 {
     public class PlayerResults
     {
@@ -8,6 +10,8 @@
         public uint NotAnsweredCount {get; set; }
         public int Score {get; set; }
         public double AverageAnswerTime {get; set; }
+
+        public AnswerState LastAnswerState {get; set; }
         
     }
 }

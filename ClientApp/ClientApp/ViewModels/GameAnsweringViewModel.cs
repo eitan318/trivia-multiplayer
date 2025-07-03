@@ -100,9 +100,9 @@ namespace ClientApp.ViewModels
 
         private async Task HandleTimerEndAsync()
         {
-            if (SubmitCmd.CanExecute(null))
+            if (SubmitCmd.CanExecute(this))
             {
-                SubmitCmd.ExecuteAsync(null);
+                SubmitCmd.ExecuteAsync(this);
             }
             else
             {

@@ -17,6 +17,7 @@
 
             <!-- Application-specific resources -->
             <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+            <converters:AnswerStateToIconConverter x:Key="AnswerStateToIconConverter" />
             <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
         </ResourceDictionary>

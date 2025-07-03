@@ -39,6 +39,7 @@
                                             <ColumnDefinition Width="1*" />
                                             <ColumnDefinition Width="1*" />
                                             <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="1*" />
                                         </Grid.ColumnDefinitions>
 
                                         <!-- Username -->
@@ -83,7 +84,19 @@
                                                 FontSize="14" 
                                                 FontWeight="Bold" />
                                         </StackPanel>
-                                    </Grid>
+
+                                        <!-- NotAnswered Answers -->
+                                        <StackPanel Grid.Column="3" HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <TextBlock 
+                                                    Text="NotAnswered: " 
+                                                    FontSize="14" 
+                                                    Foreground="Gray" />
+                                            <TextBlock 
+                                                    Text="{Binding NotAnsweredCount}" 
+                                                    FontSize="14" 
+                                                    FontWeight="Bold" />
+                                        </StackPanel>
+                                </Grid>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
