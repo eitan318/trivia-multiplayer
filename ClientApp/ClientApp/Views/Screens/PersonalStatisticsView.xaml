@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="ClientApp.Views.Screens.PersonalStatisticsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ClientApp.Views.Screens"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:controls="clr-namespace:ClientApp.Views.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800"
+             Style="{StaticResource UserControlStyle}">
+
+    <!-- Main Content -->
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <!-- Title -->
+            <RowDefinition Height="Auto" />
+            <!-- Main Content -->
+            <RowDefinition Height="*" />
+            <!-- Error Message -->
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <Border Grid.Row="0" Style="{StaticResource TitleBorderStyle}">
+            <TextBlock Text="📊 Personal Statistics" Style="{StaticResource TitleStyle}" />
+        </Border>
+
+        <!-- Main Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+                <!-- Regular Personal stats -->
+                <Border Style="{StaticResource ListItemStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Player Statistics Summary" Style="{StaticResource SubtitleStyle}" />
+                        <controls:PersonalStatisticsUserControl DataContext="{Binding PlayerRegularStats}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- 1v1 Personal stats -->
+                <Border Style="{StaticResource ListItemStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Player 1v1 Statistics" Style="{StaticResource SubtitleStyle}" />
+                        <controls:PersonalStatisticsUserControl DataContext="{Binding Player1v1Stats}" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Error Message -->
+        <TextBlock Grid.Row="2"
+                   Text="{Binding ErrorMessage}"
+                   Style="{StaticResource ErrorMessageStyle}"
+                   Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
+    </Grid>
+</UserControl>

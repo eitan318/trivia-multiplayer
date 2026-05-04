@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="sqlite3.c">
+      <Filter>External Libs</Filter>
+    </ClCompile>
+    <ClCompile Include="MyException.hpp">
+      <Filter>Excepsions</Filter>
+    </ClCompile>
+    <ClCompile Include="SqliteDatabase.cpp">
+      <Filter>DatabaseAccess</Filter>
+    </ClCompile>
+    <ClCompile Include="ApiClient.cpp">
+      <Filter>Services</Filter>
+    </ClCompile>
+    <ClCompile Include="EmailSender.cpp">
+      <Filter>Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Communicator.cpp" />
+    <ClCompile Include="WSAInitializer.cpp">
+      <Filter>Services</Filter>
+    </ClCompile>
+    <ClCompile Include="SocketService.cpp">
+      <Filter>Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Server.cpp" />
+    <ClCompile Include="StatisticsManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuRequestHandler.cpp">
+      <Filter>RequestHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginRequestHandler.cpp">
+      <Filter>RequestHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="RegexValidator.cpp">
+      <Filter>Services</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestHandlerFactory.cpp">
+      <Filter>RequestHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Room.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="JsonRequestPacketDeserializer.hpp">
+      <Filter>Services</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestResult.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Question.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="PersonalStatistics.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="LoggedUser.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="SignupResponseErrors.cpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClCompile>
+    <ClCompile Include="ResetPasswordResponseErrors.cpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginResponseErrors.cpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestInfo.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneralResponseErrors.cpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameRequestHandler.cpp">
+      <Filter>RequestHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomAdminRequestHandler.cpp">
+      <Filter>RequestHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomRequestHandler.cpp">
+      <Filter>RequestHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomAdminRequestHandler.cpp">
+      <Filter>RequestHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomRequestHandler.cpp">
+      <Filter>RequestHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Waiting1v1Manager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="AddAnswerManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestionRecord.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Waiting1v1RequestHandler.cpp">
+      <Filter>RequestHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="ResponseCodes.hpp">
+      <Filter>enums</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SignupResponseErrors.hpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClInclude>
+    <ClInclude Include="IResponseErrors.hpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginResponseErrors.hpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClInclude>
+    <ClInclude Include="ResetPasswordResponseErrors.hpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClInclude>
+    <ClInclude Include="ApiClient.hpp">
+      <Filter>Services</Filter>
+    </ClInclude>
+    <ClInclude Include="EmailSender.hpp">
+      <Filter>Services</Filter>
+    </ClInclude>
+    <ClInclude Include="HighScoreInfo.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="IDatabase.hpp">
+      <Filter>DatabaseAccess</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>External Libs</Filter>
+    </ClInclude>
+    <ClInclude Include="sqlite3.h">
+      <Filter>External Libs</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonResponsePacketSerializer.hpp">
+      <Filter>Services</Filter>
+    </ClInclude>
+    <ClInclude Include="IRequestHandler.hpp">
+      <Filter>RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggedUser.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginManager.hpp">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginRequestHandler.hpp">
+      <Filter>RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuRequestHandler.hpp">
+      <Filter>RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="PersonalStatistics.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Question.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="RegexValidator.hpp">
+      <Filter>Services</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestHandlerFactory.hpp">
+      <Filter>RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestInfo.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestResult.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomData.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomManager.hpp">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketService.hpp">
+      <Filter>Services</Filter>
+    </ClInclude>
+    <ClInclude Include="SqliteDatabase.hpp">
+      <Filter>DatabaseAccess</Filter>
+    </ClInclude>
+    <ClInclude Include="StatisticsManager.hpp">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="UserRecord.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="WSAInitializer.hpp">
+      <Filter>Services</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomPreview.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Communicator.hpp" />
+    <ClInclude Include="Room.hpp" />
+    <ClInclude Include="Server.hpp" />
+    <ClInclude Include="GeneralResponseErrors.hpp">
+      <Filter>Model\ResponseErrors</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomState.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.hpp" />
+    <ClInclude Include="GameManager.hpp">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRequestHandler.hpp">
+      <Filter>RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomAdminRequestHandler.hpp">
+      <Filter>RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomRequestHandler.hpp">
+      <Filter>RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomState.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRequestHandler.hpp">
+      <Filter>Model\ResponseErrors\RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomStatus.h">
+      <Filter>enums</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionDificultyLevel.h">
+      <Filter>enums</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomAdminRequestHandler.hpp">
+      <Filter>RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomRequestHandler.hpp">
+      <Filter>RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomState.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomAdminRequestHandler.hpp" />
+    <ClInclude Include="RoomRequestHandler.hpp" />
+    <ClInclude Include="PlayerGameData.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Waiting1v1Manager.hpp">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="AddAnswerManager.hpp">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionRecord.hpp">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Waiting1v1RequestHandler.hpp">
+      <Filter>RequestHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="Response.hpp">
+      <Filter>Model\RequestsAndResponses</Filter>
+    </ClInclude>
+    <ClInclude Include="GetQuestionResponseData.hpp">
+      <Filter>Model\ResponseData</Filter>
+    </ClInclude>
+    <ClInclude Include="PersonalStatisticsResponseData.hpp">
+      <Filter>Model\ResponseData</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStatus.hpp">
+      <Filter>enums</Filter>
+    </ClInclude>
+    <ClInclude Include="HashService.hpp">
+      <Filter>Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Requests.hpp">
+      <Filter>Model\RequestsAndResponses</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestsCodes.hpp">
+      <Filter>enums</Filter>
+    </ClInclude>
+    <ClInclude Include="LastAnswerState.hpp">
+      <Filter>enums</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="External Libs">
+      <UniqueIdentifier>{1ada2154-008d-4f77-9744-5c9aa0b94441}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DatabaseAccess">
+      <UniqueIdentifier>{23da2af8-8518-473b-9ffc-f5151e953755}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Excepsions">
+      <UniqueIdentifier>{83df23dc-ee8d-4eb9-aa7a-40c01ec322fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{d7392b13-1b24-48af-be8b-48768a63e503}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{c1933ba4-65ab-4b53-8015-ecdb6342d910}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model\ResponseErrors">
+      <UniqueIdentifier>{cb0481a9-b1ce-4db6-adb3-cbbfb0341f80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RequestHandlers">
+      <UniqueIdentifier>{f91c3d20-cb87-41e9-9637-402d8a20c9eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Services">
+      <UniqueIdentifier>{c1f6983e-b397-4c17-a9cd-3472a93aaa76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="enums">
+      <UniqueIdentifier>{f81da6dc-a234-4e62-9d09-a94f70aa02bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model\RequestsAndResponses">
+      <UniqueIdentifier>{0f1eec9b-2dee-43c1-b48e-19cb17f1009d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model\ResponseData">
+      <UniqueIdentifier>{c476cd7c-81d5-41f5-9c67-4d8a270ecb59}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

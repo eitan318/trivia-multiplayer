@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="ClientApp.Views.Screens.GameScoreBoardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Style="{StaticResource UserControlStyle}"
+>
+    <Grid>
+        <!-- Navigation Button -->
+        <Button Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                Content="Leave game" Command="{Binding LeaveGameCmd}"
+                Style="{StaticResource OperationButtonStyle}"/>
+
+        <!-- Scoreboard Card -->
+        <materialDesign:Card Margin="20" Padding="30"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             MaxHeight="600" MinWidth="400">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Title -->
+                    <RowDefinition Height="*"/>
+                    <!-- Scrollable Content -->
+                </Grid.RowDefinitions>
+
+                <!-- Title -->
+                <Border Style="{StaticResource TitleBorderStyle}">
+                    <TextBlock Text="Game Scores" Style="{StaticResource TitleStyle}" />
+                </Border>
+
+                <!-- Scrollable List of Scores -->
+                <ScrollViewer Grid.Row="1">
+                    <ListView ItemsSource="{Binding PlayersResults}" Margin="10" HorizontalAlignment="Center">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource ListItemStyle}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                        <!-- Username -->
+                                        <TextBlock Text="{Binding Username}" 
+                                                   FontSize="16" 
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Center"
+                                                   Width="150"/>
+
+                                        <!-- Divider -->
+                                        <Rectangle Fill="Gray" Width="1" Height="20" Margin="10, 0"/>
+
+                                        <!-- Score -->
+                                        <TextBlock Text="{Binding Score}" 
+                                                   FontSize="16" 
+                                                   FontWeight="Bold"
+                                                   Foreground="Gray"
+                                                   VerticalAlignment="Center"/>
+
+
+                                        <materialDesign:PackIcon
+                                            Kind="{Binding LastAnswerState, Converter={StaticResource AnswerStateToIconConverter}}"
+                                            Width="40"
+                                            Height="40"/>
+
+  
+
+
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
+</UserControl>

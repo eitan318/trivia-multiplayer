@@ -1,0 +1,65 @@
+﻿using ClientApp.Commands;
+using ClientApp.Services;
+using System.Windows.Input;
+using ClientApp.Models.Requests;
+using ClientApp.Models.Responses;
+using System.Windows.Navigation;
+using ClientApp.Stores;
+
+namespace ClientApp.ViewModels.ForgotPassword
+{
+    /// <summary>
+    /// ViewModel for the email input step in the forgot password process. Handles the user's input of their email address
+    /// and processes the request to initiate the password recovery process.
+    /// </summary>
+    public class EmailEntryViewModel : ScreenViewModelBase
+    {
+        private PasswordResetStore _state;
+
+        /// <summary>
+        /// Initializes the ViewModel, setting up the command for submitting the email.
+        /// </summary>
+        public EmailEntryViewModel(
+            SubmitPasswordResetEmailCommand submitPasswordResetEmailCommand,
+            PasswordResetStore state) : base(true)
+        {
+            _state = state;
+            SubmitEmailCmd = submitPasswordResetEmailCommand;
+        }
+
+        //Commands
+        public ICommand SubmitEmailCmd { get; }
+
+
+
+        // Error fields
+        private string _errorMessage;
+
+
+        //Email Property
+        public string Email
+        {
+            get => _state.Email;
+            set
+            {
+                _state.Email = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // Error properties
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set 
+            { 
+                _errorMessage = value; 
+                OnPropertyChanged();
+            }
+        }
+
+
+
+
+    }
+}

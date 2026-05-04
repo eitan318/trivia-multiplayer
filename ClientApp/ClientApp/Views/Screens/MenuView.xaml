@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="ClientApp.Views.Screens.MenuView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:controls="clr-namespace:ClientApp.Views.Controls"
+      mc:Ignorable="d"
+      Style="{StaticResource UserControlStyle}"
+      d:DesignHeight="450" d:DesignWidth="800">
+    
+        <!-- Main Content -->
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <!-- Buttons -->
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Menu Buttons -->
+            <UniformGrid Grid.Row="0" Columns="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10">
+                <!-- Create Room Button -->
+                <Button Command="{Binding NavToCreateRoomCmd}" Style="{StaticResource MenuButtonStyle}" Margin="10">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <materialDesign:PackIcon Kind="PlusCircle" Width="40" Height="40"/>
+                    <TextBlock Text="Create Room" FontSize="18" FontWeight="Bold" TextAlignment="Center" Margin="0,10,0,0"/>
+                        <TextBlock Text="Start a new trivia game and invite friends to join" FontSize="12" TextAlignment="Center" Foreground="Gray"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Join Room Button -->
+                <Button Command="{Binding NavToJoinRoomCmd}" Style="{StaticResource MenuButtonStyle}" Margin="10">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <materialDesign:PackIcon Kind="AccountGroup" Width="40" Height="40"/>
+                        <TextBlock Text="Join Room" FontSize="18" FontWeight="Bold" TextAlignment="Center" Margin="0,10,0,0"/>
+                        <TextBlock Text="Browse available rooms and join an existing game" FontSize="12" TextAlignment="Center" Foreground="Gray"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Statistics Button -->
+                <Button Command="{Binding NavToStatisticsCmd}" Style="{StaticResource MenuButtonStyle}" Margin="10">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <materialDesign:PackIcon Kind="ChartBar" Width="40" Height="40"/>
+                        <TextBlock Text="Statistics" FontSize="18" FontWeight="Bold" TextAlignment="Center" Margin="0,10,0,0"/>
+                        <TextBlock Text="View your performance stats and leaderboards" FontSize="12" TextAlignment="Center" Foreground="Gray"/>
+                    </StackPanel>
+                </Button>
+
+            <!-- 1v1 Button -->
+            <Button Command="{Binding Join1v1WaitingCmd}"
+                    CommandParameter="{Binding}"
+                    Style="{StaticResource MenuButtonStyle}" Margin="10">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <materialDesign:PackIcon Kind="AccountMultipleOutline" Width="40" Height="40"/>
+                    <TextBlock Text="1v1" FontSize="18" FontWeight="Bold" TextAlignment="Center" Margin="0,10,0,0"/>
+                    <TextBlock Text="Match and compete against someone your level" FontSize="12" TextAlignment="Center" Foreground="Gray"/>
+                </StackPanel>
+            </Button>
+        </UniformGrid>
+        </Grid>
+</UserControl>

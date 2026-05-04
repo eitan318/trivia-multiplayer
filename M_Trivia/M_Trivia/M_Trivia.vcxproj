@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{37999066-5249-4035-b04f-516a52980a80}</ProjectGuid>
+    <RootNamespace>MTrivia</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="AddAnswerManager.hpp" />
+    <ClInclude Include="Communicator.hpp" />
+    <ClInclude Include="EmailSender.hpp" />
+    <ClInclude Include="Game.hpp" />
+    <ClInclude Include="GameManager.hpp" />
+    <ClInclude Include="GameRequestHandler.hpp" />
+    <ClInclude Include="GameStatus.hpp" />
+    <ClInclude Include="GeneralResponseErrors.hpp" />
+    <ClInclude Include="GetQuestionResponseData.hpp" />
+    <ClInclude Include="HashService.hpp" />
+    <ClInclude Include="IResponseErrors.hpp" />
+    <ClInclude Include="LastAnswerState.hpp" />
+    <ClInclude Include="LoginResponseErrors.hpp" />
+    <ClInclude Include="MenuRequestHandler.hpp" />
+    <ClInclude Include="PersonalStatisticsResponseData.hpp" />
+    <ClInclude Include="PlayerGameData.hpp" />
+    <ClInclude Include="QuestionDificultyLevel.h" />
+    <ClInclude Include="QuestionRecord.hpp" />
+    <ClInclude Include="RegexValidator.hpp" />
+    <ClInclude Include="Requests.hpp" />
+    <ClInclude Include="RequestsCodes.hpp" />
+    <ClInclude Include="ResetPasswordResponseErrors.hpp" />
+    <ClInclude Include="RoomAdminRequestHandler.hpp" />
+    <ClInclude Include="RoomPreview.hpp" />
+    <ClInclude Include="RoomRequestHandler.hpp" />
+    <ClInclude Include="RoomState.hpp" />
+    <ClInclude Include="RoomStatus.h" />
+    <ClInclude Include="SocketService.hpp" />
+    <ClInclude Include="HighScoreInfo.hpp" />
+    <ClInclude Include="IDatabase.hpp" />
+    <ClInclude Include="IRequestHandler.hpp" />
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="JsonResponsePacketSerializer.hpp" />
+    <ClInclude Include="LoggedUser.hpp" />
+    <ClInclude Include="LoginManager.hpp" />
+    <ClInclude Include="Question.hpp" />
+    <ClInclude Include="PersonalStatistics.hpp" />
+    <ClInclude Include="RequestHandlerFactory.hpp" />
+    <ClInclude Include="RequestInfo.hpp" />
+    <ClInclude Include="RequestResult.hpp" />
+    <ClInclude Include="LoginRequestHandler.hpp" />
+    <ClInclude Include="Response.hpp" />
+    <ClInclude Include="Room.hpp" />
+    <ClInclude Include="RoomData.hpp" />
+    <ClInclude Include="RoomManager.hpp" />
+    <ClInclude Include="Server.hpp" />
+    <ClInclude Include="SignupResponseErrors.hpp" />
+    <ClInclude Include="sqlite3.h" />
+    <ClInclude Include="SqliteDatabase.hpp" />
+    <ClInclude Include="ApiClient.hpp" />
+    <ClInclude Include="StatisticsManager.hpp" />
+    <ClInclude Include="UserRecord.hpp" />
+    <ClInclude Include="Waiting1v1Manager.hpp" />
+    <ClInclude Include="Waiting1v1RequestHandler.hpp" />
+    <ClInclude Include="WSAInitializer.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AddAnswerManager.cpp" />
+    <ClCompile Include="Communicator.cpp" />
+    <ClCompile Include="EmailSender.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameRequestHandler.cpp" />
+    <ClCompile Include="GeneralResponseErrors.cpp" />
+    <ClCompile Include="JsonRequestPacketDeserializer.hpp" />
+    <ClCompile Include="LoggedUser.cpp" />
+    <ClCompile Include="LoginResponseErrors.cpp" />
+    <ClCompile Include="PersonalStatistics.cpp" />
+    <ClCompile Include="Question.cpp" />
+    <ClCompile Include="QuestionRecord.cpp" />
+    <ClCompile Include="RequestInfo.cpp" />
+    <ClCompile Include="RequestResult.cpp" />
+    <ClCompile Include="ResetPasswordResponseErrors.cpp" />
+    <ClCompile Include="ResponseCodes.hpp" />
+    <ClCompile Include="RoomAdminRequestHandler.cpp" />
+    <ClCompile Include="RoomRequestHandler.cpp" />
+    <ClCompile Include="SignupResponseErrors.cpp" />
+    <ClCompile Include="SocketService.cpp" />
+    <ClCompile Include="LoginManager.cpp" />
+    <ClCompile Include="LoginRequestHandler.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MenuRequestHandler.cpp" />
+    <ClCompile Include="MyException.hpp" />
+    <ClCompile Include="RegexValidator.cpp" />
+    <ClCompile Include="RequestHandlerFactory.cpp" />
+    <ClCompile Include="Room.cpp" />
+    <ClCompile Include="RoomManager.cpp" />
+    <ClCompile Include="Server.cpp" />
+    <ClCompile Include="sqlite3.c" />
+    <ClCompile Include="SqliteDatabase.cpp" />
+    <ClCompile Include="ApiClient.cpp" />
+    <ClCompile Include="StatisticsManager.cpp" />
+    <ClCompile Include="Waiting1v1Manager.cpp" />
+    <ClCompile Include="Waiting1v1RequestHandler.cpp" />
+    <ClCompile Include="WSAInitializer.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
