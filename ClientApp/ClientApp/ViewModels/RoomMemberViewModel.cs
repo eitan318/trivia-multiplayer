@@ -10,7 +10,7 @@ using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
-    class RoomMemberViewModel : ViewModelBase
+    class RoomMemberViewModel : ScreenViewModelBase
     {
         private UserStore _userStore;
         private readonly RequestsExchangeService _requestsExchangeService;
@@ -18,22 +18,37 @@ namespace ClientApp.ViewModels
         private CancellationTokenSource _checkRoomStateCTS;
         private LoggedUser _admin;
         private readonly int refreshMS = 300;
+        private readonly AmIAdminStore _amIAdminStore;
+        private readonly Is1v1GameStore _is1v1GameStore;
 
         public RoomMemberViewModel(
             INavigationService navigationService,
             RoomDataStore roomDataStore,
             UserStore userStore,
-            RequestsExchangeService requestsExchangeService)
+            RequestsExchangeService requestsExchangeService,
+            AmIAdminStore amIAdminStore,
+            Is1v1GameStore is1v1GameStore,
+            LeaveRoomCommand leaveRoomCommand)
         {
+            this._amIAdminStore = amIAdminStore;
+            this._is1v1GameStore = is1v1GameStore;
+
             this._navigationService = navigationService;
             this._userStore = userStore;
             this._requestsExchangeService = requestsExchangeService;
-            this.LeaveRoomCmd = new LeaveRoomCommand(navigationService, requestsExchangeService, null);
+            this.LeaveRoomCmd = leaveRoomCommand;
             this.RoomDataStore = roomDataStore;
+
+            Players.CollectionChanged += (s, e) => OnPropertyChanged(nameof(PlayersInfo));
+
         }
+
+
 
         public override void OnNavigatedTo()
         {
+            _is1v1GameStore.is1v1Game = false;
+            _amIAdminStore.AmIAdmin = false; 
             this._checkRoomStateCTS = new CancellationTokenSource();
             Task.Run(() => PeriodicallyCheckRoomStateLoop(_checkRoomStateCTS.Token));
         }
@@ -43,6 +58,8 @@ namespace ClientApp.ViewModels
             _checkRoomStateCTS.Cancel();
             _checkRoomStateCTS.Dispose();
         }
+
+        public string PlayersInfo => $"{this.Players.Count() + 1}/{this.RoomDataStore.CurrentRoomData.MaxPlayers}";
 
         public ObservableCollection<LoggedUser> Players { get; set; } = new ObservableCollection<LoggedUser>();
 
@@ -61,7 +78,7 @@ namespace ClientApp.ViewModels
 
         public RoomDataStore RoomDataStore { get; set; }
 
-        public ICommand LeaveRoomCmd { get; }
+        public IAsyncCommand LeaveRoomCmd { get; }
 
         private async Task PeriodicallyCheckRoomStateLoop(CancellationToken token)
         {
@@ -81,9 +98,11 @@ namespace ClientApp.ViewModels
 
         private async Task PeriodicallyCheckRoomState()
         {
-            var getRoomStatusRequest = new GetRoomStateRequest();
             ResponseInfo<GetRoomStateResponse> responseInfo =
-                await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(getRoomStatusRequest);
+                await _requestsExchangeService.ExchangeRequest<GetRoomStateResponse>(RequestsCodes.GetRoomStateRequest);
+            
+            if (!responseInfo.NormalResponse)
+                return;
             GetRoomStateResponse response = (GetRoomStateResponse)responseInfo.Response;
             RoomState roomState = response.RoomState;
 
@@ -103,14 +122,18 @@ namespace ClientApp.ViewModels
                 }
             });
 
-            if (roomState.RoomStatus == RoomStatus.Closed)
+            if (roomState.RoomStatus == RoomStatus.Closing)
             {
-                LeaveRoomCmd.Execute(null);
+                LeaveRoomCmd.ExecuteAsync(null);
             }
 
-            if (roomState.RoomStatus == RoomStatus.InGame)
+            if (roomState.RoomStatus == RoomStatus.StartingGame)
             {
-                _navigationService.NavigateTo<GameViewModel>();
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                     _navigationService.NavigateTo<GameAnsweringViewModel>();
+                });
+
             }
         }
     }

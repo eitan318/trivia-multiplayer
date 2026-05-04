@@ -7,20 +7,17 @@ using ClientApp.ViewModels.ForgotPassword;
 
 namespace ClientApp.Commands
 {
-    class ResetPasswordCommand : CommandBase
+    public class ResetPasswordCommand : CommandBase, IAsyncCommand
     {
-        private ResetPasswordViewModel _resetPasswordViewModel;
         private readonly RequestsExchangeService _requestsExchangeService;
         private readonly INavigationService _navigationService;
         private PasswordResetStore _state;
 
         public ResetPasswordCommand(
-            ResetPasswordViewModel resetPasswordViewModel,
             INavigationService navigationService,
             RequestsExchangeService requestsExchangeService,    
             PasswordResetStore state)
         {
-            this._resetPasswordViewModel = resetPasswordViewModel;
             _navigationService = navigationService;
             _requestsExchangeService = requestsExchangeService;
             _state = state;
@@ -31,15 +28,20 @@ namespace ClientApp.Commands
         /// then sends a reset password request to the server. If successful, navigates to the login page.
         /// If there are errors, an appropriate error message is displayed.
         /// </summary>
-        public override async void Execute(object parameters)
+        public override async Task ExecuteAsync(object parameters)
         {
-            string trimmedNewPassword = _resetPasswordViewModel.NewPassword?.Trim();
-            string trimmedConfirmPassword = _resetPasswordViewModel.ConfirmPassword?.Trim();
+            if (parameters is not ResetPasswordViewModel resetPasswordViewModel)
+            {
+                return;
+            }
+
+            string trimmedNewPassword = resetPasswordViewModel.NewPassword?.Trim();
+            string trimmedConfirmPassword = resetPasswordViewModel.ConfirmPassword?.Trim();
 
             // Ensure the new password and confirmation password match
             if (trimmedNewPassword != trimmedConfirmPassword)
             {
-                _resetPasswordViewModel.ErrorMessage = "Need to be the same";
+                resetPasswordViewModel.ErrorMessage = "Need to be the same";
                 return;
             }
 
@@ -59,14 +61,14 @@ namespace ClientApp.Commands
                 }
                 else
                 {
-                    _resetPasswordViewModel.ErrorMessage = response.Errors.GeneralError;
-                    _resetPasswordViewModel.NewPasswordErrorMessage = response.Errors.NewPasswordError;
+                    resetPasswordViewModel.ErrorMessage = response.Errors.GeneralError;
+                    resetPasswordViewModel.NewPasswordErrorMessage = response.Errors.NewPasswordError;
                 }
 
             }
             else
             {
-                _resetPasswordViewModel.ErrorMessage = responseInfo.ErrorResponse.Message;
+                resetPasswordViewModel.ErrorMessage = responseInfo.ErrorResponse.Message;
             }
         }
     }

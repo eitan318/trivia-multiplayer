@@ -7,18 +7,21 @@ using ClientApp.Services;
 namespace ClientApp.ViewModels
 {
 
-    class HighScoresViewModel : ViewModelBase
+    class HighScoresViewModel : ScreenViewModelBase
     {
         private readonly RequestsExchangeService _requestsExchangeService;
-        private readonly int amountTopPlayers = 3;
+        private readonly int amountTopPlayers = 5;
         private CancellationTokenSource _refreshTopPlayersCTS;
 
-        public HighScoresViewModel(RequestsExchangeService requestsExchangeService) : base(true)
+        public HighScoresViewModel(RequestsExchangeService requestsExchangeService,
+            TopBarViewModel topBarViewModel) : base(true, topBarViewModel)
         {
             _requestsExchangeService = requestsExchangeService;
         }
 
         
+
+
         public override void OnNavigatedTo()
         {
             _refreshTopPlayersCTS = new CancellationTokenSource();
@@ -94,11 +97,6 @@ namespace ClientApp.ViewModels
                     var HighestScoresResponse = responseInfo.Response;
                     this.ResponseList = HighestScoresResponse.Statistics;
                 }
-                else
-                {
-
-                }
-
 
             }
             catch (Exception ex)

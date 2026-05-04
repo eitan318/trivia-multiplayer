@@ -2,9 +2,12 @@
 #include "HighScoreInfo.hpp"
 #include "Question.hpp"
 #include "UserRecord.hpp"
+#include "QuestionRecord.hpp"
 #include <list>
 #include <string>
 #include <vector>
+#include "PlayerResults.hpp"
+#include "PersonalStatistics.hpp"
 
 /**
  * @brief Interface for a database handling user and game-related data.
@@ -40,14 +43,14 @@ public:
      * @return 1 if the password matches, 0 otherwise.
      */
     virtual int doesPasswordMatch(const std::string& username,
-        const std::string& password) const = 0;
+        unsigned long password) const = 0;
 
     /**
      * @brief Adds a new user to the database.
      * @param userRecord The user information to add.
      * @return 1 if the user is successfully added, 0 otherwise.
      */
-    virtual int addNewUser(const UserRecord& userRecord) const = 0;
+    virtual int addNewUser(const UserRecord& userRecord, unsigned long hashedPassword) const = 0;
 
     /**
      * @brief Creates the initial database structure, if it doesn't already exist.
@@ -60,37 +63,7 @@ public:
      * @param amount The number of questions to retrieve.
      * @return A list of questions.
      */
-    virtual std::list<Question> getQuestions(int amount) const = 0;
-
-    /**
-     * @brief Retrieves the total number of answers submitted by a user.
-     * @param username The username to query.
-     * @return The total number of answers submitted.
-     */
-    virtual int getNumOfTotalAnswers(const std::string& username) const = 0;
-
-    /**
-     * @brief Retrieves the total number of correct answers submitted by a user.
-     * @param username The username to query.
-     * @return The total number of correct answers.
-     */
-    virtual int
-        getNumOfTotalCorrectAnswers(const std::string& username) const = 0;
-
-    /**
-     * @brief Retrieves the total number of games played by a user.
-     * @param username The username to query.
-     * @return The total number of games played.
-     */
-    virtual int getNumOfPlayerGames(const std::string& username) const = 0;
-
-    /**
-     * @brief Retrieves the average answer time for a user.
-     * @param username The username to query.
-     * @return The average answer time in seconds.
-     */
-    virtual float getAvgAnswerTime(const std::string& username) const = 0;
-
+    virtual std::vector<Question> getRandQuestions(int amount) const = 0;
     /**
      * @brief Checks if an email exists in the database.
      * @param email The email to check.
@@ -110,7 +83,7 @@ public:
      * @param limit The maximum number of high scores to retrieve.
      * @return A vector of HighScoreInfo objects.
      */
-    virtual std::vector<HighScoreInfo> getBestScores(int limit) const = 0;
+    virtual std::vector<HighScoreInfo> getBestScores(int limit, bool in1v1) const = 0;
 
     /**
      * @brief Updates a user's password.
@@ -118,7 +91,7 @@ public:
      * @param newPassword The new password to set.
      */
     virtual void updatePassword(const std::string& username,
-        const std::string& newPassword) const = 0;
+        unsigned long newPasswordHash) const = 0;
 
     /**
      * @brief Retrieves the total number of questions in the database.
@@ -126,8 +99,53 @@ public:
      */
     virtual unsigned int getQuestionsCount() const = 0;
 
+
+
+    /**
+	 * Adds a user's answer to the database.
+	 *
+	 * @param username The username of the player.
+	 * @param gameId The ID of the game the answer belongs to.
+	 * @param questionId The ID of the question being answered.
+	 * @param isCorrect True if the answer is correct, otherwise false.
+	 * @param score The score awarded for the answer.
+	 * @param answerTimeSec The time taken by the user to answer, in seconds.
+	 */
+    virtual void addUserAnswer(const std::string& username, unsigned int gameId, unsigned int questionId,
+        int chosenAnswerInQuestion, int score, double answerTimeSec) const = 0;
+
+    /**
+     * Creates a new game entry in the database.
+     *
+     * @return The ID of the newly created game.
+     */
+    virtual unsigned int createGame(const std::string& roomName, time_t startTime, bool is1v1) const = 0;
+
+    /**
+     * Retrieves the results of a player for a specific game.
+     *
+     * @param username The username of the player.
+     * @param gameId The ID of the game to retrieve results for.
+     * @return An optional containing the player's results if found, or std::nullopt if no results are available.
+     */
+    virtual std::optional<PlayerResults> getPlayerResults(const std::string& username, unsigned int gameId, unsigned int questionAmount, LastAnswerState lastAnswerState) const = 0;
+
+
+    virtual PersonalStatistics getPersonalStatistics(const std::string& username, bool is1v1Game) const = 0;
+
+    
+    /**
+     * Creates users for example for us to test the db and the game.
+     *
+     * @return Succesful or not.
+     */
+    virtual bool addExampleUsers() const = 0;
+
+
     /**
      * @brief Virtual destructor for proper cleanup of derived classes.
      */
     virtual ~IDatabase() = default;
+
+    virtual bool addQuestionToDB(QuestionRecord& questionRecord) const = 0;
 };

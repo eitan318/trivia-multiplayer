@@ -6,21 +6,25 @@ using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
-    class LoginViewModel : ViewModelBase
+    class LoginViewModel : ScreenViewModelBase
     {
         private UserStore _userStore;
-        
+
         public LoginViewModel(
-            INavigationService navigationService,
+            LoginCommand loginCmd,
+            NavigateCommand<SignupViewModel> naToSignupCmd,
+            NavigateCommand<EmailEntryViewModel> navToForgotPasswordCmd,
             UserStore userStore,
-            RequestsExchangeService requestsExchangeService)
+            TopBarViewModel topBarViewModel
+            ) 
         {
             this._userStore = userStore;
 
+
             // Initialize commands for different actions
-            LoginCmd = new LoginCommand(this, navigationService, userStore, requestsExchangeService);
-            NavToSignupCmd = new NavigateCommand<SignupViewModel>(navigationService);
-            NavToForgotPasswordCmd = new NavigateCommand<EmailEntryViewModel>(navigationService);
+            LoginCmd = loginCmd;
+            NavToSignupCmd = naToSignupCmd;
+            NavToForgotPasswordCmd = navToForgotPasswordCmd;
 
         }
 

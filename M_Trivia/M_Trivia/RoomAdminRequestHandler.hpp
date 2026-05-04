@@ -8,7 +8,7 @@ public:
 	 * other request handlers.
 	 */
 	RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory,
-		LoggedUser loggedUser, Room* room);
+		LoggedUser loggedUser, std::shared_ptr<Room> room);
 
 	/**
 	 * @brief Destructor for RoomAdminRequestHandler.
@@ -27,9 +27,8 @@ public:
 	 * @param requestInfo The request information to handle.
 	 * @return The result of handling the request.
 	 */
-	RequestResult handleRequest(const RequestInfo& requestInfo, SOCKET socket) override;
+	RequestResult handleRequest(const RequestInfo& requestInfo) override;
 private:
-	RequestResult closeRoom(const RequestInfo& requestInfo);
 	RequestResult startGame(const RequestInfo& requestInfo);
 
 };

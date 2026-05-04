@@ -3,14 +3,34 @@
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                      xmlns:local="clr-namespace:ClientApp.Views.Screens"
+                     xmlns:controls="clr-namespace:ClientApp.Views.Controls"
                      mc:Ignorable="d"
-                     d:DesignHeight="450" d:DesignWidth="800">
+             Style="{StaticResource UserControlStyle}"
 
-    <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Content="Personal statistics" Command="{Binding NavToPersonalStatisticsCmd}" Margin="0,10"/>
-            <Button Content="High scores" Command="{Binding NavToHighScoresCmd}" Margin="0,10"/>
-        </StackPanel>
-    </Grid>
+                     d:DesignHeight="450" d:DesignWidth="800">
+        <!-- Main Content -->
+        <Grid Margin="20">
+
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1">
+                <!-- Personal Statistics Button -->
+                <Button Command="{Binding NavToPersonalStatisticsCmd}" Style="{StaticResource MenuButtonStyle}" Margin="10">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <materialDesign:PackIcon Kind="AccountCircle" Width="40" Height="40"/>
+                        <TextBlock Text="Personal Statistics" FontSize="18" FontWeight="Bold" TextAlignment="Center" Margin="0,10,0,0"/>
+                        <TextBlock Text="Review your performance and game history" FontSize="12" TextAlignment="Center" Foreground="Gray"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- High Scores Button -->
+                <Button Command="{Binding NavToHighScoresCmd}" Style="{StaticResource MenuButtonStyle}" Margin="10">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <materialDesign:PackIcon Kind="Star" Width="40" Height="40"/>
+                        <TextBlock Text="High Scores" FontSize="18" FontWeight="Bold" TextAlignment="Center" Margin="0,10,0,0"/>
+                        <TextBlock Text="Check out the top players and their scores" FontSize="12" TextAlignment="Center" Foreground="Gray"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
 </UserControl>

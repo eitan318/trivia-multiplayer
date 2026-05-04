@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls CMakeFiles)",
+      "Bash(ls build *)",
+      "Bash(dir x64Debug *)",
+      "PowerShell(Test-Path *)",
+      "PowerShell($msbuild = \"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\18\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\"; & $msbuild \"C:\\\\Users\\\\eitan\\\\Downloads\\\\trivia-multiplayer\\\\M_Trivia.sln\" /p:Configuration=Debug /p:Platform=x64 /m /nologo /v:minimal 2>&1 | Select-Object -Last 200)",
+      "PowerShell($msbuild = \"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\18\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\"; & $msbuild \"C:\\\\Users\\\\eitan\\\\Downloads\\\\trivia-multiplayer\\\\M_Trivia\\\\M_Trivia.sln\" /p:Configuration=Debug /p:Platform=x64 /m /nologo /v:minimal 2>&1 | Select-Object -Last 200)",
+      "PowerShell($msbuild = \"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\18\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\"; & $msbuild \"C:\\\\Users\\\\eitan\\\\Downloads\\\\trivia-multiplayer\\\\M_Trivia\\\\M_Trivia.sln\" /p:Configuration=Debug /p:Platform=x64 /p:PlatformToolset=v180 /m /nologo /v:minimal 2>&1 | Select-Object -Last 250)",
+      "PowerShell($msbuild = \"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\18\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\"; & $msbuild \"C:\\\\Users\\\\eitan\\\\Downloads\\\\trivia-multiplayer\\\\M_Trivia\\\\M_Trivia.sln\" /p:Configuration=Debug /p:Platform=x64 /p:PlatformToolset=v145 /m /nologo /v:minimal 2>&1 | Select-Object -Last 300)",
+      "PowerShell($found = @\\(\\); Get-ChildItem -Path \"C:\\\\\" -Filter \"curl.h\" -Recurse -ErrorAction SilentlyContinue -Depth 8 | ForEach-Object { $found += $_.FullName }; $found)",
+      "PowerShell($found = @\\(\\); Get-ChildItem -Path \"C:\\\\\" -Filter \"curl.h\" -Recurse -ErrorAction SilentlyContinue | ForEach-Object { $found += $_.FullName }; if \\($found.Count -eq 0\\) { \"No curl.h found anywhere on C:\" } else { $found | Select-Object -First 20 })"
+    ]
+  }
+}

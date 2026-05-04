@@ -1,12 +1,14 @@
 ﻿using Newtonsoft.Json;
-
+using ClientApp.Models.ResponseErrors;
 namespace ClientApp.Models.Responses
 {
-    class PersonalStatisticsResponse : Response
+    class PersonalStatisticsResponse : Response<NoResponseErrors>
     {
         private PersonalStatisticsResponse() {}
-        public ResponsesCodes GetCode() => ResponsesCodes.GetPersonalStatsResponse;
         [JsonProperty]
-        public PersonalStatisticsModel Statistics { get; private set; }
+        public PersonalStatisticsResponseData Statistics { get; private set; }
     }
+
+
+
 }

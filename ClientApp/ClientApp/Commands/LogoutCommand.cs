@@ -7,21 +7,18 @@ using System.Collections.Generic;
 
 namespace ClientApp.Commands
 {
-    class LogoutCommand : CommandBase
+    public class LogoutCommand : CommandBase, IAsyncCommand
     {
         private INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
-        MenuViewModel _menuViewModel;
 
         /// <summary>
         /// Private constructor for the MenuPageViewModel. Initializes the commands for the actions available in the menu.
         /// </summary>
         public LogoutCommand(
-            MenuViewModel menuViewModel,
             INavigationService navigationService,
             RequestsExchangeService requestsExchangeService)
         {
-            this._menuViewModel = menuViewModel;
             this._navigationService = navigationService;
             this._requestsExchangeService = requestsExchangeService;
         }
@@ -29,10 +26,9 @@ namespace ClientApp.Commands
         /// <summary>
         /// Logs the user out and navigates to the LoginPage if the logout is successful.
         /// </summary>
-        public override async void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
-            LogoutRequest request = new LogoutRequest();
-            ResponseInfo<LogoutResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<LogoutResponse>(request);
+            ResponseInfo<LogoutResponse> responseInfo = await _requestsExchangeService.ExchangeRequest<LogoutResponse>(RequestsCodes.LogoutRequest);
 
             if (responseInfo.NormalResponse)
             {
@@ -46,10 +42,6 @@ namespace ClientApp.Commands
                 {
 
                 } 
-            }
-            else
-            {
-                 this._menuViewModel.ErrorMessage = responseInfo.ErrorResponse.Message;
             }
         }
     }

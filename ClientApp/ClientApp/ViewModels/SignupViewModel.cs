@@ -7,19 +7,19 @@ using ClientApp.Stores;
 
 namespace ClientApp.ViewModels
 {
-    class SignupViewModel : ViewModelBase
+    class SignupViewModel : ScreenViewModelBase
     {
         private UserStore _userStore;
         public SignupViewModel(
-            INavigationService navigationService,
-            RequestsExchangeService requestsExchangeService,
+            SignupCommand signupCmd,
+            NavigateCommand<LoginViewModel> navToLoginCmd,
             UserStore userStore)
         {
             this._userStore = userStore;
 
             // Initialize commands for different actions
-            SignupCmd = new SignupCommand(this, navigationService, requestsExchangeService);
-            NavToLoginCmd = new NavigateCommand<LoginViewModel>(navigationService);
+            SignupCmd = signupCmd;
+            NavToLoginCmd = navToLoginCmd;
         }
 
 
@@ -31,12 +31,7 @@ namespace ClientApp.ViewModels
 
 
 
-        // Account fields
-        private string _password = "";
-        private string _email = "";
-        private string _houseAddress = "";
-        private string _phoneNumber = "";
-        private DateTime? _birthDate;
+
 
         // Error message fields
         private string _usernameErrorMessage;
@@ -49,7 +44,12 @@ namespace ClientApp.ViewModels
         private string _errorMessage;
 
 
-
+        // Account fields
+        private string _password = "";
+        private string _email = "";
+        private string _houseAddress = "";
+        private string _phoneNumber = "";
+        private DateTime? _birthDate;
         public string Username
         {
             get => _userStore.Username??"";

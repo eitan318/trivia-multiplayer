@@ -3,27 +3,41 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ClientApp.Views.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="400"
-             TextElement.Foreground="{DynamicResource MaterialDesign.Brush.Foreground}">
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
 
-    <StackPanel Margin="0,10,0,0">
+
+        <!-- Statistics Grid -->
         <UniformGrid Columns="2" Margin="0,5,0,5" VerticalAlignment="Top" HorizontalAlignment="Stretch">
-            <!--<TextBlock Text="Username:" FontWeight="Bold" FontSize="16" />
-            <TextBlock Text="{Binding UserName}" FontSize="16" HorizontalAlignment="Center" Margin="10,0,0,0" />-->
+            <!-- Games Played -->
+            <TextBlock Text="Games Played:" FontWeight="Bold" FontSize="20" />
+            <TextBlock Text="{Binding GamesPlayed}" 
+                                   FontSize="20" 
+                                   HorizontalAlignment="Right" 
+                                   Margin="10,0,0,0" />
 
-            <TextBlock Text="Games Played:" FontWeight="Bold" FontSize="16" />
-            <TextBlock Text="{Binding GamesPlayed}" FontSize="16" HorizontalAlignment="Center" Margin="10,0,0,0" />
+            <!-- Total Answers -->
+            <TextBlock Text="Total Answers:" FontWeight="Bold" FontSize="20" />
+            <TextBlock Text="{Binding TotalAnswers}" 
+                                   FontSize="20" 
+                                   HorizontalAlignment="Right" 
+                                   Margin="10,0,0,0" />
 
-            <TextBlock Text="Total Answers:" FontWeight="Bold" FontSize="16" />
-            <TextBlock Text="{Binding TotalAnswers}" FontSize="16" HorizontalAlignment="Center" Margin="10,0,0,0" />
+            <!-- Correct Answers -->
+            <TextBlock Text="Correct Answers:" FontWeight="Bold" FontSize="20" />
+            <TextBlock Text="{Binding TotalCorrectAnswers}" 
+                                   FontSize="20" 
+                                   HorizontalAlignment="Right" 
+                                   Margin="10,0,0,0" />
 
-            <TextBlock Text="Correct Answers:" FontWeight="Bold" FontSize="16" />
-            <TextBlock Text="{Binding TotalCorrectAnswers}" FontSize="16" HorizontalAlignment="Center" Margin="10,0,0,0" />
-
-            <TextBlock Text="Avg. Answer Time:" FontWeight="Bold" FontSize="16" />
-            <TextBlock Text="{Binding AvgAnswerTime}" FontSize="16" HorizontalAlignment="Center" Margin="10,0,0,0" />
+            <!-- Avg. Answer Time -->
+            <TextBlock Text="Avg. Answer Time:" FontWeight="Bold" FontSize="20" />
+            <TextBlock Text="{Binding AvgAnswerTime}" 
+                                   FontSize="20" 
+                                   HorizontalAlignment="Right" 
+                                   Margin="10,0,0,0" />
         </UniformGrid>
     </StackPanel>
 </UserControl>
-              

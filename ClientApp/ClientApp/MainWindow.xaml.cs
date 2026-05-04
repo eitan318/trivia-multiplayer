@@ -19,7 +19,7 @@ namespace ClientApp
         /// </summary>
         internal MainWindow(MainWindowViewModel viewModel)
         {
-            DataContext = viewModel; // Set the DataContext to the provided ViewModel
+            DataContext = viewModel;
             InitializeComponent();
             Closed += (sender, e) => viewModel.OnWindowClosed();
         }

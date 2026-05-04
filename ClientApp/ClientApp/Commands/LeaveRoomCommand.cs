@@ -6,7 +6,7 @@ using ClientApp.ViewModels;
 
 namespace ClientApp.Commands
 {
-    class LeaveRoomCommand : CommandBase
+    class LeaveRoomCommand : CommandBase, IAsyncCommand
     {
         private INavigationService _navigationService;
         private readonly RequestsExchangeService _requestsExchangeService;
@@ -19,14 +19,14 @@ namespace ClientApp.Commands
             this._navigationService = navigationService;
             this._requestsExchangeService = requestsExchangeService;
         }
-        public override async void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
-            try
-            {
                 var leaverRoomRequest = new LeaveRoomRequest();
                 ResponseInfo<LeaveRoomResponse> responseInfo =
                     await _requestsExchangeService.ExchangeRequest<LeaveRoomResponse>(leaverRoomRequest);
-                LeaveRoomResponse response = (LeaveRoomResponse)responseInfo.Response;
+                if (!responseInfo.NormalResponse)
+                    return;
+                LeaveRoomResponse response = responseInfo.Response;
                 if (response.Status == 0)
                 {
                     this._navigationService.NavigateTo<MenuViewModel>();
@@ -35,13 +35,9 @@ namespace ClientApp.Commands
                 {
                     throw new Exception();
                 }
-            }
-            catch(Exception ex)
-            {
-                this._navigationService.NavigateTo<MenuViewModel>();
-            }
 
         }
+
 
     }
 }

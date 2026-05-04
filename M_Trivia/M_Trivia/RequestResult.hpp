@@ -14,4 +14,5 @@ public:
     RequestResult();
     std::vector<char> response;
     std::shared_ptr<IRequestHandler> newHandler; 
+
 };

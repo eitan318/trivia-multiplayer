@@ -7,7 +7,7 @@ namespace ClientApp.Services
     /// <summary>
     /// Provides serialization functionality for client requests into JSON format.
     /// </summary>
-    class JsonRequestSerializer
+    public class JsonRequestSerializer
     {
         /// <summary>
         /// Serializes a request object into a byte array for transmission.
@@ -42,6 +42,23 @@ namespace ClientApp.Services
             return dataBytes;
         }
         
+        internal byte[] SerializeRequest(RequestsCodes code)
+        {
+            string json = "";
+            byte[] jsonBytes = Encoding.UTF8.GetBytes(json);
+
+            // Convert the length of the JSON bytes to a 4-byte array
+            byte[] lengthBytes = BitConverter.GetBytes(jsonBytes.Length);
+            if (!BitConverter.IsLittleEndian)
+                Array.Reverse(lengthBytes); // Ensure little-endian format if needed
+
+            var dataBytes = new byte[1 + lengthBytes.Length + jsonBytes.Length];
+            dataBytes[0] = (byte)code;
+            Array.Copy(lengthBytes, 0, dataBytes, 1, lengthBytes.Length);
+            Array.Copy(jsonBytes, 0, dataBytes, 1 + lengthBytes.Length, jsonBytes.Length);
+            
+            return dataBytes;
+        }
 
     }
 }

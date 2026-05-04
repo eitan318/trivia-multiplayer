@@ -1,9 +1,8 @@
 #pragma once
-#include "CreateRoomResponseErrors.hpp"
 #include "IDatabase.hpp"
-#include "JoinRoomResponseErrors.hpp"
 #include "Room.hpp"
 #include "RoomPreview.hpp"
+#include "GeneralResponseErrors.hpp"
 #include <mutex>
 #include <vector>
 
@@ -14,7 +13,7 @@ class RoomManager
 {
 private:
     static unsigned int ids;     ///< Counter for generating unique room IDs.
-    std::vector<Room> m_rooms; 
+    std::vector<std::shared_ptr<Room>> m_rooms; 
     mutable std::mutex m_roomsMutex;
     IDatabase& m_database;       ///< Pointer to the database interface for accessing data.
 
@@ -46,14 +45,14 @@ public:
      * @param player The user creating the room.
      * @param roomData The data defining the room's properties.
      */
-    CreateRoomResponseErrors createRoom(const LoggedUser& player, RoomData& roomData);
+    GeneralResponseErrors createRoom(const LoggedUser& player, RoomData& roomData);
 
     /**
      * @brief join an existing room. I set the id in room data
      * @param loggedUser The user joining the room.
      * @param id The id of the room to join.
      */
-    JoinRoomResponseErrors joinRoom(unsigned int id, const LoggedUser& loggedUser);
+    GeneralResponseErrors joinRoom(unsigned int id, const LoggedUser& loggedUser);
 
     /**
      * @brief Deletes an existing room by its ID.
@@ -64,21 +63,14 @@ public:
      * @brief Retrieves a list of all active rooms.
      * @return A vector of RoomData objects representing active rooms.
      */
-    std::vector<RoomPreview> getRooms() const;
-
-    /**
-	 * Attempts to close the current room.
-	 *
-	 * @return A CloseRoomResponseErrors indicating the result of the operation.
-	 */
-    CloseRoomResponseErrors closeRoom(unsigned int roomId, const LoggedUser& closer);
+    std::vector<RoomPreview> getActiveRooms() const;
 
     /**
      * Attempts to start the game in the current room.
      *
      * @return A StartGameResponseErrors indicating the result of the operation.
      */
-    StartGameResponseErrors startGameOfRoom(unsigned int roomId);
+    GeneralResponseErrors startGameOfRoom(unsigned int roomId);
 
     /**
      * @brief Retrieves a reference to a specific room.
@@ -86,7 +78,7 @@ public:
      * @return A reference to the Room object.
      * @throws MyException if the room does not exist.
      */
-    Room* getRoom(int ID);
+    std::shared_ptr<Room> getRoom(int ID);
 
 
     void leaveRoom(unsigned int roomId,
