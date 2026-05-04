@@ -7,6 +7,10 @@ matchmaking, and persistent statistics.
 
 <img width="1524" height="823" alt="image" src="https://github.com/user-attachments/assets/c36aec32-b3bc-4c56-81f4-bc1edb622b68" />
 
+--------------------------
+<img width="1524" height="828" alt="image" src="https://github.com/user-attachments/assets/3dbc681d-c9c4-4a7e-a8c4-bd01b7a22d40" />
+
+
 
 ## Features
 
