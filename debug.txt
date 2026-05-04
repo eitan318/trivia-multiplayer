@@ -1,1 +1,0 @@
-Getting a service of UI element needs to be done from the UI thread.
