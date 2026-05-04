@@ -5,6 +5,9 @@ project pairs a high-performance C++ server with a modern WPF desktop client,
 and ships with full account management, live multiplayer rooms, quick 1v1
 matchmaking, and persistent statistics.
 
+<img width="1524" height="823" alt="image" src="https://github.com/user-attachments/assets/c36aec32-b3bc-4c56-81f4-bc1edb622b68" />
+
+
 ## Features
 
 - **Account system** — sign up, log in, and recover access through an
